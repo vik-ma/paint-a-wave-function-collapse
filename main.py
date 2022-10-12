@@ -1,3 +1,4 @@
+from turtle import Screen
 import pygame
 import random
 from tile import Tile
@@ -28,9 +29,10 @@ def draw_window():
     screen.fill(GREY)
 
 def draw_grid():
+    pygame.draw.rect(screen, BLACK, (49, 49, COLS * TILE_SIZE + 2, ROWS * TILE_SIZE + 2), 1)
     for row in range(ROWS):
         for col in range(COLS):
-            tile = Tile(BLACK, TILE_SIZE, TILE_SIZE, (col * TILE_SIZE + 50), (row * TILE_SIZE + 50))
+            tile = Tile(WHITE, TILE_SIZE, TILE_SIZE, (col * TILE_SIZE + 50), (row * TILE_SIZE + 50))
             tile_group.add(tile)
             #pygame.draw.rect(screen, WHITE, pygame.Rect((col * TILE_SIZE + 50), (row * TILE_SIZE + 50), TILE_SIZE, TILE_SIZE))
     tile_group.draw(screen)
