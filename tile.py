@@ -7,7 +7,12 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
 
+        for w in range(width):
+            self.image.set_at((w,5),(255,0,0))
+            self.image.set_at((w,12),(255,0,0))
+
         self.col = col
         self.row = row
 
         self.rect = self.image.get_rect(left = self.col, top = self.row)
+

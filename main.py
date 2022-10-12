@@ -28,11 +28,15 @@ def draw_window():
 def draw_grid():
     for row in range(ROWS):
         for col in range(COLS):
-            pygame.draw.rect(screen, WHITE, pygame.Rect((col * TILE_SIZE + 50), (row * TILE_SIZE + 50), TILE_SIZE, TILE_SIZE))
+            tile = Tile(BLACK, TILE_SIZE, TILE_SIZE, (col * TILE_SIZE + 50), (row * TILE_SIZE + 50))
+            tile_group.add(tile)
+            #pygame.draw.rect(screen, WHITE, pygame.Rect((col * TILE_SIZE + 50), (row * TILE_SIZE + 50), TILE_SIZE, TILE_SIZE))
+    tile_group.draw(screen)
+
 
 def draw_tile():
-    asd = Tile(BLACK, 16, 16, 600, 20)
-    tile_group.add(asd)
+    tile = Tile(BLACK, 16, 16, 600, 16)
+    tile_group.add(tile)
     tile_group.draw(screen)
 
 def main():
@@ -41,7 +45,7 @@ def main():
         clock.tick(FPS)
         draw_window()
         draw_grid()
-        draw_tile()
+        # draw_tile()
 
         
         for event in pygame.event.get():
