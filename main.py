@@ -22,6 +22,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 tile_group = pygame.sprite.Group()
 
+
+
 def draw_window():
     screen.fill(GREY)
 

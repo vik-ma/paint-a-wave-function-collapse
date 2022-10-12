@@ -5,11 +5,13 @@ class Tile(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface([width, height])
-        self.image.fill(color)
+        # self.image.fill(color)
 
-        for w in range(width):
-            self.image.set_at((w,5),(255,0,0))
-            self.image.set_at((w,12),(255,0,0))
+        pixel_array = pygame.PixelArray(self.image)
+        # pixel_array[0, 0] = (0,0,255)
+        pixel_array[0:width, 0:height] = color
+        pixel_array.close()
+
 
         self.col = col
         self.row = row
