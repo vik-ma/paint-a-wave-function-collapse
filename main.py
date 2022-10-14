@@ -18,6 +18,7 @@ TILE_SIZE = 16
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREY = (175, 175, 175)
+LIGHTGREY = (213, 213, 213)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -41,16 +42,19 @@ def draw_tile():
     tile_group.add(tile)
     tile_group.draw(screen)
 
+make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
+
 def main():
     run = True
     while run:
         clock.tick(FPS)
         draw_window()
         draw_grid()
-        asd = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK)
-        asd.draw(screen)
         # draw_tile()
         
+        if make_grid_button.draw(screen):
+            print("MAKE GRID CLICKED")
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
