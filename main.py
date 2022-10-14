@@ -46,14 +46,17 @@ make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY
 
 def main():
     run = True
+
+    is_grid_drawn = False
+
     while run:
         clock.tick(FPS)
         draw_window()
-        draw_grid()
-        # draw_tile()
+        if is_grid_drawn:
+            draw_grid()
         
         if make_grid_button.draw(screen):
-            print("MAKE GRID CLICKED")
+            is_grid_drawn = True
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
