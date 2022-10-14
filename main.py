@@ -1,7 +1,7 @@
-from turtle import Screen
 import pygame
 import random
 from tile import Tile
+from button import Button
 
 pygame.init()
 
@@ -22,8 +22,6 @@ GREY = (175, 175, 175)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 tile_group = pygame.sprite.Group()
-
-
 
 def draw_window():
     screen.fill(GREY)
@@ -49,8 +47,9 @@ def main():
         clock.tick(FPS)
         draw_window()
         draw_grid()
+        asd = Button(BLACK, 600, 50, 150, 40, "asd")
+        asd.draw(screen)
         # draw_tile()
-
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
