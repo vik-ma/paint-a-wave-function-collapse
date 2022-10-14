@@ -47,7 +47,7 @@ def main():
         clock.tick(FPS)
         draw_window()
         draw_grid()
-        asd = Button(BLACK, 600, 50, 150, 40, "asd")
+        asd = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK)
         asd.draw(screen)
         # draw_tile()
         
