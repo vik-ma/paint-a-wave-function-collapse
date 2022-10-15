@@ -11,9 +11,9 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-ROWS = 30
-COLS = 30
-TILE_SIZE = 16
+ROWS = 100
+COLS = 100
+TILE_SIZE = 4
 
 WHITE = (255,255,255)
 BLACK = (0,0,0)
@@ -47,7 +47,7 @@ make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY
 def main():
     run = True
 
-    is_grid_drawn = False
+    is_grid_drawn = True
 
     while run:
         clock.tick(FPS)

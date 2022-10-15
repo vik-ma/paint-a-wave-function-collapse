@@ -8,8 +8,13 @@ class Tile(pygame.sprite.Sprite):
         # self.image.fill(color)
 
         pixel_array = pygame.PixelArray(self.image)
-        # pixel_array[0, 0] = (0,0,255)
+
         pixel_array[0:width, 0:height] = color
+        pixel_array[1, 1] = (0,0,0)
+        pixel_array[1, 2] = (0,0,0)
+        pixel_array[1, 3] = (0,0,0)
+        pixel_array[2, 1] = (0,0,0)
+        pixel_array[3, 1] = (0,0,0)
         pixel_array.close()
 
 
