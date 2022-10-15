@@ -1,7 +1,7 @@
 import pygame
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, color, width, height, col, row, pix_array):
+    def __init__(self, width, height, col, row, pix_array):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface([width, height])

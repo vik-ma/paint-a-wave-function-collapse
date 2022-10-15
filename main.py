@@ -38,7 +38,7 @@ def draw_grid():
     pygame.draw.rect(screen, BLACK, (49, 49, COLS * TILE_SIZE + 2, ROWS * TILE_SIZE + 2), 1)
     for row in range(ROWS):
         for col in range(COLS):
-            tile = Tile(WHITE, TILE_SIZE, TILE_SIZE, (col * TILE_SIZE + 50), (row * TILE_SIZE + 50), sample_pixel_array)
+            tile = Tile(TILE_SIZE, TILE_SIZE, (col * TILE_SIZE + 50), (row * TILE_SIZE + 50), sample_pixel_array)
             tile_group.add(tile)
             #pygame.draw.rect(screen, WHITE, pygame.Rect((col * TILE_SIZE + 50), (row * TILE_SIZE + 50), TILE_SIZE, TILE_SIZE))
     tile_group.draw(screen)
