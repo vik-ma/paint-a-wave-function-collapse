@@ -8,7 +8,7 @@ class Tile(pygame.sprite.Sprite):
         # self.image.fill(color)
 
         pixel_array = pygame.PixelArray(self.image)
-        pixel_array[0:width, 0:height] = (255,255,255)
+        # pixel_array[0:width, 0:height] = (255,255,255)
         for pix_row in pix_array:
             for pix in pix_row:
                 pixel_array[pix[0],pix[1]] = pix[2]

@@ -29,10 +29,10 @@ def draw_window():
     screen.fill(GREY)
 
 sample_pixel_array = [
-    ((0,0,WHITE),(0,1,WHITE),(0,2,WHITE),(0,3,WHITE)),
-    ((1,0,WHITE),(1,1,BLACK),(1,2,BLACK),(1,3,BLACK)),
-    ((2,0,WHITE),(2,1,BLACK),(2,2,GREY),(2,3,BLACK)),
-    ((3,0,WHITE),(3,1,BLACK),(3,2,BLACK),(3,3,BLACK)),
+    [(0,0,WHITE),(0,1,WHITE),(0,2,WHITE),(0,3,WHITE)],
+    [(1,0,WHITE),(1,1,BLACK),(1,2,BLACK),(1,3,BLACK)],
+    [(2,0,WHITE),(2,1,BLACK),(2,2,GREY),(2,3,BLACK)],
+    [(3,0,WHITE),(3,1,BLACK),(3,2,BLACK),(3,3,BLACK)],
     ]
 
 def draw_grid():
