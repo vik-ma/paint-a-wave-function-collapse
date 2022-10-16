@@ -9,9 +9,9 @@ class Tile(pygame.sprite.Sprite):
 
         pixel_array = pygame.PixelArray(self.image)
         # pixel_array[0:width, 0:height] = (255,255,255)
-        for pix_row in pix_array:
-            for pix in pix_row:
-                pixel_array[pix[0],pix[1]] = pix[2]
+        for i, pix_row in enumerate(pix_array):
+            for j, pix in enumerate(pix_row):
+                pixel_array[i,j] = pix
         pixel_array.close()
 
 

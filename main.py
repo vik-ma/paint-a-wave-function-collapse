@@ -28,12 +28,14 @@ tile_group = pygame.sprite.Group()
 def draw_window():
     screen.fill(GREY)
 
+
 sample_pixel_array = [
-    [(0,0,WHITE),(0,1,WHITE),(0,2,WHITE),(0,3,WHITE)],
-    [(1,0,WHITE),(1,1,BLACK),(1,2,BLACK),(1,3,BLACK)],
-    [(2,0,WHITE),(2,1,BLACK),(2,2,GREY),(2,3,BLACK)],
-    [(3,0,WHITE),(3,1,BLACK),(3,2,BLACK),(3,3,BLACK)],
+    [WHITE, WHITE, WHITE, WHITE],
+    [WHITE, BLACK, BLACK, BLACK],
+    [WHITE, BLACK, GREY, BLACK],
+    [WHITE, BLACK, BLACK, BLACK]
     ]
+
 
 def draw_grid():
     for row in range(ROWS):
@@ -45,11 +47,19 @@ def draw_grid():
 
 def draw_tile():
     tile = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), sample_pixel_array)
-    tile_group.add(tile)
-    tile_group.draw(screen)
+    rotated_pix_array_270 = list(zip(*sample_pixel_array[::-1]))
+    rotated_pix_array_180 = list(zip(*rotated_pix_array_270[::-1]))
+    rotated_pix_array_90 = list(zip(*rotated_pix_array_180[::-1]))
 
-def rotate_pixel_array():
-    pass
+    tile2 = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (1 * TILE_HEIGHT + 50), rotated_pix_array_90)
+    tile3 = Tile(TILE_WIDTH, TILE_HEIGHT, (1 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), rotated_pix_array_180)
+    tile4 = Tile(TILE_WIDTH, TILE_HEIGHT, (1 * TILE_WIDTH + 50), (1 * TILE_HEIGHT + 50), rotated_pix_array_270)
+
+    tile_group.add(tile)
+    tile_group.add(tile2)
+    tile_group.add(tile3)
+    tile_group.add(tile4)
+    tile_group.draw(screen)
     
 
 
