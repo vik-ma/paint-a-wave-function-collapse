@@ -30,10 +30,10 @@ def draw_window():
 
 
 sample_pixel_array = [
-    [WHITE, WHITE, WHITE, WHITE],
-    [WHITE, BLACK, BLACK, BLACK],
-    [WHITE, BLACK, GREY, BLACK],
-    [WHITE, BLACK, BLACK, BLACK]
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK, BLACK),
+    (WHITE, BLACK, GREY, BLACK),
+    (WHITE, BLACK, BLACK, BLACK)
     ]
 
 
@@ -48,15 +48,24 @@ def draw_grid():
 def draw_tile():
     tile = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), sample_pixel_array)
     tile_group.add(tile)
+
+    rotated_array = get_rotated_pix_array(sample_pixel_array)
+    tile2 = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (1 * TILE_HEIGHT + 50), rotated_array[1])
+    tile3 = Tile(TILE_WIDTH, TILE_HEIGHT, (1 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), rotated_array[2])
+    tile4 = Tile(TILE_WIDTH, TILE_HEIGHT, (1 * TILE_WIDTH + 50), (1 * TILE_HEIGHT + 50), rotated_array[3])
+
+    tile_group.add(tile2)
+    tile_group.add(tile3)
+    tile_group.add(tile4)
+
     tile_group.draw(screen)
 
 def get_rotated_pix_array(pix_array):
-    rotated_pix_array_270 = list(zip(*pix_array[::-1]))
-    rotated_pix_array_180 = list(zip(*rotated_pix_array_270[::-1]))
-    rotated_pix_array_90 = list(zip(*rotated_pix_array_180[::-1]))
+    rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
+    rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
+    rotated_pix_array_90 = tuple(zip(*rotated_pix_array_180[::-1]))
 
     return pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270
-
 
 
 
@@ -82,7 +91,7 @@ def main():
             is_grid_drawn = True
 
         if test_button.draw(screen):
-            print("test")
+            print(get_rotated_pix_array(sample_pixel_array))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
