@@ -68,21 +68,27 @@ def get_rotated_pix_array(pix_array):
     return pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270
 
 
+            
+
+    
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
+draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 
 def main():
     run = True
 
     is_grid_drawn = False
 
+    draw_test = False
+
     while run:
         clock.tick(FPS)
         draw_window()
         pygame.draw.rect(screen, BLACK, (49, 49, COLS * TILE_WIDTH + 2, ROWS * TILE_HEIGHT + 2), 1)
 
-        draw_tile()
+        # draw_tile()
 
         if is_grid_drawn:
             draw_grid()
@@ -90,8 +96,16 @@ def main():
         if make_grid_button.draw(screen):
             is_grid_drawn = True
 
+
+        if draw_test:
+            pass
+
+        if draw_test_button.draw(screen):
+            draw_test = True
+
+
         if test_button.draw(screen):
-            print(get_rotated_pix_array(sample_pixel_array))
+            pass
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
