@@ -47,20 +47,15 @@ def draw_grid():
 
 def draw_tile():
     tile = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), sample_pixel_array)
-    rotated_pix_array_270 = list(zip(*sample_pixel_array[::-1]))
+    tile_group.add(tile)
+    tile_group.draw(screen)
+
+def get_rotated_pix_array(pix_array):
+    rotated_pix_array_270 = list(zip(*pix_array[::-1]))
     rotated_pix_array_180 = list(zip(*rotated_pix_array_270[::-1]))
     rotated_pix_array_90 = list(zip(*rotated_pix_array_180[::-1]))
 
-    tile2 = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (1 * TILE_HEIGHT + 50), rotated_pix_array_90)
-    tile3 = Tile(TILE_WIDTH, TILE_HEIGHT, (1 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), rotated_pix_array_180)
-    tile4 = Tile(TILE_WIDTH, TILE_HEIGHT, (1 * TILE_WIDTH + 50), (1 * TILE_HEIGHT + 50), rotated_pix_array_270)
-
-    tile_group.add(tile)
-    tile_group.add(tile2)
-    tile_group.add(tile3)
-    tile_group.add(tile4)
-    tile_group.draw(screen)
-    
+    return pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270
 
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
