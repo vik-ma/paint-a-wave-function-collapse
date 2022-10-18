@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 from tile import Tile
 from button import Button
 from pattern import Pattern
@@ -32,6 +33,8 @@ UP_RIGHT = (1, -1)
 DOWN_LEFT = (-1, 1)
 DOWN_RIGHT = (1, 1)
 directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
+
+coeff
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -183,6 +186,71 @@ def generate_index_rules(pattern_list):
                 if overlap == part_of_og_pattern:
                     rule_index.add_rule(pattern, direction, pattern_next)
                     number_of_rules += 1
+
+def initialize_wave_function(pattern_list):
+    coefficients = []
+    
+    for col in range(COLS):
+        row = []
+        for r in range(ROWS):
+            row.append(pattern_list)
+        coefficients.append(row)
+
+    return coefficients
+
+def is_wave_function_fully_collapsed(coefficients):
+    """Check if wave function is fully collapsed meaning that for each tile available is only one pattern"""
+    for col in coefficients:
+        for entry in col:
+            if len(entry) > 1:
+                return False
+    return True
+
+def get_possible_patterns_at_position(position, coefficients):
+    """Return possible patterns at position (x, y)"""
+    x, y = position
+    possible_patterns = coefficients[x][y]
+    return possible_patterns
+
+def get_shannon_entropy(position, coefficients, probability):
+    """Calcualte the Shannon Entropy of the wavefunction at position (x, y)"""
+    x, y = position
+    entropy = 0
+    
+    # A cell with one valid pattern has 0 entropy
+    if len(coefficients[x][y]) == 1:
+        return 0
+    
+    for pattern in coefficients[x][y]:
+        entropy += probability[pattern] * math.log(probability[pattern], 2)
+    entropy *= -1
+    
+    # Add noise to break ties and near-ties
+    entropy -= random.uniform(0, 0.1)
+    return entropy
+
+def get_min_entropy_pos(coefficients, probability):
+    """Return position of tile with the lowest entropy"""
+    min_entropy = None
+    min_entropy_pos = None
+    
+    for x, col in enumerate(coefficients):
+        for y, row in enumerate(col):
+            entropy = get_shannon_entropy((x, y), coefficients, probability)
+            
+            if entropy == 0:
+                continue
+            
+            if min_entropy is None or entropy < min_entropy:
+                min_entropy = entropy
+                min_entropy_pos = (x, y)
+
+    return min_entropy_pos
+
+
+def wave_function_collapse_main():
+    pattern_list = get_pix_array_patterns(sample_pixel_array)
+    coefficients = initialize_wave_function(pattern_list[0])
 
 def draw_patterns(pix_array):
     patterns = get_pix_array_patterns(pix_array)[0]
