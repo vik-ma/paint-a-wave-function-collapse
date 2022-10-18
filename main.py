@@ -3,6 +3,7 @@ import random
 from tile import Tile
 from button import Button
 from pattern import Pattern
+from rule_index import RuleIndex
 
 pygame.init()
 
@@ -149,6 +150,40 @@ def get_valid_directions(position):
     
     return valid_directions
 
+def get_offset_tiles(pattern, offset):
+    if offset == (0, 0):
+        return pattern.pix_array
+    if offset == (-1, -1):
+        return tuple([pattern.pix_array[1][1]])
+    if offset == (0, -1):
+        return tuple(pattern.pix_array[1][:])
+    if offset == (1, -1):
+        return tuple([pattern.pix_array[1][0]])
+    if offset == (-1, 0):
+        return tuple([pattern.pix_array[0][1], pattern.pix_array[1][1]])
+    if offset == (1, 0):
+        return tuple([pattern.pix_array[0][0], pattern.pix_array[1][0]])
+    if offset == (-1, 1):
+        return tuple([pattern.pix_array[0][1]])
+    if offset == (0, 1):
+        return tuple(pattern.pix_array[0][:])
+    if offset == (1, 1):
+        return tuple([pattern.pix_array[0][0]])
+
+def generate_index_rules(pattern_list):
+    rule_index = RuleIndex(pattern_list, directions)
+
+    number_of_rules = 0
+    for pattern in pattern_list:
+        for direction in directions:
+            for pattern_next in pattern_list:
+                overlap = get_offset_tiles(pattern_next, direction)
+                og_dir = tuple([direction[0]*-1, direction[1]*-1])
+                part_of_og_pattern = get_offset_tiles(pattern, og_dir)
+                if overlap == part_of_og_pattern:
+                    rule_index.add_rule(pattern, direction, pattern_next)
+                    number_of_rules += 1
+
 def draw_patterns(pix_array):
     patterns = get_pix_array_patterns(pix_array)[0]
     for col in range(len(patterns)):
@@ -189,7 +224,9 @@ def main():
 
 
         if test_button.draw(screen):
-            print(get_valid_directions((0,0)))
+            test = get_pix_array_patterns(sample_pixel_array)[0]
+
+            generate_index_rules(test)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
