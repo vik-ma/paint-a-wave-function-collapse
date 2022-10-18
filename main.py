@@ -2,6 +2,7 @@ import pygame
 import random
 from tile import Tile
 from button import Button
+from pattern import Pattern
 
 pygame.init()
 
@@ -64,12 +65,46 @@ def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
     rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
     rotated_pix_array_90 = tuple(zip(*rotated_pix_array_180[::-1]))
+    pix_array = tuple(pix_array)
+    return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270)
 
-    return pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270
+def get_pix_array_patterns(pix_array):
+    pattern_size = 2 #2x2
+    pattern_list = []
+    occurence_weights = {}
+    probability = {}
 
-
+    for row in range(TILE_WIDTH - (pattern_size - 1)):
+        for col in range(TILE_HEIGHT - (pattern_size -1)):
+            pattern = []
+            for pix in pix_array[row:row+pattern_size]:
+                pattern.append(pix[col:col+pattern_size])
+            pattern_rotations = get_rotated_pix_array(pattern)
+        
+            for rotation in pattern_rotations:
+                if rotation not in occurence_weights:
+                    occurence_weights[rotation] = 1
+                else:
+                    occurence_weights[rotation] += 1
             
+            pattern_list.extend(pattern_rotations)
+        
+    unique_pattern_list = []
+    for pattern in pattern_list:
+        if pattern not in unique_pattern_list:
+            unique_pattern_list.append(pattern)
+    pattern_list = unique_pattern_list
 
+    sum_of_weights = 0
+    for weight in occurence_weights:
+        sum_of_weights += occurence_weights[weight]
+
+    for pattern in pattern_list:
+        probability[pattern] = occurence_weights[pattern] / sum_of_weights
+
+    pattern_list = [Pattern(pattern) for pattern in pattern_list]
+    occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
+    probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
     
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
@@ -98,14 +133,14 @@ def main():
 
 
         if draw_test:
-            pass
+            get_pix_array_patterns(sample_pixel_array)
 
         if draw_test_button.draw(screen):
             draw_test = True
 
 
         if test_button.draw(screen):
-            pass
+            get_pix_array_patterns(sample_pixel_array)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
