@@ -37,7 +37,6 @@ sample_pixel_array = [
     (WHITE, BLACK, BLACK, BLACK)
     ]
 
-
 def draw_grid():
     for row in range(ROWS):
         for col in range(COLS):
@@ -105,7 +104,16 @@ def get_pix_array_patterns(pix_array):
     pattern_list = [Pattern(pattern) for pattern in pattern_list]
     occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
     probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
-    
+
+    return pattern_list, occurence_weights, probability
+
+
+def draw_patterns(pix_array):
+    patterns = get_pix_array_patterns(pix_array)[0]
+    for col in range(len(patterns)):
+        tile = Tile(2, 2, (col * 2 + 50), 50, patterns[col].pix_array)
+        tile_group.add(tile)
+    tile_group.draw(screen)
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
@@ -133,7 +141,7 @@ def main():
 
 
         if draw_test:
-            get_pix_array_patterns(sample_pixel_array)
+            draw_patterns(sample_pixel_array)
 
         if draw_test_button.draw(screen):
             draw_test = True
