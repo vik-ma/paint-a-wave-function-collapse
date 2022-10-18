@@ -12,8 +12,8 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-ROWS = 100
-COLS = 100
+ROWS = 50
+COLS = 50
 TILE_WIDTH = 4
 TILE_HEIGHT = 4
 
@@ -21,6 +21,16 @@ WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREY = (175, 175, 175)
 LIGHTGREY = (213, 213, 213)
+
+UP = (0, -1)
+LEFT = (-1, 0)
+DOWN = (0, 1)
+RIGHT = (1, 0)
+UP_LEFT = (-1, -1)
+UP_RIGHT = (1, -1)
+DOWN_LEFT = (-1, 1)
+DOWN_RIGHT = (1, 1)
+directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -107,6 +117,37 @@ def get_pix_array_patterns(pix_array):
 
     return pattern_list, occurence_weights, probability
 
+def get_valid_directions(position):
+    x, y = position
+    
+    valid_directions = []
+
+    if x == 0:
+        valid_directions.extend([RIGHT])
+        if y == 0:
+            valid_directions.extend([DOWN, DOWN_RIGHT])
+        elif y == ROWS-1:
+            valid_directions.extend([UP, UP_RIGHT])
+        else:
+            valid_directions.extend([DOWN, DOWN_RIGHT, UP, UP_RIGHT])
+    elif x == COLS-1:
+        valid_directions.extend([LEFT])
+        if y == 0:
+            valid_directions.extend([DOWN, DOWN_LEFT])
+        elif y == ROWS-1:
+            valid_directions.extend([UP, UP_LEFT])
+        else:
+            valid_directions.extend([DOWN, DOWN_LEFT, UP, UP_LEFT])
+    else:
+        valid_directions.extend([LEFT, RIGHT])
+        if y == 0:
+            valid_directions.extend([DOWN, DOWN_LEFT, DOWN_RIGHT])
+        elif y == ROWS-1:
+            valid_directions.extend([UP, UP_LEFT, UP_RIGHT])
+        else: 
+            valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT])
+    
+    return valid_directions
 
 def draw_patterns(pix_array):
     patterns = get_pix_array_patterns(pix_array)[0]
@@ -148,7 +189,7 @@ def main():
 
 
         if test_button.draw(screen):
-            get_pix_array_patterns(sample_pixel_array)
+            print(get_valid_directions((0,0)))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
