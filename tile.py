@@ -11,7 +11,7 @@ class Tile(pygame.sprite.Sprite):
         # pixel_array[0:width, 0:height] = (255,255,255)
         for i, pix_row in enumerate(pix_array):
             for j, pix in enumerate(pix_row):
-                pixel_array[i,j] = pix
+                pixel_array[j,i] = pix
         pixel_array.close()
 
 
