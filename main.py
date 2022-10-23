@@ -35,6 +35,8 @@ DOWN_RIGHT = (1, 1)
 directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
 coefficients = []
+occurence_weights = {}
+probability = {}
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -84,8 +86,6 @@ def get_rotated_pix_array(pix_array):
 def get_pix_array_patterns(pix_array):
     pattern_size = 2 #2x2
     pattern_list = []
-    occurence_weights = {}
-    probability = {}
 
     for row in range(TILE_WIDTH - (pattern_size - 1)):
         for col in range(TILE_HEIGHT - (pattern_size -1)):
@@ -118,8 +118,6 @@ def get_pix_array_patterns(pix_array):
     pattern_list = [Pattern(pattern) for pattern in pattern_list]
     occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
     probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
-
-    return pattern_list, occurence_weights, probability
 
 def get_valid_directions(position):
     x, y = position
@@ -212,7 +210,7 @@ def get_possible_patterns_at_position(position):
     possible_patterns = coefficients[x][y]
     return possible_patterns
 
-def get_shannon_entropy(position, probability):
+def get_shannon_entropy(position):
     """Calcualte the Shannon Entropy of the wavefunction at position (x, y)"""
     x, y = position
     entropy = 0
@@ -229,7 +227,7 @@ def get_shannon_entropy(position, probability):
     entropy -= random.uniform(0, 0.1)
     return entropy
 
-def get_min_entropy_at_pos(probability):
+def get_min_entropy_at_pos():
     """Return position of tile with the lowest entropy"""
     min_entropy = None
     min_entropy_pos = None
@@ -247,7 +245,7 @@ def get_min_entropy_at_pos(probability):
 
     return min_entropy_pos
 
-def observe(probability):
+def observe():
     # Find the lowest entropy
     min_entropy_pos = get_min_entropy_at_pos()
     
@@ -309,7 +307,6 @@ def propagate(min_entropy_pos, rule_index):
 
 def wave_function_collapse_main():
     pattern_list = get_pix_array_patterns(sample_pixel_array)
-    coefficients = initialize_wave_function(pattern_list[0])
 
 def draw_patterns(pix_array):
     patterns = get_pix_array_patterns(pix_array)[0]
