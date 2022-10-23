@@ -34,9 +34,97 @@ DOWN_LEFT = (-1, 1)
 DOWN_RIGHT = (1, 1)
 directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
-coefficients = []
+sample_pixel_array = [
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK, BLACK),
+    (WHITE, BLACK, GREY, BLACK),
+    (WHITE, BLACK, BLACK, BLACK)
+    ]
+
+def get_rotated_pix_array(pix_array):
+    rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
+    rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
+    rotated_pix_array_90 = tuple(zip(*rotated_pix_array_180[::-1]))
+    pix_array = tuple(pix_array)
+    return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270)
+
+pattern_size = 2 #2x2
+pattern_list = []
+
 occurence_weights = {}
 probability = {}
+
+pix_array = sample_pixel_array
+
+for row in range(TILE_WIDTH - (pattern_size - 1)):
+    for col in range(TILE_HEIGHT - (pattern_size -1)):
+        pattern = []
+        for pix in pix_array[row:row+pattern_size]:
+            pattern.append(pix[col:col+pattern_size])
+        pattern_rotations = get_rotated_pix_array(pattern)
+    
+        for rotation in pattern_rotations:
+            if rotation not in occurence_weights:
+                occurence_weights[rotation] = 1
+            else:
+                occurence_weights[rotation] += 1
+        
+        pattern_list.extend(pattern_rotations)
+    
+unique_pattern_list = []
+for pattern in pattern_list:
+    if pattern not in unique_pattern_list:
+        unique_pattern_list.append(pattern)
+pattern_list = unique_pattern_list
+
+sum_of_weights = 0
+for weight in occurence_weights:
+    sum_of_weights += occurence_weights[weight]
+
+for pattern in pattern_list:
+    probability[pattern] = occurence_weights[pattern] / sum_of_weights
+
+pattern_list = [Pattern(pattern) for pattern in pattern_list]
+occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
+probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
+
+coefficients = []
+
+rule_index = RuleIndex(pattern_list, directions)
+
+def get_offset_tiles(pattern, offset):
+    if offset == (0, 0):
+        return pattern.pix_array
+    if offset == (-1, -1):
+        return tuple([pattern.pix_array[1][1]])
+    if offset == (0, -1):
+        return tuple(pattern.pix_array[1][:])
+    if offset == (1, -1):
+        return tuple([pattern.pix_array[1][0]])
+    if offset == (-1, 0):
+        return tuple([pattern.pix_array[0][1], pattern.pix_array[1][1]])
+    if offset == (1, 0):
+        return tuple([pattern.pix_array[0][0], pattern.pix_array[1][0]])
+    if offset == (-1, 1):
+        return tuple([pattern.pix_array[0][1]])
+    if offset == (0, 1):
+        return tuple(pattern.pix_array[0][:])
+    if offset == (1, 1):
+        return tuple([pattern.pix_array[0][0]])
+
+number_of_rules = 0
+for pattern in pattern_list:
+    for direction in directions:
+        for pattern_next in pattern_list:
+            overlap = get_offset_tiles(pattern_next, direction)
+            og_dir = tuple([direction[0]*-1, direction[1]*-1])
+            part_of_og_pattern = get_offset_tiles(pattern, og_dir)
+            if overlap == part_of_og_pattern:
+                rule_index.add_rule(pattern, direction, pattern_next)
+                number_of_rules += 1
+
+
+
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -45,21 +133,12 @@ tile_group = pygame.sprite.Group()
 def draw_window():
     screen.fill(GREY)
 
-
-sample_pixel_array = [
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK, BLACK),
-    (WHITE, BLACK, GREY, BLACK),
-    (WHITE, BLACK, BLACK, BLACK)
-    ]
-
 def draw_grid():
     for row in range(ROWS):
         for col in range(COLS):
             tile = Tile(TILE_WIDTH, TILE_HEIGHT, (col * TILE_WIDTH + 50), (row * TILE_HEIGHT + 50), sample_pixel_array)
             tile_group.add(tile)
     tile_group.draw(screen)
-
 
 def draw_tile():
     tile = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), sample_pixel_array)
@@ -76,48 +155,10 @@ def draw_tile():
 
     tile_group.draw(screen)
 
-def get_rotated_pix_array(pix_array):
-    rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
-    rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
-    rotated_pix_array_90 = tuple(zip(*rotated_pix_array_180[::-1]))
-    pix_array = tuple(pix_array)
-    return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270)
 
-def get_pix_array_patterns(pix_array):
-    pattern_size = 2 #2x2
-    pattern_list = []
 
-    for row in range(TILE_WIDTH - (pattern_size - 1)):
-        for col in range(TILE_HEIGHT - (pattern_size -1)):
-            pattern = []
-            for pix in pix_array[row:row+pattern_size]:
-                pattern.append(pix[col:col+pattern_size])
-            pattern_rotations = get_rotated_pix_array(pattern)
-        
-            for rotation in pattern_rotations:
-                if rotation not in occurence_weights:
-                    occurence_weights[rotation] = 1
-                else:
-                    occurence_weights[rotation] += 1
-            
-            pattern_list.extend(pattern_rotations)
-        
-    unique_pattern_list = []
-    for pattern in pattern_list:
-        if pattern not in unique_pattern_list:
-            unique_pattern_list.append(pattern)
-    pattern_list = unique_pattern_list
+# def get_pix_array_patterns(pix_array):
 
-    sum_of_weights = 0
-    for weight in occurence_weights:
-        sum_of_weights += occurence_weights[weight]
-
-    for pattern in pattern_list:
-        probability[pattern] = occurence_weights[pattern] / sum_of_weights
-
-    pattern_list = [Pattern(pattern) for pattern in pattern_list]
-    occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
-    probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
 
 def get_valid_directions(position):
     x, y = position
@@ -151,41 +192,12 @@ def get_valid_directions(position):
     
     return valid_directions
 
-def get_offset_tiles(pattern, offset):
-    if offset == (0, 0):
-        return pattern.pix_array
-    if offset == (-1, -1):
-        return tuple([pattern.pix_array[1][1]])
-    if offset == (0, -1):
-        return tuple(pattern.pix_array[1][:])
-    if offset == (1, -1):
-        return tuple([pattern.pix_array[1][0]])
-    if offset == (-1, 0):
-        return tuple([pattern.pix_array[0][1], pattern.pix_array[1][1]])
-    if offset == (1, 0):
-        return tuple([pattern.pix_array[0][0], pattern.pix_array[1][0]])
-    if offset == (-1, 1):
-        return tuple([pattern.pix_array[0][1]])
-    if offset == (0, 1):
-        return tuple(pattern.pix_array[0][:])
-    if offset == (1, 1):
-        return tuple([pattern.pix_array[0][0]])
 
-def generate_index_rules(pattern_list):
-    rule_index = RuleIndex(pattern_list, directions)
 
-    number_of_rules = 0
-    for pattern in pattern_list:
-        for direction in directions:
-            for pattern_next in pattern_list:
-                overlap = get_offset_tiles(pattern_next, direction)
-                og_dir = tuple([direction[0]*-1, direction[1]*-1])
-                part_of_og_pattern = get_offset_tiles(pattern, og_dir)
-                if overlap == part_of_og_pattern:
-                    rule_index.add_rule(pattern, direction, pattern_next)
-                    number_of_rules += 1
+# def generate_index_rules(pattern_list):
 
-def initialize_wave_function(pattern_list):
+
+def initialize_wave_function():
     coefficients = []
     
     for col in range(COLS):
@@ -195,6 +207,8 @@ def initialize_wave_function(pattern_list):
         coefficients.append(row)
 
     return coefficients
+
+coefficients = initialize_wave_function()
 
 def is_wave_function_fully_collapsed(coefficients):
     """Check if wave function is fully collapsed meaning that for each tile available is only one pattern"""
@@ -305,8 +319,8 @@ def propagate(min_entropy_pos, rule_index):
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
 
-def wave_function_collapse_main():
-    pattern_list = get_pix_array_patterns(sample_pixel_array)
+# def wave_function_collapse_main():
+#     pattern_list = get_pix_array_patterns(sample_pixel_array)
 
 def draw_patterns(pix_array):
     patterns = get_pix_array_patterns(pix_array)[0]
