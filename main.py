@@ -34,7 +34,7 @@ DOWN_LEFT = (-1, 1)
 DOWN_RIGHT = (1, 1)
 directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
-coeff
+coefficients = []
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -206,13 +206,13 @@ def is_wave_function_fully_collapsed(coefficients):
                 return False
     return True
 
-def get_possible_patterns_at_position(position, coefficients):
+def get_possible_patterns_at_position(position):
     """Return possible patterns at position (x, y)"""
     x, y = position
     possible_patterns = coefficients[x][y]
     return possible_patterns
 
-def get_shannon_entropy(position, coefficients, probability):
+def get_shannon_entropy(position, probability):
     """Calcualte the Shannon Entropy of the wavefunction at position (x, y)"""
     x, y = position
     entropy = 0
@@ -229,7 +229,7 @@ def get_shannon_entropy(position, coefficients, probability):
     entropy -= random.uniform(0, 0.1)
     return entropy
 
-def get_min_entropy_at_pos(coefficients, probability):
+def get_min_entropy_at_pos(probability):
     """Return position of tile with the lowest entropy"""
     min_entropy = None
     min_entropy_pos = None
@@ -247,7 +247,7 @@ def get_min_entropy_at_pos(coefficients, probability):
 
     return min_entropy_pos
 
-def observe(coefficients, probability):
+def observe(probability):
     # Find the lowest entropy
     min_entropy_pos = get_min_entropy_at_pos()
     
@@ -272,7 +272,7 @@ def observe(coefficients, probability):
     
     return min_entropy_pos
 
-def propagate(min_entropy_pos, coefficients, rule_index):
+def propagate(min_entropy_pos, rule_index):
     stack = [min_entropy_pos]
     
     while len(stack) > 0:
