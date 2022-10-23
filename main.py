@@ -88,7 +88,6 @@ pattern_list = [Pattern(pattern) for pattern in pattern_list]
 occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
 probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
 
-coefficients = []
 
 rule_index = RuleIndex(pattern_list, directions)
 
@@ -210,7 +209,7 @@ def initialize_wave_function():
 
 coefficients = initialize_wave_function()
 
-def is_wave_function_fully_collapsed(coefficients):
+def is_wave_function_fully_collapsed():
     """Check if wave function is fully collapsed meaning that for each tile available is only one pattern"""
     for col in coefficients:
         for entry in col:
@@ -248,7 +247,7 @@ def get_min_entropy_at_pos():
     
     for x, col in enumerate(coefficients):
         for y, row in enumerate(col):
-            entropy = get_shannon_entropy((x, y), coefficients, probability)
+            entropy = get_shannon_entropy((x, y))
             
             if entropy == 0:
                 continue
@@ -284,7 +283,7 @@ def observe():
     
     return min_entropy_pos
 
-def propagate(min_entropy_pos, rule_index):
+def propagate(min_entropy_pos):
     stack = [min_entropy_pos]
     
     while len(stack) > 0:
@@ -314,13 +313,28 @@ def propagate(min_entropy_pos, rule_index):
                 """
                 if not is_possible:
                     x, y = adjacent_pos
-                    coefficients[x][y] = [patt for patt in coefficients[x][y] if patt.pixels != possible_pattern_at_adjacent.pixels]
+                    coefficients[x][y] = [patt for patt in coefficients[x][y] if patt.pix_array != possible_pattern_at_adjacent.pix_array]
                         
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
 
-# def wave_function_collapse_main():
-#     pattern_list = get_pix_array_patterns(sample_pixel_array)
+while not is_wave_function_fully_collapsed():
+    min_entropy_pos = observe()
+    propagate(min_entropy_pos)
+
+final_pixels = []
+
+for i in coefficients:
+    row = []
+    for j in i:
+        if isinstance(j, list):
+            first_pixel = j[0].pix_array[0][0]
+        else:
+            first_pixel = j.pix_array[0][0]
+        row.append(first_pixel)
+    final_pixels.append(row)
+
+print(final_pixels)
 
 def draw_patterns(pix_array):
     patterns = get_pix_array_patterns(pix_array)[0]
