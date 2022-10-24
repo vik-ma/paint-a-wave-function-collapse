@@ -132,10 +132,6 @@ tile_group = pygame.sprite.Group()
 
 
 
-
-# def get_pix_array_patterns(pix_array):
-
-
 def get_valid_directions(position):
     x, y = position
     
@@ -167,10 +163,6 @@ def get_valid_directions(position):
             valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT])
     
     return valid_directions
-
-
-
-# def generate_index_rules(pattern_list):
 
 
 def initialize_wave_function():
@@ -327,10 +319,9 @@ def draw_tile():
     tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_patterns(pix_array):
-    patterns = get_pix_array_patterns(pix_array)[0]
-    for col in range(len(patterns)):
-        tile = Tile(2, 2, (col * 2 + 50), 50, patterns[col].pix_array)
+def draw_patterns():
+    for col in range(len(pattern_list)):
+        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 3) + 50), 25, pattern_list[col].pix_array)
         tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -356,7 +347,8 @@ def main():
 
         if is_grid_drawn:
             # draw_grid()
-            draw_tile()
+            # draw_tile()
+            draw_patterns()
         
         if make_grid_button.draw(screen):
             is_grid_drawn = True
