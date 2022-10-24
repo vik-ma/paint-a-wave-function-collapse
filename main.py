@@ -14,10 +14,10 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-ROWS = 50
-COLS = 50
-TILE_WIDTH = 4
-TILE_HEIGHT = 4
+OUTPUT_WIDTH = 20
+OUTPUT_HEIGHT = 20
+INPUT_WIDTH = 4
+INPUT_HEIGHT = 4
 
 WHITE = (255,255,255)
 BLACK = (0,0,0)
@@ -56,8 +56,8 @@ probability = {}
 
 pix_array = sample_pixel_array
 
-for row in range(TILE_WIDTH - (pattern_size - 1)):
-    for col in range(TILE_HEIGHT - (pattern_size -1)):
+for row in range(INPUT_WIDTH - (pattern_size - 1)):
+    for col in range(INPUT_HEIGHT - (pattern_size -1)):
         pattern = []
         for pix in pix_array[row:row+pattern_size]:
             pattern.append(pix[col:col+pattern_size])
@@ -145,15 +145,15 @@ def get_valid_directions(position):
         valid_directions.extend([RIGHT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_RIGHT])
-        elif y == ROWS-1:
+        elif y == OUTPUT_WIDTH-1:
             valid_directions.extend([UP, UP_RIGHT])
         else:
             valid_directions.extend([DOWN, DOWN_RIGHT, UP, UP_RIGHT])
-    elif x == COLS-1:
+    elif x == OUTPUT_HEIGHT-1:
         valid_directions.extend([LEFT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_LEFT])
-        elif y == ROWS-1:
+        elif y == OUTPUT_WIDTH-1:
             valid_directions.extend([UP, UP_LEFT])
         else:
             valid_directions.extend([DOWN, DOWN_LEFT, UP, UP_LEFT])
@@ -161,7 +161,7 @@ def get_valid_directions(position):
         valid_directions.extend([LEFT, RIGHT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_LEFT, DOWN_RIGHT])
-        elif y == ROWS-1:
+        elif y == OUTPUT_WIDTH-1:
             valid_directions.extend([UP, UP_LEFT, UP_RIGHT])
         else: 
             valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT])
@@ -176,9 +176,9 @@ def get_valid_directions(position):
 def initialize_wave_function():
     coefficients = []
     
-    for col in range(COLS):
+    for col in range(OUTPUT_HEIGHT):
         row = []
-        for r in range(ROWS):
+        for r in range(OUTPUT_WIDTH):
             row.append(pattern_list)
         coefficients.append(row)
 
@@ -316,15 +316,15 @@ def draw_window():
     screen.fill(GREY)
 
 def draw_grid():
-    for row in range(ROWS):
-        for col in range(COLS):
+    for row in range(OUTPUT_WIDTH):
+        for col in range(OUTPUT_HEIGHT):
             # tile = Tile(TILE_WIDTH, TILE_HEIGHT, (col * TILE_WIDTH + 50), (row * TILE_HEIGHT + 50), final_pixels)
             tile = Tile(10, 10, (col * 10 + 50), (row * 10 + 50), final_pixels)
             tile_group.add(tile)
     tile_group.draw(screen)
 
 def draw_tile():
-    tile = Tile(COLS, ROWS, (0 * COLS + 50), (0 * ROWS + 50), final_pixels)
+    tile = Tile(OUTPUT_HEIGHT, OUTPUT_WIDTH, (0 * OUTPUT_HEIGHT + 50), (0 * OUTPUT_WIDTH + 50), final_pixels)
     tile_group.add(tile)
     tile_group.draw(screen)
 
