@@ -129,30 +129,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 tile_group = pygame.sprite.Group()
 
-def draw_window():
-    screen.fill(GREY)
 
-def draw_grid():
-    for row in range(ROWS):
-        for col in range(COLS):
-            tile = Tile(TILE_WIDTH, TILE_HEIGHT, (col * TILE_WIDTH + 50), (row * TILE_HEIGHT + 50), sample_pixel_array)
-            tile_group.add(tile)
-    tile_group.draw(screen)
-
-def draw_tile():
-    tile = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), sample_pixel_array)
-    tile_group.add(tile)
-
-    rotated_array = get_rotated_pix_array(sample_pixel_array)
-    tile2 = Tile(TILE_WIDTH, TILE_HEIGHT, (0 * TILE_WIDTH + 50), (1 * TILE_HEIGHT + 50), rotated_array[1])
-    tile3 = Tile(TILE_WIDTH, TILE_HEIGHT, (1 * TILE_WIDTH + 50), (0 * TILE_HEIGHT + 50), rotated_array[2])
-    tile4 = Tile(TILE_WIDTH, TILE_HEIGHT, (1 * TILE_WIDTH + 50), (1 * TILE_HEIGHT + 50), rotated_array[3])
-
-    tile_group.add(tile2)
-    tile_group.add(tile3)
-    tile_group.add(tile4)
-
-    tile_group.draw(screen)
 
 
 
@@ -334,7 +311,22 @@ for i in coefficients:
         row.append(first_pixel)
     final_pixels.append(row)
 
-print(final_pixels)
+
+def draw_window():
+    screen.fill(GREY)
+
+def draw_grid():
+    for row in range(ROWS):
+        for col in range(COLS):
+            # tile = Tile(TILE_WIDTH, TILE_HEIGHT, (col * TILE_WIDTH + 50), (row * TILE_HEIGHT + 50), final_pixels)
+            tile = Tile(10, 10, (col * 10 + 50), (row * 10 + 50), final_pixels)
+            tile_group.add(tile)
+    tile_group.draw(screen)
+
+def draw_tile():
+    tile = Tile(COLS, ROWS, (0 * COLS + 50), (0 * ROWS + 50), final_pixels)
+    tile_group.add(tile)
+    tile_group.draw(screen)
 
 def draw_patterns(pix_array):
     patterns = get_pix_array_patterns(pix_array)[0]
@@ -347,22 +339,25 @@ make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 
+
+
 def main():
     run = True
 
-    is_grid_drawn = False
+    is_grid_drawn = True
 
     draw_test = False
 
     while run:
         clock.tick(FPS)
         draw_window()
-        pygame.draw.rect(screen, BLACK, (49, 49, COLS * TILE_WIDTH + 2, ROWS * TILE_HEIGHT + 2), 1)
+        # pygame.draw.rect(screen, BLACK, (49, 49, COLS * TILE_WIDTH + 2, ROWS * TILE_HEIGHT + 2), 1)
 
         # draw_tile()
 
         if is_grid_drawn:
-            draw_grid()
+            # draw_grid()
+            draw_tile()
         
         if make_grid_button.draw(screen):
             is_grid_drawn = True
