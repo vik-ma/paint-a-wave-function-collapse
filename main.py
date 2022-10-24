@@ -318,8 +318,7 @@ def draw_window():
 def draw_grid():
     for row in range(OUTPUT_WIDTH):
         for col in range(OUTPUT_HEIGHT):
-            # tile = Tile(TILE_WIDTH, TILE_HEIGHT, (col * TILE_WIDTH + 50), (row * TILE_HEIGHT + 50), final_pixels)
-            tile = Tile(10, 10, (col * 10 + 50), (row * 10 + 50), final_pixels)
+            tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (col * OUTPUT_WIDTH + 50), (row * OUTPUT_HEIGHT + 50), final_pixels)
             tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -351,7 +350,7 @@ def main():
     while run:
         clock.tick(FPS)
         draw_window()
-        # pygame.draw.rect(screen, BLACK, (49, 49, COLS * TILE_WIDTH + 2, ROWS * TILE_HEIGHT + 2), 1)
+        pygame.draw.rect(screen, BLACK, (49, 49, OUTPUT_WIDTH + 2, OUTPUT_HEIGHT + 2), 1)
 
         # draw_tile()
 
