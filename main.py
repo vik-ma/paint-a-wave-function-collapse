@@ -17,8 +17,8 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-OUTPUT_WIDTH = 50
-OUTPUT_HEIGHT = 50
+OUTPUT_WIDTH = 20
+OUTPUT_HEIGHT = 20
 INPUT_WIDTH = 4
 INPUT_HEIGHT = 4
 
@@ -143,10 +143,6 @@ for pattern in pattern_list:
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 tile_group = pygame.sprite.Group()
-
-
-def execute_wave_function_collapse():
-    pass
 
 def get_valid_directions(position):
     x, y = position
@@ -304,46 +300,42 @@ def propagate(min_entropy_pos):
                         stack.append(adjacent_pos)
 
 
+def execute_wave_function_collapse():
+    perf_time_start = time.monotonic()
+    print("Wave Function Collapse Started")
+    while not is_wave_function_fully_collapsed():
+        min_entropy_pos = observe()
+        propagate(min_entropy_pos)
 
-perf_time_start = time.monotonic()
-print("Wave Function Collapse Started")
-while not is_wave_function_fully_collapsed():
-    min_entropy_pos = observe()
-    propagate(min_entropy_pos)
+    perf_time_end = time.monotonic()
+    print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
-perf_time_end = time.monotonic()
-print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
+    final_pixels = []
 
+    for i in coefficients:
+        row = []
+        for j in i:
+            if isinstance(j, list):
+                first_pixel = j[0].pix_array[0][0]
+            else:
+                first_pixel = j.pix_array[0][0]
+            row.append(first_pixel)
+        final_pixels.append(row)
+    return final_pixels
 
-
-final_pixels = []
-
-for i in coefficients:
-    row = []
-    for j in i:
-        if isinstance(j, list):
-            first_pixel = j[0].pix_array[0][0]
-        else:
-            first_pixel = j.pix_array[0][0]
-        row.append(first_pixel)
-    final_pixels.append(row)
-
-
-def asd():
-    print("adsdsadsaadsdsadsa")
 
 def draw_window():
     screen.fill(GREY)
 
-def draw_grid():
+def draw_grid(pix_array):
     for row in range(OUTPUT_WIDTH):
         for col in range(OUTPUT_HEIGHT):
-            tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (col * OUTPUT_WIDTH + 50), (row * OUTPUT_HEIGHT + 50), final_pixels)
+            tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (col * OUTPUT_WIDTH + 50), (row * OUTPUT_HEIGHT + 50), pix_array)
             tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_tile():
-    tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (0 * OUTPUT_WIDTH + 50), (0 *  OUTPUT_HEIGHT + 50), final_pixels)
+def draw_tile(pix_array):
+    tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (0 * OUTPUT_WIDTH + 50), (0 *  OUTPUT_HEIGHT + 50), pix_array)
     tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -363,26 +355,26 @@ draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGRE
 def main():
     run = True
 
-    is_grid_drawn = True
+    is_grid_drawn = False
 
     draw_test = False
+
+    wfc_output = []
 
     while run:
         clock.tick(FPS)
         draw_window()
         pygame.draw.rect(screen, BLACK, (49, 49, OUTPUT_WIDTH + 2, OUTPUT_HEIGHT + 2), 1)
 
-        # draw_tile()
-
         if is_grid_drawn:
             # draw_grid()
-            draw_tile()
-            draw_patterns()
-
+            # draw_tile()
+            # draw_patterns()
+            draw_tile(wfc_output)
         
         if make_grid_button.draw(screen):
-            asd()
-            # is_grid_drawn = True
+            wfc_output = execute_wave_function_collapse()
+            is_grid_drawn = True
 
 
         if draw_test:
@@ -391,11 +383,8 @@ def main():
         if draw_test_button.draw(screen):
             draw_test = True
 
-
         if test_button.draw(screen):
-            test = get_pix_array_patterns(sample_pixel_array)[0]
-
-            generate_index_rules(test)
+            pass
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
