@@ -17,8 +17,8 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-OUTPUT_WIDTH = 20
-OUTPUT_HEIGHT = 70
+OUTPUT_WIDTH = 50
+OUTPUT_HEIGHT = 50
 INPUT_WIDTH = 4
 INPUT_HEIGHT = 4
 
@@ -26,6 +26,7 @@ WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREY = (175, 175, 175)
 LIGHTGREY = (213, 213, 213)
+GREEN = (0, 255, 00)
 
 UP = (0, -1)
 LEFT = (-1, 0)
@@ -41,8 +42,16 @@ sample_pixel_array = [
     (WHITE, WHITE, WHITE, WHITE),
     (WHITE, BLACK, BLACK, BLACK),
     (WHITE, BLACK, GREY, BLACK),
-    (WHITE, BLACK, BLACK, BLACK)
+    (WHITE, BLACK, BLACK, BLACK),
     ]
+
+sample_pixel_array_5x5 = [
+    (WHITE, WHITE, WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK, BLACK, WHITE),
+    (WHITE, BLACK, GREY, BLACK, GREEN),
+    (WHITE, BLACK, BLACK, BLACK, BLACK),
+    (GREEN, GREEN, GREEN, GREEN, WHITE)
+]
 
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
@@ -368,7 +377,7 @@ def main():
         if is_grid_drawn:
             # draw_grid()
             draw_tile()
-            # draw_patterns()
+            draw_patterns()
 
         
         if make_grid_button.draw(screen):
