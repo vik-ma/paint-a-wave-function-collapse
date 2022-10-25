@@ -1,10 +1,13 @@
 import pygame
 import random
 import math
+import time
+import sys
 from tile import Tile
 from button import Button
 from pattern import Pattern
 from rule_index import RuleIndex
+
 
 pygame.init()
 
@@ -14,8 +17,8 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-OUTPUT_WIDTH = 20
-OUTPUT_HEIGHT = 20
+OUTPUT_WIDTH = 50
+OUTPUT_HEIGHT = 50
 INPUT_WIDTH = 4
 INPUT_HEIGHT = 4
 
@@ -56,6 +59,8 @@ probability = {}
 
 pix_array = sample_pixel_array
 
+
+
 for row in range(INPUT_WIDTH - (pattern_size - 1)):
     for col in range(INPUT_HEIGHT - (pattern_size -1)):
         pattern = []
@@ -87,6 +92,7 @@ for pattern in pattern_list:
 pattern_list = [Pattern(pattern) for pattern in pattern_list]
 occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
 probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
+
 
 
 rule_index = RuleIndex(pattern_list, directions)
@@ -249,7 +255,7 @@ def observe():
     
     # Set this pattern to be the only available at this position
     coefficients[min_entropy_pos[0]][min_entropy_pos[1]] = semi_random_pattern
-    
+
     return min_entropy_pos
 
 def propagate(min_entropy_pos):
@@ -287,9 +293,18 @@ def propagate(min_entropy_pos):
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
 
+
+
+perf_time_start = time.monotonic()
+print("Wave Function Collapse Started")
 while not is_wave_function_fully_collapsed():
     min_entropy_pos = observe()
     propagate(min_entropy_pos)
+
+perf_time_end = time.monotonic()
+print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
+
+
 
 final_pixels = []
 
@@ -315,9 +330,11 @@ def draw_grid():
     tile_group.draw(screen)
 
 def draw_tile():
+
     tile = Tile(OUTPUT_HEIGHT, OUTPUT_WIDTH, (0 * OUTPUT_HEIGHT + 50), (0 * OUTPUT_WIDTH + 50), final_pixels)
     tile_group.add(tile)
     tile_group.draw(screen)
+
 
 def draw_patterns():
     for col in range(len(pattern_list)):
@@ -347,8 +364,9 @@ def main():
 
         if is_grid_drawn:
             # draw_grid()
-            # draw_tile()
-            draw_patterns()
+            draw_tile()
+            # draw_patterns()
+
         
         if make_grid_button.draw(screen):
             is_grid_drawn = True
@@ -369,6 +387,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+
 
         pygame.display.update()
 
