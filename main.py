@@ -17,8 +17,8 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-OUTPUT_WIDTH = 50
-OUTPUT_HEIGHT = 50
+OUTPUT_WIDTH = 20
+OUTPUT_HEIGHT = 70
 INPUT_WIDTH = 4
 INPUT_HEIGHT = 4
 
@@ -136,7 +136,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 tile_group = pygame.sprite.Group()
 
 
-
+def execute_wave_function_collapse():
+    pass
 
 def get_valid_directions(position):
     x, y = position
@@ -319,6 +320,9 @@ for i in coefficients:
     final_pixels.append(row)
 
 
+def asd():
+    print("adsdsadsaadsdsadsa")
+
 def draw_window():
     screen.fill(GREY)
 
@@ -330,8 +334,7 @@ def draw_grid():
     tile_group.draw(screen)
 
 def draw_tile():
-
-    tile = Tile(OUTPUT_HEIGHT, OUTPUT_WIDTH, (0 * OUTPUT_HEIGHT + 50), (0 * OUTPUT_WIDTH + 50), final_pixels)
+    tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (0 * OUTPUT_WIDTH + 50), (0 *  OUTPUT_HEIGHT + 50), final_pixels)
     tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -369,7 +372,8 @@ def main():
 
         
         if make_grid_button.draw(screen):
-            is_grid_drawn = True
+            asd()
+            # is_grid_drawn = True
 
 
         if draw_test:
