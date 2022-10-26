@@ -334,8 +334,8 @@ def draw_grid(pix_array):
             tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_tile(pix_array):
-    tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (0 * OUTPUT_WIDTH + 50), (0 *  OUTPUT_HEIGHT + 50), pix_array)
+def draw_tile(pix_array, x, y):
+    tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (0 * OUTPUT_WIDTH + x), (0 *  OUTPUT_HEIGHT + y), pix_array)
     tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -374,7 +374,7 @@ def main():
             # draw_grid()
             # draw_tile()
 
-            draw_tile(wfc_output)
+            draw_tile(wfc_output, 50, 50)
         
         if make_grid_button.draw(screen):
             wfc_output = execute_wave_function_collapse()
