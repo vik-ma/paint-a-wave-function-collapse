@@ -12,6 +12,7 @@ class Tile(pygame.sprite.Sprite):
                 pixel_array[j,i] = pix
         pixel_array.close()
 
+        self.image = pygame.transform.scale(self.image, ((width*10), (height*10)))        
         self.col = col
         self.row = row
 

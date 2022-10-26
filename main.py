@@ -17,8 +17,8 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-OUTPUT_WIDTH = 20
-OUTPUT_HEIGHT = 20
+OUTPUT_WIDTH = 40
+OUTPUT_HEIGHT = 40
 INPUT_WIDTH = 4
 INPUT_HEIGHT = 4
 
@@ -342,7 +342,7 @@ def draw_tile(pix_array):
 
 def draw_patterns():
     for col in range(len(pattern_list)):
-        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 3) + 50), 25, pattern_list[col].pix_array)
+        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + 50), 25, pattern_list[col].pix_array)
         tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -366,10 +366,12 @@ def main():
         draw_window()
         pygame.draw.rect(screen, BLACK, (49, 49, OUTPUT_WIDTH + 2, OUTPUT_HEIGHT + 2), 1)
 
+        draw_patterns()
+
         if is_grid_drawn:
             # draw_grid()
             # draw_tile()
-            # draw_patterns()
+
             draw_tile(wfc_output)
         
         if make_grid_button.draw(screen):
