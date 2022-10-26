@@ -17,8 +17,8 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-OUTPUT_WIDTH = 40
-OUTPUT_HEIGHT = 40
+OUTPUT_WIDTH = 20
+OUTPUT_HEIGHT = 20
 INPUT_WIDTH = 4
 INPUT_HEIGHT = 4
 
@@ -364,7 +364,9 @@ def main():
     while run:
         clock.tick(FPS)
         draw_window()
-        pygame.draw.rect(screen, BLACK, (49, 49, OUTPUT_WIDTH + 2, OUTPUT_HEIGHT + 2), 1)
+        
+        # Grid border
+        pygame.draw.rect(screen, BLACK, (49, 49, (OUTPUT_WIDTH*10) + 2, (OUTPUT_HEIGHT*10) + 2), 1)
 
         draw_patterns()
 
