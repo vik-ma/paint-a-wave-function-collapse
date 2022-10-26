@@ -334,15 +334,15 @@ def draw_grid(pix_array):
             tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_tile(pix_array, x, y):
-    tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (0 * OUTPUT_WIDTH + x), (0 *  OUTPUT_HEIGHT + y), pix_array)
+def draw_tile(pix_array, width, height, x, y):
+    tile = Tile(width, height, (0 * OUTPUT_WIDTH + x), (0 *  OUTPUT_HEIGHT + y), pix_array)
     tile_group.add(tile)
     tile_group.draw(screen)
 
 
 def draw_patterns():
     for col in range(len(pattern_list)):
-        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + 50), 25, pattern_list[col].pix_array)
+        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + 125), 45, pattern_list[col].pix_array)
         tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -366,15 +366,18 @@ def main():
         draw_window()
         
         # Grid border
-        pygame.draw.rect(screen, BLACK, (49, 49, (OUTPUT_WIDTH*10) + 2, (OUTPUT_HEIGHT*10) + 2), 1)
+        pygame.draw.rect(screen, BLACK, (49, 74, (OUTPUT_WIDTH*10) + 2, (OUTPUT_HEIGHT*10) + 2), 1)
 
         draw_patterns()
+
+        # Original tile
+        draw_tile(sample_pixel_array, 4, 4, 50, 25)
 
         if is_grid_drawn:
             # draw_grid()
             # draw_tile()
 
-            draw_tile(wfc_output, 50, 50)
+            draw_tile(wfc_output, OUTPUT_WIDTH, OUTPUT_HEIGHT, 50, 75)
         
         if make_grid_button.draw(screen):
             wfc_output = execute_wave_function_collapse()
