@@ -121,6 +121,49 @@ def get_valid_directions(position):
     
     return valid_directions
 
+def get_patterns():
+    pattern_size = 2 #2x2
+    pattern_list = []
+
+    occurence_weights = {}
+    probability = {}
+
+    pix_array = sample_pixel_array
+
+    for row in range(INPUT_WIDTH - (pattern_size - 1)):
+        for col in range(INPUT_HEIGHT - (pattern_size -1)):
+            pattern = []
+            for pix in pix_array[row:row+pattern_size]:
+                pattern.append(pix[col:col+pattern_size])
+            pattern_rotations = get_rotated_pix_array(pattern)
+        
+            for rotation in pattern_rotations:
+                if rotation not in occurence_weights:
+                    occurence_weights[rotation] = 1
+                else:
+                    occurence_weights[rotation] += 1
+            
+            pattern_list.extend(pattern_rotations)
+        
+    unique_pattern_list = []
+    for pattern in pattern_list:
+        if pattern not in unique_pattern_list:
+            unique_pattern_list.append(pattern)
+    pattern_list = unique_pattern_list
+
+    sum_of_weights = 0
+    for weight in occurence_weights:
+        sum_of_weights += occurence_weights[weight]
+
+    for pattern in pattern_list:
+        probability[pattern] = occurence_weights[pattern] / sum_of_weights
+
+    pattern_list = [Pattern(pattern) for pattern in pattern_list]
+    occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
+    probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
+
+    return pattern_list, occurence_weights, probability
+
 
 def initialize_wave_function(pattern_list):
     coefficients = []
@@ -244,45 +287,11 @@ def propagate(min_entropy_pos, coefficients, rule_index):
 
 
 def execute_wave_function_collapse():
-    pattern_size = 2 #2x2
-    pattern_list = []
+    patterns = get_patterns()
 
-    occurence_weights = {}
-    probability = {}
-
-    pix_array = sample_pixel_array
-
-    for row in range(INPUT_WIDTH - (pattern_size - 1)):
-        for col in range(INPUT_HEIGHT - (pattern_size -1)):
-            pattern = []
-            for pix in pix_array[row:row+pattern_size]:
-                pattern.append(pix[col:col+pattern_size])
-            pattern_rotations = get_rotated_pix_array(pattern)
-        
-            for rotation in pattern_rotations:
-                if rotation not in occurence_weights:
-                    occurence_weights[rotation] = 1
-                else:
-                    occurence_weights[rotation] += 1
-            
-            pattern_list.extend(pattern_rotations)
-        
-    unique_pattern_list = []
-    for pattern in pattern_list:
-        if pattern not in unique_pattern_list:
-            unique_pattern_list.append(pattern)
-    pattern_list = unique_pattern_list
-
-    sum_of_weights = 0
-    for weight in occurence_weights:
-        sum_of_weights += occurence_weights[weight]
-
-    for pattern in pattern_list:
-        probability[pattern] = occurence_weights[pattern] / sum_of_weights
-
-    pattern_list = [Pattern(pattern) for pattern in pattern_list]
-    occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
-    probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
+    pattern_list = patterns[0]
+    occurence_weights = patterns[1]
+    probability = patterns[2]
 
     rule_index = RuleIndex(pattern_list, directions)
 
@@ -301,6 +310,8 @@ def execute_wave_function_collapse():
 
     perf_time_start = time.monotonic()
     print("Wave Function Collapse Started")
+
+    # Actual start of WFC
     while not is_wave_function_fully_collapsed(coefficients):
         min_entropy_pos = observe(coefficients, probability)
         propagate(min_entropy_pos, coefficients, rule_index)
