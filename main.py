@@ -60,52 +60,6 @@ def get_rotated_pix_array(pix_array):
     pix_array = tuple(pix_array)
     return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270)
 
-pattern_size = 2 #2x2
-pattern_list = []
-
-occurence_weights = {}
-probability = {}
-
-pix_array = sample_pixel_array
-
-
-
-for row in range(INPUT_WIDTH - (pattern_size - 1)):
-    for col in range(INPUT_HEIGHT - (pattern_size -1)):
-        pattern = []
-        for pix in pix_array[row:row+pattern_size]:
-            pattern.append(pix[col:col+pattern_size])
-        pattern_rotations = get_rotated_pix_array(pattern)
-    
-        for rotation in pattern_rotations:
-            if rotation not in occurence_weights:
-                occurence_weights[rotation] = 1
-            else:
-                occurence_weights[rotation] += 1
-        
-        pattern_list.extend(pattern_rotations)
-    
-unique_pattern_list = []
-for pattern in pattern_list:
-    if pattern not in unique_pattern_list:
-        unique_pattern_list.append(pattern)
-pattern_list = unique_pattern_list
-
-sum_of_weights = 0
-for weight in occurence_weights:
-    sum_of_weights += occurence_weights[weight]
-
-for pattern in pattern_list:
-    probability[pattern] = occurence_weights[pattern] / sum_of_weights
-
-pattern_list = [Pattern(pattern) for pattern in pattern_list]
-occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
-probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
-
-
-
-rule_index = RuleIndex(pattern_list, directions)
-
 def get_offset_tiles(pattern, offset):
     if offset == (0, 0):
         return pattern.pix_array
@@ -126,16 +80,7 @@ def get_offset_tiles(pattern, offset):
     if offset == (1, 1):
         return tuple([pattern.pix_array[0][0]])
 
-number_of_rules = 0
-for pattern in pattern_list:
-    for direction in directions:
-        for pattern_next in pattern_list:
-            overlap = get_offset_tiles(pattern_next, direction)
-            og_dir = tuple([direction[0]*-1, direction[1]*-1])
-            part_of_og_pattern = get_offset_tiles(pattern, og_dir)
-            if overlap == part_of_og_pattern:
-                rule_index.add_rule(pattern, direction, pattern_next)
-                number_of_rules += 1
+
 
 
 
@@ -177,7 +122,7 @@ def get_valid_directions(position):
     return valid_directions
 
 
-def initialize_wave_function():
+def initialize_wave_function(pattern_list):
     coefficients = []
     
     for col in range(OUTPUT_HEIGHT):
@@ -188,9 +133,7 @@ def initialize_wave_function():
 
     return coefficients
 
-coefficients = initialize_wave_function()
-
-def is_wave_function_fully_collapsed():
+def is_wave_function_fully_collapsed(coefficients):
     """Check if wave function is fully collapsed meaning that for each tile available is only one pattern"""
     for col in coefficients:
         for entry in col:
@@ -198,13 +141,13 @@ def is_wave_function_fully_collapsed():
                 return False
     return True
 
-def get_possible_patterns_at_position(position):
+def get_possible_patterns_at_position(position, coefficients):
     """Return possible patterns at position (x, y)"""
     x, y = position
     possible_patterns = coefficients[x][y]
     return possible_patterns
 
-def get_shannon_entropy(position):
+def get_shannon_entropy(position, coefficients, probability):
     """Calcualte the Shannon Entropy of the wavefunction at position (x, y)"""
     x, y = position
     entropy = 0
@@ -221,14 +164,14 @@ def get_shannon_entropy(position):
     entropy -= random.uniform(0, 0.1)
     return entropy
 
-def get_min_entropy_at_pos():
+def get_min_entropy_at_pos(coefficients, probability):
     """Return position of tile with the lowest entropy"""
     min_entropy = None
     min_entropy_pos = None
     
     for x, col in enumerate(coefficients):
         for y, row in enumerate(col):
-            entropy = get_shannon_entropy((x, y))
+            entropy = get_shannon_entropy((x, y), coefficients, probability)
             
             if entropy == 0:
                 continue
@@ -239,16 +182,16 @@ def get_min_entropy_at_pos():
 
     return min_entropy_pos
 
-def observe():
+def observe(coefficients, probability):
     # Find the lowest entropy
-    min_entropy_pos = get_min_entropy_at_pos()
+    min_entropy_pos = get_min_entropy_at_pos(coefficients, probability)
     
     if min_entropy_pos == None:
         print("All tiles have 0 entropy")
         return
     
     # Choose a pattern at lowest entropy position which is most frequent in the sample
-    possible_patterns = get_possible_patterns_at_position(min_entropy_pos)
+    possible_patterns = get_possible_patterns_at_position(min_entropy_pos, coefficients)
     
     # calculate max probability for patterns that are left
     max_p = 0
@@ -264,18 +207,18 @@ def observe():
 
     return min_entropy_pos
 
-def propagate(min_entropy_pos):
+def propagate(min_entropy_pos, coefficients, rule_index):
     stack = [min_entropy_pos]
     
     while len(stack) > 0:
         pos = stack.pop()
         
-        possible_patterns = get_possible_patterns_at_position(pos)
+        possible_patterns = get_possible_patterns_at_position(pos, coefficients)
         
         # Iterate through each location immediately adjacent to the current location
         for direction in get_valid_directions(pos):
             adjacent_pos = (pos[0] + direction[0], pos[1] + direction[1])
-            possible_patterns_at_adjacent = get_possible_patterns_at_position(adjacent_pos)
+            possible_patterns_at_adjacent = get_possible_patterns_at_position(adjacent_pos, coefficients)
             
             # Iterate over all still available patterns in adjacent tile 
             # and check if pattern is still possible in this location
@@ -301,11 +244,66 @@ def propagate(min_entropy_pos):
 
 
 def execute_wave_function_collapse():
+    pattern_size = 2 #2x2
+    pattern_list = []
+
+    occurence_weights = {}
+    probability = {}
+
+    pix_array = sample_pixel_array
+
+    for row in range(INPUT_WIDTH - (pattern_size - 1)):
+        for col in range(INPUT_HEIGHT - (pattern_size -1)):
+            pattern = []
+            for pix in pix_array[row:row+pattern_size]:
+                pattern.append(pix[col:col+pattern_size])
+            pattern_rotations = get_rotated_pix_array(pattern)
+        
+            for rotation in pattern_rotations:
+                if rotation not in occurence_weights:
+                    occurence_weights[rotation] = 1
+                else:
+                    occurence_weights[rotation] += 1
+            
+            pattern_list.extend(pattern_rotations)
+        
+    unique_pattern_list = []
+    for pattern in pattern_list:
+        if pattern not in unique_pattern_list:
+            unique_pattern_list.append(pattern)
+    pattern_list = unique_pattern_list
+
+    sum_of_weights = 0
+    for weight in occurence_weights:
+        sum_of_weights += occurence_weights[weight]
+
+    for pattern in pattern_list:
+        probability[pattern] = occurence_weights[pattern] / sum_of_weights
+
+    pattern_list = [Pattern(pattern) for pattern in pattern_list]
+    occurence_weights = {pattern:occurence_weights[pattern.pix_array] for pattern in pattern_list}
+    probability = {pattern:probability[pattern.pix_array] for pattern in pattern_list}
+
+    rule_index = RuleIndex(pattern_list, directions)
+
+    coefficients = initialize_wave_function(pattern_list)
+
+    number_of_rules = 0
+    for pattern in pattern_list:
+        for direction in directions:
+            for pattern_next in pattern_list:
+                overlap = get_offset_tiles(pattern_next, direction)
+                og_dir = tuple([direction[0]*-1, direction[1]*-1])
+                part_of_og_pattern = get_offset_tiles(pattern, og_dir)
+                if overlap == part_of_og_pattern:
+                    rule_index.add_rule(pattern, direction, pattern_next)
+                    number_of_rules += 1
+
     perf_time_start = time.monotonic()
     print("Wave Function Collapse Started")
-    while not is_wave_function_fully_collapsed():
-        min_entropy_pos = observe()
-        propagate(min_entropy_pos)
+    while not is_wave_function_fully_collapsed(coefficients):
+        min_entropy_pos = observe(coefficients, probability)
+        propagate(min_entropy_pos, coefficients, rule_index)
 
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
@@ -368,7 +366,7 @@ def main():
         # Grid border
         pygame.draw.rect(screen, BLACK, (49, 74, (OUTPUT_WIDTH*10) + 2, (OUTPUT_HEIGHT*10) + 2), 1)
 
-        draw_patterns()
+        # draw_patterns()
 
         # Original tile
         draw_tile(sample_pixel_array, 4, 4, 50, 25)
