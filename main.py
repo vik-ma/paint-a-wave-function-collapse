@@ -18,9 +18,6 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-OUTPUT_WIDTH = 20
-OUTPUT_HEIGHT = 20
-
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREY = (175, 175, 175)
@@ -92,7 +89,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 tile_group = pygame.sprite.Group()
 
-def get_valid_directions(position):
+def get_valid_directions(position, output_width, output_height):
     x, y = position
     
     valid_directions = []
@@ -101,15 +98,15 @@ def get_valid_directions(position):
         valid_directions.extend([RIGHT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_RIGHT])
-        elif y == OUTPUT_WIDTH-1:
+        elif y == output_width-1:
             valid_directions.extend([UP, UP_RIGHT])
         else:
             valid_directions.extend([DOWN, DOWN_RIGHT, UP, UP_RIGHT])
-    elif x == OUTPUT_HEIGHT-1:
+    elif x == output_height-1:
         valid_directions.extend([LEFT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_LEFT])
-        elif y == OUTPUT_WIDTH-1:
+        elif y == output_width-1:
             valid_directions.extend([UP, UP_LEFT])
         else:
             valid_directions.extend([DOWN, DOWN_LEFT, UP, UP_LEFT])
@@ -117,7 +114,7 @@ def get_valid_directions(position):
         valid_directions.extend([LEFT, RIGHT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_LEFT, DOWN_RIGHT])
-        elif y == OUTPUT_WIDTH-1:
+        elif y == output_width-1:
             valid_directions.extend([UP, UP_LEFT, UP_RIGHT])
         else: 
             valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT])
@@ -168,12 +165,12 @@ def get_patterns(pattern_size, initial_tile):
     return pattern_list, occurence_weights, probability
 
 
-def initialize_wave_function(pattern_list):
+def initialize_wave_function(pattern_list, output_width, output_height):
     coefficients = []
     
-    for col in range(OUTPUT_HEIGHT):
+    for col in range(output_height):
         row = []
-        for r in range(OUTPUT_WIDTH):
+        for r in range(output_width):
             row.append(pattern_list)
         coefficients.append(row)
 
@@ -253,7 +250,7 @@ def observe(coefficients, probability):
 
     return min_entropy_pos
 
-def propagate(min_entropy_pos, coefficients, rule_index):
+def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height):
     stack = [min_entropy_pos]
     
     while len(stack) > 0:
@@ -262,7 +259,7 @@ def propagate(min_entropy_pos, coefficients, rule_index):
         possible_patterns = get_possible_patterns_at_position(pos, coefficients)
         
         # Iterate through each location immediately adjacent to the current location
-        for direction in get_valid_directions(pos):
+        for direction in get_valid_directions(pos, output_width, output_height):
             adjacent_pos = (pos[0] + direction[0], pos[1] + direction[1])
             possible_patterns_at_adjacent = get_possible_patterns_at_position(adjacent_pos, coefficients)
             
@@ -289,7 +286,7 @@ def propagate(min_entropy_pos, coefficients, rule_index):
                         stack.append(adjacent_pos)
 
 
-def execute_wave_function_collapse(patterns):
+def execute_wave_function_collapse(patterns, output_width, output_height):
 
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
@@ -297,7 +294,7 @@ def execute_wave_function_collapse(patterns):
 
     rule_index = RuleIndex(pattern_list, directions)
 
-    coefficients = initialize_wave_function(pattern_list)
+    coefficients = initialize_wave_function(pattern_list, output_width, output_height)
 
     number_of_rules = 0
     for pattern in pattern_list:
@@ -316,7 +313,7 @@ def execute_wave_function_collapse(patterns):
     # Actual start of WFC
     while not is_wave_function_fully_collapsed(coefficients):
         min_entropy_pos = observe(coefficients, probability)
-        propagate(min_entropy_pos, coefficients, rule_index)
+        propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height)
 
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
@@ -338,15 +335,15 @@ def execute_wave_function_collapse(patterns):
 def draw_window():
     screen.fill(GREY)
 
-def draw_grid(pix_array):
-    for row in range(OUTPUT_WIDTH):
-        for col in range(OUTPUT_HEIGHT):
-            tile = Tile(OUTPUT_WIDTH, OUTPUT_HEIGHT, (col * OUTPUT_WIDTH + 50), (row * OUTPUT_HEIGHT + 50), pix_array)
+def draw_grid(pix_array, output_width, output_height):
+    for row in range(output_width):
+        for col in range(output_height):
+            tile = Tile(output_width, output_height, (col * output_width + 50), (row * output_height + 50), pix_array)
             tile_group.add(tile)
     tile_group.draw(screen)
 
 def draw_tile(pix_array, width, height, x, y):
-    tile = Tile(width, height, (0 * OUTPUT_WIDTH + x), (0 *  OUTPUT_HEIGHT + y), pix_array)
+    tile = Tile(width, height, (0 * width + x), (0 * height + y), pix_array)
     tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -373,15 +370,18 @@ def main():
     wfc_output = []
 
     pattern_size = 2
-    start_tile = sample_initial_tile_1
+    start_tile = sample_initial_tile_2
     patterns = get_patterns(pattern_size, start_tile)
+
+    output_width = 20
+    output_height = 20
 
     while run:
         clock.tick(FPS)
         draw_window()
         
         # Grid border
-        pygame.draw.rect(screen, BLACK, (49, 99, (OUTPUT_WIDTH*10) + 2, (OUTPUT_HEIGHT*10) + 2), 1)
+        pygame.draw.rect(screen, BLACK, (49, 99, (output_width * 10) + 2, (output_height * 10) + 2), 1)
 
         draw_patterns(pattern_size, patterns[0])
 
@@ -392,10 +392,10 @@ def main():
             # draw_grid()
             # draw_tile()
 
-            draw_tile(wfc_output, OUTPUT_WIDTH, OUTPUT_HEIGHT, 50, 100)
+            draw_tile(wfc_output, output_width, output_height, 50, 100)
         
         if make_grid_button.draw(screen):
-            wfc_output = execute_wave_function_collapse(patterns)
+            wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             is_grid_drawn = True
 
 
