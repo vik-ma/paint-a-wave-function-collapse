@@ -20,8 +20,6 @@ FPS = 60
 
 OUTPUT_WIDTH = 20
 OUTPUT_HEIGHT = 20
-INPUT_WIDTH = 4
-INPUT_HEIGHT = 4
 
 WHITE = (255,255,255)
 BLACK = (0,0,0)
@@ -124,17 +122,17 @@ def get_valid_directions(position):
     
     return valid_directions
 
-def get_patterns(pattern_size):
+def get_patterns(pattern_size, initial_tile):
     # pattern_size = 2 #2x2
     pattern_list = []
 
     occurence_weights = {}
     probability = {}
 
-    pix_array = sample_pixel_array
+    pix_array = initial_tile.pix_array
 
-    for row in range(INPUT_WIDTH - (pattern_size - 1)):
-        for col in range(INPUT_HEIGHT - (pattern_size -1)):
+    for row in range(initial_tile.width - (pattern_size - 1)):
+        for col in range(initial_tile.height - (pattern_size -1)):
             pattern = []
             for pix in pix_array[row:row+pattern_size]:
                 pattern.append(pix[col:col+pattern_size])
@@ -373,7 +371,7 @@ def main():
     wfc_output = []
 
     pattern_size = 2
-    patterns = get_patterns(pattern_size)
+    patterns = get_patterns(pattern_size, sample_initial_tile_1)
 
     while run:
         clock.tick(FPS)
