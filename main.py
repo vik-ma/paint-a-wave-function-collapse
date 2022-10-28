@@ -7,6 +7,7 @@ from tile import Tile
 from button import Button
 from pattern import Pattern
 from rule_index import RuleIndex
+from initial_tile import InitialTile
 
 
 pygame.init()
@@ -44,6 +45,8 @@ sample_pixel_array = [
     (WHITE, BLACK, GREY, BLACK),
     (WHITE, BLACK, BLACK, BLACK),
     ]
+
+sample_initial_tile_1 = InitialTile(sample_pixel_array, 4, 4)
 
 sample_pixel_array_5x5 = [
     (WHITE, WHITE, WHITE, WHITE, WHITE),
@@ -382,7 +385,7 @@ def main():
         draw_patterns(pattern_size, patterns[0])
 
         # Original tile
-        draw_tile(sample_pixel_array, 4, 4, 50, 25)
+        draw_tile(sample_initial_tile_1.pix_array, sample_initial_tile_1.width, sample_initial_tile_1.width, 50, 25)
 
         if is_grid_drawn:
             # draw_grid()
@@ -396,7 +399,7 @@ def main():
 
 
         if draw_test:
-            draw_patterns(sample_pixel_array)
+            draw_patterns(sample_initial_tile_1.pix_array)
 
         if draw_test_button.draw(screen):
             draw_test = True
