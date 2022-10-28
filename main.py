@@ -54,6 +54,8 @@ sample_pixel_array_5x5 = [
     (GREEN, GREEN, GREEN, GREEN, WHITE)
 ]
 
+sample_initial_tile_2 = InitialTile(sample_pixel_array_5x5, 5, 5)
+
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
     rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
@@ -371,25 +373,26 @@ def main():
     wfc_output = []
 
     pattern_size = 2
-    patterns = get_patterns(pattern_size, sample_initial_tile_1)
+    start_tile = sample_initial_tile_1
+    patterns = get_patterns(pattern_size, start_tile)
 
     while run:
         clock.tick(FPS)
         draw_window()
         
         # Grid border
-        pygame.draw.rect(screen, BLACK, (49, 74, (OUTPUT_WIDTH*10) + 2, (OUTPUT_HEIGHT*10) + 2), 1)
+        pygame.draw.rect(screen, BLACK, (49, 99, (OUTPUT_WIDTH*10) + 2, (OUTPUT_HEIGHT*10) + 2), 1)
 
         draw_patterns(pattern_size, patterns[0])
 
         # Original tile
-        draw_tile(sample_initial_tile_1.pix_array, sample_initial_tile_1.width, sample_initial_tile_1.width, 50, 25)
+        draw_tile(start_tile.pix_array, start_tile.width, start_tile.width, 50, 25)
 
         if is_grid_drawn:
             # draw_grid()
             # draw_tile()
 
-            draw_tile(wfc_output, OUTPUT_WIDTH, OUTPUT_HEIGHT, 50, 75)
+            draw_tile(wfc_output, OUTPUT_WIDTH, OUTPUT_HEIGHT, 50, 100)
         
         if make_grid_button.draw(screen):
             wfc_output = execute_wave_function_collapse(patterns)
@@ -397,7 +400,7 @@ def main():
 
 
         if draw_test:
-            draw_patterns(sample_initial_tile_1.pix_array)
+            draw_patterns(start_tile.pix_array)
 
         if draw_test_button.draw(screen):
             draw_test = True
