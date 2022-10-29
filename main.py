@@ -347,7 +347,6 @@ def draw_tile(pix_array, width, height, x, y):
     tile_group.add(tile)
     tile_group.draw(screen)
 
-
 def draw_patterns(pattern_size, pattern_list):
     x = 50
     y = 25
@@ -364,6 +363,11 @@ make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 
+def draw_initial_tile_list(initial_tile_list):
+    x = 50
+    y = 350
+    for x_pos, tile in enumerate(initial_tile_list):
+        draw_tile(tile.pix_array, tile.width, tile.height, (x_pos * (tile.width + 60) + x), y)
 
 
 def main():
@@ -374,6 +378,10 @@ def main():
     draw_test = False
 
     wfc_output = []
+
+    initial_tile_list = []
+    initial_tile_list.append(sample_initial_tile_1)
+    initial_tile_list.append(sample_initial_tile_2)
 
     pattern_size = 2
     start_tile = sample_initial_tile_2
@@ -393,6 +401,7 @@ def main():
 
         # Original tile
         # draw_tile(start_tile.pix_array, start_tile.width, start_tile.width, 50, 25)
+        draw_initial_tile_list(initial_tile_list)
 
         if is_grid_drawn:
             # draw_grid()
