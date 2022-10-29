@@ -349,8 +349,14 @@ def draw_tile(pix_array, width, height, x, y):
 
 
 def draw_patterns(pattern_size, pattern_list):
+    x = 50
+    y = 25
+    col_limit = 16
     for col in range(len(pattern_list)):
-        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + 125), 45, pattern_list[col].pix_array)
+        if col % col_limit == 0 and col > 1:
+            y += 25
+            x -= col_limit * (pattern_size + 25)
+        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + x), y, pattern_list[col].pix_array)
         tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -386,7 +392,7 @@ def main():
         draw_patterns(pattern_size, patterns[0])
 
         # Original tile
-        draw_tile(start_tile.pix_array, start_tile.width, start_tile.width, 50, 25)
+        # draw_tile(start_tile.pix_array, start_tile.width, start_tile.width, 50, 25)
 
         if is_grid_drawn:
             # draw_grid()
