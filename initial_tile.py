@@ -1,6 +1,3 @@
-from turtle import width
-
-
 class InitialTile:
     def __init__(self, pix_array, width, height):
         self.pix_array = pix_array

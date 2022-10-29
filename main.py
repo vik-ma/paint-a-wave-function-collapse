@@ -363,12 +363,17 @@ make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 
-def draw_initial_tile_list(initial_tile_list):
+def draw_initial_tile_list(initial_tile_list, selected_index):
     x = 50
     y = 350
-    for x_pos, tile in enumerate(initial_tile_list):
-        draw_tile(tile.pix_array, tile.width, tile.height, (x_pos * (tile.width + 60) + x), y)
+    for index, tile in enumerate(initial_tile_list):
+        x_pos = index * (tile.width + 60) + x
+        draw_tile(tile.pix_array, tile.width, tile.height, x_pos, y)
+        if index == selected_index:
+            pygame.draw.rect(screen, BLACK, (x_pos-1, y-1, (tile.width * 10) + 2, (tile.height * 10) + 2), 1)
 
+def draw_selected_tile_border(tile_width, tile_height, x_pos, y_pos):
+    pygame.draw.rect(screen, BLACK, (x_pos-1, y_pos-1, (tile_width * 10) + 2, (tile_height * 10) + 2), 1)
 
 def main():
     run = True
@@ -382,6 +387,8 @@ def main():
     initial_tile_list = []
     initial_tile_list.append(sample_initial_tile_1)
     initial_tile_list.append(sample_initial_tile_2)
+
+    selected_tile_index = None
 
     pattern_size = 2
     start_tile = sample_initial_tile_2
@@ -399,20 +406,15 @@ def main():
 
         draw_patterns(pattern_size, patterns[0])
 
-        # Original tile
-        # draw_tile(start_tile.pix_array, start_tile.width, start_tile.width, 50, 25)
-        draw_initial_tile_list(initial_tile_list)
+        # Original tiles
+        draw_initial_tile_list(initial_tile_list, selected_tile_index)
 
         if is_grid_drawn:
-            # draw_grid()
-            # draw_tile()
-
             draw_tile(wfc_output, output_width, output_height, 50, 100)
         
         if make_grid_button.draw(screen):
             wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             is_grid_drawn = True
-
 
         if draw_test:
             draw_patterns(start_tile.pix_array)
