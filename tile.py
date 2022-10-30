@@ -1,7 +1,7 @@
 import pygame
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, width, height, x, y, pix_array):
+    def __init__(self, width, height, x, y, pix_array, enlargement_scale):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface([width, height])
@@ -12,7 +12,7 @@ class Tile(pygame.sprite.Sprite):
                 pixel_array[j,i] = pix
         pixel_array.close()
 
-        self.image = pygame.transform.scale(self.image, ((width*10), (height*10)))        
+        self.image = pygame.transform.scale(self.image, ((width*enlargement_scale), (height*enlargement_scale)))        
         self.x = x
         self.y = y
 

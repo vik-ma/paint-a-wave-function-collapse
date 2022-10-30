@@ -343,12 +343,12 @@ def draw_grid(pix_array, output_width, output_height):
             tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_tile(pix_array, width, height, x, y):
-    tile = Tile(width, height, (0 * width + x), (0 * height + y), pix_array)
+def draw_tile(pix_array, width, height, x, y, enlargement_scale):
+    tile = Tile(width, height, (0 * width + x), (0 * height + y), pix_array, enlargement_scale)
     tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_patterns(pattern_size, pattern_list):
+def draw_patterns(pattern_size, pattern_list, enlargement_scale):
     x = 50
     y = 25
     col_limit = 16
@@ -356,7 +356,7 @@ def draw_patterns(pattern_size, pattern_list):
         if col % col_limit == 0 and col > 1:
             y += 25
             x -= col_limit * (pattern_size + 25)
-        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + x), y, pattern_list[col].pix_array)
+        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + x), y, pattern_list[col].pix_array, enlargement_scale)
         tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -364,14 +364,14 @@ make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 
-def draw_initial_tile_list(initial_tile_list, selected_index):
+def draw_initial_tile_list(initial_tile_list, selected_index, enlargement_scale):
     x = 50
     y = 350
     for index, tile in enumerate(initial_tile_list):
         x_pos = index * (tile.width + 60) + x
-        draw_tile(tile.pix_array, tile.width, tile.height, x_pos, y)
+        draw_tile(tile.pix_array, tile.width, tile.height, x_pos, y, enlargement_scale)
         if index == selected_index:
-            pygame.draw.rect(screen, YELLOW, (x_pos-5, y-5, (tile.width * 10) + 10, (tile.height * 10) + 10), 5)
+            pygame.draw.rect(screen, YELLOW, (x_pos-5, y-5, (tile.width * enlargement_scale) + 10, (tile.height * enlargement_scale) + 10), 5)
 
 def main():
     run = True
@@ -394,6 +394,8 @@ def main():
     start_tile = sample_initial_tile_2
     patterns = get_patterns(pattern_size, start_tile)
 
+    enlargement_scale = 8
+
     output_width = 20
     output_height = 20
 
@@ -402,22 +404,22 @@ def main():
         draw_window()
         
         # Grid border
-        pygame.draw.rect(screen, BLACK, (49, 99, (output_width * 10) + 2, (output_height * 10) + 2), 1)
+        pygame.draw.rect(screen, BLACK, (49, 99, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
 
-        draw_patterns(pattern_size, patterns[0])
+        draw_patterns(pattern_size, patterns[0], enlargement_scale)
 
         # Original tiles
-        draw_initial_tile_list(initial_tile_list, selected_tile_index)
+        draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
 
         if is_grid_drawn:
-            draw_tile(wfc_output, output_width, output_height, 50, 100)
+            draw_tile(wfc_output, output_width, output_height, 50, 100, enlargement_scale)
         
         if make_grid_button.draw(screen):
             wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             is_grid_drawn = True
 
         if draw_test:
-            draw_patterns(start_tile.pix_array)
+            draw_patterns(start_tile.pix_array, enlargement_scale)
 
         if draw_test_button.draw(screen):
             draw_test = True
