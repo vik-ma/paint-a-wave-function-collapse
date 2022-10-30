@@ -343,17 +343,23 @@ def draw_grid(pix_array, output_width, output_height):
             tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_patterns(pattern_size, pattern_list, enlargement_scale):
+def draw_patterns(tile_list):
+    for tile in tile_list:
+        tile_group.add(tile)
+
+def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     x = 50
     y = 25
     col_limit = 16
-    for col in range(len(pattern_list)):
+    tile_list = []
+    print(type(patterns))
+    for col in range(len(patterns)):
         if col % col_limit == 0 and col > 1:
             y += 25
             x -= col_limit * (pattern_size + 25)
-        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + x), y, pattern_list[col].pix_array, enlargement_scale)
-        tile_group.add(tile)
-    tile_group.draw(screen)
+        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + x), y, patterns[col].pix_array, enlargement_scale)
+        tile_list.append(tile)
+    return tile_list
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
@@ -395,10 +401,12 @@ def main():
     selected_tile_index = 1
 
     pattern_size = 2
-    start_tile = sample_initial_tile_2
-    patterns = get_patterns(pattern_size, start_tile)
 
+    selected_tile = initial_tile_list[selected_tile_index]
 
+    patterns = get_patterns(pattern_size, selected_tile)
+
+    pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
     output_width = 20
     output_height = 20
@@ -410,7 +418,7 @@ def main():
         # Grid border
         pygame.draw.rect(screen, BLACK, (49, 99, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
 
-        draw_patterns(pattern_size, patterns[0], enlargement_scale)
+        draw_patterns(pattern_tile_list)
 
         # Original tiles
         draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
@@ -424,7 +432,7 @@ def main():
             is_grid_drawn = True
 
         if draw_test:
-            draw_patterns(start_tile.pix_array, enlargement_scale)
+            pass
 
         if draw_test_button.draw(screen):
             draw_test = True

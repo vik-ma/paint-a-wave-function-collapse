@@ -17,5 +17,6 @@ class Tile(pygame.sprite.Sprite):
         self.y = y
         self.width = width
         self.height = height
+        self.pix_array = pix_array
 
         self.rect = self.image.get_rect(left = self.x, top = self.y)
