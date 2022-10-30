@@ -376,7 +376,7 @@ def main():
 
     draw_test = False
 
-    wfc_output = []
+    wfc_output = None
 
     enlargement_scale = 8
 
@@ -389,6 +389,12 @@ def main():
     initial_tile_list.append(sample_tile_1)
     sample_tile_2 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_2)
+    sample_tile_3 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_3)
+    sample_tile_4 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_4)
+    sample_tile_5 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_5)
 
     selected_tile_index = 1
 
@@ -413,14 +419,12 @@ def main():
         # Original tiles
         draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
 
-        # draw_tile(sample_tile_1)
-        # draw_tile(sample_tile_2)
-
         if is_grid_drawn:
-            draw_tile(wfc_output, output_width, output_height, 50, 100, enlargement_scale)
+            draw_tile(wfc_output)
         
         if make_grid_button.draw(screen):
-            wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+            get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+            wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
             is_grid_drawn = True
 
         if draw_test:
