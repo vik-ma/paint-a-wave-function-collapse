@@ -18,11 +18,12 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
-WHITE = (255,255,255)
-BLACK = (0,0,0)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 GREY = (175, 175, 175)
 LIGHTGREY = (213, 213, 213)
 GREEN = (0, 255, 00)
+YELLOW = (255, 255, 0)
 
 UP = (0, -1)
 LEFT = (-1, 0)
@@ -370,10 +371,7 @@ def draw_initial_tile_list(initial_tile_list, selected_index):
         x_pos = index * (tile.width + 60) + x
         draw_tile(tile.pix_array, tile.width, tile.height, x_pos, y)
         if index == selected_index:
-            pygame.draw.rect(screen, BLACK, (x_pos-1, y-1, (tile.width * 10) + 2, (tile.height * 10) + 2), 1)
-
-def draw_selected_tile_border(tile_width, tile_height, x_pos, y_pos):
-    pygame.draw.rect(screen, BLACK, (x_pos-1, y_pos-1, (tile_width * 10) + 2, (tile_height * 10) + 2), 1)
+            pygame.draw.rect(screen, YELLOW, (x_pos-5, y-5, (tile.width * 10) + 10, (tile.height * 10) + 10), 5)
 
 def main():
     run = True
@@ -386,9 +384,11 @@ def main():
 
     initial_tile_list = []
     initial_tile_list.append(sample_initial_tile_1)
+    initial_tile_list.append(sample_initial_tile_1)
+    initial_tile_list.append(sample_initial_tile_2)
     initial_tile_list.append(sample_initial_tile_2)
 
-    selected_tile_index = None
+    selected_tile_index = 0
 
     pattern_size = 2
     start_tile = sample_initial_tile_2
