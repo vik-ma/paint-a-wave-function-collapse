@@ -15,5 +15,7 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, ((width*enlargement_scale), (height*enlargement_scale)))        
         self.x = x
         self.y = y
+        self.width = width
+        self.height = height
 
         self.rect = self.image.get_rect(left = self.x, top = self.y)

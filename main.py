@@ -364,13 +364,10 @@ test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 
 def draw_initial_tile_list(initial_tile_list, selected_index, enlargement_scale):
-    x = 50
-    y = 350
     for index, tile in enumerate(initial_tile_list):
-        x_pos = index * (tile.width + 60) + x
-        draw_tile(tile.pix_array, tile.width, tile.height, x_pos, y, enlargement_scale)
+        draw_tile(tile)
         if index == selected_index:
-            pygame.draw.rect(screen, YELLOW, (x_pos-5, y-5, (tile.width * enlargement_scale) + 10, (tile.height * enlargement_scale) + 10), 5)
+            pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, (tile.width * enlargement_scale) + 10, (tile.height * enlargement_scale) + 10), 5)
 
 def main():
     run = True
@@ -390,11 +387,10 @@ def main():
 
     sample_tile_1 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_1)
-    
     sample_tile_2 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_2)
 
-    selected_tile_index = 0
+    selected_tile_index = 1
 
     pattern_size = 2
     start_tile = sample_initial_tile_2
@@ -415,10 +411,10 @@ def main():
         draw_patterns(pattern_size, patterns[0], enlargement_scale)
 
         # Original tiles
-        # draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
+        draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
 
-        draw_tile(sample_tile_1)
-        draw_tile(sample_tile_2)
+        # draw_tile(sample_tile_1)
+        # draw_tile(sample_tile_2)
 
         if is_grid_drawn:
             draw_tile(wfc_output, output_width, output_height, 50, 100, enlargement_scale)
