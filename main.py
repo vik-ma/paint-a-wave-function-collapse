@@ -343,8 +343,7 @@ def draw_grid(pix_array, output_width, output_height):
             tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_tile(pix_array, width, height, x, y, enlargement_scale):
-    tile = Tile(width, height, (0 * width + x), (0 * height + y), pix_array, enlargement_scale)
+def draw_tile(tile):
     tile_group.add(tile)
     tile_group.draw(screen)
 
@@ -382,11 +381,18 @@ def main():
 
     wfc_output = []
 
+    enlargement_scale = 8
+
     initial_tile_list = []
-    initial_tile_list.append(sample_initial_tile_1)
-    initial_tile_list.append(sample_initial_tile_1)
-    initial_tile_list.append(sample_initial_tile_2)
-    initial_tile_list.append(sample_initial_tile_2)
+    tile_list_x_pos = 50
+    tile_list_x_offset = 50
+    tile_list_y_pos = 350
+
+    sample_tile_1 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_1)
+    
+    sample_tile_2 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_2)
 
     selected_tile_index = 0
 
@@ -394,7 +400,7 @@ def main():
     start_tile = sample_initial_tile_2
     patterns = get_patterns(pattern_size, start_tile)
 
-    enlargement_scale = 8
+
 
     output_width = 20
     output_height = 20
@@ -409,7 +415,10 @@ def main():
         draw_patterns(pattern_size, patterns[0], enlargement_scale)
 
         # Original tiles
-        draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
+        # draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
+
+        draw_tile(sample_tile_1)
+        draw_tile(sample_tile_2)
 
         if is_grid_drawn:
             draw_tile(wfc_output, output_width, output_height, 50, 100, enlargement_scale)
