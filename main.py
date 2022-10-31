@@ -365,6 +365,7 @@ make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 
+#DELETE?
 def draw_initial_tile_list(initial_tile_list, selected_index, enlargement_scale):
     for index, tile in enumerate(initial_tile_list):
         tile_group.add(tile)
@@ -377,6 +378,10 @@ def create_tile_buttons(initial_tile_list):
         tile_button = TileButton(tile.x, tile.y, tile.image)
         tile_buttons.append(tile_button)
     return tile_buttons
+
+def draw_selected_tile_border(tile):
+    if tile is not None:
+        pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width+10, tile.height+10), 5)
 
 def main():
     run = True
@@ -405,13 +410,9 @@ def main():
     sample_tile_5 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_5)
 
-    selected_tile_index = 1
-
     pattern_size = 2
 
-    selected_tile = initial_tile_list[selected_tile_index]
-
-    patterns = get_patterns(pattern_size, selected_tile)
+    patterns = get_patterns(pattern_size, initial_tile_list[0])
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
@@ -419,6 +420,8 @@ def main():
     output_height = 20
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
+
+    selected_tile = None
 
     while run:
         clock.tick(FPS)
@@ -429,7 +432,7 @@ def main():
 
         draw_patterns(pattern_tile_list)
 
-        # Original tiles
+
         # draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
 
         if is_grid_drawn:
@@ -440,10 +443,12 @@ def main():
             wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
             is_grid_drawn = True
 
+        # Original tiles
         for index, tile_button in enumerate(tile_buttons):
             if tile_button.draw(screen):
-                selected_tile_index = index
-                print(selected_tile_index)
+                selected_tile = tile_buttons[index]
+
+        draw_selected_tile_border(selected_tile)
 
         if draw_test:
             pass

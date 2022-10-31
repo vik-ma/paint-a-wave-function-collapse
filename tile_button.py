@@ -2,6 +2,10 @@ import pygame
 
 class TileButton():
     def __init__(self, x, y, image):
+        self.x = x
+        self.y = y
+        self.width = image.get_width()
+        self.height = image.get_height()
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
