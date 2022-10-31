@@ -374,7 +374,7 @@ def draw_initial_tile_list(initial_tile_list, selected_index, enlargement_scale)
 def create_tile_buttons(initial_tile_list):
     tile_buttons = []
     for tile in initial_tile_list:
-        tile_button = TileButton(tile.x, tile.y+200, tile.image)
+        tile_button = TileButton(tile.x, tile.y, tile.image)
         tile_buttons.append(tile_button)
     return tile_buttons
 
@@ -430,7 +430,7 @@ def main():
         draw_patterns(pattern_tile_list)
 
         # Original tiles
-        draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
+        # draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
 
         if is_grid_drawn:
             tile_group.add(wfc_output)
@@ -440,9 +440,10 @@ def main():
             wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
             is_grid_drawn = True
 
-        for tile_button in tile_buttons:
+        for index, tile_button in enumerate(tile_buttons):
             if tile_button.draw(screen):
-                print("test")
+                selected_tile_index = index
+                print(selected_tile_index)
 
         if draw_test:
             pass
