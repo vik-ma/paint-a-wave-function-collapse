@@ -8,6 +8,7 @@ from button import Button
 from pattern import Pattern
 from rule_index import RuleIndex
 from initial_tile import InitialTile
+from tile_button import TileButton
 
 
 pygame.init()
@@ -352,7 +353,6 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     y = 25
     col_limit = 16
     tile_list = []
-    print(type(patterns))
     for col in range(len(patterns)):
         if col % col_limit == 0 and col > 1:
             y += 25
@@ -370,6 +370,8 @@ def draw_initial_tile_list(initial_tile_list, selected_index, enlargement_scale)
         tile_group.add(tile)
         if index == selected_index:
             pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, (tile.width * enlargement_scale) + 10, (tile.height * enlargement_scale) + 10), 5)
+
+
 
 def main():
     run = True
@@ -411,6 +413,8 @@ def main():
     output_width = 20
     output_height = 20
 
+    tile_button = TileButton(initial_tile_list[0].x, initial_tile_list[0].y+200, initial_tile_list[0].image)
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -430,6 +434,9 @@ def main():
             get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
             is_grid_drawn = True
+
+        if tile_button.draw(screen):
+            print("test")
 
         if draw_test:
             pass
