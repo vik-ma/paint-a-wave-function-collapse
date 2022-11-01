@@ -64,6 +64,23 @@ sample_pixel_array_5x4 = [
 
 sample_initial_tile_3 = InitialTile(sample_pixel_array_5x4, 5, 4)
 
+sample_pixel_array_3x4 = [
+    (WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK),
+    (WHITE, BLACK, WHITE),
+    (GREEN, GREEN, WHITE)
+]
+
+sample_initial_tile_4 = InitialTile(sample_pixel_array_3x4, 3, 4)
+
+sample_pixel_array_3x3 = [
+    (WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK),
+    (WHITE, BLACK, GREEN)
+]
+
+sample_initial_tile_5 = InitialTile(sample_pixel_array_3x3, 3, 3)
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 tile_group = pygame.sprite.Group()
@@ -129,7 +146,6 @@ def get_valid_directions(position, output_width, output_height):
     return valid_directions
 
 def get_patterns(pattern_size, initial_tile):
-    # pattern_size = 2 #2x2
     pattern_list = []
 
     occurence_weights = {}
@@ -411,6 +427,12 @@ def main():
 
     sample_tile_6 = Tile(sample_initial_tile_3.width, sample_initial_tile_3.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_3.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_6)
+
+    sample_tile_7 = Tile(sample_initial_tile_4.width, sample_initial_tile_4.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_4.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_7)
+    
+    sample_tile_8 = Tile(sample_initial_tile_5.width, sample_initial_tile_5.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_5.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_8)
 
     pattern_size = 2
 
