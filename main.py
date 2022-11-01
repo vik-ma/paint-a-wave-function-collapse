@@ -55,6 +55,11 @@ sample_pixel_array_5x5 = [
 
 sample_initial_tile_2 = InitialTile(sample_pixel_array_5x5, 5, 5)
 
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+tile_group = pygame.sprite.Group()
+pattern_group = pygame.sprite.Group()
+
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
     rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
@@ -81,15 +86,6 @@ def get_offset_tiles(pattern, offset):
         return tuple(pattern.pix_array[0][:])
     if offset == (1, 1):
         return tuple([pattern.pix_array[0][0]])
-
-
-
-
-
-
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-tile_group = pygame.sprite.Group()
 
 def get_valid_directions(position, output_width, output_height):
     x, y = position
@@ -344,9 +340,10 @@ def draw_grid(pix_array, output_width, output_height):
             tile_group.add(tile)
     tile_group.draw(screen)
 
-def draw_patterns(tile_list):
-    for tile in tile_list:
-        tile_group.add(tile)
+def draw_patterns(pattern_list):
+    pattern_group.empty()
+    for pattern in pattern_list:
+        pattern_group.add(pattern)
 
 def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     x = 50
@@ -414,7 +411,7 @@ def main():
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
-    selected_tile = None
+    selected_tile = tile_buttons[0]
 
     while run:
         clock.tick(FPS)
@@ -437,6 +434,8 @@ def main():
         for index, tile_button in enumerate(tile_buttons):
             if tile_button.draw(screen):
                 selected_tile = tile_buttons[index]
+                patterns = get_patterns(pattern_size, initial_tile_list[index])
+                pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
         draw_selected_tile_border(selected_tile)
 
@@ -453,6 +452,7 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
+        pattern_group.draw(screen)
         tile_group.draw(screen)
 
 
