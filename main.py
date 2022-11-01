@@ -55,6 +55,15 @@ sample_pixel_array_5x5 = [
 
 sample_initial_tile_2 = InitialTile(sample_pixel_array_5x5, 5, 5)
 
+sample_pixel_array_5x4 = [
+    (WHITE, WHITE, WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK, BLACK, WHITE),
+    (WHITE, BLACK, GREY, BLACK, GREEN),
+    (WHITE, BLACK, BLACK, BLACK, BLACK)
+]
+
+sample_initial_tile_3 = InitialTile(sample_pixel_array_5x4, 5, 4)
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 tile_group = pygame.sprite.Group()
@@ -128,8 +137,8 @@ def get_patterns(pattern_size, initial_tile):
 
     pix_array = initial_tile.pix_array
 
-    for row in range(initial_tile.width - (pattern_size - 1)):
-        for col in range(initial_tile.height - (pattern_size -1)):
+    for row in range(initial_tile.height - (pattern_size - 1)):
+        for col in range(initial_tile.width - (pattern_size - 1)):
             pattern = []
             for pix in pix_array[row:row+pattern_size]:
                 pattern.append(pix[col:col+pattern_size])
@@ -399,6 +408,9 @@ def main():
     initial_tile_list.append(sample_tile_4)
     sample_tile_5 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_5)
+
+    sample_tile_6 = Tile(sample_initial_tile_3.width, sample_initial_tile_3.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_3.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_6)
 
     pattern_size = 2
 
