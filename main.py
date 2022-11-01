@@ -365,13 +365,6 @@ make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 
-#DELETE?
-def draw_initial_tile_list(initial_tile_list, selected_index, enlargement_scale):
-    for index, tile in enumerate(initial_tile_list):
-        tile_group.add(tile)
-        if index == selected_index:
-            pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, (tile.width * enlargement_scale) + 10, (tile.height * enlargement_scale) + 10), 5)
-
 def create_tile_buttons(initial_tile_list):
     tile_buttons = []
     for tile in initial_tile_list:
@@ -381,7 +374,7 @@ def create_tile_buttons(initial_tile_list):
 
 def draw_selected_tile_border(tile):
     if tile is not None:
-        pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width+10, tile.height+10), 5)
+        pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 5)
 
 def main():
     run = True
@@ -431,9 +424,6 @@ def main():
         pygame.draw.rect(screen, BLACK, (49, 99, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
 
         draw_patterns(pattern_tile_list)
-
-
-        # draw_initial_tile_list(initial_tile_list, selected_tile_index, enlargement_scale)
 
         if is_grid_drawn:
             tile_group.add(wfc_output)
