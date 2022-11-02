@@ -59,7 +59,7 @@ sample_pixel_array_5x4 = [
     (WHITE, WHITE, WHITE, WHITE),
     (WHITE, BLACK, BLACK, BLACK),
     (WHITE, BLACK, GREY, BLACK),
-    (WHITE, BLACK, BLACK, BLACK),
+    (WHITE, BLACK, BLACK, GREEN),
     (WHITE, BLACK, BLACK, GREEN)
 ]
 
@@ -80,6 +80,25 @@ sample_pixel_array_3x3 = [
 ]
 
 sample_initial_tile_5 = InitialTile(sample_pixel_array_3x3, 3, 3)
+
+sample_pixel_array_5x4_test = [
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK, GREEN),
+    (WHITE, BLACK, WHITE, GREEN)
+]
+
+sample_initial_tile_6 = InitialTile(sample_pixel_array_5x4_test, 5, 4)
+
+sample_pixel_array_4x4_test = [
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK, GREEN),
+    (WHITE, BLACK, WHITE, GREEN)
+    ]
+
+sample_initial_tile_7 = InitialTile(sample_pixel_array_4x4_test, 4, 4)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -281,6 +300,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
         
         possible_patterns = get_possible_patterns_at_position(pos, coefficients)
         
+        
         # Iterate through each location immediately adjacent to the current location
         for direction in get_valid_directions(pos, output_width, output_height):
             adjacent_pos = (pos[0] + direction[0], pos[1] + direction[1])
@@ -310,14 +330,11 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
 
 
 def execute_wave_function_collapse(patterns, output_width, output_height):
-
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
 
     rule_index = RuleIndex(pattern_list, directions)
-
-    coefficients = initialize_wave_function(pattern_list, output_width, output_height)
 
     number_of_rules = 0
     for pattern in pattern_list:
@@ -329,6 +346,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                 if overlap == part_of_og_pattern:
                     rule_index.add_rule(pattern, direction, pattern_next)
                     number_of_rules += 1
+
+    coefficients = initialize_wave_function(pattern_list, output_width, output_height)
 
     perf_time_start = time.monotonic()
     print("Wave Function Collapse Started")
@@ -440,18 +459,25 @@ def main():
     sample_tile_8 = Tile(sample_initial_tile_5.width, sample_initial_tile_5.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_5.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_8)
 
+    sample_tile_9 = Tile(sample_initial_tile_6.width, sample_initial_tile_6.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_6.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_9)
+
+    sample_tile_10 = Tile(sample_initial_tile_7.width, sample_initial_tile_7.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_7.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_10)
+
     pattern_size = 2
 
     patterns = get_patterns(pattern_size, initial_tile_list[0])
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    output_width = 10
-    output_height = 20
+    output_width = 20
+    output_height = 10
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
     selected_tile = tile_buttons[0]
+    selected_tile_index = 0
 
     while run:
         clock.tick(FPS)
@@ -466,7 +492,10 @@ def main():
             tile_group.add(wfc_output)
         
         if make_grid_button.draw(screen):
-            get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+            try:
+                get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+            except:
+                print("ERROR")
             wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
             is_grid_drawn = True
 
@@ -476,6 +505,7 @@ def main():
                 selected_tile = tile_buttons[index]
                 patterns = get_patterns(pattern_size, initial_tile_list[index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                selected_tile_index = index
 
         draw_selected_tile_border(selected_tile)
 
