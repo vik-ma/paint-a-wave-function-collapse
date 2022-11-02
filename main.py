@@ -19,6 +19,8 @@ HEIGHT = 640
 clock = pygame.time.Clock()
 FPS = 60
 
+error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (175, 175, 175)
@@ -477,7 +479,9 @@ def main():
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
     selected_tile = tile_buttons[0]
-    selected_tile_index = 0
+
+    error_msg = error_font.render("WAVE FUNCTION COLLAPSE FAILED", True, (255, 0, 0))
+    render_error_msg = False
 
     while run:
         clock.tick(FPS)
@@ -492,12 +496,17 @@ def main():
             tile_group.add(wfc_output)
         
         if make_grid_button.draw(screen):
+            render_error_msg = False
             try:
                 get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+                wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
+                is_grid_drawn = True
             except:
-                print("ERROR")
-            wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
-            is_grid_drawn = True
+                render_error_msg = True
+                print("WFC FAILED")
+
+        if render_error_msg is True:
+            screen.blit(error_msg, (50, 300))
 
         # Original tiles
         for index, tile_button in enumerate(tile_buttons):
@@ -505,7 +514,6 @@ def main():
                 selected_tile = tile_buttons[index]
                 patterns = get_patterns(pattern_size, initial_tile_list[index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                selected_tile_index = index
 
         draw_selected_tile_border(selected_tile)
 
