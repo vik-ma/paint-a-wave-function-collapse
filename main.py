@@ -56,19 +56,19 @@ sample_pixel_array_5x5 = [
 sample_initial_tile_2 = InitialTile(sample_pixel_array_5x5, 5, 5)
 
 sample_pixel_array_5x4 = [
-    (WHITE, WHITE, WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK, BLACK, WHITE),
-    (WHITE, BLACK, GREY, BLACK, GREEN),
-    (WHITE, BLACK, BLACK, BLACK, BLACK)
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK, BLACK),
+    (WHITE, BLACK, GREY, BLACK),
+    (WHITE, BLACK, BLACK, BLACK),
+    (WHITE, BLACK, BLACK, GREEN)
 ]
 
 sample_initial_tile_3 = InitialTile(sample_pixel_array_5x4, 5, 4)
 
 sample_pixel_array_3x4 = [
-    (WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK),
-    (WHITE, BLACK, WHITE),
-    (GREEN, GREEN, WHITE)
+    (WHITE, WHITE, WHITE, WHITE),
+    (WHITE, BLACK, BLACK, GREEN),
+    (WHITE, BLACK, WHITE, GREEN)
 ]
 
 sample_initial_tile_4 = InitialTile(sample_pixel_array_3x4, 3, 4)
@@ -122,15 +122,15 @@ def get_valid_directions(position, output_width, output_height):
         valid_directions.extend([RIGHT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_RIGHT])
-        elif y == output_width-1:
+        elif y == output_height-1:
             valid_directions.extend([UP, UP_RIGHT])
         else:
             valid_directions.extend([DOWN, DOWN_RIGHT, UP, UP_RIGHT])
-    elif x == output_height-1:
+    elif x == output_width-1:
         valid_directions.extend([LEFT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_LEFT])
-        elif y == output_width-1:
+        elif y == output_height-1:
             valid_directions.extend([UP, UP_LEFT])
         else:
             valid_directions.extend([DOWN, DOWN_LEFT, UP, UP_LEFT])
@@ -138,7 +138,7 @@ def get_valid_directions(position, output_width, output_height):
         valid_directions.extend([LEFT, RIGHT])
         if y == 0:
             valid_directions.extend([DOWN, DOWN_LEFT, DOWN_RIGHT])
-        elif y == output_width-1:
+        elif y == output_height-1:
             valid_directions.extend([UP, UP_LEFT, UP_RIGHT])
         else: 
             valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT])
@@ -153,8 +153,8 @@ def get_patterns(pattern_size, initial_tile):
 
     pix_array = initial_tile.pix_array
 
-    for row in range(initial_tile.height - (pattern_size - 1)):
-        for col in range(initial_tile.width - (pattern_size - 1)):
+    for row in range(initial_tile.width - (pattern_size - 1)):
+        for col in range(initial_tile.height - (pattern_size - 1)):
             pattern = []
             for pix in pix_array[row:row+pattern_size]:
                 pattern.append(pix[col:col+pattern_size])
@@ -191,9 +191,9 @@ def get_patterns(pattern_size, initial_tile):
 def initialize_wave_function(pattern_list, output_width, output_height):
     coefficients = []
     
-    for col in range(output_height):
+    for col in range(output_width):
         row = []
-        for r in range(output_width):
+        for r in range(output_height):
             row.append(pattern_list)
         coefficients.append(row)
 
@@ -398,6 +398,12 @@ def draw_selected_tile_border(tile):
     if tile is not None:
         pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 5)
 
+def show_prob(patterns):
+    count = 1
+    for pattern, prob in patterns[2].items():
+        print(count, pattern.pix_array, prob)
+        count += 1
+
 def main():
     run = True
 
@@ -440,7 +446,7 @@ def main():
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    output_width = 20
+    output_width = 10
     output_height = 20
 
     tile_buttons = create_tile_buttons(initial_tile_list)   

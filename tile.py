@@ -9,7 +9,7 @@ class Tile(pygame.sprite.Sprite):
 
         for i, pix_row in enumerate(pix_array):
             for j, pix in enumerate(pix_row):
-                pixel_array[j,i] = pix
+                pixel_array[i,j] = pix
         pixel_array.close()
 
         self.image = pygame.transform.scale(self.image, ((width*enlargement_scale), (height*enlargement_scale)))        
