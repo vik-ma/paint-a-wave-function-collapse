@@ -294,14 +294,16 @@ def observe(coefficients, probability):
 
     return min_entropy_pos
 
-def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height):
+
+def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order):
     stack = [min_entropy_pos]
+    print(stack)
+    order.extend(stack)
     
     while len(stack) > 0:
         pos = stack.pop()
         
         possible_patterns = get_possible_patterns_at_position(pos, coefficients)
-        
         
         # Iterate through each location immediately adjacent to the current location
         for direction in get_valid_directions(pos, output_width, output_height):
@@ -326,7 +328,6 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                 if not is_possible:
                     x, y = adjacent_pos
                     coefficients[x][y] = [patt for patt in coefficients[x][y] if patt.pix_array != possible_pattern_at_adjacent.pix_array]
-                        
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
 
@@ -351,17 +352,20 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
 
     coefficients = initialize_wave_function(pattern_list, output_width, output_height)
 
+    order = []
+
     perf_time_start = time.monotonic()
     print("Wave Function Collapse Started")
 
     # Actual start of WFC
     while not is_wave_function_fully_collapsed(coefficients):
         min_entropy_pos = observe(coefficients, probability)
-        propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height)
+        propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order)
 
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
+    # print(coefficients[order[0][0]][order[0][1]].pix_array)
     final_pixels = []
 
     for i in coefficients:
@@ -374,6 +378,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
             row.append(first_pixel)
         final_pixels.append(row)
     return final_pixels
+    # return [coefficients[order[0][0]][order[0][1]].pix_array[0]]ord
 
 
 def draw_window():
@@ -473,7 +478,7 @@ def main():
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    output_width = 20
+    output_width = 10
     output_height = 10
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
@@ -494,16 +499,17 @@ def main():
 
         if is_grid_drawn:
             tile_group.add(wfc_output)
-        
+
         if make_grid_button.draw(screen):
             render_error_msg = False
             try:
                 get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
                 wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
                 is_grid_drawn = True
-            except:
+            except Exception as e:
                 render_error_msg = True
-                print("WFC FAILED")
+                print("WFC FAILED:", e)
+
 
         if render_error_msg is True:
             screen.blit(error_msg, (50, 300))
