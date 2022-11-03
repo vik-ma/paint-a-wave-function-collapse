@@ -399,12 +399,6 @@ def draw_grid(pix_array, output_width, output_height):
             tile = Tile(output_width, output_height, (col * output_width + 50), (row * output_height + 50), pix_array)
             tile_group.add(tile)
 
-def draw_test_grid(pix_array, output_width, output_height):
-    for row in range(output_width):
-        for col in range(output_height):
-            tile = Tile(output_width, output_height, (col * output_width + 300), (row * output_height + 50), pix_array)
-            tile_group.add(tile)
-
 def draw_patterns(pattern_list):
     pattern_group.empty()
     for pattern in pattern_list:
@@ -460,6 +454,11 @@ def main():
     tile_list_x_offset = 50
     tile_list_y_pos = 350
 
+    grid_x_pos = 50
+    grid_y_pos = 100
+    test_grid_x_pos = 300
+    test_grid_y_pos = 100
+
     sample_tile_1 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_1)
     sample_tile_2 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
@@ -507,9 +506,9 @@ def main():
         draw_window()
         
         # Grid border
-        pygame.draw.rect(screen, BLACK, (49, 99, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+        pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
         # TEST GRID BORDER
-        pygame.draw.rect(screen, BLACK, (299, 99, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+        pygame.draw.rect(screen, BLACK, (test_grid_x_pos-1, test_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
         
         draw_patterns(pattern_tile_list)
 
@@ -520,7 +519,7 @@ def main():
             render_error_msg = False
             get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             if get_wfc_output is not None:
-                wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
+                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output, enlargement_scale)
                 is_grid_drawn = True
             else:
                 render_error_msg = True
