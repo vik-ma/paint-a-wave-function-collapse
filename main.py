@@ -298,6 +298,7 @@ def observe(coefficients, probability):
 def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order):
     stack = [min_entropy_pos]
     print(stack)
+    print(coefficients[stack[0][0]][stack[0][1]].pix_array)
     order.extend(stack)
     
     while len(stack) > 0:
@@ -397,7 +398,12 @@ def draw_grid(pix_array, output_width, output_height):
         for col in range(output_height):
             tile = Tile(output_width, output_height, (col * output_width + 50), (row * output_height + 50), pix_array)
             tile_group.add(tile)
-    tile_group.draw(screen)
+
+def draw_test_grid(pix_array, output_width, output_height):
+    for row in range(output_width):
+        for col in range(output_height):
+            tile = Tile(output_width, output_height, (col * output_width + 300), (row * output_height + 50), pix_array)
+            tile_group.add(tile)
 
 def draw_patterns(pattern_list):
     pattern_group.empty()
@@ -443,7 +449,7 @@ def main():
 
     is_grid_drawn = False
 
-    draw_test = False
+    draw_test_grid = False
 
     wfc_output = None
 
@@ -486,8 +492,8 @@ def main():
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    output_width = 10
-    output_height = 10
+    output_width = 6
+    output_height = 6
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -502,7 +508,9 @@ def main():
         
         # Grid border
         pygame.draw.rect(screen, BLACK, (49, 99, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
-
+        # TEST GRID BORDER
+        pygame.draw.rect(screen, BLACK, (299, 99, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+        
         draw_patterns(pattern_tile_list)
 
         if is_grid_drawn:
@@ -530,11 +538,11 @@ def main():
 
         draw_selected_tile_border(selected_tile)
 
-        if draw_test:
-            pass
+        if draw_test_grid:
+            tile_group.add(wfc_output)
 
         if draw_test_button.draw(screen):
-            draw_test = True
+            pass
 
         if test_button.draw(screen):
             pass
