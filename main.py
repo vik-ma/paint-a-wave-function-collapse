@@ -297,9 +297,11 @@ def observe(coefficients, probability):
 
 def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order):
     stack = [min_entropy_pos]
-    print(stack)
-    print(coefficients[stack[0][0]][stack[0][1]].pix_array)
-    order.extend(stack)
+    # print(stack)
+    # print(coefficients[stack[0][0]][stack[0][1]].pix_array)
+    stack_pattern_pix_array = coefficients[stack[0][0]][stack[0][1]].pix_array
+    print(stack_pattern_pix_array)
+    order.append(stack_pattern_pix_array)
     
     while len(stack) > 0:
         pos = stack.pop()
@@ -371,6 +373,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
 
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
+    print(order[0])
 
     # print(coefficients[order[0][0]][order[0][1]].pix_array)
     if wfc_completed:
