@@ -357,27 +357,35 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     perf_time_start = time.monotonic()
     print("Wave Function Collapse Started")
 
+    wfc_completed = True
+
     # Actual start of WFC
-    while not is_wave_function_fully_collapsed(coefficients):
-        min_entropy_pos = observe(coefficients, probability)
-        propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order)
+    try:
+        while not is_wave_function_fully_collapsed(coefficients):
+            min_entropy_pos = observe(coefficients, probability)
+            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order)
+    except Exception as e:
+        wfc_completed = False
+        print("WFC FAIL: ", e)
 
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
     # print(coefficients[order[0][0]][order[0][1]].pix_array)
-    final_pixels = []
+    if wfc_completed:
+        final_pixels = []
 
-    for i in coefficients:
-        row = []
-        for j in i:
-            if isinstance(j, list):
-                first_pixel = j[0].pix_array[0][0]
-            else:
-                first_pixel = j.pix_array[0][0]
-            row.append(first_pixel)
-        final_pixels.append(row)
-    return final_pixels
+        for i in coefficients:
+            row = []
+            for j in i:
+                if isinstance(j, list):
+                    first_pixel = j[0].pix_array[0][0]
+                else:
+                    first_pixel = j.pix_array[0][0]
+                row.append(first_pixel)
+            final_pixels.append(row)
+        return final_pixels
+    return None
     # return [coefficients[order[0][0]][order[0][1]].pix_array[0]]ord
 
 
@@ -502,13 +510,12 @@ def main():
 
         if make_grid_button.draw(screen):
             render_error_msg = False
-            try:
-                get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+            get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+            if get_wfc_output is not None:
                 wfc_output = Tile(output_width, output_height, 50, 100, get_wfc_output, enlargement_scale)
                 is_grid_drawn = True
-            except Exception as e:
+            else:
                 render_error_msg = True
-                print("WFC FAILED:", e)
 
 
         if render_error_msg is True:
