@@ -106,6 +106,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 tile_group = pygame.sprite.Group()
 pattern_group = pygame.sprite.Group()
+completed_wfc_pattern_group = pygame.sprite.Group()
 
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
@@ -531,6 +532,7 @@ def main():
             tile_group.add(wfc_output)
 
         if make_grid_button.draw(screen):
+            completed_wfc_pattern_group.empty()
             render_error_msg = False
             get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             if get_wfc_output is not None:
@@ -559,9 +561,9 @@ def main():
         draw_selected_tile_border(selected_tile)
 
         if draw_test_grid:
-            tile_group.add(test_wfc_output)
+            completed_wfc_pattern_group.add(test_wfc_output)
             if draw_second_test:
-                tile_group.add(test_wfc_output2)
+                completed_wfc_pattern_group.add(test_wfc_output2)
 
         if draw_test_button.draw(screen):
             draw_second_test = True
@@ -575,6 +577,7 @@ def main():
 
         pattern_group.draw(screen)
         tile_group.draw(screen)
+        completed_wfc_pattern_group.draw(screen)
 
 
         pygame.display.update()
