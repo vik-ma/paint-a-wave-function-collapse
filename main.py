@@ -373,7 +373,10 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
 
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
-    print(order[0])
+
+    new_order = swap_x_y_order(order)
+    # print(order[0])
+    # print(new_order[0])
 
     if wfc_completed:
         final_pixels = []
@@ -387,9 +390,15 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        return final_pixels, order
+        return final_pixels, new_order
     return None
 
+def swap_x_y_order(order):
+    new_order = []
+    for o in order:
+        swapped = ((o[0][0][0],o[0][1][0]),(o[0][0][1],o[0][1][1]))
+        new_order.append([swapped, o[1], o[2]])
+    return new_order
 
 def draw_window():
     screen.fill(GREY)
@@ -527,7 +536,8 @@ def main():
             if get_wfc_output is not None:
                 wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
                 is_grid_drawn = True
-                # print(get_wfc_output[1][0][0])
+                print(get_wfc_output[1][0])
+                print(get_wfc_output[1][1])
                 test_wfc_output = Tile(2, 2, test_grid_x_pos, test_grid_y_pos, get_wfc_output[1][0][0], enlargement_scale)
                 test_wfc_output2 = Tile(2, 2, test_grid_x_pos+2*8, test_grid_y_pos, get_wfc_output[1][1][0], enlargement_scale)
                 draw_test_grid = True
