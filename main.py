@@ -301,9 +301,9 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     stack = [min_entropy_pos]
     # print(stack)
     # print(coefficients[stack[0][0]][stack[0][1]].pix_array)
-    stack_pattern_pix_array = [coefficients[stack[0][0]][stack[0][1]].pix_array, stack[0][0], stack[0][1]]
+    # stack_pattern_pix_array = [coefficients[stack[0][0]][stack[0][1]].pix_array, stack[0][0], stack[0][1]]
     # print(stack_pattern_pix_array)
-    order.append(stack_pattern_pix_array)
+    # order.append(stack_pattern_pix_array)
     # print("ORDER", stack_pattern_pix_array)
 
     while len(stack) > 0:
@@ -388,12 +388,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
-    new_order = swap_x_y_order(order)
+    # new_order = swap_x_y_order(order)
     new_order_dict = swap_x_y_order_dict(order_dict)
-    # print(len(order))
-    # print(next(iter(order_dict)))
-    # print(order[0])
-    # print(order_dict.keys())
 
     if wfc_completed:
         final_pixels = []
@@ -571,10 +567,6 @@ def main():
                 
                 test_wfc_output = get_wfc_output[1]
                 test_wfc_output_length = len(test_wfc_output)
-                print(len(test_wfc_output))
-                # wfc_render_pattern_list.append(Tile(2, 2, test_grid_x_pos+test_wfc_output[0][1]*enlargement_scale, test_grid_y_pos+test_wfc_output[0][2]*enlargement_scale, test_wfc_output[0][0], enlargement_scale))
-                # completed_wfc_pattern_group.add(wfc_render_pattern_list[0])
-                # draw_test_grid = True
             else:
                 render_error_msg = True
 
@@ -598,17 +590,11 @@ def main():
                 # completed_wfc_pattern_group.add(test_wfc_output2)
 
         if draw_test_button.draw(screen):
-            # wfc_render_pattern_count += 1
             if wfc_render_pattern_count < test_wfc_output_length:
                 new_tile = test_wfc_output.popitem(last=False)
-                wfc_render_pattern_list.append(Tile(2, 2, test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
+                wfc_render_pattern_list.append(Tile(pattern_size, pattern_size, test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
                 completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
                 wfc_render_pattern_count += 1
-                print(wfc_render_pattern_count)
-                # wfc_render_pattern_list.append(Tile(2, 2, test_grid_x_pos+test_wfc_output[wfc_render_pattern_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_output[wfc_render_pattern_count][2]*enlargement_scale, test_wfc_output[wfc_render_pattern_count][0], enlargement_scale))
-                # completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
-                # print(len(completed_wfc_pattern_group))
-                # print(f"{test_wfc_output[wfc_render_pattern_count][0]} x:{test_wfc_output[wfc_render_pattern_count][1]} y:{test_wfc_output[wfc_render_pattern_count][2]}")
 
         if test_button.draw(screen):
             pass
