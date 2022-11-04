@@ -389,7 +389,9 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
     new_order = swap_x_y_order(order)
-    print(len(order))
+    new_order_dict = swap_x_y_order_dict(order_dict)
+    # print(len(order))
+    # print(next(iter(order_dict)))
     # print(order[0])
     # print(order_dict.keys())
 
@@ -414,6 +416,14 @@ def swap_x_y_order(order):
         swapped = ((o[0][0][0],o[0][1][0]),(o[0][0][1],o[0][1][1]))
         new_order.append([swapped, o[1], o[2]])
     return new_order
+
+def swap_x_y_order_dict(order_dict):
+    new_order_dict = OrderedDict()
+    for k, v in order_dict.items():
+        swapped = ((v[0][0],v[1][0]),(v[0][1],v[1][1]))
+        new_order_dict[k] = swapped
+    return new_order_dict
+
 
 def draw_window():
     screen.fill(GREY)
