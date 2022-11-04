@@ -536,10 +536,11 @@ def main():
             if get_wfc_output is not None:
                 wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
                 is_grid_drawn = True
-                print(get_wfc_output[1][0])
-                print(get_wfc_output[1][1])
-                test_wfc_output = Tile(2, 2, test_grid_x_pos, test_grid_y_pos, get_wfc_output[1][0][0], enlargement_scale)
-                test_wfc_output2 = Tile(2, 2, test_grid_x_pos+2*8, test_grid_y_pos, get_wfc_output[1][1][0], enlargement_scale)
+                # print(get_wfc_output[1][0])
+                # print(get_wfc_output[1][0][1])
+                # print(get_wfc_output[1][1])
+                test_wfc_output = Tile(2, 2, test_grid_x_pos+get_wfc_output[1][0][1]*enlargement_scale, test_grid_y_pos+get_wfc_output[1][0][2]*enlargement_scale, get_wfc_output[1][0][0], enlargement_scale)
+                test_wfc_output2 = Tile(2, 2, test_grid_x_pos+get_wfc_output[1][1][1]*enlargement_scale, test_grid_y_pos+get_wfc_output[1][1][2]*enlargement_scale, get_wfc_output[1][1][0], enlargement_scale)
                 draw_test_grid = True
             else:
                 render_error_msg = True
