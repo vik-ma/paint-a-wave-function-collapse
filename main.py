@@ -299,8 +299,8 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     stack = [min_entropy_pos]
     # print(stack)
     # print(coefficients[stack[0][0]][stack[0][1]].pix_array)
-    stack_pattern_pix_array = coefficients[stack[0][0]][stack[0][1]].pix_array
-    print(stack_pattern_pix_array)
+    stack_pattern_pix_array = [coefficients[stack[0][0]][stack[0][1]].pix_array, stack[0][0], stack[0][1]]
+    # print(stack_pattern_pix_array)
     order.append(stack_pattern_pix_array)
     
     while len(stack) > 0:
@@ -375,7 +375,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
     print(order[0])
 
-    # print(coefficients[order[0][0]][order[0][1]].pix_array)
     if wfc_completed:
         final_pixels = []
 
@@ -388,9 +387,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        return final_pixels
+        return final_pixels, order
     return None
-    # return [coefficients[order[0][0]][order[0][1]].pix_array[0]]ord
 
 
 def draw_window():
@@ -450,6 +448,9 @@ def main():
 
     wfc_output = None
 
+    test_wfc_output = None
+    test_wfc_output2 = None
+
     enlargement_scale = 8
 
     initial_tile_list = []
@@ -504,6 +505,8 @@ def main():
     error_msg = error_font.render("WAVE FUNCTION COLLAPSE FAILED", True, (255, 0, 0))
     render_error_msg = False
 
+    draw_second_test = False
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -522,13 +525,17 @@ def main():
             render_error_msg = False
             get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             if get_wfc_output is not None:
-                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output, enlargement_scale)
+                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
                 is_grid_drawn = True
+                # print(get_wfc_output[1][0][0])
+                test_wfc_output = Tile(2, 2, test_grid_x_pos, test_grid_y_pos, get_wfc_output[1][0][0], enlargement_scale)
+                test_wfc_output2 = Tile(2, 2, test_grid_x_pos+2*8, test_grid_y_pos, get_wfc_output[1][1][0], enlargement_scale)
+                draw_test_grid = True
             else:
                 render_error_msg = True
 
 
-        if render_error_msg is True:
+        if render_error_msg:
             screen.blit(error_msg, (50, 300))
 
         # Original tiles
@@ -541,10 +548,12 @@ def main():
         draw_selected_tile_border(selected_tile)
 
         if draw_test_grid:
-            tile_group.add(wfc_output)
+            tile_group.add(test_wfc_output)
+            if draw_second_test:
+                tile_group.add(test_wfc_output2)
 
         if draw_test_button.draw(screen):
-            pass
+            draw_second_test = True
 
         if test_button.draw(screen):
             pass
