@@ -9,6 +9,7 @@ from pattern import Pattern
 from rule_index import RuleIndex
 from initial_tile import InitialTile
 from tile_button import TileButton
+from collections import OrderedDict
 
 
 pygame.init()
@@ -296,14 +297,15 @@ def observe(coefficients, probability):
     return min_entropy_pos
 
 
-def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order):
+def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict):
     stack = [min_entropy_pos]
     # print(stack)
     # print(coefficients[stack[0][0]][stack[0][1]].pix_array)
     stack_pattern_pix_array = [coefficients[stack[0][0]][stack[0][1]].pix_array, stack[0][0], stack[0][1]]
     # print(stack_pattern_pix_array)
     order.append(stack_pattern_pix_array)
-    
+    # print("ORDER", stack_pattern_pix_array)
+
     while len(stack) > 0:
         pos = stack.pop()
         
@@ -318,22 +320,31 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
             # and check if pattern is still possible in this location
             if not isinstance(possible_patterns_at_adjacent, list):
                 possible_patterns_at_adjacent = [possible_patterns_at_adjacent]
+            
             for possible_pattern_at_adjacent in possible_patterns_at_adjacent:
+                # asd = (possible_pattern_at_adjacent.pix_array, pos)
                 if len(possible_patterns) > 1:
                     is_possible = any([rule_index.check_possibility(pattern, possible_pattern_at_adjacent, direction) for pattern in possible_patterns])
                 else:
                     is_possible = rule_index.check_possibility(possible_patterns, possible_pattern_at_adjacent, direction)
-                    
                 """
                 If the tile is not compatible with any of the tiles in the current location's wavefunction
                 then it's impossible for it to ever get choosen so it needs to be removed from the other
                 location's wavefunction
                 """
+
                 if not is_possible:
                     x, y = adjacent_pos
                     coefficients[x][y] = [patt for patt in coefficients[x][y] if patt.pix_array != possible_pattern_at_adjacent.pix_array]
+                    for patt in coefficients[x][y]:
+                        if order_dict.get((x,y)) is not None:
+                            del order_dict[(x,y)]
+                        order_dict[(x,y)] = patt.pix_array
+
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
+    
+    
 
 
 def execute_wave_function_collapse(patterns, output_width, output_height):
@@ -358,6 +369,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
 
     order = []
 
+    order_dict = OrderedDict()
+
     perf_time_start = time.monotonic()
     print("Wave Function Collapse Started")
 
@@ -367,7 +380,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     try:
         while not is_wave_function_fully_collapsed(coefficients):
             min_entropy_pos = observe(coefficients, probability)
-            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order)
+            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict)
     except Exception as e:
         wfc_completed = False
         print("WFC FAIL: ", e)
@@ -377,7 +390,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
 
     new_order = swap_x_y_order(order)
     print(len(order))
-    # print(new_order[0])
+    # print(order[0])
+    # print(order_dict.keys())
 
     if wfc_completed:
         final_pixels = []
@@ -577,6 +591,7 @@ def main():
                 wfc_render_pattern_list.append(Tile(2, 2, test_grid_x_pos+test_wfc_output[wfc_render_pattern_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_output[wfc_render_pattern_count][2]*enlargement_scale, test_wfc_output[wfc_render_pattern_count][0], enlargement_scale))
                 completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
                 print(len(completed_wfc_pattern_group))
+                print(f"{test_wfc_output[wfc_render_pattern_count][0]} x:{test_wfc_output[wfc_render_pattern_count][1]} y:{test_wfc_output[wfc_render_pattern_count][2]}")
 
 
         if test_button.draw(screen):
