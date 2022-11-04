@@ -545,11 +545,6 @@ def main():
         clock.tick(FPS)
         draw_window()
         
-        # Grid border
-        pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
-        # TEST GRID BORDER
-        pygame.draw.rect(screen, BLACK, (test_grid_x_pos-1, test_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
-        
         draw_patterns(pattern_tile_list)
 
         if is_grid_drawn:
@@ -606,6 +601,12 @@ def main():
         pattern_group.draw(screen)
         tile_group.draw(screen)
         completed_wfc_pattern_group.draw(screen)
+        
+        # Grid border
+        pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+        # TEST GRID BORDER
+        pygame.draw.rect(screen, BLACK, (test_grid_x_pos-1, test_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+        
 
 
         pygame.display.update()
