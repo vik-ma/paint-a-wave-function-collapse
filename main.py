@@ -335,7 +335,8 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                         if order_dict.get((x,y)) is not None:
                             del order_dict[(x,y)]
                         order_dict[(x,y)] = patt.pix_array
-                        order.append((patt.pix_array, x, y))
+                        # order.append((patt.pix_array, x, y))
+                    order.append((coefficients[x][y][-1].pix_array, x, y))
 
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
@@ -387,6 +388,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     new_order = swap_x_y_order(order)
     new_order_dict = swap_x_y_order_dict(order_dict)
 
+    print(new_order_dict[(0,0)])
     if wfc_completed:
         final_pixels = []
 
@@ -525,8 +527,8 @@ def main():
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    output_width = 6
-    output_height = 6
+    output_width = 10
+    output_height = 10
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -581,10 +583,17 @@ def main():
         draw_selected_tile_border(selected_tile)
 
         if draw_test_grid:
-            if wfc_list_count < len(test_wfc_list):
-                new_tile = Tile(pattern_size, pattern_size, test_grid_x_pos+test_wfc_list[wfc_list_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_list[wfc_list_count][2]*enlargement_scale, test_wfc_list[wfc_list_count][0], enlargement_scale)
-                wfc_animation_group.add(new_tile)
-                wfc_list_count += 1
+            # Order list
+            # if wfc_list_count < len(test_wfc_list):
+            #     new_tile = Tile(pattern_size, pattern_size, test_grid_x_pos+test_wfc_list[wfc_list_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_list[wfc_list_count][2]*enlargement_scale, test_wfc_list[wfc_list_count][0], enlargement_scale)
+            #     wfc_animation_group.add(new_tile)
+            #     wfc_list_count += 1
+            # Order dict
+            if wfc_render_pattern_count < test_wfc_output_length:
+                new_tile = test_wfc_output.popitem(last=False)
+                wfc_render_pattern_list.append(Tile(pattern_size, pattern_size, test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
+                completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
+                wfc_render_pattern_count += 1
 
         if draw_test_button.draw(screen):
             if wfc_render_pattern_count < test_wfc_output_length:
