@@ -340,6 +340,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                         if order_dict.get((x,y)) is not None:
                             del order_dict[(x,y)]
                         order_dict[(x,y)] = patt.pix_array
+                        order.append((patt.pix_array, x, y))
 
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
@@ -388,7 +389,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
-    # new_order = swap_x_y_order(order)
+    new_order = swap_x_y_order(order)
     new_order_dict = swap_x_y_order_dict(order_dict)
 
     if wfc_completed:
@@ -403,7 +404,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        return final_pixels, new_order_dict
+        return final_pixels, new_order_dict, new_order
     return None
 
 def swap_x_y_order(order):
