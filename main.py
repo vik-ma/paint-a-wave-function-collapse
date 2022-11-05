@@ -108,6 +108,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 tile_group = pygame.sprite.Group()
 pattern_group = pygame.sprite.Group()
 completed_wfc_pattern_group = pygame.sprite.Group()
+wfc_animation_group = pygame.sprite.Group()
 
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
@@ -542,6 +543,9 @@ def main():
 
     draw_second_test = False
 
+    test_wfc_list = []
+    wfc_list_count = 0
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -555,6 +559,9 @@ def main():
             completed_wfc_pattern_group.empty()
             wfc_render_pattern_list = []
             wfc_render_pattern_count = 0
+            wfc_animation_group.empty()
+            wfc_list_count = 0
+
             render_error_msg = False
             get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             if get_wfc_output is not None:
@@ -563,6 +570,9 @@ def main():
                 
                 test_wfc_output = get_wfc_output[1]
                 test_wfc_output_length = len(test_wfc_output)
+
+                test_wfc_list = get_wfc_output[2]
+                draw_test_grid = True
             else:
                 render_error_msg = True
 
@@ -580,7 +590,13 @@ def main():
         draw_selected_tile_border(selected_tile)
 
         if draw_test_grid:
-            pass
+            # print(test_wfc_list[0][1])
+            if wfc_list_count < len(test_wfc_list):
+                new_tile = Tile(pattern_size, pattern_size, test_grid_x_pos+test_wfc_list[wfc_list_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_list[wfc_list_count][2]*enlargement_scale, test_wfc_list[wfc_list_count][0], enlargement_scale)
+                wfc_animation_group.add(new_tile)
+                wfc_list_count += 1
+            # test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
+
             if draw_second_test:
                 pass
                 # completed_wfc_pattern_group.add(test_wfc_output2)
@@ -602,6 +618,7 @@ def main():
         pattern_group.draw(screen)
         tile_group.draw(screen)
         completed_wfc_pattern_group.draw(screen)
+        wfc_animation_group.draw(screen)
         
         # Grid border
         pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
