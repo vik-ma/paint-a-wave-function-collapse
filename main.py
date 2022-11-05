@@ -300,12 +300,6 @@ def observe(coefficients, probability):
 
 def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict):
     stack = [min_entropy_pos]
-    # print(stack)
-    # print(coefficients[stack[0][0]][stack[0][1]].pix_array)
-    # stack_pattern_pix_array = [coefficients[stack[0][0]][stack[0][1]].pix_array, stack[0][0], stack[0][1]]
-    # print(stack_pattern_pix_array)
-    # order.append(stack_pattern_pix_array)
-    # print("ORDER", stack_pattern_pix_array)
 
     while len(stack) > 0:
         pos = stack.pop()
@@ -541,8 +535,6 @@ def main():
     error_msg = error_font.render("WAVE FUNCTION COLLAPSE FAILED", True, (255, 0, 0))
     render_error_msg = False
 
-    draw_second_test = False
-
     test_wfc_list = []
     wfc_list_count = 0
 
@@ -561,7 +553,6 @@ def main():
             wfc_render_pattern_count = 0
             wfc_animation_group.empty()
             wfc_list_count = 0
-
             render_error_msg = False
             get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
             if get_wfc_output is not None:
@@ -590,16 +581,10 @@ def main():
         draw_selected_tile_border(selected_tile)
 
         if draw_test_grid:
-            # print(test_wfc_list[0][1])
             if wfc_list_count < len(test_wfc_list):
                 new_tile = Tile(pattern_size, pattern_size, test_grid_x_pos+test_wfc_list[wfc_list_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_list[wfc_list_count][2]*enlargement_scale, test_wfc_list[wfc_list_count][0], enlargement_scale)
                 wfc_animation_group.add(new_tile)
                 wfc_list_count += 1
-            # test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
-
-            if draw_second_test:
-                pass
-                # completed_wfc_pattern_group.add(test_wfc_output2)
 
         if draw_test_button.draw(screen):
             if wfc_render_pattern_count < test_wfc_output_length:
