@@ -18,7 +18,7 @@ WIDTH = 800
 HEIGHT = 640
 
 clock = pygame.time.Clock()
-FPS = 60
+FPS = 30
 
 error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
 
@@ -481,8 +481,8 @@ def swap_pattern_x_y(pattern_list):
         new_list.append(pattern)
     return new_list
 
-def highlight_pattern(pattern, enlargement_scale):
-    pygame.draw.rect(screen, YELLOW, (pattern.x-5, pattern.y-5, pattern.width*enlargement_scale + 10, pattern.height*enlargement_scale + 10), 5)
+def highlight_pattern(pattern, pattern_size, enlargement_scale):
+    pygame.draw.rect(screen, YELLOW, (pattern[0]-5, pattern[1]-5, pattern_size*enlargement_scale + 10, pattern_size*enlargement_scale + 10), 5)
 
 def main():
     run = True
@@ -599,8 +599,6 @@ def main():
                 patterns = get_patterns(pattern_size, initial_tile_list[index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
-        highlight_pattern(pattern_tile_list[0], enlargement_scale)
-        highlight_pattern(pattern_tile_list[1], enlargement_scale)
 
         draw_selected_tile_border(selected_tile)
 
@@ -616,6 +614,7 @@ def main():
                 new_tile = test_wfc_output.popitem(last=False)
                 wfc_render_pattern_list.append(Tile(pattern_size, pattern_size, test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
                 completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
+                highlight_pattern(pattern_dict[new_tile[1]], pattern_size, enlargement_scale)
                 wfc_render_pattern_count += 1
 
         if draw_test_button.draw(screen):
