@@ -467,6 +467,12 @@ def show_prob(patterns):
         print(count, pattern.pix_array, prob)
         count += 1
 
+def get_pattern_dict(pattern_list):
+    pattern_dict = {}
+    for pattern in pattern_list:
+        pattern_dict[pattern.pix_array] = (pattern.x, pattern.y)
+    return pattern_dict
+
 def main():
     run = True
 
@@ -527,8 +533,10 @@ def main():
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    output_width = 10
-    output_height = 10
+    pattern_dict = get_pattern_dict(pattern_tile_list)
+
+    output_width = 30
+    output_height = 30
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
