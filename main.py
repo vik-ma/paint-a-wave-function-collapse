@@ -42,7 +42,7 @@ directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 sample_pixel_array = [
     (WHITE, WHITE, WHITE, WHITE),
     (WHITE, BLACK, BLACK, BLACK),
-    (WHITE, BLACK, GREY, BLACK),
+    (WHITE, BLACK, LIGHTGREY, BLACK),
     (WHITE, BLACK, BLACK, BLACK),
     ]
 
@@ -51,7 +51,7 @@ sample_initial_tile_1 = InitialTile(sample_pixel_array, 4, 4)
 sample_pixel_array_5x5 = [
     (WHITE, WHITE, WHITE, WHITE, WHITE),
     (WHITE, BLACK, BLACK, BLACK, WHITE),
-    (WHITE, BLACK, GREY, BLACK, GREEN),
+    (WHITE, BLACK, LIGHTGREY, BLACK, GREEN),
     (WHITE, BLACK, BLACK, BLACK, BLACK),
     (GREEN, GREEN, GREEN, GREEN, WHITE)
 ]
@@ -61,7 +61,7 @@ sample_initial_tile_2 = InitialTile(sample_pixel_array_5x5, 5, 5)
 sample_pixel_array_5x4 = [
     (WHITE, WHITE, WHITE, WHITE),
     (WHITE, BLACK, BLACK, BLACK),
-    (WHITE, BLACK, GREY, BLACK),
+    (WHITE, BLACK, LIGHTGREY, BLACK),
     (WHITE, BLACK, BLACK, GREEN),
     (WHITE, BLACK, BLACK, GREEN)
 ]
