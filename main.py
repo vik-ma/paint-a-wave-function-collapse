@@ -481,6 +481,8 @@ def swap_pattern_x_y(pattern_list):
         new_list.append(pattern)
     return new_list
 
+def highlight_pattern(pattern, enlargement_scale):
+    pygame.draw.rect(screen, YELLOW, (pattern.x-5, pattern.y-5, pattern.width*enlargement_scale + 10, pattern.height*enlargement_scale + 10), 5)
 
 def main():
     run = True
@@ -597,6 +599,8 @@ def main():
                 patterns = get_patterns(pattern_size, initial_tile_list[index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
+        highlight_pattern(pattern_tile_list[0], enlargement_scale)
+        highlight_pattern(pattern_tile_list[1], enlargement_scale)
 
         draw_selected_tile_border(selected_tile)
 
