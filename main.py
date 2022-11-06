@@ -388,7 +388,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     new_order = swap_x_y_order(order)
     new_order_dict = swap_x_y_order_dict(order_dict)
 
-    print(new_order_dict[(0,0)])
     if wfc_completed:
         final_pixels = []
 
@@ -469,9 +468,19 @@ def show_prob(patterns):
 
 def get_pattern_dict(pattern_list):
     pattern_dict = {}
+    pattern_list = swap_pattern_x_y(pattern_list)
     for pattern in pattern_list:
         pattern_dict[pattern.pix_array] = (pattern.x, pattern.y)
     return pattern_dict
+
+def swap_pattern_x_y(pattern_list):
+    new_list = []
+    for pattern in pattern_list:
+        swapped = ((pattern.pix_array[0][0], pattern.pix_array[1][0]),(pattern.pix_array[0][1], pattern.pix_array[1][1]))
+        pattern.pix_array = swapped
+        new_list.append(pattern)
+    return new_list
+
 
 def main():
     run = True
@@ -535,8 +544,8 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    output_width = 30
-    output_height = 30
+    output_width = 10
+    output_height = 10
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -587,9 +596,11 @@ def main():
                 selected_tile = tile_buttons[index]
                 patterns = get_patterns(pattern_size, initial_tile_list[index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_dict = get_pattern_dict(pattern_tile_list)
 
         draw_selected_tile_border(selected_tile)
 
+        # Animation
         if draw_test_grid:
             # Order list
             # if wfc_list_count < len(test_wfc_list):
