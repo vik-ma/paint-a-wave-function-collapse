@@ -490,9 +490,9 @@ def highlight_pattern(pattern, pattern_size, enlargement_scale):
 
 def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
     grid = []
-    for row in range(rows):
+    for col in range(cols):
         new_row = []
-        for col in range(cols):
+        for row in range(rows):
             tile = PaintTile(tile_size, tile_size, (x_pos + tile_size * col), (y_pos + tile_size * row), GREEN)
             new_row.append(tile)
         grid.append(new_row)
@@ -676,11 +676,13 @@ def main():
                 game_state = "paint"
 
         if game_state == "paint":
+
             # Draw grid 
-            for y_index, row in enumerate(paint_grid):
-                for x_index, tile in enumerate(row):
+            for x, col in enumerate(paint_grid):
+                for y, tile in enumerate(col):
                     if tile.draw(screen):
-                        print(x_index, y_index)
+                        print(x, y)
+                        paint_grid[x][y] = PaintTile(paint_grid_tile_size, paint_grid_tile_size, paint_grid[x][y].x, paint_grid[x][y].y, BLACK)
 
             # Grid border
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1)
