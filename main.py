@@ -723,8 +723,11 @@ def main():
 
             if preview_tile_button.draw(screen):
                 pix_array = create_pix_array(paint_grid)
-                preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 350, pix_array, enlargement_scale)
+                preview_tile = Tile(paint_grid_cols, paint_grid_rows, (len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, pix_array, enlargement_scale)
                 draw_preview_tile = True
+                initial_tile_list.append(preview_tile)
+                tile_buttons = create_tile_buttons(initial_tile_list)
+
 
             if draw_preview_tile:
                 screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
