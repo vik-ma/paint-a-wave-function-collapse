@@ -29,6 +29,8 @@ LIGHTGREY = (213, 213, 213)
 GREEN = (0, 255, 00)
 YELLOW = (255, 255, 0)
 
+BACKGROUND_COLOR = GREY
+
 UP = (0, -1)
 LEFT = (-1, 0)
 DOWN = (0, 1)
@@ -418,7 +420,7 @@ def swap_x_y_order_dict(order_dict):
 
 
 def draw_window():
-    screen.fill(GREY)
+    screen.fill(BACKGROUND_COLOR)
 
 def draw_grid(pix_array, output_width, output_height):
     for row in range(output_width):
@@ -558,6 +560,8 @@ def main():
     test_wfc_list = []
     wfc_list_count = 0
 
+    hide_out_of_bounds = True
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -597,6 +601,7 @@ def main():
                 patterns = get_patterns(pattern_size, initial_tile_list[index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
+                print(len(patterns[0]))
 
         draw_selected_tile_border(selected_tile)
 
@@ -634,6 +639,10 @@ def main():
         completed_wfc_pattern_group.draw(screen)
         wfc_animation_group.draw(screen)
         
+        if hide_out_of_bounds:
+            pygame.draw.rect(screen, BACKGROUND_COLOR, ((test_grid_x_pos + output_width * enlargement_scale), test_grid_y_pos, (pattern_size * enlargement_scale), (output_height * enlargement_scale + 1)))
+            pygame.draw.rect(screen, BACKGROUND_COLOR, (test_grid_x_pos, (output_height * enlargement_scale + 1 + test_grid_y_pos), (output_width * enlargement_scale + pattern_size*enlargement_scale), (pattern_size * enlargement_scale)))
+
         # Grid border
         pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
         # TEST GRID BORDER
