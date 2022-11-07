@@ -3,13 +3,14 @@ import random
 import math
 import time
 import sys
+from collections import OrderedDict
 from tile import Tile
 from button import Button
 from pattern import Pattern
 from rule_index import RuleIndex
 from initial_tile import InitialTile
 from tile_button import TileButton
-from collections import OrderedDict
+from paint_tile import PaintTile
 
 
 pygame.init()
@@ -111,6 +112,7 @@ tile_group = pygame.sprite.Group()
 pattern_group = pygame.sprite.Group()
 completed_wfc_pattern_group = pygame.sprite.Group()
 wfc_animation_group = pygame.sprite.Group()
+paint_grid_tile_group = pygame.sprite.Group()
 
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
@@ -486,6 +488,17 @@ def swap_pattern_x_y(pattern_list):
 def highlight_pattern(pattern, pattern_size, enlargement_scale):
     pygame.draw.rect(screen, YELLOW, (pattern[0]-5, pattern[1]-5, pattern_size*enlargement_scale + 10, pattern_size*enlargement_scale + 10), 5)
 
+def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
+    grid = []
+    for row in range(rows):
+        new_row = []
+        for col in range(cols):
+            tile = PaintTile(tile_size, tile_size, (x_pos + tile_size * col), (y_pos + tile_size * row), GREEN)
+            new_row.append(tile)
+        grid.append(new_row)
+    return grid
+
+
 def main():
     run = True
 
@@ -563,7 +576,17 @@ def main():
 
     hide_out_of_bounds = True
 
-    game_state = "wfc"
+    game_state = "paint"
+
+    paint_grid_x_pos = 50
+    paint_grid_y_pos = 50
+
+    paint_grid_tile_size = 50
+
+    paint_grid_cols = 5
+    paint_grid_rows = 5
+
+    paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
     while run:
         clock.tick(FPS)
@@ -653,8 +676,20 @@ def main():
                 game_state = "paint"
 
         if game_state == "paint":
+            # Draw grid 
+            for y_index, row in enumerate(paint_grid):
+                for x_index, tile in enumerate(row):
+                    if tile.draw(screen):
+                        print(x_index, y_index)
+
+            # Grid border
+            pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size + 2) + 2), 1)
+
+
             if switch_state_button.draw(screen):
                 game_state = "wfc"
+            
+            paint_grid_tile_group.draw(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
