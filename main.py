@@ -453,6 +453,8 @@ test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
+preview_tile_button = Button(WHITE, 50, 450, 150, 40, "PREVIEW", BLACK, LIGHTGREY)
+
 white_button = Button(WHITE, 600, 50, 150, 40, "WHITE", BLACK, LIGHTGREY)
 black_button = Button(WHITE, 600, 150, 150, 40, "BLACK", BLACK, LIGHTGREY)
 grey_button = Button(WHITE, 600, 250, 150, 40, "GREY", BLACK, LIGHTGREY)
@@ -502,6 +504,15 @@ def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
             new_row.append(tile)
         grid.append(new_row)
     return grid
+
+def create_pix_array(paint_grid):
+    pix_array = []
+    for col in paint_grid:
+        new_row = []
+        for tile in col:
+            new_row.append(tile.color)
+        pix_array.append(tuple(new_row))
+    return pix_array
 
 
 def main():
@@ -594,6 +605,10 @@ def main():
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
     current_color = WHITE
+
+    preview_tile = None
+
+    draw_preview_tile = False
 
     while run:
         clock.tick(FPS)
@@ -705,6 +720,14 @@ def main():
 
             if green_button.draw(screen):
                 current_color = GREEN  
+
+            if preview_tile_button.draw(screen):
+                pix_array = create_pix_array(paint_grid)
+                preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 350, pix_array, enlargement_scale)
+                draw_preview_tile = True
+
+            if draw_preview_tile:
+                screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
 
             if switch_state_button.draw(screen):
                 game_state = "wfc"
