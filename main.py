@@ -449,6 +449,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
+switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
 def create_tile_buttons(initial_tile_list):
     tile_buttons = []
@@ -562,95 +563,105 @@ def main():
 
     hide_out_of_bounds = True
 
+    game_state = "wfc"
+
     while run:
         clock.tick(FPS)
         draw_window()
         
         draw_patterns(pattern_tile_list)
 
-        if is_grid_drawn:
-            tile_group.add(wfc_output)
+        if game_state == "wfc":
 
-        if make_grid_button.draw(screen):
-            completed_wfc_pattern_group.empty()
-            wfc_render_pattern_list = []
-            wfc_render_pattern_count = 0
-            wfc_animation_group.empty()
-            wfc_list_count = 0
-            render_error_msg = False
-            get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
-            if get_wfc_output[0] is not None:
-                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
-                is_grid_drawn = True  
-            else:
-                render_error_msg = True
+            if is_grid_drawn:
+                tile_group.add(wfc_output)
 
-            test_wfc_output = get_wfc_output[1]
-            test_wfc_output_length = len(test_wfc_output)
+            if make_grid_button.draw(screen):
+                completed_wfc_pattern_group.empty()
+                wfc_render_pattern_list = []
+                wfc_render_pattern_count = 0
+                wfc_animation_group.empty()
+                wfc_list_count = 0
+                render_error_msg = False
+                get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+                if get_wfc_output[0] is not None:
+                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
+                    is_grid_drawn = True  
+                else:
+                    render_error_msg = True
 
-            test_wfc_list = get_wfc_output[2]
-            draw_test_grid = True
+                test_wfc_output = get_wfc_output[1]
+                test_wfc_output_length = len(test_wfc_output)
 
-        if render_error_msg:
-            screen.blit(error_msg, (50, 300))
+                test_wfc_list = get_wfc_output[2]
+                draw_test_grid = True
 
-        # Original tiles
-        for index, tile_button in enumerate(tile_buttons):
-            if tile_button.draw(screen):
-                selected_tile = tile_buttons[index]
-                patterns = get_patterns(pattern_size, initial_tile_list[index])
-                pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                pattern_dict = get_pattern_dict(pattern_tile_list)
-                print(len(patterns[0]))
+            if render_error_msg:
+                screen.blit(error_msg, (50, 300))
 
-        draw_selected_tile_border(selected_tile)
+            # Original tiles
+            for index, tile_button in enumerate(tile_buttons):
+                if tile_button.draw(screen):
+                    selected_tile = tile_buttons[index]
+                    patterns = get_patterns(pattern_size, initial_tile_list[index])
+                    pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                    pattern_dict = get_pattern_dict(pattern_tile_list)
+                    print(len(patterns[0]))
 
-        # Animation
-        if draw_test_grid:
-            # Order list
-            # if wfc_list_count < len(test_wfc_list):
-            #     new_tile = Tile(pattern_size, pattern_size, test_grid_x_pos+test_wfc_list[wfc_list_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_list[wfc_list_count][2]*enlargement_scale, test_wfc_list[wfc_list_count][0], enlargement_scale)
-            #     wfc_animation_group.add(new_tile)
-            #     wfc_list_count += 1
-            # Order dict
-            if wfc_render_pattern_count < test_wfc_output_length:
-                new_tile = test_wfc_output.popitem(last=False)
-                wfc_render_pattern_list.append(Tile(pattern_size, pattern_size, test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
-                completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
-                highlight_pattern(pattern_dict[new_tile[1]], pattern_size, enlargement_scale)
-                wfc_render_pattern_count += 1
+            draw_selected_tile_border(selected_tile)
 
-        if draw_test_button.draw(screen):
-            if wfc_render_pattern_count < test_wfc_output_length:
-                new_tile = test_wfc_output.popitem(last=False)
-                wfc_render_pattern_list.append(Tile(pattern_size, pattern_size, test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
-                completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
-                wfc_render_pattern_count += 1
+            # Animation
+            if draw_test_grid:
+                # Order list
+                # if wfc_list_count < len(test_wfc_list):
+                #     new_tile = Tile(pattern_size, pattern_size, test_grid_x_pos+test_wfc_list[wfc_list_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_list[wfc_list_count][2]*enlargement_scale, test_wfc_list[wfc_list_count][0], enlargement_scale)
+                #     wfc_animation_group.add(new_tile)
+                #     wfc_list_count += 1
+                # Order dict
+                if wfc_render_pattern_count < test_wfc_output_length:
+                    new_tile = test_wfc_output.popitem(last=False)
+                    wfc_render_pattern_list.append(Tile(pattern_size, pattern_size, test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
+                    completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
+                    highlight_pattern(pattern_dict[new_tile[1]], pattern_size, enlargement_scale)
+                    wfc_render_pattern_count += 1
 
-        if test_button.draw(screen):
-            pass
+            if draw_test_button.draw(screen):
+                if wfc_render_pattern_count < test_wfc_output_length:
+                    new_tile = test_wfc_output.popitem(last=False)
+                    wfc_render_pattern_list.append(Tile(pattern_size, pattern_size, test_grid_x_pos+new_tile[0][0]*enlargement_scale, test_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
+                    completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
+                    wfc_render_pattern_count += 1
+
+            if test_button.draw(screen):
+                pass
+
+            pattern_group.draw(screen)
+            tile_group.draw(screen)
+            completed_wfc_pattern_group.draw(screen)
+            wfc_animation_group.draw(screen)
+            
+            if hide_out_of_bounds:
+                pygame.draw.rect(screen, BACKGROUND_COLOR, ((test_grid_x_pos + output_width * enlargement_scale), test_grid_y_pos, (pattern_size * enlargement_scale), (output_height * enlargement_scale + 1)))
+                pygame.draw.rect(screen, BACKGROUND_COLOR, (test_grid_x_pos, (output_height * enlargement_scale + 1 + test_grid_y_pos), (output_width * enlargement_scale + pattern_size*enlargement_scale), (pattern_size * enlargement_scale)))
+
+            # Grid border
+            pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+            # TEST GRID BORDER
+            pygame.draw.rect(screen, BLACK, (test_grid_x_pos-1, test_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+        
+            if switch_state_button.draw(screen):
+                game_state = "paint"
+
+        if game_state == "paint":
+            if switch_state_button.draw(screen):
+                game_state = "wfc"
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
-        pattern_group.draw(screen)
-        tile_group.draw(screen)
-        completed_wfc_pattern_group.draw(screen)
-        wfc_animation_group.draw(screen)
-        
-        if hide_out_of_bounds:
-            pygame.draw.rect(screen, BACKGROUND_COLOR, ((test_grid_x_pos + output_width * enlargement_scale), test_grid_y_pos, (pattern_size * enlargement_scale), (output_height * enlargement_scale + 1)))
-            pygame.draw.rect(screen, BACKGROUND_COLOR, (test_grid_x_pos, (output_height * enlargement_scale + 1 + test_grid_y_pos), (output_width * enlargement_scale + pattern_size*enlargement_scale), (pattern_size * enlargement_scale)))
-
-        # Grid border
-        pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
-        # TEST GRID BORDER
-        pygame.draw.rect(screen, BLACK, (test_grid_x_pos-1, test_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
-        
-
-
         pygame.display.update()
+
 
     pygame.quit()
 
