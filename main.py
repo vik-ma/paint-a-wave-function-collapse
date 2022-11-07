@@ -453,6 +453,11 @@ test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
+white_button = Button(WHITE, 600, 50, 150, 40, "WHITE", BLACK, LIGHTGREY)
+black_button = Button(WHITE, 600, 150, 150, 40, "BLACK", BLACK, LIGHTGREY)
+grey_button = Button(WHITE, 600, 250, 150, 40, "GREY", BLACK, LIGHTGREY)
+green_button = Button(WHITE, 600, 350, 150, 40, "GREEN", BLACK, LIGHTGREY)
+
 def create_tile_buttons(initial_tile_list):
     tile_buttons = []
     for tile in initial_tile_list:
@@ -588,6 +593,8 @@ def main():
 
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
+    current_color = WHITE
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -682,11 +689,22 @@ def main():
                 for y, tile in enumerate(col):
                     if tile.draw(screen):
                         print(x, y)
-                        paint_grid[x][y] = PaintTile(paint_grid_tile_size, paint_grid_tile_size, paint_grid[x][y].x, paint_grid[x][y].y, BLACK)
+                        paint_grid[x][y] = PaintTile(paint_grid_tile_size, paint_grid_tile_size, paint_grid[x][y].x, paint_grid[x][y].y, current_color)
 
             # Grid border
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1)
 
+            if white_button.draw(screen):
+                current_color = WHITE
+
+            if black_button.draw(screen):
+                current_color = BLACK
+
+            if grey_button.draw(screen):
+                current_color = LIGHTGREY
+
+            if green_button.draw(screen):
+                current_color = GREEN  
 
             if switch_state_button.draw(screen):
                 game_state = "wfc"
