@@ -18,7 +18,7 @@ WIDTH = 800
 HEIGHT = 640
 
 clock = pygame.time.Clock()
-FPS = 30
+FPS = 60
 
 error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
 
@@ -70,8 +70,8 @@ sample_initial_tile_3 = InitialTile(sample_pixel_array_5x4, 5, 4)
 
 sample_pixel_array_3x4 = [
     (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK, GREEN),
-    (WHITE, BLACK, WHITE, GREEN)
+    (WHITE, LIGHTGREY, LIGHTGREY, GREEN),
+    (WHITE, LIGHTGREY, WHITE, GREEN)
 ]
 
 sample_initial_tile_4 = InitialTile(sample_pixel_array_3x4, 3, 4)
@@ -337,7 +337,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                         order_dict[(x,y)] = patt.pix_array
                         # order.append((patt.pix_array, x, y))
                     order.append((coefficients[x][y][-1].pix_array, x, y))
-
+                        
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
     
@@ -381,7 +381,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     except Exception as e:
         wfc_completed = False
         print("WFC FAIL: ", e)
-
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
@@ -401,7 +400,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                 row.append(first_pixel)
             final_pixels.append(row)
         return final_pixels, new_order_dict, new_order
-    return None
+    return None, new_order_dict, new_order
 
 def swap_x_y_order(order):
     new_order = []
@@ -576,18 +575,17 @@ def main():
             wfc_list_count = 0
             render_error_msg = False
             get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
-            if get_wfc_output is not None:
+            if get_wfc_output[0] is not None:
                 wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
-                is_grid_drawn = True
-                
-                test_wfc_output = get_wfc_output[1]
-                test_wfc_output_length = len(test_wfc_output)
-
-                test_wfc_list = get_wfc_output[2]
-                draw_test_grid = True
+                is_grid_drawn = True  
             else:
                 render_error_msg = True
 
+            test_wfc_output = get_wfc_output[1]
+            test_wfc_output_length = len(test_wfc_output)
+
+            test_wfc_list = get_wfc_output[2]
+            draw_test_grid = True
 
         if render_error_msg:
             screen.blit(error_msg, (50, 300))
