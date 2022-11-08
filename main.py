@@ -537,7 +537,7 @@ def main():
 
     initial_tile_list = []
     tile_list_x_pos = 50
-    tile_list_x_offset = 50
+    tile_list_x_offset = 16
     tile_list_y_pos = 350
 
     grid_x_pos = 50
@@ -545,31 +545,41 @@ def main():
     test_grid_x_pos = 300
     test_grid_y_pos = 100
 
-    sample_tile_1 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
+    sample_tile_1 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_1)
-    sample_tile_2 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
+    sample_tile_2 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_2)
-    sample_tile_3 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
+    sample_tile_3 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_3)
-    sample_tile_4 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
+    sample_tile_4 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_4)
-    sample_tile_5 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
+    sample_tile_5 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_5)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
 
-    sample_tile_6 = Tile(sample_initial_tile_3.width, sample_initial_tile_3.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_3.pix_array, enlargement_scale)
+    sample_tile_6 = Tile(sample_initial_tile_3.width, sample_initial_tile_3.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_3.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_6)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
 
-    sample_tile_7 = Tile(sample_initial_tile_4.width, sample_initial_tile_4.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_4.pix_array, enlargement_scale)
+    sample_tile_7 = Tile(sample_initial_tile_4.width, sample_initial_tile_4.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_4.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_7)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
     
-    sample_tile_8 = Tile(sample_initial_tile_5.width, sample_initial_tile_5.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_5.pix_array, enlargement_scale)
+    sample_tile_8 = Tile(sample_initial_tile_5.width, sample_initial_tile_5.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_5.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_8)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
 
-    sample_tile_9 = Tile(sample_initial_tile_6.width, sample_initial_tile_6.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_6.pix_array, enlargement_scale)
+    sample_tile_9 = Tile(sample_initial_tile_6.width, sample_initial_tile_6.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_6.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_9)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
 
-    sample_tile_10 = Tile(sample_initial_tile_7.width, sample_initial_tile_7.height, (tile_list_x_pos + len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, sample_initial_tile_7.pix_array, enlargement_scale)
+    sample_tile_10 = Tile(sample_initial_tile_7.width, sample_initial_tile_7.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_7.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_10)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
 
     pattern_size = 2
 
@@ -594,7 +604,7 @@ def main():
 
     hide_out_of_bounds = True
 
-    game_state = "paint"
+    game_state = "wfc"
 
     paint_grid_x_pos = 50
     paint_grid_y_pos = 120
@@ -730,8 +740,9 @@ def main():
                 current_color = GREEN  
 
             if save_tile_button.draw(screen):
-                new_tile_button = Tile(paint_grid_cols, paint_grid_rows, (len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, paint_grid_pix_array, enlargement_scale)
+                new_tile_button = Tile(paint_grid_cols, paint_grid_rows, tile_list_x_pos, tile_list_y_pos, paint_grid_pix_array, enlargement_scale)
                 initial_tile_list.append(new_tile_button)
+                tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
                 tile_buttons = create_tile_buttons(initial_tile_list)
 
                 selected_tile = tile_buttons[-1]
