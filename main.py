@@ -453,7 +453,7 @@ test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
-preview_tile_button = Button(WHITE, 50, 450, 150, 40, "PREVIEW", BLACK, LIGHTGREY)
+save_tile_button = Button(WHITE, 50, 450, 150, 40, "Save Tile", BLACK, LIGHTGREY)
 toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
 
@@ -606,13 +606,15 @@ def main():
 
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
+    paint_grid_pix_array = create_pix_array(paint_grid)
+
     current_color = WHITE
 
     preview_tile = None
 
-    draw_preview_tile = False
-
     draw_paint_grid_lines = True
+
+
 
     while run:
         clock.tick(FPS)
@@ -707,8 +709,10 @@ def main():
             for x, col in enumerate(paint_grid):
                 for y, tile in enumerate(col):
                     if tile.draw(screen):
-                        print(x, y)
                         paint_grid[x][y] = PaintTile(paint_grid_tile_size, paint_grid_tile_size, paint_grid[x][y].x, paint_grid[x][y].y, current_color)
+
+                        paint_grid_pix_array = create_pix_array(paint_grid)
+                        preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
 
             # Grid border
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1)
@@ -725,15 +729,12 @@ def main():
             if green_button.draw(screen):
                 current_color = GREEN  
 
-            if preview_tile_button.draw(screen):
-                pix_array = create_pix_array(paint_grid)
-                preview_tile = Tile(paint_grid_cols, paint_grid_rows, (len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, pix_array, enlargement_scale)
-                draw_preview_tile = True
-                initial_tile_list.append(preview_tile)
+            if save_tile_button.draw(screen):
+                new_tile_button = Tile(paint_grid_cols, paint_grid_rows, (len(initial_tile_list)* tile_list_x_offset), tile_list_y_pos, paint_grid_pix_array, enlargement_scale)
+                initial_tile_list.append(new_tile_button)
                 tile_buttons = create_tile_buttons(initial_tile_list)
 
-
-            if draw_preview_tile:
+            if preview_tile is not None:
                 screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
 
             if switch_state_button.draw(screen):
