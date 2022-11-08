@@ -597,7 +597,7 @@ def main():
     game_state = "paint"
 
     paint_grid_x_pos = 50
-    paint_grid_y_pos = 50
+    paint_grid_y_pos = 120
 
     paint_grid_tile_size = 50
 
@@ -742,10 +742,10 @@ def main():
             paint_grid_tile_group.draw(screen)
 
             if draw_paint_grid_lines:
-                for col in range(2, paint_grid_cols+1):
-                    pygame.draw.line(screen, BLACK, (col * paint_grid_tile_size, paint_grid_y_pos), (col * paint_grid_tile_size, paint_grid_y_pos + paint_grid_tile_size * paint_grid_rows))
-                for row in range(2, paint_grid_rows+1):
-                    pygame.draw.line(screen, BLACK, (paint_grid_x_pos, row * paint_grid_tile_size), (paint_grid_x_pos + paint_grid_tile_size * paint_grid_cols, row * paint_grid_tile_size))
+                for col in range(1, paint_grid_cols):
+                    pygame.draw.line(screen, BLACK, (paint_grid_x_pos + col * paint_grid_tile_size, paint_grid_y_pos), (paint_grid_x_pos + col * paint_grid_tile_size, paint_grid_y_pos + paint_grid_tile_size * paint_grid_rows))
+                for row in range(1, paint_grid_rows):
+                    pygame.draw.line(screen, BLACK, (paint_grid_x_pos, paint_grid_y_pos + row * paint_grid_tile_size), (paint_grid_x_pos + paint_grid_tile_size * paint_grid_cols, paint_grid_y_pos + row * paint_grid_tile_size))
 
             if toggle_grid_lines_button.draw(screen):
                 draw_paint_grid_lines = not draw_paint_grid_lines
