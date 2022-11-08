@@ -610,7 +610,7 @@ def main():
 
     current_color = WHITE
 
-    preview_tile = None
+    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
 
     draw_paint_grid_lines = True
 
@@ -734,8 +734,7 @@ def main():
                 initial_tile_list.append(new_tile_button)
                 tile_buttons = create_tile_buttons(initial_tile_list)
 
-            if preview_tile is not None:
-                screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
+            screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
 
             if switch_state_button.draw(screen):
                 game_state = "wfc"
