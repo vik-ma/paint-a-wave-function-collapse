@@ -734,6 +734,13 @@ def main():
                 initial_tile_list.append(new_tile_button)
                 tile_buttons = create_tile_buttons(initial_tile_list)
 
+                selected_tile = tile_buttons[-1]
+                patterns = get_patterns(pattern_size, initial_tile_list[-1])
+                pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_dict = get_pattern_dict(pattern_tile_list)
+                
+                game_state = "wfc"
+
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
 
             if switch_state_button.draw(screen):
