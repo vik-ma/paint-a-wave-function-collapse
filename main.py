@@ -454,6 +454,8 @@ draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGRE
 switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
 preview_tile_button = Button(WHITE, 50, 450, 150, 40, "PREVIEW", BLACK, LIGHTGREY)
+toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+
 
 white_button = Button(WHITE, 600, 50, 150, 40, "WHITE", BLACK, LIGHTGREY)
 black_button = Button(WHITE, 600, 150, 150, 40, "BLACK", BLACK, LIGHTGREY)
@@ -610,6 +612,8 @@ def main():
 
     draw_preview_tile = False
 
+    draw_paint_grid_lines = True
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -736,6 +740,15 @@ def main():
                 game_state = "wfc"
             
             paint_grid_tile_group.draw(screen)
+
+            if draw_paint_grid_lines:
+                for col in range(2, paint_grid_cols+1):
+                    pygame.draw.line(screen, BLACK, (col * paint_grid_tile_size, paint_grid_y_pos), (col * paint_grid_tile_size, paint_grid_y_pos + paint_grid_tile_size * paint_grid_rows))
+                for row in range(2, paint_grid_rows+1):
+                    pygame.draw.line(screen, BLACK, (paint_grid_x_pos, row * paint_grid_tile_size), (paint_grid_x_pos + paint_grid_tile_size * paint_grid_cols, row * paint_grid_tile_size))
+
+            if toggle_grid_lines_button.draw(screen):
+                draw_paint_grid_lines = not draw_paint_grid_lines
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
