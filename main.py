@@ -29,6 +29,7 @@ GREY = (175, 175, 175)
 LIGHTGREY = (213, 213, 213)
 GREEN = (0, 255, 00)
 YELLOW = (255, 255, 0)
+color_list = [WHITE, BLACK, GREY, LIGHTGREY, GREEN, YELLOW]
 
 BACKGROUND_COLOR = GREY
 
@@ -527,7 +528,10 @@ def create_paint_color_tiles():
             y += 33
             x -= col * 33
         x += 33
-        color_tile = PaintTile(30, 30, x, y, GREY)
+        if col < len(color_list):
+            color_tile = PaintTile(30, 30, x, y, (color_list[col]))
+        else:
+            color_tile = PaintTile(30, 30, x, y, GREY)
         color_tile_list.append(color_tile)
     return color_tile_list
 
@@ -732,7 +736,7 @@ def main():
 
             for color in color_panel:
                 if color.draw(screen, border=True):
-                    print(color.color)
+                    current_color = color.color
 
             # Draw grid 
             for x, col in enumerate(paint_grid):
