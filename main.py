@@ -113,6 +113,7 @@ pattern_group = pygame.sprite.Group()
 completed_wfc_pattern_group = pygame.sprite.Group()
 wfc_animation_group = pygame.sprite.Group()
 paint_grid_tile_group = pygame.sprite.Group()
+paint_color_group = pygame.sprite.Group()
 
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
@@ -516,6 +517,20 @@ def create_pix_array(paint_grid):
         pix_array.append(tuple(new_row))
     return pix_array
 
+def create_paint_color_tiles():
+    y = 20
+    x = 20
+    col_limit = 15
+    color_tile_list = []
+    for col in range(30):
+        if col % col_limit == 0 and col > 1:
+            y += 33
+            x -= col * 33
+        x += 33
+        color_tile = PaintTile(30, 30, x, y, GREY)
+        color_tile_list.append(color_tile)
+    return color_tile_list
+
 
 def main():
     run = True
@@ -604,7 +619,7 @@ def main():
 
     hide_out_of_bounds = True
 
-    game_state = "wfc"
+    game_state = "paint"
 
     paint_grid_x_pos = 50
     paint_grid_y_pos = 120
@@ -624,7 +639,7 @@ def main():
 
     draw_paint_grid_lines = True
 
-
+    color_panel = create_paint_color_tiles()
 
     while run:
         clock.tick(FPS)
@@ -715,6 +730,10 @@ def main():
 
         if game_state == "paint":
 
+            for color in color_panel:
+                if color.draw(screen, border=True):
+                    print(color.color)
+
             # Draw grid 
             for x, col in enumerate(paint_grid):
                 for y, tile in enumerate(col):
@@ -767,6 +786,8 @@ def main():
 
             if toggle_grid_lines_button.draw(screen):
                 draw_paint_grid_lines = not draw_paint_grid_lines
+
+            paint_color_group.draw(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

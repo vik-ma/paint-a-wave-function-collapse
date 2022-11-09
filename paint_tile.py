@@ -13,7 +13,7 @@ class PaintTile(pygame.sprite.Sprite):
         self.rect.topleft = (x, y)
         self.clicked = False
 
-    def draw(self, surface):
+    def draw(self, surface, *, border=False):
             action = False
             pos = pygame.mouse.get_pos()
 
@@ -26,5 +26,7 @@ class PaintTile(pygame.sprite.Sprite):
                 self.clicked = False
                 
             surface.blit(self.image, (self.rect.x, self.rect.y))
+            if border:
+                pygame.draw.rect(surface, (0, 0, 0), (self.x - 1, self.y - 1, self.width + 2, self.height + 2), 1)
 
             return action
