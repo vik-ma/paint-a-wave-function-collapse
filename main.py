@@ -499,7 +499,7 @@ def create_tile_buttons(initial_tile_list):
 
 def draw_selected_tile_border(tile):
     if tile is not None:
-        pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 5)
+        pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 4)
 
 def show_prob(patterns):
     count = 1
