@@ -42,20 +42,32 @@ KHAKI = (240, 230, 140)
 
 ORANGE = (255, 165, 0)
 ORANGEBROWN = (218, 165, 32)
+ORANGERED = (255, 69, 0)
 
+DARKRED = (128, 0, 0)
 RED = (255, 0, 0)
-BLUE = (0, 0, 255)
+CRIMSON = (220, 20, 60)
+
+DARKPURPLE = (75, 0, 130)
 PURPLE = (150, 50, 255)
+LIGHTPURPLE = (186, 85, 211)
+
+PINK = (255, 20, 147)
+LIGHTISHPINK = (255, 105, 180)
+LIGHTPINK = (255, 228, 225)
+
+BLUE = (0, 0, 255)
+
 DARKBLUE = (0, 0, 155)
 
 LIGHTBLUE = (100, 175, 255)
 
-DARKRED = (150, 0, 0)
+
 color_list = [WHITE, BLACK, DARKGREY, GREY, LIGHTGREY, 
-            LAWNGREEN, GREEN, DARKISHGREEN, DARKGREEN, 
-            LIGHTYELLOW, YELLOW, GOLD, ORANGE, ORANGEBROWN, KHAKI,
-            RED, BLUE, PURPLE, DARKBLUE, 
-            LIGHTBLUE, DARKRED]
+            LAWNGREEN, GREEN, DARKISHGREEN, DARKGREEN, KHAKI,
+            LIGHTYELLOW, YELLOW, GOLD, ORANGE, ORANGEBROWN, ORANGERED,
+            RED, CRIMSON, DARKRED, DARKPURPLE, PURPLE, LIGHTPURPLE, PINK, 
+            LIGHTISHPINK, LIGHTPINK, BLUE, DARKBLUE, LIGHTBLUE]
 
 BACKGROUND_COLOR = GREY
 
@@ -547,9 +559,9 @@ def create_pix_array(paint_grid):
 def create_paint_color_tiles():
     y = 20
     x = 20
-    col_limit = 15
+    col_limit = 20
     color_tile_list = []
-    for col in range(30):
+    for col in range(40):
         if col % col_limit == 0 and col > 1:
             y += 33
             x -= col * 33
@@ -774,19 +786,7 @@ def main():
                         preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
 
             # Grid border
-            pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1)
-
-            if white_button.draw(screen):
-                current_color = WHITE
-
-            if black_button.draw(screen):
-                current_color = BLACK
-
-            if grey_button.draw(screen):
-                current_color = LIGHTGREY
-
-            if green_button.draw(screen):
-                current_color = GREEN  
+            pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1) 
 
             if save_tile_button.draw(screen):
                 new_tile_button = Tile(paint_grid_cols, paint_grid_rows, tile_list_x_pos, tile_list_y_pos, paint_grid_pix_array, enlargement_scale)
