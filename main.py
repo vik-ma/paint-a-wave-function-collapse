@@ -25,19 +25,37 @@ error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+
+DARKGREY = (105, 105, 105)
 GREY = (175, 175, 175)
 LIGHTGREY = (213, 213, 213)
+
 GREEN = (0, 255, 00)
+LAWNGREEN = (124,252,0)
+DARKISHGREEN = (50, 205, 50)
+DARKGREEN = (0, 128, 0)
+
+LIGHTYELLOW = (255, 255, 125)
 YELLOW = (255, 255, 0)
+GOLD = (255, 215, 0)
+KHAKI = (240, 230, 140)
+
+ORANGE = (255, 165, 0)
+ORANGEBROWN = (218, 165, 32)
+
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 PURPLE = (150, 50, 255)
 DARKBLUE = (0, 0, 155)
-LIGHTYELLOW = (255, 255, 125)
+
 LIGHTBLUE = (100, 175, 255)
-ORANGE = (255, 125, 0)
+
 DARKRED = (150, 0, 0)
-color_list = [WHITE, BLACK, GREY, LIGHTGREY, GREEN, YELLOW, RED, BLUE, PURPLE, DARKBLUE, LIGHTYELLOW, LIGHTBLUE, ORANGE, DARKRED]
+color_list = [WHITE, BLACK, DARKGREY, GREY, LIGHTGREY, 
+            LAWNGREEN, GREEN, DARKISHGREEN, DARKGREEN, 
+            LIGHTYELLOW, YELLOW, GOLD, ORANGE, ORANGEBROWN, KHAKI,
+            RED, BLUE, PURPLE, DARKBLUE, 
+            LIGHTBLUE, DARKRED]
 
 BACKGROUND_COLOR = GREY
 
@@ -616,8 +634,8 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    output_width = 10
-    output_height = 10
+    output_width = 30
+    output_height = 30
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -638,8 +656,8 @@ def main():
 
     paint_grid_tile_size = 50
 
-    paint_grid_cols = 5
-    paint_grid_rows = 5
+    paint_grid_cols = 4
+    paint_grid_rows = 4
 
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
