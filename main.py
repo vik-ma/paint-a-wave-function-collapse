@@ -22,6 +22,7 @@ clock = pygame.time.Clock()
 FPS = 60
 
 error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
+info_font = pygame.font.Font(pygame.font.get_default_font(), 20)
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -557,8 +558,8 @@ def create_pix_array(paint_grid):
     return pix_array
 
 def create_paint_color_tiles():
-    y = 20
-    x = 20
+    y = 10
+    x = 17
     col_limit = 17
     color_tile_list = []
     for col in range(34):
@@ -669,6 +670,8 @@ def main():
 
     current_color = WHITE
 
+    current_color_tile = PaintTile(30, 30, 200, 80, current_color)
+
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
 
     draw_paint_grid_lines = True
@@ -763,10 +766,16 @@ def main():
                 game_state = "paint"
 
         if game_state == "paint":
+            current_color_text = info_font.render("Current Color:", True, (0, 0, 0))
+            screen.blit(current_color_text, (50, 86))
+
+            if current_color_tile.draw(screen, border=True):
+                pass
 
             for color in color_panel:
                 if color.draw(screen, border=True):
                     current_color = color.color
+                    current_color_tile.image.fill(current_color)
 
             # Draw grid 
             for x, col in enumerate(paint_grid):
