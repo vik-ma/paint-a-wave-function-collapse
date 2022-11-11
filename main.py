@@ -710,7 +710,7 @@ def main():
                 draw_test_grid = True
 
             if render_error_msg:
-                screen.blit(error_msg, (50, 300))
+                screen.blit(error_msg, (50, 365))
 
             # Original tiles
             for index, tile_button in enumerate(tile_buttons):
