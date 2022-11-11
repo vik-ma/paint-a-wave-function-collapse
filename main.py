@@ -30,6 +30,7 @@ DARKGREY = (105, 105, 105)
 GREY = (175, 175, 175)
 LIGHTGREY = (213, 213, 213)
 
+LIGHTGREEN = (0, 255, 127)
 GREEN = (0, 255, 00)
 LAWNGREEN = (124,252,0)
 DARKISHGREEN = (50, 205, 50)
@@ -71,7 +72,7 @@ DARKBLUE = (0, 0, 155)
 
 
 
-color_list = [WHITE, BLACK, DARKGREY, GREY, LIGHTGREY, 
+color_list = [WHITE, BLACK, DARKGREY, GREY, LIGHTGREY, LIGHTGREEN,
             LAWNGREEN, GREEN, DARKISHGREEN, DARKGREEN, KHAKI,
             LIGHTYELLOW, YELLOW, GOLD, ORANGEBROWN, ORANGE, ORANGERED,
             RED, CRIMSON, DARKRED, LIGHTBROWN, BROWN, DARKBROWN, DARKPURPLE, PURPLE, LIGHTPURPLE, PINK, 
@@ -567,9 +568,9 @@ def create_pix_array(paint_grid):
 def create_paint_color_tiles():
     y = 20
     x = 20
-    col_limit = 20
+    col_limit = 17
     color_tile_list = []
-    for col in range(40):
+    for col in range(34):
         if col % col_limit == 0 and col > 1:
             y += 33
             x -= col * 33
