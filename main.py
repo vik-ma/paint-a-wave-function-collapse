@@ -497,8 +497,11 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
 test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
-draw_test_button = Button(WHITE, 600, 450, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
+draw_test_button = Button(WHITE, 600, 490, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+
+toggle_out_of_bounds_button = Button(WHITE, 470, 400, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
+
 
 save_tile_button = Button(WHITE, 50, 450, 150, 40, "Save Tile", BLACK, LIGHTGREY)
 toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
@@ -759,11 +762,19 @@ def main():
                 pygame.draw.rect(screen, BACKGROUND_COLOR, ((second_grid_x_pos + output_width * enlargement_scale), second_grid_y_pos, (pattern_size * enlargement_scale), (output_height * enlargement_scale + 1)))
                 pygame.draw.rect(screen, BACKGROUND_COLOR, (second_grid_x_pos, (output_height * enlargement_scale + 1 + second_grid_y_pos), (output_width * enlargement_scale + pattern_size*enlargement_scale), (pattern_size * enlargement_scale)))
 
+            if toggle_out_of_bounds_button.draw(screen):
+                if hide_out_of_bounds:
+                    hide_out_of_bounds = False
+                    toggle_out_of_bounds_button.text = "Hide Out Of Bounds Patterns"
+                else:
+                    hide_out_of_bounds = True
+                    toggle_out_of_bounds_button.text = "Show Out Of Bounds Patterns"
+
             # Grid border
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
             # Second grid border
             pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
-        
+
             if switch_state_button.draw(screen):
                 game_state = "paint"
 
