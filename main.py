@@ -546,7 +546,7 @@ def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
     for col in range(cols):
         new_row = []
         for row in range(rows):
-            tile = PaintTile(tile_size, tile_size, (x_pos + tile_size * col), (y_pos + tile_size * row), GREEN)
+            tile = PaintTile(tile_size, tile_size, (x_pos + tile_size * col), (y_pos + tile_size * row), BACKGROUND_COLOR)
             new_row.append(tile)
         grid.append(new_row)
     return grid
@@ -642,8 +642,8 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    output_width = 10
-    output_height = 10
+    output_width = 30
+    output_height = 30
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
