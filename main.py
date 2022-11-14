@@ -324,7 +324,7 @@ def get_min_entropy_at_pos(coefficients, probability):
 
     return min_entropy_pos
 
-def observe(coefficients, probability):
+def observe(coefficients, probability, coefficients_state):
     # Find the lowest entropy
     min_entropy_pos = get_min_entropy_at_pos(coefficients, probability)
     
@@ -346,11 +346,13 @@ def observe(coefficients, probability):
     
     # Set this pattern to be the only available at this position
     coefficients[min_entropy_pos[0]][min_entropy_pos[1]] = semi_random_pattern
+    current_coefficients = deepcopy(coefficients)
+    coefficients_state.append(current_coefficients)
 
     return min_entropy_pos
 
 
-def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict):
+def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict, coefficients_state):
     stack = [min_entropy_pos]
 
     while len(stack) > 0:
@@ -383,6 +385,9 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                 if not is_possible:
                     x, y = adjacent_pos
                     coefficients[x][y] = [patt for patt in coefficients[x][y] if patt.pix_array != possible_pattern_at_adjacent.pix_array]
+                    current_coefficients = deepcopy(coefficients)
+                    coefficients_state.append(current_coefficients)
+
                     for patt in coefficients[x][y]:
                         if order_dict.get((x,y)) is not None:
                             del order_dict[(x,y)]
@@ -429,14 +434,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
-            current_coefficients = deepcopy(coefficients)
-            coefficients_state.append(current_coefficients)
-            min_entropy_pos = observe(coefficients, probability)
-            current_coefficients = deepcopy(coefficients)
-            coefficients_state.append(current_coefficients)
-            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict)
-            current_coefficients = deepcopy(coefficients)
-            coefficients_state.append(current_coefficients)
+            min_entropy_pos = observe(coefficients, probability, coefficients_state)
+            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict, coefficients_state)
     except Exception as e:
         wfc_completed = False
         print("WFC FAIL: ", e)
@@ -692,8 +691,6 @@ def main():
 
     tile_col_limit = 8
 
-    animation_delay_tick = 4
-
     while run:
         clock.tick(FPS)
         draw_window()
@@ -749,25 +746,21 @@ def main():
                     # wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, wfc_order_list[wfc_list_count], enlargement_scale)
                     # wfc_animation_group.add(wfc_output)
 
-                    if wfc_list_count % animation_delay_tick == 0:
-                        final_pixels = []
+                    # if wfc_list_count % animation_delay_tick == 0:
+                    final_pixels = []
 
-                        for i in wfc_order_list[wfc_list_count]:
-                            row = []
-                            for j in i:
-                                if isinstance(j, list):
-                                    first_pixel = j[0].pix_array[0][0]
-                                else:
-                                    first_pixel = j.pix_array[0][0]
-                                row.append(first_pixel)
-                            final_pixels.append(row)
+                    for i in wfc_order_list[wfc_list_count]:
+                        row = []
+                        for j in i:
+                            if isinstance(j, list):
+                                first_pixel = j[0].pix_array[0][0]
+                            else:
+                                first_pixel = j.pix_array[0][0]
+                            row.append(first_pixel)
+                        final_pixels.append(row)
 
-                        # print(final_pixels)
-                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
-                        completed_wfc_pattern_group.add(wfc_output_2)
-                    # completed_wfc_pattern_group.add(wfc_output)
-
-                    # print(wfc_order_list[wfc_list_count][0])
+                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
+                    completed_wfc_pattern_group.add(wfc_output_2)
                     wfc_list_count += 1
                 # Order dict
                 # if wfc_render_pattern_count < wfc_animation_output_length:
