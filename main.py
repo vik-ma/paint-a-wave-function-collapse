@@ -429,16 +429,21 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
+            current_coefficients = deepcopy(coefficients)
+            coefficients_state.append(current_coefficients)
             min_entropy_pos = observe(coefficients, probability)
             current_coefficients = deepcopy(coefficients)
             coefficients_state.append(current_coefficients)
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict)
+            current_coefficients = deepcopy(coefficients)
+            coefficients_state.append(current_coefficients)
     except Exception as e:
         wfc_completed = False
         print("WFC FAIL: ", e)
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
+    print(len(coefficients_state))
     new_order = swap_x_y_order(order)
     new_order_dict = swap_x_y_order_dict(order_dict)
 
@@ -687,6 +692,8 @@ def main():
 
     tile_col_limit = 8
 
+    animation_delay_tick = 4
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -709,14 +716,15 @@ def main():
                 if get_wfc_output[0] is not None:
                     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
                     is_grid_drawn = True  
+                    wfc_order_list = get_wfc_output[3]
+                    draw_second_grid = True
                 else:
                     render_error_msg = True
 
                 wfc_animation_output = get_wfc_output[1]
                 wfc_animation_output_length = len(wfc_animation_output)
 
-                wfc_order_list = get_wfc_output[3]
-                draw_second_grid = True
+
 
             if render_error_msg:
                 screen.blit(error_msg, (50, 365))
@@ -740,21 +748,23 @@ def main():
                     # wfc_animation_group.add(new_tile)
                     # wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, wfc_order_list[wfc_list_count], enlargement_scale)
                     # wfc_animation_group.add(wfc_output)
-                    final_pixels = []
 
-                    for i in wfc_order_list[wfc_list_count]:
-                        row = []
-                        for j in i:
-                            if isinstance(j, list):
-                                first_pixel = j[0].pix_array[0][0]
-                            else:
-                                first_pixel = j.pix_array[0][0]
-                            row.append(first_pixel)
-                        final_pixels.append(row)
+                    if wfc_list_count % animation_delay_tick == 0:
+                        final_pixels = []
 
-                    # print(final_pixels)
-                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
-                    completed_wfc_pattern_group.add(wfc_output_2)
+                        for i in wfc_order_list[wfc_list_count]:
+                            row = []
+                            for j in i:
+                                if isinstance(j, list):
+                                    first_pixel = j[0].pix_array[0][0]
+                                else:
+                                    first_pixel = j.pix_array[0][0]
+                                row.append(first_pixel)
+                            final_pixels.append(row)
+
+                        # print(final_pixels)
+                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
+                        completed_wfc_pattern_group.add(wfc_output_2)
                     # completed_wfc_pattern_group.add(wfc_output)
 
                     # print(wfc_order_list[wfc_list_count][0])
