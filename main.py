@@ -510,6 +510,7 @@ switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIG
 
 toggle_out_of_bounds_button = Button(WHITE, 470, 400, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
 
+test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 
 save_tile_button = Button(WHITE, 50, 450, 150, 40, "Save Tile", BLACK, LIGHTGREY)
 toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
@@ -860,6 +861,9 @@ def main():
 
             if toggle_grid_lines_button.draw(screen):
                 draw_paint_grid_lines = not draw_paint_grid_lines
+
+            if test_paint_button.draw(screen):
+                print("TEST")
 
             paint_color_group.draw(screen)
 
