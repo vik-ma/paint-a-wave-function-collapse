@@ -3,6 +3,7 @@ import random
 import math
 import time
 import sys
+import asyncio
 from copy import deepcopy
 from collections import OrderedDict
 from tile import Tile
@@ -512,6 +513,8 @@ toggle_out_of_bounds_button = Button(WHITE, 470, 400, 300, 40, "Show Out Of Boun
 
 test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 
+increase_pattern_size_button = Button(WHITE, 580, 450, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
+decrease_pattern_size_button = Button(WHITE, 580, 400, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
 save_tile_button = Button(WHITE, 50, 450, 150, 40, "Save Tile", BLACK, LIGHTGREY)
 toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
@@ -861,6 +864,18 @@ def main():
 
             if toggle_grid_lines_button.draw(screen):
                 draw_paint_grid_lines = not draw_paint_grid_lines
+
+            if decrease_pattern_size_button.draw(screen):
+                if paint_grid_cols > 3:
+                    paint_grid_cols -= 1
+                    paint_grid_rows -= 1
+
+            if increase_pattern_size_button.draw(screen):
+                if paint_grid_cols < 9:
+                    paint_grid_cols += 1
+                    paint_grid_rows += 1
+
+                print(pattern_size)
 
             if test_paint_button.draw(screen):
                 print("TEST")
