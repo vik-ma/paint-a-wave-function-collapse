@@ -856,7 +856,7 @@ def main():
             if switch_state_button.draw(screen):
                 game_state = "wfc"
             
-            paint_grid_tile_group.draw(screen)
+            # paint_grid_tile_group.draw(screen)
 
             if draw_paint_grid_lines:
                 for col in range(1, paint_grid_cols):
@@ -871,11 +871,15 @@ def main():
                 if paint_grid_cols > paint_grid_size_limit_lower:
                     paint_grid_cols -= 1
                     paint_grid_rows -= 1
+                    paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
+                    paint_grid_pix_array = create_pix_array(paint_grid)
 
             if increase_pattern_size_button.draw(screen):
                 if paint_grid_cols < paint_grid_size_limit_upper:
                     paint_grid_cols += 1
                     paint_grid_rows += 1
+                    paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
+                    paint_grid_pix_array = create_pix_array(paint_grid)
 
             if test_paint_button.draw(screen):
                 print("TEST")
