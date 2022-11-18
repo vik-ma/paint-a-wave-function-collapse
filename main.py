@@ -651,7 +651,9 @@ def main():
 
     pattern_size = 2
 
-    patterns = get_patterns(pattern_size, initial_tile_list[0])
+    selected_tile_index = 0
+
+    patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
@@ -662,7 +664,7 @@ def main():
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
-    selected_tile = tile_buttons[0]
+    selected_tile = tile_buttons[selected_tile_index]
 
     error_msg = error_font.render("WAVE FUNCTION COLLAPSE FAILED", True, (255, 0, 0))
     render_error_msg = False
@@ -739,6 +741,7 @@ def main():
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
                     selected_tile = tile_buttons[index]
+                    selected_tile_index = index
                     patterns = get_patterns(pattern_size, initial_tile_list[index])
                     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                     pattern_dict = get_pattern_dict(pattern_tile_list)
@@ -793,7 +796,7 @@ def main():
                 print(2)
 
             if set_pattern_size_3.draw(screen):
-                print(3) 
+                pattern_size = 3
 
             pattern_group.draw(screen)
             tile_group.draw(screen)
