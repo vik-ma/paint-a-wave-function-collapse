@@ -432,11 +432,25 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     wfc_completed = True
 
     coefficients_state = []
+
+    shorter_coefficients_state = []
+
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
+            current_coefficients = deepcopy(coefficients)
+            shorter_coefficients_state.append(current_coefficients)
+
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
+
+            current_coefficients = deepcopy(coefficients)
+            shorter_coefficients_state.append(current_coefficients)
+
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict, coefficients_state)
+            
+            current_coefficients = deepcopy(coefficients)
+            shorter_coefficients_state.append(current_coefficients)
+
     except Exception as e:
         wfc_completed = False
         print("WFC FAIL: ", e)
@@ -459,7 +473,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        return final_pixels, new_order_dict, new_order, coefficients_state
+        return final_pixels, new_order_dict, new_order, coefficients_state, shorter_coefficients_state
     return None, new_order_dict, new_order
 
 def swap_x_y_order(order):
@@ -705,7 +719,7 @@ def main():
     while run:
         clock.tick(FPS)
         draw_window()
-        
+
         draw_patterns(pattern_tile_list)
 
         if game_state == "wfc":
@@ -724,7 +738,10 @@ def main():
                 if get_wfc_output[0] is not None:
                     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
                     is_grid_drawn = True  
-                    wfc_order_list = get_wfc_output[3]
+                    #Longer
+                    #wfc_order_list = get_wfc_output[3]
+                    #Shorter
+                    wfc_order_list = get_wfc_output[4]
                     draw_second_grid = True
                 else:
                     render_error_msg = True
