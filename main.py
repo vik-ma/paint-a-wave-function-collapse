@@ -793,10 +793,16 @@ def main():
                 pass
 
             if set_pattern_size_2.draw(screen):
-                print(2)
+                pattern_size = 2
+                patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+                pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_dict = get_pattern_dict(pattern_tile_list)
 
             if set_pattern_size_3.draw(screen):
                 pattern_size = 3
+                patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+                pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_dict = get_pattern_dict(pattern_tile_list)
 
             pattern_group.draw(screen)
             tile_group.draw(screen)
