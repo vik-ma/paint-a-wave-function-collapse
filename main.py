@@ -509,6 +509,9 @@ test_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 draw_test_button = Button(WHITE, 600, 490, 150, 40, "DRAW TEST", BLACK, LIGHTGREY)
 switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
+set_pattern_size_2 = Button(WHITE, 570, 300, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+set_pattern_size_3 = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
+
 toggle_out_of_bounds_button = Button(WHITE, 470, 400, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
 
 test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
@@ -785,6 +788,12 @@ def main():
 
             if test_button.draw(screen):
                 pass
+
+            if set_pattern_size_2.draw(screen):
+                print(2)
+
+            if set_pattern_size_3.draw(screen):
+                print(3) 
 
             pattern_group.draw(screen)
             tile_group.draw(screen)
