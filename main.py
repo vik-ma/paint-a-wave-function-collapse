@@ -720,6 +720,8 @@ def main():
 
     tile_col_limit = 8
 
+    grid_render_speed = "Faster"
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -825,14 +827,17 @@ def main():
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
 
+            current_speed_text = info_font.render(f"Current Speed: {grid_render_speed}", True, (0, 0, 0))
+            screen.blit(current_speed_text, (250, 500))
+
             if set_speed_instant_button.draw(screen):
-                print("instant")
+                grid_render_speed = "Instant"
 
             if set_speed_faster_button.draw(screen):
-                print("faster")
+                grid_render_speed = "Faster"
 
             if set_speed_slow_button.draw(screen):
-                print("slow")    
+                grid_render_speed = "Slow"   
 
             pattern_group.draw(screen)
             tile_group.draw(screen)
@@ -860,8 +865,8 @@ def main():
                 game_state = "paint"
 
         if game_state == "paint":
-            current_color_text = info_font.render("Current Color:", True, (0, 0, 0))
-            screen.blit(current_color_text, (50, 86))
+            current_speed_text = info_font.render("Current Color:", True, (0, 0, 0))
+            screen.blit(current_speed_text, (50, 86))
 
             if current_color_tile.draw(screen, border=True):
                 pass
