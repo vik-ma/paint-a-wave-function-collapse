@@ -677,8 +677,8 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    output_width = 20
-    output_height = 20
+    output_width = 10
+    output_height = 10
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -744,11 +744,19 @@ def main():
                 if get_wfc_output[0] is not None:
                     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
                     is_grid_drawn = True  
-                    #Longer
-                    #wfc_order_list = get_wfc_output[3]
-                    #Shorter
-                    wfc_order_list = get_wfc_output[4]
-                    draw_second_grid = True
+
+                    if grid_render_speed == "Slow":
+                        #Longer
+                        wfc_order_list = get_wfc_output[3]
+                        draw_second_grid = True
+                    elif grid_render_speed == "Faster":
+                        #Shorter
+                        wfc_order_list = get_wfc_output[4]
+                        draw_second_grid = True
+                    elif grid_render_speed == "Instant":
+                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, get_wfc_output[0], enlargement_scale)
+                        draw_second_grid = False
+                        completed_wfc_pattern_group.add(wfc_output_2)
                 else:
                     render_error_msg = True
 
