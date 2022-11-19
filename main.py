@@ -526,6 +526,10 @@ switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIG
 set_pattern_size_2 = Button(WHITE, 570, 300, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
 set_pattern_size_3 = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
+set_speed_instant_button = Button(WHITE, 250, 550, 100, 40, "Instant", BLACK, LIGHTGREY)
+set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGHTGREY)
+set_speed_slow_button = Button(WHITE, 470, 550, 100, 40, "Slow", BLACK, LIGHTGREY)
+
 toggle_out_of_bounds_button = Button(WHITE, 470, 400, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
 
 test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
@@ -673,8 +677,8 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    output_width = 10
-    output_height = 10
+    output_width = 20
+    output_height = 20
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -820,6 +824,15 @@ def main():
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
+
+            if set_speed_instant_button.draw(screen):
+                print("instant")
+
+            if set_speed_faster_button.draw(screen):
+                print("faster")
+
+            if set_speed_slow_button.draw(screen):
+                print("slow")    
 
             pattern_group.draw(screen)
             tile_group.draw(screen)
