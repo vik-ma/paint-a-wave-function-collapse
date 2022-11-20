@@ -833,11 +833,11 @@ def main():
                 pattern_dict = get_pattern_dict(pattern_tile_list)
 
             current_speed_text = info_font.render(f"Current Speed: {grid_render_speed}", True, (0, 0, 0))
-            screen.blit(current_speed_text, (250, 500))
+            screen.blit(current_speed_text, (250, 520))
 
             if grid_render_speed == "Nth":
                 nth_text = info_font.render(str(wfc_slice_num), True, (0, 0, 255))
-                screen.blit(nth_text, (450, 500))
+                screen.blit(nth_text, (450, 520))
 
             if set_speed_instant_button.draw(screen):
                 grid_render_speed = "Instant"
