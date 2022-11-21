@@ -731,6 +731,8 @@ def main():
 
     wfc_slice_num = 5
 
+    is_wfc_anim_ongoing = False
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -759,9 +761,11 @@ def main():
                 if grid_render_speed == "Slow":
                     wfc_order_list = get_wfc_output[2]
                     draw_second_grid = True
+                    is_wfc_anim_ongoing = True
                 elif grid_render_speed == "Faster":
                     wfc_order_list = get_wfc_output[3]
                     draw_second_grid = True
+                    is_wfc_anim_ongoing = True
                 elif grid_render_speed == "Instant":
                     wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, get_wfc_output[1], enlargement_scale)
                     draw_second_grid = False
@@ -771,11 +775,20 @@ def main():
                     wfc_order_list = get_wfc_output[2][::wfc_slice_num]
                     wfc_order_list.append(last_image)
                     draw_second_grid = True
+                    is_wfc_anim_ongoing = True
 
+            current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
+            grid_size_text = info_font.render(f"{output_width} x {output_height}", True, (0, 0, 255))
+            screen.blit(current_grid_size_text, (580, 175))
+            screen.blit(grid_size_text, (685, 175))
             if increase_output_size_button.draw(screen):
-                pass
+                if not is_wfc_anim_ongoing and output_width < 30:
+                    output_width += 1
+                    output_height += 1
             if decrease_output_size_button.draw(screen):
-                pass
+                if not is_wfc_anim_ongoing and output_width > 10:
+                    output_width -= 1
+                    output_height -= 1
 
 
             if render_error_msg:
@@ -814,6 +827,8 @@ def main():
                     wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
                     completed_wfc_pattern_group.add(wfc_output_2)
                     wfc_list_count += 1
+                if wfc_list_count == len(wfc_order_list):
+                    is_wfc_anim_ongoing = False
 
 
 
