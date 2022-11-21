@@ -463,15 +463,16 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
         for i in coefficients: 
             row = []
             for j in i:
-                if isinstance(j, list) and len(j) > 0:
-                    first_pixel = j[0].pix_array[0][0]
-                elif isinstance(j, tuple):
-                    first_pixel = j.pix_array[0][0]
+                if isinstance(j, list):
+                    if len(j) > 0:
+                        first_pixel = j[0].pix_array[0][0]
+                    else:
+                        first_pixel = BACKGROUND_COLOR
                 else:
-                    first_pixel = BACKGROUND_COLOR
+                    first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)  
-    return False, final_pixels, coefficients_state, shorter_coefficients_state
+        return False, final_pixels, coefficients_state, shorter_coefficients_state
 
 def swap_x_y_order(order):
     new_order = []
