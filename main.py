@@ -503,7 +503,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     return tile_list
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
-test_button = Button(WHITE, 600, 490, 150, 40, "TEST", BLACK, LIGHTGREY)
+test_button = Button(WHITE, 600, 200, 150, 40, "TEST", BLACK, LIGHTGREY)
 switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
 set_pattern_size_2 = Button(WHITE, 570, 300, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
@@ -719,8 +719,6 @@ def main():
 
             if make_grid_button.draw(screen):
                 completed_wfc_pattern_group.empty()
-                wfc_render_pattern_list = []
-                wfc_render_pattern_count = 0
 
                 wfc_list_count = 0
                 render_error_msg = False
