@@ -441,14 +441,13 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
 
     except Exception as e:
         wfc_completed = False
-        print("WFC FAIL: ", e)
+        # print("WFC FAIL: ", e)
         traceback.print_exc()
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
     if wfc_completed:
         final_pixels = []
-
         for i in coefficients:
             row = []
             for j in i:
@@ -458,8 +457,21 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        return final_pixels, coefficients_state, shorter_coefficients_state
-    return None, None, None
+        return True, final_pixels, coefficients_state, shorter_coefficients_state
+    else:
+        final_pixels = []
+        for i in coefficients: 
+            row = []
+            for j in i:
+                if isinstance(j, list) and len(j) > 0:
+                    first_pixel = j[0].pix_array[0][0]
+                elif isinstance(j, tuple):
+                    first_pixel = j.pix_array[0][0]
+                else:
+                    first_pixel = BACKGROUND_COLOR
+                row.append(first_pixel)
+            final_pixels.append(row)  
+    return False, final_pixels, coefficients_state, shorter_coefficients_state
 
 def swap_x_y_order(order):
     new_order = []
@@ -722,28 +734,29 @@ def main():
                 wfc_list_count = 0
                 render_error_msg = False
                 get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
-                if get_wfc_output[0] is not None:
-                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[0], enlargement_scale)
+                if get_wfc_output[0]:
+                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
                     is_grid_drawn = True  
-
-                    if grid_render_speed == "Slow":
-                        wfc_order_list = get_wfc_output[1]
-                        draw_second_grid = True
-                    elif grid_render_speed == "Faster":
-                        wfc_order_list = get_wfc_output[2]
-                        draw_second_grid = True
-                    elif grid_render_speed == "Instant":
-                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, get_wfc_output[0], enlargement_scale)
-                        draw_second_grid = False
-                        completed_wfc_pattern_group.add(wfc_output_2)
-                    elif grid_render_speed == "Nth":
-                        last_image = get_wfc_output[1][-1]
-                        wfc_order_list = get_wfc_output[1][::wfc_slice_num]
-                        wfc_order_list.append(last_image)
-                        draw_second_grid = True
-
                 else:
                     render_error_msg = True
+                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
+                    is_grid_drawn = True  
+
+                if grid_render_speed == "Slow":
+                    wfc_order_list = get_wfc_output[2]
+                    draw_second_grid = True
+                elif grid_render_speed == "Faster":
+                    wfc_order_list = get_wfc_output[3]
+                    draw_second_grid = True
+                elif grid_render_speed == "Instant":
+                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, get_wfc_output[1], enlargement_scale)
+                    draw_second_grid = False
+                    completed_wfc_pattern_group.add(wfc_output_2)
+                elif grid_render_speed == "Nth":
+                    last_image = get_wfc_output[2][-1]
+                    wfc_order_list = get_wfc_output[2][::wfc_slice_num]
+                    wfc_order_list.append(last_image)
+                    draw_second_grid = True
 
 
 
@@ -772,7 +785,10 @@ def main():
                         row = []
                         for j in i:
                             if isinstance(j, list):
-                                first_pixel = j[0].pix_array[0][0]
+                                if len(j) > 0:
+                                    first_pixel = j[0].pix_array[0][0]
+                                else:
+                                    first_pixel = BACKGROUND_COLOR
                             else:
                                 first_pixel = j.pix_array[0][0]
                             row.append(first_pixel)
