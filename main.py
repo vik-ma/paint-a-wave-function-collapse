@@ -4,6 +4,7 @@ import math
 import time
 import sys
 import asyncio
+import traceback
 from copy import deepcopy
 from collections import OrderedDict
 from tile import Tile
@@ -371,7 +372,6 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                 possible_patterns_at_adjacent = [possible_patterns_at_adjacent]
             
             for possible_pattern_at_adjacent in possible_patterns_at_adjacent:
-                # asd = (possible_pattern_at_adjacent.pix_array, pos)
                 if len(possible_patterns) > 1:
                     is_possible = any([rule_index.check_possibility(pattern, possible_pattern_at_adjacent, direction) for pattern in possible_patterns])
                 else:
@@ -442,6 +442,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
     except Exception as e:
         wfc_completed = False
         print("WFC FAIL: ", e)
+        traceback.print_exc()
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
@@ -607,10 +608,6 @@ def main():
 
     wfc_output = None
 
-    wfc_render_pattern_count = 0
-
-    wfc_render_pattern_list = []
-
     enlargement_scale = 8
 
     initial_tile_list = []
@@ -661,8 +658,8 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    output_width = 20
-    output_height = 20
+    output_width = 10
+    output_height = 10
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
