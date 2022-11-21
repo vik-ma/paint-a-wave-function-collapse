@@ -939,6 +939,7 @@ def main():
                     paint_grid_rows -= 1
                     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
                     paint_grid_pix_array = create_pix_array(paint_grid)
+                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
 
             if increase_pattern_size_button.draw(screen):
                 if paint_grid_cols < paint_grid_size_limit_upper:
@@ -946,6 +947,7 @@ def main():
                     paint_grid_rows += 1
                     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
                     paint_grid_pix_array = create_pix_array(paint_grid)
+                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
 
             if test_paint_button.draw(screen):
                 print("TEST")
