@@ -458,7 +458,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                 row.append(first_pixel)
             final_pixels.append(row)
         return final_pixels, coefficients_state, shorter_coefficients_state
-    return None
+    return None, None, None
 
 def swap_x_y_order(order):
     new_order = []
@@ -514,8 +514,8 @@ set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGH
 set_speed_slow_button = Button(WHITE, 470, 550, 100, 40, "Slow", BLACK, LIGHTGREY)
 set_speed_nth_button = Button(WHITE, 580, 550, 100, 40, "Nth", BLACK, LIGHTGREY)
 
-increase_nth_button = Button(WHITE, 470, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
-decrease_nth_button = Button(WHITE, 470, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
+increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
+decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
 
 toggle_out_of_bounds_button = Button(WHITE, 470, 400, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
 
@@ -661,8 +661,8 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    output_width = 10
-    output_height = 10
+    output_width = 20
+    output_height = 20
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -807,10 +807,12 @@ def main():
                 nth_text = info_font.render(str(wfc_slice_num), True, (0, 0, 255))
                 screen.blit(nth_text, (450, 520))
                 if increase_nth_button.draw(screen):
-                    print("i")
+                    if wfc_slice_num < 10:
+                        wfc_slice_num += 1
 
                 if decrease_nth_button.draw(screen):
-                    print("d")
+                    if wfc_slice_num > 1:
+                        wfc_slice_num -= 1
 
             if set_speed_instant_button.draw(screen):
                 grid_render_speed = "Instant"
