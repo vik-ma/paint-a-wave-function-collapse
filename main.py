@@ -167,8 +167,18 @@ def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
     rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
     rotated_pix_array_90 = tuple(zip(*rotated_pix_array_180[::-1]))
+
+    if len(pix_array) is 2:
+        vertically_flipped_pix_array = tuple(pix_array[0][::-1]), tuple(pix_array[-1][::-1])
+    elif len(pix_array) is 3:
+        vertically_flipped_pix_array = tuple(pix_array[0][::-1]), tuple(pix_array[1][::-1]), tuple(pix_array[-1][::-1])
+
+    horizontally_flipped_pix_array = tuple(pix_array[::-1])
+
     pix_array = tuple(pix_array)
-    return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270)
+    # return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270)
+    return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270, vertically_flipped_pix_array, horizontally_flipped_pix_array)
+
 
 def get_offset_tiles(pattern, offset):
     if offset == (0, 0):
@@ -798,6 +808,8 @@ def main():
                     wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
                     completed_wfc_pattern_group.add(wfc_output_2)
                     wfc_list_count += 1
+
+
 
             if test_button.draw(screen):
                 pass
