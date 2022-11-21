@@ -74,7 +74,7 @@ DARKBLUE = (0, 0, 155)
 color_list = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
             DARKBROWN, BROWN, LIGHTBROWN, ORANGEBROWN, 
             KHAKI, LIGHTYELLOW, YELLOW, GOLD, ORANGE, 
-            ORANGERED,  RED, DARKRED, CRIMSON, PINK,
+            ORANGERED, RED, DARKRED, CRIMSON, PINK,
             LIGHTISHPINK, LIGHTPINK, LIGHTPURPLE, PURPLE,
             DARKPURPLE, DARKBLUE, BLUE, LIGHTISHBLUE, LIGHTBLUE,
             CYAN, LIGHTGREEN, GREEN, LAWNGREEN,  DARKISHGREEN, DARKGREEN]
@@ -624,6 +624,12 @@ def create_paint_color_tiles():
         color_tile_list.append(color_tile)
     return color_tile_list
 
+def get_grid_size_text_color(size):
+    if size < 15:
+        return GREEN
+    elif size >= 15 and size < 22:
+        return YELLOW
+    return ORANGE
 
 def main():
     run = True
@@ -733,6 +739,8 @@ def main():
 
     is_wfc_anim_ongoing = False
 
+    grid_size_text_color = get_grid_size_text_color(output_width)
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -778,17 +786,20 @@ def main():
                     is_wfc_anim_ongoing = True
 
             current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
-            grid_size_text = info_font.render(f"{output_width} x {output_height}", True, (0, 0, 255))
+
+            grid_size_text = info_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
             screen.blit(current_grid_size_text, (580, 175))
             screen.blit(grid_size_text, (685, 175))
             if increase_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width < 30:
                     output_width += 1
                     output_height += 1
+                    grid_size_text_color = get_grid_size_text_color(output_width)
             if decrease_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width > 10:
                     output_width -= 1
                     output_height -= 1
+                    grid_size_text_color = get_grid_size_text_color(output_width)
 
 
             if render_error_msg:
