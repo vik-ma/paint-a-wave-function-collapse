@@ -514,6 +514,8 @@ set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGH
 set_speed_slow_button = Button(WHITE, 470, 550, 100, 40, "Slow", BLACK, LIGHTGREY)
 set_speed_nth_button = Button(WHITE, 580, 550, 100, 40, "Nth", BLACK, LIGHTGREY)
 
+increase_nth_button = Button(WHITE, 470, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
+decrease_nth_button = Button(WHITE, 470, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
 
 toggle_out_of_bounds_button = Button(WHITE, 470, 400, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
 
@@ -702,7 +704,7 @@ def main():
 
     tile_col_limit = 8
 
-    grid_render_speed = "Faster"
+    grid_render_speed = "Nth"
 
     wfc_slice_num = 5
 
@@ -804,6 +806,11 @@ def main():
             if grid_render_speed == "Nth":
                 nth_text = info_font.render(str(wfc_slice_num), True, (0, 0, 255))
                 screen.blit(nth_text, (450, 520))
+                if increase_nth_button.draw(screen):
+                    print("i")
+
+                if decrease_nth_button.draw(screen):
+                    print("d")
 
             if set_speed_instant_button.draw(screen):
                 grid_render_speed = "Instant"

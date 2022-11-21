@@ -2,7 +2,7 @@ import pygame
 
 
 class Button():
-    def __init__(self, color, x, y, width, height, text, text_color, hover_color):
+    def __init__(self, color, x, y, width, height, text, text_color, hover_color, *, small_text=False):
         self.color = color
         self.x = x
         self.y = y
@@ -14,6 +14,8 @@ class Button():
         self.clicked = False
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.hover_color = hover_color
+        if small_text:
+            self.font = pygame.font.SysFont('Arial Bold', 16)
 
 
     def draw(self, surface):
