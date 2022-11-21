@@ -740,7 +740,9 @@ def main():
                         draw_second_grid = False
                         completed_wfc_pattern_group.add(wfc_output_2)
                     elif grid_render_speed == "Nth":
+                        last_image = get_wfc_output[1][-1]
                         wfc_order_list = get_wfc_output[1][::wfc_slice_num]
+                        wfc_order_list.append(last_image)
                         draw_second_grid = True
 
                 else:
