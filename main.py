@@ -681,8 +681,8 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    output_width = 10
-    output_height = 10
+    output_width = 20
+    output_height = 20
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -910,6 +910,7 @@ def main():
                 tile_buttons = create_tile_buttons(initial_tile_list)
 
                 selected_tile = tile_buttons[-1]
+                selected_tile_index = len(tile_buttons)-1
                 patterns = get_patterns(pattern_size, initial_tile_list[-1])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
