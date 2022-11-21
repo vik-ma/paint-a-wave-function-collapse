@@ -168,9 +168,9 @@ def get_rotated_pix_array(pix_array):
     rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
     rotated_pix_array_90 = tuple(zip(*rotated_pix_array_180[::-1]))
 
-    if len(pix_array) is 2:
+    if len(pix_array) == 2:
         vertically_flipped_pix_array = tuple(pix_array[0][::-1]), tuple(pix_array[-1][::-1])
-    elif len(pix_array) is 3:
+    elif len(pix_array) == 3:
         vertically_flipped_pix_array = tuple(pix_array[0][::-1]), tuple(pix_array[1][::-1]), tuple(pix_array[-1][::-1])
 
     horizontally_flipped_pix_array = tuple(pix_array[::-1])
@@ -527,11 +527,14 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     return tile_list
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
-test_button = Button(WHITE, 600, 200, 150, 40, "TEST", BLACK, LIGHTGREY)
+test_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
 switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
-set_pattern_size_2 = Button(WHITE, 570, 300, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
-set_pattern_size_3 = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
+increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
+decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
+
+set_pattern_size_2 = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+set_pattern_size_3 = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
 set_speed_instant_button = Button(WHITE, 250, 550, 100, 40, "Instant", BLACK, LIGHTGREY)
 set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGHTGREY)
@@ -541,7 +544,7 @@ set_speed_nth_button = Button(WHITE, 580, 550, 100, 40, "Nth", BLACK, LIGHTGREY)
 increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
 decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
 
-toggle_out_of_bounds_button = Button(WHITE, 470, 400, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
+toggle_out_of_bounds_button = Button(WHITE, 490, 450, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
 
 test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 
@@ -769,7 +772,10 @@ def main():
                     wfc_order_list.append(last_image)
                     draw_second_grid = True
 
-
+            if increase_output_size_button.draw(screen):
+                pass
+            if decrease_output_size_button.draw(screen):
+                pass
 
 
             if render_error_msg:
