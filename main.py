@@ -159,7 +159,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 tile_group = pygame.sprite.Group()
 pattern_group = pygame.sprite.Group()
 completed_wfc_pattern_group = pygame.sprite.Group()
-wfc_animation_group = pygame.sprite.Group()
 paint_grid_tile_group = pygame.sprite.Group()
 paint_color_group = pygame.sprite.Group()
 
@@ -353,7 +352,7 @@ def observe(coefficients, probability, coefficients_state):
     return min_entropy_pos
 
 
-def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict, coefficients_state):
+def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state):
     stack = [min_entropy_pos]
 
     while len(stack) > 0:
@@ -388,13 +387,6 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                     coefficients[x][y] = [patt for patt in coefficients[x][y] if patt.pix_array != possible_pattern_at_adjacent.pix_array]
                     current_coefficients = deepcopy(coefficients)
                     coefficients_state.append(current_coefficients)
-
-                    for patt in coefficients[x][y]:
-                        if order_dict.get((x,y)) is not None:
-                            del order_dict[(x,y)]
-                        order_dict[(x,y)] = patt.pix_array
-                        # order.append((patt.pix_array, x, y))
-                    order.append((coefficients[x][y][-1].pix_array, x, y))
                         
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
@@ -422,10 +414,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
 
     coefficients = initialize_wave_function(pattern_list, output_width, output_height)
 
-    order = []
-
-    order_dict = OrderedDict()
-
     perf_time_start = time.monotonic()
     print("Wave Function Collapse Started")
 
@@ -446,7 +434,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
             current_coefficients = deepcopy(coefficients)
             shorter_coefficients_state.append(current_coefficients)
 
-            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, order, order_dict, coefficients_state)
+            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
             
             current_coefficients = deepcopy(coefficients)
             shorter_coefficients_state.append(current_coefficients)
@@ -456,9 +444,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
         print("WFC FAIL: ", e)
     perf_time_end = time.monotonic()
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
-
-    new_order = swap_x_y_order(order)
-    new_order_dict = swap_x_y_order_dict(order_dict)
 
     if wfc_completed:
         final_pixels = []
@@ -472,8 +457,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        return final_pixels, new_order_dict, new_order, coefficients_state, shorter_coefficients_state
-    return None, new_order_dict, new_order
+        return final_pixels, coefficients_state, shorter_coefficients_state
+    return None
 
 def swap_x_y_order(order):
     new_order = []
@@ -622,9 +607,6 @@ def main():
 
     wfc_render_pattern_count = 0
 
-    wfc_animation_output = None
-    wfc_animation_output_length = 0
-
     wfc_render_pattern_list = []
 
     enlargement_scale = 8
@@ -739,7 +721,7 @@ def main():
                 completed_wfc_pattern_group.empty()
                 wfc_render_pattern_list = []
                 wfc_render_pattern_count = 0
-                wfc_animation_group.empty()
+
                 wfc_list_count = 0
                 render_error_msg = False
                 get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
@@ -748,24 +730,22 @@ def main():
                     is_grid_drawn = True  
 
                     if grid_render_speed == "Slow":
-                        wfc_order_list = get_wfc_output[3]
+                        wfc_order_list = get_wfc_output[1]
                         draw_second_grid = True
                     elif grid_render_speed == "Faster":
-                        wfc_order_list = get_wfc_output[4]
+                        wfc_order_list = get_wfc_output[2]
                         draw_second_grid = True
                     elif grid_render_speed == "Instant":
                         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, get_wfc_output[0], enlargement_scale)
                         draw_second_grid = False
                         completed_wfc_pattern_group.add(wfc_output_2)
                     elif grid_render_speed == "Nth":
-                        wfc_order_list = get_wfc_output[3][::wfc_slice_num]
+                        wfc_order_list = get_wfc_output[1][::wfc_slice_num]
                         draw_second_grid = True
 
                 else:
                     render_error_msg = True
 
-                wfc_animation_output = get_wfc_output[1]
-                wfc_animation_output_length = len(wfc_animation_output)
 
 
 
@@ -786,14 +766,7 @@ def main():
 
             # Animation
             if draw_second_grid:
-                # Order list
                 if wfc_list_count < len(wfc_order_list):
-                    # new_tile = Tile(pattern_size, pattern_size, test_grid_x_pos+test_wfc_list[wfc_list_count][1]*enlargement_scale, test_grid_y_pos+test_wfc_list[wfc_list_count][2]*enlargement_scale, test_wfc_list[wfc_list_count][0], enlargement_scale)
-                    # wfc_animation_group.add(new_tile)
-                    # wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, wfc_order_list[wfc_list_count], enlargement_scale)
-                    # wfc_animation_group.add(wfc_output)
-
-                    # if wfc_list_count % animation_delay_tick == 0:
                     final_pixels = []
 
                     for i in wfc_order_list[wfc_list_count]:
@@ -809,13 +782,6 @@ def main():
                     wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
                     completed_wfc_pattern_group.add(wfc_output_2)
                     wfc_list_count += 1
-                # Order dict
-                # if wfc_render_pattern_count < wfc_animation_output_length:
-                #     new_tile = wfc_animation_output.popitem(last=False)
-                #     wfc_render_pattern_list.append(Tile(pattern_size, pattern_size, second_grid_x_pos+new_tile[0][0]*enlargement_scale, second_grid_y_pos+new_tile[0][1]*enlargement_scale, new_tile[1], enlargement_scale))
-                #     completed_wfc_pattern_group.add(wfc_render_pattern_list[wfc_render_pattern_count])
-                #     highlight_pattern(pattern_dict[new_tile[1]], pattern_size, enlargement_scale)
-                #     wfc_render_pattern_count += 1
 
             if test_button.draw(screen):
                 pass
@@ -854,7 +820,6 @@ def main():
             pattern_group.draw(screen)
             tile_group.draw(screen)
             completed_wfc_pattern_group.draw(screen)
-            wfc_animation_group.draw(screen)
             
             if hide_out_of_bounds:
                 pygame.draw.rect(screen, BACKGROUND_COLOR, ((second_grid_x_pos + output_width * enlargement_scale), second_grid_y_pos, (pattern_size * enlargement_scale), (output_height * enlargement_scale + 1)))
