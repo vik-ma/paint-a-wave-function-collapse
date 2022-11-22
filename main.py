@@ -26,6 +26,7 @@ FPS = 60
 
 error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
 info_font = pygame.font.Font(pygame.font.get_default_font(), 20)
+probability_font = pygame.font.Font(pygame.font.get_default_font(), 10)
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -688,6 +689,10 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
+    for patt in patterns[0]:
+        print(round(patterns[2][patt],2))
+
+
     output_width = 20
     output_height = 20
 
@@ -743,6 +748,9 @@ def main():
 
         draw_patterns(pattern_tile_list)
 
+        patt_text = probability_font.render(str(round(patterns[2][patterns[0][0]], 2)), True, (0, 0, 0))
+        screen.blit(patt_text, (pattern_dict[patterns[0][0].pix_array][0] - 2, pattern_dict[patterns[0][0].pix_array][1] + 20))
+
         if game_state == "wfc":
 
             if is_grid_drawn:
@@ -783,6 +791,7 @@ def main():
 
             current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
             grid_size_text = info_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
+
             screen.blit(current_grid_size_text, (580, 175))
             screen.blit(grid_size_text, (685, 175))
             
