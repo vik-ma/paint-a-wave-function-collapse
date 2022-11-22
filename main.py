@@ -748,8 +748,8 @@ def main():
 
         draw_patterns(pattern_tile_list)
 
-        patt_text = probability_font.render(str(round(patterns[2][patterns[0][0]], 2)), True, (0, 0, 0))
-        screen.blit(patt_text, (pattern_dict[patterns[0][0].pix_array][0] - 2, pattern_dict[patterns[0][0].pix_array][1] + 20))
+        patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patterns[0][0]], 2)), True, (0, 0, 0))
+        screen.blit(patt_text, (pattern_dict[patterns[0][0].pix_array][0] - 2, pattern_dict[patterns[0][0].pix_array][1] - 10))
 
         if game_state == "wfc":
 
