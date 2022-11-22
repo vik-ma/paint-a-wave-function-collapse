@@ -544,8 +544,6 @@ set_speed_nth_button = Button(WHITE, 580, 550, 100, 40, "Nth", BLACK, LIGHTGREY)
 increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
 decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
 
-toggle_out_of_bounds_button = Button(WHITE, 490, 450, 300, 40, "Show Out Of Bounds Patterns", BLACK, LIGHTGREY)
-
 test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
 
 increase_pattern_size_button = Button(WHITE, 580, 450, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
@@ -703,8 +701,6 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    hide_out_of_bounds = True
-
     game_state = "wfc"
 
     paint_grid_x_pos = 50
@@ -786,10 +782,10 @@ def main():
                     is_wfc_anim_ongoing = True
 
             current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
-
             grid_size_text = info_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
             screen.blit(current_grid_size_text, (580, 175))
             screen.blit(grid_size_text, (685, 175))
+            
             if increase_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width < 30:
                     output_width += 1
@@ -888,17 +884,6 @@ def main():
             tile_group.draw(screen)
             completed_wfc_pattern_group.draw(screen)
             
-            if hide_out_of_bounds:
-                pygame.draw.rect(screen, BACKGROUND_COLOR, ((second_grid_x_pos + output_width * enlargement_scale), second_grid_y_pos, (pattern_size * enlargement_scale), (output_height * enlargement_scale + 1)))
-                pygame.draw.rect(screen, BACKGROUND_COLOR, (second_grid_x_pos, (output_height * enlargement_scale + 1 + second_grid_y_pos), (output_width * enlargement_scale + pattern_size*enlargement_scale), (pattern_size * enlargement_scale)))
-
-            if toggle_out_of_bounds_button.draw(screen):
-                if hide_out_of_bounds:
-                    hide_out_of_bounds = False
-                    toggle_out_of_bounds_button.text = "Hide Out Of Bounds Patterns"
-                else:
-                    hide_out_of_bounds = True
-                    toggle_out_of_bounds_button.text = "Show Out Of Bounds Patterns"
 
             # Grid border
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
