@@ -499,6 +499,11 @@ def swap_x_y_order_dict(order_dict):
         new_order_dict[k] = swapped
     return new_order_dict
 
+def swap_pattern_dict(pattern_dict):
+    new_pattern_dict = {}
+    for k, v in pattern_dict.items():
+        new_pattern_dict[(k[0][0],k[1][0]),(k[0][1],k[1][1])] = v
+    return new_pattern_dict
 
 def draw_window():
     screen.fill(BACKGROUND_COLOR)
@@ -687,11 +692,9 @@ def main():
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    pattern_dict = get_pattern_dict(pattern_tile_list)
+    new_pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    for patt in patterns[0]:
-        print(round(patterns[2][patt],2))
-
+    pattern_dict = swap_pattern_dict(new_pattern_dict)
 
     output_width = 20
     output_height = 20
@@ -747,9 +750,6 @@ def main():
         draw_window()
 
         draw_patterns(pattern_tile_list)
-
-        patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patterns[0][0]], 2)), True, (0, 0, 0))
-        screen.blit(patt_text, (pattern_dict[patterns[0][0].pix_array][0] - 2, pattern_dict[patterns[0][0].pix_array][1] - 10))
 
         if game_state == "wfc":
 
@@ -817,8 +817,11 @@ def main():
                     selected_tile_index = index
                     patterns = get_patterns(pattern_size, initial_tile_list[index])
                     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                    pattern_dict = get_pattern_dict(pattern_tile_list)
+                    new_pattern_dict = get_pattern_dict(pattern_tile_list)
+                    pattern_dict = swap_pattern_dict(new_pattern_dict)
                     print(len(patterns[0]))
+
+
 
             draw_selected_tile_border(selected_tile)
 
@@ -849,7 +852,9 @@ def main():
 
 
             if test_button.draw(screen):
-                pass
+                print(pattern_dict)
+                # swap_pattern_dict(pattern_dict)
+                print(swap_pattern_dict(pattern_dict))
 
             if set_pattern_size_2.draw(screen):
                 pattern_size = 2
@@ -898,6 +903,10 @@ def main():
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
             # Second grid border
             pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+
+            for patt in patterns[0]:
+                patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, (0, 0, 0))
+                screen.blit(patt_text, (pattern_dict[patt.pix_array][0] - 2, pattern_dict[patt.pix_array][1] - 10))
 
             if switch_state_button.draw(screen):
                 game_state = "paint"
