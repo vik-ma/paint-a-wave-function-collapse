@@ -746,14 +746,13 @@ def main():
         clock.tick(FPS)
         draw_window()
 
-        draw_patterns(pattern_tile_list)
-        
-        for patt in patterns[0]:
-            patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, (0, 0, 0))
-            screen.blit(patt_text, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
-
-
         if game_state == "wfc":
+
+            draw_patterns(pattern_tile_list)
+        
+            for patt in patterns[0]:
+                patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, (0, 0, 0))
+                screen.blit(patt_text, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
 
             if is_grid_drawn:
                 tile_group.add(wfc_output)
