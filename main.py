@@ -541,6 +541,8 @@ decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Si
 set_pattern_size_2_button = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
 set_pattern_size_3_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
+toggle_show_probability_button = Button(WHITE, 550, 450, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
+
 set_speed_instant_button = Button(WHITE, 250, 550, 100, 40, "Instant", BLACK, LIGHTGREY)
 set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGHTGREY)
 set_speed_slow_button = Button(WHITE, 470, 550, 100, 40, "Slow", BLACK, LIGHTGREY)
@@ -744,6 +746,8 @@ def main():
     prob_text_x_offset = -2
     prob_text_y_offset = -10
 
+    show_probability = True
+
     while run:
         clock.tick(FPS)
         draw_window()
@@ -752,9 +756,10 @@ def main():
 
             draw_patterns(pattern_tile_list)
         
-            for patt in patterns[0]:
-                patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, (0, 0, 0))
-                screen.blit(patt_text, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
+            if show_probability:
+                for patt in patterns[0]:
+                    patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, (0, 0, 0))
+                    screen.blit(patt_text, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
 
             if is_grid_drawn:
                 tile_group.add(wfc_output)
@@ -855,6 +860,15 @@ def main():
 
             if test_button.draw(screen):
                 print(pattern_dict)
+
+            if toggle_show_probability_button.draw(screen):
+                if show_probability:
+                    show_probability = False
+                    toggle_show_probability_button.text = "Show Pattern Probability"
+                else:
+                    show_probability = True
+                    toggle_show_probability_button.text = "Hide Pattern Probability"
+
 
             if set_pattern_size_2_button.draw(screen):
                 pattern_size = 2
