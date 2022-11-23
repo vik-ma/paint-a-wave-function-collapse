@@ -536,8 +536,8 @@ switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIG
 increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
 decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
 
-set_pattern_size_2 = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
-set_pattern_size_3 = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
+set_pattern_size_2_button = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+set_pattern_size_3_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
 set_speed_instant_button = Button(WHITE, 250, 550, 100, 40, "Instant", BLACK, LIGHTGREY)
 set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGHTGREY)
@@ -855,7 +855,7 @@ def main():
             if test_button.draw(screen):
                 print(pattern_dict)
 
-            if set_pattern_size_2.draw(screen):
+            if set_pattern_size_2_button.draw(screen):
                 pattern_size = 2
                 prob_text_x_offset = -2
                 prob_text_y_offset = -10
@@ -864,7 +864,7 @@ def main():
                 pattern_dict = get_pattern_dict(pattern_tile_list)
 
 
-            if set_pattern_size_3.draw(screen):
+            if set_pattern_size_3_button.draw(screen):
                 pattern_size = 3
                 prob_text_x_offset = 2
                 prob_text_y_offset = -10
