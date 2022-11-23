@@ -520,7 +520,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     tile_list = []
     for col in range(len(patterns)):
         if col % col_limit == 0 and col > 1:
-            y += 25
+            y += 30
             x -= col_limit * (pattern_size + 25)
         tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + x), y, patterns[col].pix_array, enlargement_scale)
         tile_list.append(tile)
@@ -645,9 +645,9 @@ def main():
     tile_list_y_pos = 400
 
     grid_x_pos = 50
-    grid_y_pos = 100
+    grid_y_pos = 130
     second_grid_x_pos = 300
-    second_grid_y_pos = 100
+    second_grid_y_pos = 130
 
     sample_tile_1 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_1)
@@ -808,8 +808,9 @@ def main():
                     selected_tile_index = index
                     patterns = get_patterns(pattern_size, initial_tile_list[index])
                     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                    print(len(patterns[0]))
                     pattern_dict = get_pattern_dict(pattern_tile_list)
+                    print(len(patterns[0]))
+
 
 
 
@@ -840,11 +841,8 @@ def main():
                     is_wfc_anim_ongoing = False
 
 
-
             if test_button.draw(screen):
                 print(pattern_dict)
-                # swap_pattern_dict(pattern_dict)
-                print(swap_pattern_dict(pattern_dict))
 
             if set_pattern_size_2.draw(screen):
                 pattern_size = 2
