@@ -739,11 +739,19 @@ def main():
 
     grid_size_text_color = get_grid_size_text_color(output_width)
 
+    prob_text_x_offset = -2
+    prob_text_y_offset = -10
+
     while run:
         clock.tick(FPS)
         draw_window()
 
         draw_patterns(pattern_tile_list)
+        
+        for patt in patterns[0]:
+            patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, (0, 0, 0))
+            screen.blit(patt_text, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
+
 
         if game_state == "wfc":
 
@@ -849,12 +857,17 @@ def main():
 
             if set_pattern_size_2.draw(screen):
                 pattern_size = 2
+                prob_text_x_offset = -2
+                prob_text_y_offset = -10
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
 
+
             if set_pattern_size_3.draw(screen):
                 pattern_size = 3
+                prob_text_x_offset = 2
+                prob_text_y_offset = -10
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
@@ -894,10 +907,6 @@ def main():
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
             # Second grid border
             pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
-
-            for patt in patterns[0]:
-                patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, (0, 0, 0))
-                screen.blit(patt_text, (pattern_dict[patt.pix_array][0] - 2, pattern_dict[patt.pix_array][1] - 10))
 
             if switch_state_button.draw(screen):
                 game_state = "paint"
