@@ -521,7 +521,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
         x_offset = 33
     x = 50
     y = 25
-    col_limit = 16
+    col_limit = 15
     tile_list = []
     for col in range(len(patterns)):
         if col % col_limit == 0 and col > 1:
@@ -529,7 +529,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
             x -= col_limit * (pattern_size + x_offset)
         tile = Tile(pattern_size, pattern_size, (col * (pattern_size + x_offset) + x), y, patterns[col].pix_array, enlargement_scale)
         tile_list.append(tile)
-    return tile_list
+    return tile_list, y+y_offset-2
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
 test_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
@@ -651,11 +651,6 @@ def main():
     tile_list_x_offset = 16
     tile_list_y_pos = 400
 
-    grid_x_pos = 50
-    grid_y_pos = 130
-    second_grid_x_pos = 300
-    second_grid_y_pos = 130
-
     sample_tile_1 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
     initial_tile_list.append(sample_tile_1)
     tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
@@ -689,10 +684,17 @@ def main():
     selected_tile_index = 0
 
     patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+    
+    pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+    pattern_tile_list = pattern_list[0]
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
+
+    grid_x_pos = 50
+    grid_y_pos = pattern_list[1]
+    second_grid_x_pos = 300
+    second_grid_y_pos = pattern_list[1]
 
     output_width = 20
     output_height = 20
@@ -826,8 +828,11 @@ def main():
                     selected_tile = tile_buttons[index]
                     selected_tile_index = index
                     patterns = get_patterns(pattern_size, initial_tile_list[index])
-                    pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                    pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                    pattern_tile_list = pattern_list[0]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
+                    grid_y_pos = pattern_list[1]
+                    second_grid_y_pos = pattern_list[1]
                     print(len(patterns[0]))
 
 
@@ -877,7 +882,10 @@ def main():
                 prob_text_x_offset = -2
                 prob_text_y_offset = -10
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
-                pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_tile_list = pattern_list[0]
+                grid_y_pos = pattern_list[1]
+                second_grid_y_pos = pattern_list[1]
                 pattern_dict = get_pattern_dict(pattern_tile_list)
 
 
@@ -886,7 +894,10 @@ def main():
                 prob_text_x_offset = 2
                 prob_text_y_offset = -10
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
-                pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_tile_list = pattern_list[0]
+                grid_y_pos = pattern_list[1]
+                second_grid_y_pos = pattern_list[1]
                 pattern_dict = get_pattern_dict(pattern_tile_list)
 
             current_speed_text = info_font.render(f"Current Speed: {grid_render_speed}", True, (0, 0, 0))
@@ -963,7 +974,10 @@ def main():
 
                 selected_tile = tile_buttons[-1]
                 selected_tile_index = len(tile_buttons)-1
-                patterns = get_patterns(pattern_size, initial_tile_list[-1])
+                pattern_list = get_patterns(pattern_size, initial_tile_list[-1])
+                patterns = pattern_list[0]
+                grid_y_pos = pattern_list[1]
+                second_grid_y_pos = pattern_list[1]
                 pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_dict = get_pattern_dict(pattern_tile_list)
                 
