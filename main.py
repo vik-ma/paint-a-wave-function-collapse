@@ -515,8 +515,10 @@ def draw_patterns(pattern_list):
 
 def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     y_offset = 30
+    x_offset = 25
     if pattern_size == 3:
         y_offset = 38
+        x_offset = 33
     x = 50
     y = 25
     col_limit = 16
@@ -524,8 +526,8 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     for col in range(len(patterns)):
         if col % col_limit == 0 and col > 1:
             y += y_offset
-            x -= col_limit * (pattern_size + 25)
-        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + 25) + x), y, patterns[col].pix_array, enlargement_scale)
+            x -= col_limit * (pattern_size + x_offset)
+        tile = Tile(pattern_size, pattern_size, (col * (pattern_size + x_offset) + x), y, patterns[col].pix_array, enlargement_scale)
         tile_list.append(tile)
     return tile_list
 
