@@ -757,9 +757,11 @@ def main():
             draw_patterns(pattern_tile_list)
         
             if show_probability:
+                prob_text = probability_font.render("Pattern Probability", True, DARKPURPLE)
+                screen.blit(prob_text, (48, 3))
                 for patt in patterns[0]:
-                    patt_text = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, (0, 0, 0))
-                    screen.blit(patt_text, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
+                    patt_prob = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
+                    screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
 
             if is_grid_drawn:
                 tile_group.add(wfc_output)
