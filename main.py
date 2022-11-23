@@ -499,12 +499,6 @@ def swap_x_y_order_dict(order_dict):
         new_order_dict[k] = swapped
     return new_order_dict
 
-def swap_pattern_dict(pattern_dict):
-    new_pattern_dict = {}
-    for k, v in pattern_dict.items():
-        new_pattern_dict[(k[0][0],k[1][0]),(k[0][1],k[1][1])] = v
-    return new_pattern_dict
-
 def draw_window():
     screen.fill(BACKGROUND_COLOR)
 
@@ -576,7 +570,6 @@ def show_prob(patterns):
 
 def get_pattern_dict(pattern_list):
     pattern_dict = {}
-    pattern_list = swap_pattern_x_y(pattern_list)
     for pattern in pattern_list:
         pattern_dict[pattern.pix_array] = (pattern.x, pattern.y)
     return pattern_dict
@@ -692,9 +685,7 @@ def main():
 
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    new_pattern_dict = get_pattern_dict(pattern_tile_list)
-
-    pattern_dict = swap_pattern_dict(new_pattern_dict)
+    pattern_dict = get_pattern_dict(pattern_tile_list)
 
     output_width = 20
     output_height = 20
@@ -817,9 +808,8 @@ def main():
                     selected_tile_index = index
                     patterns = get_patterns(pattern_size, initial_tile_list[index])
                     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                    new_pattern_dict = get_pattern_dict(pattern_tile_list)
-                    pattern_dict = swap_pattern_dict(new_pattern_dict)
                     print(len(patterns[0]))
+                    pattern_dict = get_pattern_dict(pattern_tile_list)
 
 
 
