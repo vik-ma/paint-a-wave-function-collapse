@@ -523,13 +523,16 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     y = 25
     col_limit = 15
     tile_list = []
+    tile_button_list = []
     for col in range(len(patterns)):
         if col % col_limit == 0 and col > 1:
             y += y_offset
             x -= col_limit * (pattern_size + x_offset)
         tile = Tile(pattern_size, pattern_size, (col * (pattern_size + x_offset) + x), y, patterns[col].pix_array, enlargement_scale)
+        tile_button = TileButton(tile.x, tile.y, tile.image)
         tile_list.append(tile)
-    return tile_list, y+y_offset-2
+        tile_button_list.append(tile_button)
+    return tile_list, y+y_offset-2, tile_button_list
 
 make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
 test_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
@@ -689,6 +692,8 @@ def main():
 
     pattern_tile_list = pattern_list[0]
 
+    pattern_tile_button_list = pattern_list[2]
+
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
     grid_x_pos = 50
@@ -756,7 +761,11 @@ def main():
 
         if game_state == "wfc":
 
-            draw_patterns(pattern_tile_list)
+            # draw_patterns(pattern_tile_list)
+            
+            for index, pattern_tile_button in enumerate(pattern_tile_button_list):
+                if pattern_tile_button.draw(screen):
+                    print(index)
         
             if show_probability:
                 prob_text = probability_font.render("Pattern Probability", True, DARKPURPLE)
