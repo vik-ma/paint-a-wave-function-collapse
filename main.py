@@ -751,7 +751,7 @@ def main():
     grid_size_text_color = get_grid_size_text_color(output_width)
 
     prob_text_x_offset = -2
-    prob_text_y_offset = -10
+    prob_text_y_offset = -11
 
     show_probability = True
 
@@ -890,7 +890,7 @@ def main():
             if set_pattern_size_2_button.draw(screen):
                 pattern_size = 2
                 prob_text_x_offset = -2
-                prob_text_y_offset = -10
+                prob_text_y_offset = -11
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                 pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_tile_list = pattern_list[0]
@@ -903,7 +903,7 @@ def main():
             if set_pattern_size_3_button.draw(screen):
                 pattern_size = 3
                 prob_text_x_offset = 2
-                prob_text_y_offset = -10
+                prob_text_y_offset = -11
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                 pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_tile_list = pattern_list[0]
