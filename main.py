@@ -974,12 +974,12 @@ def main():
 
                 selected_tile = tile_buttons[-1]
                 selected_tile_index = len(tile_buttons)-1
-                pattern_list = get_patterns(pattern_size, initial_tile_list[-1])
-                patterns = pattern_list[0]
+                patterns = get_patterns(pattern_size, initial_tile_list[-1])
+                pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                pattern_tile_list = pattern_list[0]
+                pattern_dict = get_pattern_dict(pattern_tile_list)
                 grid_y_pos = pattern_list[1]
                 second_grid_y_pos = pattern_list[1]
-                pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                pattern_dict = get_pattern_dict(pattern_tile_list)
                 
                 game_state = "wfc"
 
