@@ -762,7 +762,7 @@ def main():
         if game_state == "wfc":
 
             # draw_patterns(pattern_tile_list)
-            
+
             for index, pattern_tile_button in enumerate(pattern_tile_button_list):
                 if pattern_tile_button.draw(screen):
                     print(index)
@@ -839,6 +839,7 @@ def main():
                     patterns = get_patterns(pattern_size, initial_tile_list[index])
                     pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                     pattern_tile_list = pattern_list[0]
+                    pattern_tile_button_list = pattern_list[2]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
                     grid_y_pos = pattern_list[1]
                     second_grid_y_pos = pattern_list[1]
@@ -893,6 +894,7 @@ def main():
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                 pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_tile_list = pattern_list[0]
+                pattern_tile_button_list = pattern_list[2]
                 grid_y_pos = pattern_list[1]
                 second_grid_y_pos = pattern_list[1]
                 pattern_dict = get_pattern_dict(pattern_tile_list)
@@ -905,6 +907,7 @@ def main():
                 patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                 pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_tile_list = pattern_list[0]
+                pattern_tile_button_list = pattern_list[2]
                 grid_y_pos = pattern_list[1]
                 second_grid_y_pos = pattern_list[1]
                 pattern_dict = get_pattern_dict(pattern_tile_list)
@@ -986,6 +989,7 @@ def main():
                 patterns = get_patterns(pattern_size, initial_tile_list[-1])
                 pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_tile_list = pattern_list[0]
+                pattern_tile_button_list = pattern_list[2]
                 pattern_dict = get_pattern_dict(pattern_tile_list)
                 grid_y_pos = pattern_list[1]
                 second_grid_y_pos = pattern_list[1]
