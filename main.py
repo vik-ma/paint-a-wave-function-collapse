@@ -766,8 +766,8 @@ def main():
             for index, pattern_tile_button in enumerate(pattern_tile_button_list):
                 if pattern_tile_button.draw(screen):
                     print(patterns[2][patterns[0][index]])
-                    # patterns[2][patterns[0][index]] = 0.00000001
-                    # print(patterns[2][patterns[0][index]])
+                    patterns[2][patterns[0][index]] = 1
+                    print(patterns[2][patterns[0][index]])
         
             if show_probability:
                 prob_text = probability_font.render("Pattern Probability", True, DARKPURPLE)
@@ -782,6 +782,7 @@ def main():
             if make_grid_button.draw(screen):
                 completed_wfc_pattern_group.empty()
                 is_wfc_anim_ongoing = False
+                tile_group.empty()
 
                 wfc_list_count = 0
                 render_error_msg = False
