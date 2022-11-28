@@ -4,6 +4,7 @@ import math
 import time
 import sys
 import threading
+import queue
 import traceback
 from copy import deepcopy
 from collections import OrderedDict
@@ -385,7 +386,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     
 
 
-def execute_wave_function_collapse(patterns, output_width, output_height):
+def execute_wave_function_collapse(patterns, output_width, output_height, q):
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
@@ -448,6 +449,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
+            q.put([True, final_pixels, coefficients_state, shorter_coefficients_state])
         return True, final_pixels, coefficients_state, shorter_coefficients_state
     else:
         final_pixels = []
@@ -758,9 +760,22 @@ def main():
 
     show_probability = True
 
+    get_wfc_output = None
+
+    standard_threads = threading.active_count()
+    started = False
+    
+    q = queue.Queue()
+
     while run:
         clock.tick(FPS)
         draw_window(screen)
+
+        if not threading.active_count() > standard_threads:
+            if started:
+                result = q.get()
+                print(result[0])
+                started = False
 
         if game_state == "wfc":
 
@@ -783,7 +798,8 @@ def main():
 
                 wfc_list_count = 0
                 render_error_msg = False
-                get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height))
+                started = True
+                get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, q))
                 get_wfc_output.start()
                 # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
                 # if get_wfc_output[0]:
