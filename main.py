@@ -771,10 +771,37 @@ def main():
         clock.tick(FPS)
         draw_window(screen)
 
+        print(threading.active_count())
         if not threading.active_count() > standard_threads:
             if started:
                 result = q.get()
-                print(result[0])
+                if result[0]:
+                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                    is_grid_drawn = True  
+                else:
+                    render_error_msg = True
+                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                    is_grid_drawn = True  
+
+                if grid_render_speed == "Slow":
+                    wfc_order_list = result[2]
+                    draw_second_grid = True
+                    is_wfc_anim_ongoing = True
+                elif grid_render_speed == "Faster":
+                    wfc_order_list = result[3]
+                    draw_second_grid = True
+                    is_wfc_anim_ongoing = True
+                elif grid_render_speed == "Instant":
+                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
+                    draw_second_grid = False
+                    completed_wfc_pattern_group.add(wfc_output_2)
+                elif grid_render_speed == "Nth":
+                    last_image = result[2][-1]
+                    wfc_order_list = result[2][::wfc_slice_num]
+                    wfc_order_list.append(last_image)
+                    draw_second_grid = True
+                    is_wfc_anim_ongoing = True
+
                 started = False
 
         if game_state == "wfc":
