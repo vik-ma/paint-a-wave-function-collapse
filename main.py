@@ -3,7 +3,7 @@ import random
 import math
 import time
 import sys
-import asyncio
+import threading
 import traceback
 from copy import deepcopy
 from collections import OrderedDict
@@ -17,8 +17,6 @@ from paint_tile import PaintTile
 
 
 pygame.init()
-
-loop = asyncio.get_event_loop()
 
 WIDTH = 800
 HEIGHT = 640
@@ -639,14 +637,9 @@ def get_grid_size_text_color(size):
         return YELLOW
     return ORANGE
 
-async def test_async():
-    a = "TEST"
-    await asyncio.sleep(2)
-    print(a)
-
-def run_once(loop):
-    loop.call_soon(loop.stop)
-    loop.run_forever()
+def test_threading():
+    time.sleep(2)
+    print("TEST")
 
 def main():
     run = True
@@ -881,7 +874,8 @@ def main():
 
 
             if test_button.draw(screen):
-                loop.create_task(test_async())
+                x = threading.Thread(target=test_threading)
+                x.start()
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
@@ -1041,12 +1035,6 @@ def main():
 
         pygame.display.update()
 
-        run_once(loop)
-
-    while len(asyncio.Task.all_tasks(loop)):
-        run_once(loop)
-        loop.shutdown_asyncgens()
-        loop.close()
 
     pygame.quit()
 
