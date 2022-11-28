@@ -16,18 +16,6 @@ from tile_button import TileButton
 from paint_tile import PaintTile
 
 
-pygame.init()
-
-WIDTH = 800
-HEIGHT = 640
-
-clock = pygame.time.Clock()
-FPS = 60
-
-error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
-info_font = pygame.font.Font(pygame.font.get_default_font(), 20)
-probability_font = pygame.font.Font(pygame.font.get_default_font(), 10)
-
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
@@ -155,14 +143,6 @@ sample_pixel_array_4x4_test = [
     ]
 
 sample_initial_tile_7 = InitialTile(sample_pixel_array_4x4_test, 4, 4)
-
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-tile_group = pygame.sprite.Group()
-pattern_group = pygame.sprite.Group()
-completed_wfc_pattern_group = pygame.sprite.Group()
-paint_grid_tile_group = pygame.sprite.Group()
-paint_color_group = pygame.sprite.Group()
 
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
@@ -499,16 +479,16 @@ def swap_x_y_order_dict(order_dict):
         new_order_dict[k] = swapped
     return new_order_dict
 
-def draw_window():
+def draw_window(screen):
     screen.fill(BACKGROUND_COLOR)
 
-def draw_grid(pix_array, output_width, output_height):
-    for row in range(output_width):
-        for col in range(output_height):
-            tile = Tile(output_width, output_height, (col * output_width + 50), (row * output_height + 50), pix_array)
-            tile_group.add(tile)
+# def draw_grid(pix_array, output_width, output_height):
+#     for row in range(output_width):
+#         for col in range(output_height):
+#             tile = Tile(output_width, output_height, (col * output_width + 50), (row * output_height + 50), pix_array)
+#             tile_group.add(tile)
 
-def draw_patterns(pattern_list, screen, enlargement_scale):
+def draw_patterns(pattern_group, pattern_list, screen, enlargement_scale):
     pattern_group.empty()
     for pattern in pattern_list:
         pattern_group.add(pattern)
@@ -533,32 +513,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
         tile_list.append(tile)
     return tile_list, y+y_offset-2
 
-make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
-test_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
-switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
-increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
-decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
-
-set_pattern_size_2_button = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
-set_pattern_size_3_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
-
-toggle_show_probability_button = Button(WHITE, 550, 450, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
-
-set_speed_instant_button = Button(WHITE, 250, 550, 100, 40, "Instant", BLACK, LIGHTGREY)
-set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGHTGREY)
-set_speed_slow_button = Button(WHITE, 470, 550, 100, 40, "Slow", BLACK, LIGHTGREY)
-set_speed_nth_button = Button(WHITE, 580, 550, 100, 40, "Nth", BLACK, LIGHTGREY)
-
-increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
-decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
-
-test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
-
-increase_pattern_size_button = Button(WHITE, 580, 450, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
-decrease_pattern_size_button = Button(WHITE, 580, 400, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
-save_tile_button = Button(WHITE, 50, 450, 150, 40, "Save Tile", BLACK, LIGHTGREY)
-toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
 def create_tile_buttons(initial_tile_list):
     tile_buttons = []
@@ -567,7 +522,7 @@ def create_tile_buttons(initial_tile_list):
         tile_buttons.append(tile_button)
     return tile_buttons
 
-def draw_selected_tile_border(tile):
+def draw_selected_tile_border(screen, tile):
     if tile is not None:
         pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 4)
 
@@ -591,8 +546,8 @@ def swap_pattern_x_y(pattern_list):
         new_list.append(pattern)
     return new_list
 
-def highlight_pattern(pattern, pattern_size, enlargement_scale):
-    pygame.draw.rect(screen, YELLOW, (pattern[0]-5, pattern[1]-5, pattern_size*enlargement_scale + 10, pattern_size*enlargement_scale + 10), 5)
+# def highlight_pattern(screen, pattern, pattern_size, enlargement_scale):
+#     pygame.draw.rect(screen, YELLOW, (pattern[0]-5, pattern[1]-5, pattern_size*enlargement_scale + 10, pattern_size*enlargement_scale + 10), 5)
 
 def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
     grid = []
@@ -642,6 +597,53 @@ def test_threading():
     print("TEST")
 
 def main():
+    pygame.init()
+
+    error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
+    info_font = pygame.font.Font(pygame.font.get_default_font(), 20)
+    probability_font = pygame.font.Font(pygame.font.get_default_font(), 10)
+
+    WIDTH = 800
+    HEIGHT = 640
+
+    clock = pygame.time.Clock()
+    FPS = 60
+
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+    tile_group = pygame.sprite.Group()
+    pattern_group = pygame.sprite.Group()
+    completed_wfc_pattern_group = pygame.sprite.Group()
+    paint_grid_tile_group = pygame.sprite.Group()
+    paint_color_group = pygame.sprite.Group()
+
+    make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
+    test_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
+    switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+
+    increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
+    decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
+
+    set_pattern_size_2_button = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+    set_pattern_size_3_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
+
+    toggle_show_probability_button = Button(WHITE, 550, 450, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
+
+    set_speed_instant_button = Button(WHITE, 250, 550, 100, 40, "Instant", BLACK, LIGHTGREY)
+    set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGHTGREY)
+    set_speed_slow_button = Button(WHITE, 470, 550, 100, 40, "Slow", BLACK, LIGHTGREY)
+    set_speed_nth_button = Button(WHITE, 580, 550, 100, 40, "Nth", BLACK, LIGHTGREY)
+
+    increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
+    decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
+
+    test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
+
+    increase_pattern_size_button = Button(WHITE, 580, 450, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
+    decrease_pattern_size_button = Button(WHITE, 580, 400, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
+    save_tile_button = Button(WHITE, 50, 450, 150, 40, "Save Tile", BLACK, LIGHTGREY)
+    toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+
     run = True
 
     is_grid_drawn = False
@@ -758,11 +760,11 @@ def main():
 
     while run:
         clock.tick(FPS)
-        draw_window()
+        draw_window(screen)
 
         if game_state == "wfc":
 
-            draw_patterns(pattern_tile_list, screen, enlargement_scale)
+            draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
         
             if show_probability:
                 prob_text = probability_font.render("Pattern Probability", True, DARKPURPLE)
@@ -781,33 +783,35 @@ def main():
 
                 wfc_list_count = 0
                 render_error_msg = False
-                get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
-                if get_wfc_output[0]:
-                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
-                    is_grid_drawn = True  
-                else:
-                    render_error_msg = True
-                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
-                    is_grid_drawn = True  
+                get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height))
+                get_wfc_output.start()
+                # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
+                # if get_wfc_output[0]:
+                #     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
+                #     is_grid_drawn = True  
+                # else:
+                #     render_error_msg = True
+                #     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
+                #     is_grid_drawn = True  
 
-                if grid_render_speed == "Slow":
-                    wfc_order_list = get_wfc_output[2]
-                    draw_second_grid = True
-                    is_wfc_anim_ongoing = True
-                elif grid_render_speed == "Faster":
-                    wfc_order_list = get_wfc_output[3]
-                    draw_second_grid = True
-                    is_wfc_anim_ongoing = True
-                elif grid_render_speed == "Instant":
-                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, get_wfc_output[1], enlargement_scale)
-                    draw_second_grid = False
-                    completed_wfc_pattern_group.add(wfc_output_2)
-                elif grid_render_speed == "Nth":
-                    last_image = get_wfc_output[2][-1]
-                    wfc_order_list = get_wfc_output[2][::wfc_slice_num]
-                    wfc_order_list.append(last_image)
-                    draw_second_grid = True
-                    is_wfc_anim_ongoing = True
+                # if grid_render_speed == "Slow":
+                #     wfc_order_list = get_wfc_output[2]
+                #     draw_second_grid = True
+                #     is_wfc_anim_ongoing = True
+                # elif grid_render_speed == "Faster":
+                #     wfc_order_list = get_wfc_output[3]
+                #     draw_second_grid = True
+                #     is_wfc_anim_ongoing = True
+                # elif grid_render_speed == "Instant":
+                #     wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, get_wfc_output[1], enlargement_scale)
+                #     draw_second_grid = False
+                #     completed_wfc_pattern_group.add(wfc_output_2)
+                # elif grid_render_speed == "Nth":
+                #     last_image = get_wfc_output[2][-1]
+                #     wfc_order_list = get_wfc_output[2][::wfc_slice_num]
+                #     wfc_order_list.append(last_image)
+                #     draw_second_grid = True
+                #     is_wfc_anim_ongoing = True
 
             current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
             grid_size_text = info_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
@@ -846,7 +850,7 @@ def main():
 
 
 
-            draw_selected_tile_border(selected_tile)
+            draw_selected_tile_border(screen, selected_tile)
 
             # Animation
             if draw_second_grid:
@@ -1039,4 +1043,5 @@ def main():
     pygame.quit()
 
 if __name__ == "__main__":
-    main()
+    main_thread = threading.Thread(target=main)
+    main_thread.start()
