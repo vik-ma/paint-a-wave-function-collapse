@@ -864,12 +864,12 @@ def main():
             screen.blit(grid_size_text, (685, 175))
             
             if increase_output_size_button.draw(screen):
-                if not is_wfc_anim_ongoing and output_width < 30:
+                if not is_wfc_anim_ongoing and output_width < 30 and not wfc_started:
                     output_width += 1
                     output_height += 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
             if decrease_output_size_button.draw(screen):
-                if not is_wfc_anim_ongoing and output_width > 10:
+                if not is_wfc_anim_ongoing and output_width > 10 and not wfc_started:
                     output_width -= 1
                     output_height -= 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
@@ -922,8 +922,9 @@ def main():
 
 
             if test_button.draw(screen):
-                x = threading.Thread(target=test_threading)
-                x.start()
+                q.empty()
+                q.task_done()
+                q.qsize()
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
@@ -1081,10 +1082,12 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
+
         pygame.display.update()
 
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main_thread = threading.Thread(target=main)
