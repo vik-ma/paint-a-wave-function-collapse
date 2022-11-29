@@ -449,7 +449,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, q):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-            q.put([True, final_pixels, coefficients_state, shorter_coefficients_state])
+        q.put([True, final_pixels, coefficients_state, shorter_coefficients_state])
         return True, final_pixels, coefficients_state, shorter_coefficients_state
     else:
         final_pixels = []
@@ -465,7 +465,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, q):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row) 
-            q.put([False, final_pixels, coefficients_state, shorter_coefficients_state]) 
+        q.put([False, final_pixels, coefficients_state, shorter_coefficients_state]) 
         return False, final_pixels, coefficients_state, shorter_coefficients_state
 
 def swap_x_y_order(order):
@@ -764,7 +764,7 @@ def main():
     get_wfc_output = None
 
     standard_threads = threading.active_count()
-    wfc_started = False
+    is_wfc_started = False
     
     q = queue.Queue()
 
@@ -774,8 +774,10 @@ def main():
 
         # print(threading.active_count())
         if not threading.active_count() > standard_threads:
-            if wfc_started:
+            if is_wfc_started:
+                print(q.qsize())
                 result = q.get()
+                print(q.qsize())
                 if result[0]:
                     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
                     is_grid_drawn = True  
@@ -803,7 +805,7 @@ def main():
                     draw_second_grid = True
                     is_wfc_anim_ongoing = True
 
-                wfc_started = False
+                is_wfc_started = False
 
         if game_state == "wfc":
 
@@ -820,13 +822,13 @@ def main():
                 tile_group.add(wfc_output)
 
             if make_grid_button.draw(screen):
-                if not wfc_started:
+                if not is_wfc_started:
                     completed_wfc_pattern_group.empty()
                     tile_group.empty()
 
                     wfc_list_count = 0
                     render_error_msg = False
-                    wfc_started = True
+                    is_wfc_started = True
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, q))
                     get_wfc_output.start()
                 # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
@@ -864,12 +866,12 @@ def main():
             screen.blit(grid_size_text, (685, 175))
             
             if increase_output_size_button.draw(screen):
-                if not is_wfc_anim_ongoing and output_width < 30 and not wfc_started:
+                if not is_wfc_anim_ongoing and output_width < 30 and not is_wfc_started:
                     output_width += 1
                     output_height += 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
             if decrease_output_size_button.draw(screen):
-                if not is_wfc_anim_ongoing and output_width > 10 and not wfc_started:
+                if not is_wfc_anim_ongoing and output_width > 10 and not is_wfc_started:
                     output_width -= 1
                     output_height -= 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
@@ -922,9 +924,7 @@ def main():
 
 
             if test_button.draw(screen):
-                q.empty()
-                q.task_done()
-                q.qsize()
+                print(q.qsize())
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
