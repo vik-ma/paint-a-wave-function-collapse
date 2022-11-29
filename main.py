@@ -763,7 +763,7 @@ def main():
     get_wfc_output = None
 
     standard_threads = threading.active_count()
-    started = False
+    wfc_started = False
     
     q = queue.Queue()
 
@@ -773,7 +773,7 @@ def main():
 
         print(threading.active_count())
         if not threading.active_count() > standard_threads:
-            if started:
+            if wfc_started:
                 result = q.get()
                 if result[0]:
                     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
@@ -802,7 +802,7 @@ def main():
                     draw_second_grid = True
                     is_wfc_anim_ongoing = True
 
-                started = False
+                wfc_started = False
 
         if game_state == "wfc":
 
@@ -819,15 +819,15 @@ def main():
                 tile_group.add(wfc_output)
 
             if make_grid_button.draw(screen):
-                completed_wfc_pattern_group.empty()
-                is_wfc_anim_ongoing = False
-                tile_group.empty()
+                if not wfc_started:
+                    completed_wfc_pattern_group.empty()
+                    tile_group.empty()
 
-                wfc_list_count = 0
-                render_error_msg = False
-                started = True
-                get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, q))
-                get_wfc_output.start()
+                    wfc_list_count = 0
+                    render_error_msg = False
+                    wfc_started = True
+                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, q))
+                    get_wfc_output.start()
                 # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
                 # if get_wfc_output[0]:
                 #     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
