@@ -464,7 +464,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height, q):
                 else:
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
-            final_pixels.append(row)  
+            final_pixels.append(row) 
+            q.put([False, final_pixels, coefficients_state, shorter_coefficients_state]) 
         return False, final_pixels, coefficients_state, shorter_coefficients_state
 
 def swap_x_y_order(order):
@@ -771,7 +772,7 @@ def main():
         clock.tick(FPS)
         draw_window(screen)
 
-        print(threading.active_count())
+        # print(threading.active_count())
         if not threading.active_count() > standard_threads:
             if wfc_started:
                 result = q.get()
