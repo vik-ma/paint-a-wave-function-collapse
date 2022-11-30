@@ -386,7 +386,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     
 
 
-def execute_wave_function_collapse(patterns, output_width, output_height, q):
+def execute_wave_function_collapse(patterns, output_width, output_height, thread_queue):
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
@@ -449,7 +449,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, q):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        q.put([True, final_pixels, coefficients_state, shorter_coefficients_state])
+        thread_queue.put([True, final_pixels, coefficients_state, shorter_coefficients_state])
         return True, final_pixels, coefficients_state, shorter_coefficients_state
     else:
         final_pixels = []
@@ -465,7 +465,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, q):
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row) 
-        q.put([False, final_pixels, coefficients_state, shorter_coefficients_state]) 
+        thread_queue.put([False, final_pixels, coefficients_state, shorter_coefficients_state]) 
         return False, final_pixels, coefficients_state, shorter_coefficients_state
 
 def swap_x_y_order(order):
@@ -766,7 +766,7 @@ def main():
     standard_threads = threading.active_count()
     is_wfc_started = False
     
-    q = queue.Queue()
+    thread_queue = queue.Queue()
 
     while run:
         clock.tick(FPS)
@@ -775,9 +775,9 @@ def main():
         # print(threading.active_count())
         if not threading.active_count() > standard_threads:
             if is_wfc_started:
-                print(q.qsize())
-                result = q.get()
-                print(q.qsize())
+                print(thread_queue.qsize())
+                result = thread_queue.get()
+                print(thread_queue.qsize())
                 if result[0]:
                     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
                     is_grid_drawn = True  
@@ -829,7 +829,7 @@ def main():
                     wfc_list_count = 0
                     render_error_msg = False
                     is_wfc_started = True
-                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, q))
+                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue))
                     get_wfc_output.start()
                 # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
                 # if get_wfc_output[0]:
@@ -924,7 +924,7 @@ def main():
 
 
             if test_button.draw(screen):
-                print(q.qsize())
+                print(thread_queue.qsize())
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
