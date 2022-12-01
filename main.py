@@ -783,14 +783,19 @@ def main():
                 if isinstance(result, list):
                     if result[0]:
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                        is_grid_drawn = True  
                     else:
                         render_error_msg = True
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                        is_grid_drawn = True  
+                    is_grid_drawn = True
+                    is_wfc_started = False
+                    if grid_render_speed == "Nth":
+                        last_image = result[2][-1]
+                        wfc_order_list = result[2][::wfc_slice_num]
+                        wfc_order_list.append(last_image)
+                        draw_second_grid = True
+                        is_wfc_anim_ongoing = True
                 else:
                     print(result)
-
             #     if grid_render_speed == "Slow":
             #         wfc_order_list = result[2]
             #         draw_second_grid = True
