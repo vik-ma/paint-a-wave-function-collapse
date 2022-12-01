@@ -839,6 +839,7 @@ def main():
                     wfc_list_count = 0
                     is_grid_drawn = False
                     render_error_msg = False
+                    is_wfc_anim_ongoing = False
                     is_wfc_started = True
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue))
                     get_wfc_output.start()
