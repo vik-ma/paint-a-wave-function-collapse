@@ -837,6 +837,7 @@ def main():
                     tile_group.empty()
 
                     wfc_list_count = 0
+                    is_grid_drawn = False
                     render_error_msg = False
                     is_wfc_started = True
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue))
@@ -910,28 +911,28 @@ def main():
 
             # Animation
             if draw_second_grid:
-                if wfc_list_count < len(wfc_order_list):
-                    final_pixels = []
+                if is_wfc_anim_ongoing:
+                    if wfc_list_count < len(wfc_order_list):
+                        final_pixels = []
 
-                    for i in wfc_order_list[wfc_list_count]:
-                        row = []
-                        for j in i:
-                            if isinstance(j, list):
-                                if len(j) > 0:
-                                    first_pixel = j[0].pix_array[0][0]
+                        for i in wfc_order_list[wfc_list_count]:
+                            row = []
+                            for j in i:
+                                if isinstance(j, list):
+                                    if len(j) > 0:
+                                        first_pixel = j[0].pix_array[0][0]
+                                    else:
+                                        first_pixel = BACKGROUND_COLOR
                                 else:
-                                    first_pixel = BACKGROUND_COLOR
-                            else:
-                                first_pixel = j.pix_array[0][0]
-                            row.append(first_pixel)
-                        final_pixels.append(row)
+                                    first_pixel = j.pix_array[0][0]
+                                row.append(first_pixel)
+                            final_pixels.append(row)
 
-                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
-                    completed_wfc_pattern_group.add(wfc_output_2)
-                    wfc_list_count += 1
-                if wfc_list_count == len(wfc_order_list):
-                    is_wfc_anim_ongoing = False
-
+                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
+                        completed_wfc_pattern_group.add(wfc_output_2)
+                        wfc_list_count += 1
+                    if wfc_list_count == len(wfc_order_list):
+                        is_wfc_anim_ongoing = False
 
             if test_button.draw(screen):
                 print(thread_queue.qsize())
