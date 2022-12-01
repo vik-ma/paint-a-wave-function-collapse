@@ -415,6 +415,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
 
     shorter_coefficients_state = []
 
+    i = 0
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
@@ -427,6 +428,9 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
             shorter_coefficients_state.append(current_coefficients)
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
+            
+            i += 1
+            thread_queue.put(i)
             
             current_coefficients = deepcopy(coefficients)
             shorter_coefficients_state.append(current_coefficients)
@@ -450,7 +454,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
                 row.append(first_pixel)
             final_pixels.append(row)
         thread_queue.put([True, final_pixels, coefficients_state, shorter_coefficients_state])
-        return True, final_pixels, coefficients_state, shorter_coefficients_state
+        # return True, final_pixels, coefficients_state, shorter_coefficients_state
     else:
         final_pixels = []
         for i in coefficients: 
@@ -466,7 +470,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
                 row.append(first_pixel)
             final_pixels.append(row) 
         thread_queue.put([False, final_pixels, coefficients_state, shorter_coefficients_state]) 
-        return False, final_pixels, coefficients_state, shorter_coefficients_state
+        # return False, final_pixels, coefficients_state, shorter_coefficients_state
 
 def swap_x_y_order(order):
     new_order = []
@@ -774,38 +778,39 @@ def main():
 
         # print(threading.active_count())
         if not threading.active_count() > standard_threads:
-            if is_wfc_started:
-                print(thread_queue.qsize())
+            if not thread_queue.empty() and is_wfc_started:
                 result = thread_queue.get()
-                print(thread_queue.qsize())
-                if result[0]:
-                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                    is_grid_drawn = True  
+                if isinstance(result, list):
+                    if result[0]:
+                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        is_grid_drawn = True  
+                    else:
+                        render_error_msg = True
+                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        is_grid_drawn = True  
                 else:
-                    render_error_msg = True
-                    wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                    is_grid_drawn = True  
+                    print(result)
 
-                if grid_render_speed == "Slow":
-                    wfc_order_list = result[2]
-                    draw_second_grid = True
-                    is_wfc_anim_ongoing = True
-                elif grid_render_speed == "Faster":
-                    wfc_order_list = result[3]
-                    draw_second_grid = True
-                    is_wfc_anim_ongoing = True
-                elif grid_render_speed == "Instant":
-                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
-                    draw_second_grid = False
-                    completed_wfc_pattern_group.add(wfc_output_2)
-                elif grid_render_speed == "Nth":
-                    last_image = result[2][-1]
-                    wfc_order_list = result[2][::wfc_slice_num]
-                    wfc_order_list.append(last_image)
-                    draw_second_grid = True
-                    is_wfc_anim_ongoing = True
+            #     if grid_render_speed == "Slow":
+            #         wfc_order_list = result[2]
+            #         draw_second_grid = True
+            #         is_wfc_anim_ongoing = True
+            #     elif grid_render_speed == "Faster":
+            #         wfc_order_list = result[3]
+            #         draw_second_grid = True
+            #         is_wfc_anim_ongoing = True
+            #     elif grid_render_speed == "Instant":
+            #         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
+            #         draw_second_grid = False
+            #         completed_wfc_pattern_group.add(wfc_output_2)
+            #     elif grid_render_speed == "Nth":
+            #         last_image = result[2][-1]
+            #         wfc_order_list = result[2][::wfc_slice_num]
+            #         wfc_order_list.append(last_image)
+            #         draw_second_grid = True
+            #         is_wfc_anim_ongoing = True
 
-                is_wfc_started = False
+            #     is_wfc_started = False
 
         if game_state == "wfc":
 
