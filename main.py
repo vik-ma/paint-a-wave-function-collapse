@@ -781,57 +781,57 @@ def main():
         clock.tick(FPS)
         draw_window(screen)
 
-        # print(threading.active_count())
-        if not threading.active_count() > standard_threads:
-            if not thread_queue.empty() and is_wfc_started:
-                result = thread_queue.get()
-                if isinstance(result, list):
-                    if result[0]:
-                        wfc_time_finish = time.time() - wfc_time_start
-                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                        is_wfc_finished = True
-                    else:
-                        render_error_msg = True
-                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                    is_grid_drawn = True
-                    is_wfc_started = False
-                    if grid_render_speed == "Nth":
-                        last_image = result[2][-1]
-                        wfc_order_list = result[2][::wfc_slice_num]
-                        wfc_order_list.append(last_image)
-                        draw_second_grid = True
-                        is_wfc_anim_ongoing = True
-                else:
-                    # print(result)
-                    pass 
-        else:
-            wfc_in_progress_text = info_font.render("Wave Function Collapse In Progress...", True, DARKPURPLE)
-            time_progressed = time.time() - wfc_time_start
-            wfc_timer_text = info_font.render(f"{round(time_progressed, 3)}s", True, CRIMSON)
-            screen.blit(wfc_in_progress_text, (48, 370))
-            screen.blit(wfc_timer_text, (430, 370))
-            #     if grid_render_speed == "Slow":
-            #         wfc_order_list = result[2]
-            #         draw_second_grid = True
-            #         is_wfc_anim_ongoing = True
-            #     elif grid_render_speed == "Faster":
-            #         wfc_order_list = result[3]
-            #         draw_second_grid = True
-            #         is_wfc_anim_ongoing = True
-            #     elif grid_render_speed == "Instant":
-            #         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
-            #         draw_second_grid = False
-            #         completed_wfc_pattern_group.add(wfc_output_2)
-            #     elif grid_render_speed == "Nth":
-            #         last_image = result[2][-1]
-            #         wfc_order_list = result[2][::wfc_slice_num]
-            #         wfc_order_list.append(last_image)
-            #         draw_second_grid = True
-            #         is_wfc_anim_ongoing = True
-
-            #     is_wfc_started = False
-
         if game_state == "wfc":
+            # print(threading.active_count())
+            if not threading.active_count() > standard_threads:
+                if not thread_queue.empty() and is_wfc_started:
+                    result = thread_queue.get()
+                    if isinstance(result, list):
+                        if result[0]:
+                            wfc_time_finish = time.time() - wfc_time_start
+                            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                            is_wfc_finished = True
+                        else:
+                            render_error_msg = True
+                            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        is_grid_drawn = True
+                        is_wfc_started = False
+                        if grid_render_speed == "Nth":
+                            last_image = result[2][-1]
+                            wfc_order_list = result[2][::wfc_slice_num]
+                            wfc_order_list.append(last_image)
+                            draw_second_grid = True
+                            is_wfc_anim_ongoing = True
+                    else:
+                        # print(result)
+                        pass 
+            else:
+                wfc_in_progress_text = info_font.render("Wave Function Collapse In Progress...", True, DARKPURPLE)
+                time_progressed = time.time() - wfc_time_start
+                wfc_timer_text = info_font.render(f"{round(time_progressed, 3)}s", True, CRIMSON)
+                screen.blit(wfc_in_progress_text, (48, 370))
+                screen.blit(wfc_timer_text, (430, 370))
+                #     if grid_render_speed == "Slow":
+                #         wfc_order_list = result[2]
+                #         draw_second_grid = True
+                #         is_wfc_anim_ongoing = True
+                #     elif grid_render_speed == "Faster":
+                #         wfc_order_list = result[3]
+                #         draw_second_grid = True
+                #         is_wfc_anim_ongoing = True
+                #     elif grid_render_speed == "Instant":
+                #         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
+                #         draw_second_grid = False
+                #         completed_wfc_pattern_group.add(wfc_output_2)
+                #     elif grid_render_speed == "Nth":
+                #         last_image = result[2][-1]
+                #         wfc_order_list = result[2][::wfc_slice_num]
+                #         wfc_order_list.append(last_image)
+                #         draw_second_grid = True
+                #         is_wfc_anim_ongoing = True
+
+                #     is_wfc_started = False
+
 
             if is_wfc_finished:
                 wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {round(wfc_time_finish, 3)}s", True, LAWNGREEN)
