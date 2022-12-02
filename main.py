@@ -795,7 +795,11 @@ def main():
                         draw_second_grid = True
                         is_wfc_anim_ongoing = True
                 else:
-                    print(result)
+                    # print(result)
+                    pass
+        else:
+            wfc_in_progress_text = info_font.render("Wave Function Collapse In Progress...", True, DARKPURPLE)
+            screen.blit(wfc_in_progress_text, (48, 370))
             #     if grid_render_speed == "Slow":
             #         wfc_order_list = result[2]
             #         draw_second_grid = True
