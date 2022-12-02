@@ -406,7 +406,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
 
     coefficients = initialize_wave_function(pattern_list, output_width, output_height)
 
-    perf_time_start = time.monotonic()
+    perf_time_start = time.perf_counter()
     print("Wave Function Collapse Started")
 
     wfc_completed = True
@@ -435,7 +435,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
         wfc_completed = False
         # print("WFC FAIL: ", e)
         traceback.print_exc()
-    perf_time_end = time.monotonic()
+    perf_time_end = time.perf_counter()
     thread_queue.put(round((perf_time_end - perf_time_start), 3))
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
@@ -798,13 +798,12 @@ def main():
                             draw_second_grid = True
                             is_wfc_anim_ongoing = True
                     elif isinstance(result, float):
-                        # wfc_time_finish = time.time() - wfc_time_start
                         wfc_time_finish = result
                         is_wfc_finished = True
                          
             else:
                 wfc_in_progress_text = info_font.render("Wave Function Collapse In Progress...", True, DARKPURPLE)
-                time_progressed = time.time() - wfc_time_start
+                time_progressed = time.perf_counter() - wfc_time_start
                 wfc_timer_text = info_font.render(f"{round(time_progressed, 3)}s", True, CRIMSON)
                 screen.blit(wfc_in_progress_text, (48, 370))
                 screen.blit(wfc_timer_text, (430, 370))
@@ -856,7 +855,7 @@ def main():
                     render_error_msg = False
                     is_wfc_anim_ongoing = False
                     is_wfc_started = True
-                    wfc_time_start = time.time()
+                    wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue))
                     get_wfc_output.start()
                 # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
