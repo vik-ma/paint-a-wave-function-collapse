@@ -415,7 +415,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
 
     shorter_coefficients_state = []
 
-    i = 0
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
@@ -429,9 +428,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
             
-            i += 1
-            thread_queue.put(i)
-            
             current_coefficients = deepcopy(coefficients)
             shorter_coefficients_state.append(current_coefficients)
 
@@ -440,6 +436,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
         # print("WFC FAIL: ", e)
         traceback.print_exc()
     perf_time_end = time.monotonic()
+    thread_queue.put(round((perf_time_end - perf_time_start), 3))
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
     if wfc_completed:
@@ -788,9 +785,7 @@ def main():
                     result = thread_queue.get()
                     if isinstance(result, list):
                         if result[0]:
-                            wfc_time_finish = time.time() - wfc_time_start
                             wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                            is_wfc_finished = True
                         else:
                             render_error_msg = True
                             wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
@@ -802,9 +797,11 @@ def main():
                             wfc_order_list.append(last_image)
                             draw_second_grid = True
                             is_wfc_anim_ongoing = True
-                    else:
-                        # print(result)
-                        pass 
+                    elif isinstance(result, float):
+                        # wfc_time_finish = time.time() - wfc_time_start
+                        wfc_time_finish = result
+                        is_wfc_finished = True
+                         
             else:
                 wfc_in_progress_text = info_font.render("Wave Function Collapse In Progress...", True, DARKPURPLE)
                 time_progressed = time.time() - wfc_time_start
@@ -834,7 +831,7 @@ def main():
 
 
             if is_wfc_finished:
-                wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {round(wfc_time_finish, 3)}s", True, LAWNGREEN)
+                wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {wfc_time_finish} s", True, LAWNGREEN)
                 screen.blit(wfc_finished_text, (48, 370))
 
             draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
