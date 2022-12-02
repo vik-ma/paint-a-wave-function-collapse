@@ -855,6 +855,7 @@ def main():
                     render_error_msg = False
                     is_wfc_anim_ongoing = False
                     is_wfc_started = True
+                    is_wfc_finished = False
                     wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue))
                     get_wfc_output.start()
