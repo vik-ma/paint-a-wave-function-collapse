@@ -769,8 +769,13 @@ def main():
 
     standard_threads = threading.active_count()
     is_wfc_started = False
+
+    is_wfc_finished = False
     
     thread_queue = queue.Queue()
+
+    wfc_time_start = 0
+    wfc_time_finish = 0
 
     while run:
         clock.tick(FPS)
@@ -782,7 +787,9 @@ def main():
                 result = thread_queue.get()
                 if isinstance(result, list):
                     if result[0]:
+                        wfc_time_finish = time.time() - wfc_time_start
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        is_wfc_finished = True
                     else:
                         render_error_msg = True
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
@@ -796,10 +803,13 @@ def main():
                         is_wfc_anim_ongoing = True
                 else:
                     # print(result)
-                    pass
+                    pass 
         else:
             wfc_in_progress_text = info_font.render("Wave Function Collapse In Progress...", True, DARKPURPLE)
+            time_progressed = time.time() - wfc_time_start
+            wfc_timer_text = info_font.render(f"{round(time_progressed, 3)}s", True, CRIMSON)
             screen.blit(wfc_in_progress_text, (48, 370))
+            screen.blit(wfc_timer_text, (430, 370))
             #     if grid_render_speed == "Slow":
             #         wfc_order_list = result[2]
             #         draw_second_grid = True
@@ -823,6 +833,10 @@ def main():
 
         if game_state == "wfc":
 
+            if is_wfc_finished:
+                wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {round(wfc_time_finish, 3)}s", True, LAWNGREEN)
+                screen.blit(wfc_finished_text, (48, 370))
+
             draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
         
             if show_probability:
@@ -845,6 +859,7 @@ def main():
                     render_error_msg = False
                     is_wfc_anim_ongoing = False
                     is_wfc_started = True
+                    wfc_time_start = time.time()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue))
                     get_wfc_output.start()
                 # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
