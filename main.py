@@ -801,12 +801,10 @@ def main():
                         wfc_time_finish = result
                         is_wfc_finished = True
                          
-            else:
-                wfc_in_progress_text = info_font.render("Wave Function Collapse In Progress...", True, DARKPURPLE)
+            else:                
                 time_progressed = time.perf_counter() - wfc_time_start
-                wfc_timer_text = info_font.render(f"{round(time_progressed, 3)}s", True, CRIMSON)
+                wfc_in_progress_text = info_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
                 screen.blit(wfc_in_progress_text, (48, 370))
-                screen.blit(wfc_timer_text, (430, 370))
                 #     if grid_render_speed == "Slow":
                 #         wfc_order_list = result[2]
                 #         draw_second_grid = True
@@ -830,7 +828,7 @@ def main():
 
 
             if is_wfc_finished:
-                wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {wfc_time_finish} s", True, LAWNGREEN)
+                wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
                 screen.blit(wfc_finished_text, (48, 370))
 
             draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
