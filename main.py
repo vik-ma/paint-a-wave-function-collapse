@@ -715,9 +715,6 @@ def main():
 
     selected_tile = tile_buttons[selected_tile_index]
 
-    error_msg = error_font.render("WAVE FUNCTION COLLAPSE FAILED", True, (255, 0, 0))
-    render_error_msg = False
-
     wfc_order_list = []
     wfc_list_count = 0
 
@@ -774,6 +771,8 @@ def main():
     wfc_time_start = 0
     wfc_time_finish = 0
 
+    did_wfc_fail = False
+
     while run:
         clock.tick(FPS)
         draw_window(screen)
@@ -787,7 +786,7 @@ def main():
                         if result[0]:
                             wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
                         else:
-                            render_error_msg = True
+                            did_wfc_fail = True
                             wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
                         is_grid_drawn = True
                         is_wfc_started = False
@@ -828,8 +827,12 @@ def main():
 
 
             if is_wfc_finished:
-                wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
-                screen.blit(wfc_finished_text, (48, 370))
+                if not did_wfc_fail:
+                    wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
+                    screen.blit(wfc_finished_text, (48, 370))
+                else:
+                    wfc_failed_text = info_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
+                    screen.blit(wfc_failed_text, (48, 370))
 
             draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
         
@@ -850,7 +853,7 @@ def main():
 
                     wfc_list_count = 0
                     is_grid_drawn = False
-                    render_error_msg = False
+                    did_wfc_fail = False
                     is_wfc_anim_ongoing = False
                     is_wfc_started = True
                     is_wfc_finished = False
@@ -902,9 +905,6 @@ def main():
                     output_height -= 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
 
-
-            if render_error_msg:
-                screen.blit(error_msg, (50, 365))
 
             # Original tiles
             for index, tile_button in enumerate(tile_buttons):
