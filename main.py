@@ -634,6 +634,7 @@ def main():
     toggle_show_probability_button = Button(WHITE, 550, 500, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
 
     replay_animation_button = Button(WHITE, 570, 300, 210, 40, "Replay WFC Animation", BLACK, LIGHTGREY)
+    skip_animation_button = Button(WHITE, 570, 350, 210, 40, "Skip WFC Animation", BLACK, LIGHTGREY)
 
     set_speed_instant_button = Button(WHITE, 250, 550, 100, 40, "Instant", BLACK, LIGHTGREY)
     set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGHTGREY)
@@ -955,6 +956,10 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     wfc_list_count = 0
                     is_wfc_anim_ongoing = True
+
+            if skip_animation_button.draw(screen):
+                if is_wfc_anim_ongoing:
+                    wfc_list_count = len(wfc_order_list) - 1
 
             if test_button.draw(screen):
                 print(thread_queue.qsize())
