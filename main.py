@@ -628,10 +628,10 @@ def main():
     increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
     decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
 
-    set_pattern_size_2_button = Button(WHITE, 570, 350, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
-    set_pattern_size_3_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
+    set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+    set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
-    toggle_show_probability_button = Button(WHITE, 550, 450, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
+    toggle_show_probability_button = Button(WHITE, 550, 500, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
 
     replay_animation_button = Button(WHITE, 570, 300, 210, 40, "Replay WFC Animation", BLACK, LIGHTGREY)
 
