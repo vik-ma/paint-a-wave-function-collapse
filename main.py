@@ -486,11 +486,6 @@ def swap_x_y_order_dict(order_dict):
 def draw_window(screen):
     screen.fill(BACKGROUND_COLOR)
 
-# def draw_grid(pix_array, output_width, output_height):
-#     for row in range(output_width):
-#         for col in range(output_height):
-#             tile = Tile(output_width, output_height, (col * output_width + 50), (row * output_height + 50), pix_array)
-#             tile_group.add(tile)
 
 def draw_patterns(pattern_group, pattern_list, screen, enlargement_scale):
     pattern_group.empty()
@@ -516,8 +511,6 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
         tile = Tile(pattern_size, pattern_size, (col * (pattern_size + x_offset) + x), y, patterns[col].pix_array, enlargement_scale)
         tile_list.append(tile)
     return tile_list, y+y_offset-2
-
-
 
 def create_tile_buttons(initial_tile_list):
     tile_buttons = []
@@ -549,9 +542,6 @@ def swap_pattern_x_y(pattern_list):
         pattern.pix_array = swapped
         new_list.append(pattern)
     return new_list
-
-# def highlight_pattern(screen, pattern, pattern_size, enlargement_scale):
-#     pygame.draw.rect(screen, YELLOW, (pattern[0]-5, pattern[1]-5, pattern_size*enlargement_scale + 10, pattern_size*enlargement_scale + 10), 5)
 
 def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
     grid = []
@@ -781,7 +771,6 @@ def main():
         draw_window(screen)
 
         if game_state == "wfc":
-            # print(threading.active_count())
             if not threading.active_count() > standard_threads:
                 if not thread_queue.empty() and is_wfc_started:
                     result = thread_queue.get()
@@ -921,9 +910,6 @@ def main():
                     grid_y_pos = pattern_list[1]
                     second_grid_y_pos = pattern_list[1]
                     print(len(patterns[0]))
-
-
-
 
             draw_selected_tile_border(screen, selected_tile)
 
