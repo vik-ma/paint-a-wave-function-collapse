@@ -776,27 +776,27 @@ def main():
         if game_state == "wfc":
             if not threading.active_count() > standard_threads:
                 if not thread_queue.empty() and is_wfc_started:
-                    # if render_wfc_at_end:
-                        result = thread_queue.queue[-1]
-                        if isinstance(result, list):
-                            if result[0]:
-                                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                            else:
-                                did_wfc_fail = True
-                                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                            is_grid_drawn = True
-                            is_wfc_started = False
-                            if grid_render_speed == "Nth":
-                                last_image = result[2][-1]
-                                wfc_order_list = result[2][::wfc_slice_num]
-                                wfc_order_list.append(last_image)
-                                wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
-                                completed_wfc_pattern_group.add(wfc_output_2)
-                                # draw_second_grid = True
-                                # is_wfc_anim_ongoing = True
-                        elif isinstance(result, float):
-                            wfc_time_finish = result
-                            is_wfc_finished = True
+                    result = thread_queue.queue[-1]
+                    if isinstance(result, list):
+                        if result[0]:
+                            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        else:
+                            did_wfc_fail = True
+                            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        is_grid_drawn = True
+                        is_wfc_started = False
+                        if grid_render_speed == "Nth":
+                            last_image = result[2][-1]
+                            wfc_order_list = result[2][::wfc_slice_num]
+                            wfc_order_list.append(last_image)
+                            wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
+                            completed_wfc_pattern_group.add(wfc_output_2)
+                            if render_wfc_at_end:
+                                draw_second_grid = True
+                                is_wfc_anim_ongoing = True
+                    elif isinstance(result, float):
+                        wfc_time_finish = result
+                        is_wfc_finished = True
 
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
@@ -823,7 +823,7 @@ def main():
 
                         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
-                        print(thread_queue.qsize())
+                        # print(thread_queue.qsize())
 
                 #     if grid_render_speed == "Slow":
                 #         wfc_order_list = result[2]
