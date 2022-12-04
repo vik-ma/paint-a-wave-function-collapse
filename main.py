@@ -871,7 +871,7 @@ def main():
                 if not is_wfc_started:
                     completed_wfc_pattern_group.empty()
                     tile_group.empty()
-                    
+                    thread_queue = queue.Queue()
                     wfc_list_count = 0
                     is_grid_drawn = False
                     did_wfc_fail = False
