@@ -386,7 +386,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     
 
 
-def execute_wave_function_collapse(patterns, output_width, output_height, thread_queue):
+def execute_wave_function_collapse(patterns, output_width, output_height, thread_queue, render_wfc_at_end):
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
@@ -418,18 +418,24 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
-            current_coefficients = deepcopy(coefficients)
-            shorter_coefficients_state.append(current_coefficients)
+            # current_coefficients = deepcopy(coefficients)
+            # shorter_coefficients_state.append(current_coefficients)
+            if not render_wfc_at_end:
+                thread_queue.put(deepcopy(coefficients))
 
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
 
-            current_coefficients = deepcopy(coefficients)
-            shorter_coefficients_state.append(current_coefficients)
+            # current_coefficients = deepcopy(coefficients)
+            # shorter_coefficients_state.append(current_coefficients)
+            if not render_wfc_at_end:
+                thread_queue.put(deepcopy(coefficients))
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
             
-            current_coefficients = deepcopy(coefficients)
-            shorter_coefficients_state.append(current_coefficients)
+            if not render_wfc_at_end:
+                thread_queue.put(deepcopy(coefficients))
+            # current_coefficients = deepcopy(coefficients)
+            # shorter_coefficients_state.append(current_coefficients)
 
     except Exception as e:
         wfc_completed = False
@@ -766,6 +772,8 @@ def main():
 
     did_wfc_fail = False
 
+    render_wfc_at_end = True
+
     while run:
         clock.tick(FPS)
         draw_window(screen)
@@ -774,23 +782,27 @@ def main():
             if not threading.active_count() > standard_threads:
                 if not thread_queue.empty() and is_wfc_started:
                     result = thread_queue.get()
-                    if isinstance(result, list):
-                        if result[0]:
-                            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                        else:
-                            did_wfc_fail = True
-                            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                        is_grid_drawn = True
-                        is_wfc_started = False
-                        if grid_render_speed == "Nth":
-                            last_image = result[2][-1]
-                            wfc_order_list = result[2][::wfc_slice_num]
-                            wfc_order_list.append(last_image)
-                            draw_second_grid = True
-                            is_wfc_anim_ongoing = True
-                    elif isinstance(result, float):
-                        wfc_time_finish = result
-                        is_wfc_finished = True
+                    if not render_wfc_at_end:
+                        if isinstance(result, list):
+                            if result[0]:
+                                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                            else:
+                                did_wfc_fail = True
+                                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                            is_grid_drawn = True
+                            is_wfc_started = False
+                            if grid_render_speed == "Nth":
+                                last_image = result[2][-1]
+                                wfc_order_list = result[2][::wfc_slice_num]
+                                wfc_order_list.append(last_image)
+                                draw_second_grid = True
+                                is_wfc_anim_ongoing = True
+                        elif isinstance(result, float):
+                            wfc_time_finish = result
+                            is_wfc_finished = True
+                    else:
+                        if isinstance(result, list):
+                            print(len(result))
                          
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
@@ -850,7 +862,7 @@ def main():
                     is_wfc_started = True
                     is_wfc_finished = False
                     wfc_time_start = time.perf_counter()
-                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue))
+                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, False))
                     get_wfc_output.start()
                 # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
                 # if get_wfc_output[0]:
