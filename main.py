@@ -437,7 +437,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
         # print("WFC FAIL: ", e)
         traceback.print_exc()
     perf_time_end = time.perf_counter()
-    thread_queue.put(round((perf_time_end - perf_time_start), 3))
+    # thread_queue.put(round((perf_time_end - perf_time_start), 3))
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
     if wfc_completed:
@@ -451,7 +451,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        thread_queue.put([True, final_pixels, coefficients_state, shorter_coefficients_state])
+        thread_queue.put([True, final_pixels, coefficients_state, shorter_coefficients_state, round((perf_time_end - perf_time_start), 3)])
         # return True, final_pixels, coefficients_state, shorter_coefficients_state
     else:
         final_pixels = []
@@ -467,7 +467,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row) 
-        thread_queue.put([False, final_pixels, coefficients_state, shorter_coefficients_state]) 
+        thread_queue.put([False, final_pixels, coefficients_state, shorter_coefficients_state, round((perf_time_end - perf_time_start), 3)]) 
         # return False, final_pixels, coefficients_state, shorter_coefficients_state
 
 def swap_x_y_order(order):
@@ -767,7 +767,7 @@ def main():
 
     did_wfc_fail = False
 
-    render_wfc_at_end = True
+    render_wfc_at_end = False
 
     while run:
         clock.tick(FPS)
@@ -783,6 +783,8 @@ def main():
                         else:
                             did_wfc_fail = True
                             wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        wfc_time_finish = result[4]
+                        is_wfc_finished = True
                         is_grid_drawn = True
                         is_wfc_started = False
                         if grid_render_speed == "Nth":
@@ -794,9 +796,9 @@ def main():
                             if render_wfc_at_end:
                                 draw_second_grid = True
                                 is_wfc_anim_ongoing = True
-                    elif isinstance(result, float):
-                        wfc_time_finish = result
-                        is_wfc_finished = True
+                    # elif isinstance(result, float):
+                    #     wfc_time_finish = result
+                    #     is_wfc_finished = True
 
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
