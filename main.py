@@ -767,7 +767,7 @@ def main():
 
     did_wfc_fail = False
 
-    render_wfc_at_end = False
+    render_wfc_at_end = True
 
     while run:
         clock.tick(FPS)
@@ -968,7 +968,7 @@ def main():
                         is_wfc_anim_ongoing = False
 
             if replay_animation_button.draw(screen):
-                if not is_wfc_anim_ongoing and not is_wfc_started:
+                if not is_wfc_anim_ongoing and not is_wfc_started and len(wfc_order_list) > 0:
                     wfc_list_count = 0
                     is_wfc_anim_ongoing = True
 
