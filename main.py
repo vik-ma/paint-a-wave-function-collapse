@@ -413,8 +413,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
 
     coefficients_state = []
 
-    shorter_coefficients_state = []
-
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
@@ -451,8 +449,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        thread_queue.put([True, final_pixels, coefficients_state, shorter_coefficients_state, round((perf_time_end - perf_time_start), 3)])
-        # return True, final_pixels, coefficients_state, shorter_coefficients_state
+        thread_queue.put([True, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)])
     else:
         final_pixels = []
         for i in coefficients: 
@@ -467,8 +464,8 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row) 
-        thread_queue.put([False, final_pixels, coefficients_state, shorter_coefficients_state, round((perf_time_end - perf_time_start), 3)]) 
-        # return False, final_pixels, coefficients_state, shorter_coefficients_state
+        thread_queue.put([False, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)]) 
+
 
 def swap_x_y_order(order):
     new_order = []
@@ -777,28 +774,24 @@ def main():
             if not threading.active_count() > standard_threads:
                 if not thread_queue.empty() and is_wfc_started:
                     result = thread_queue.queue[-1]
-                    if isinstance(result, list):
-                        if result[0]:
-                            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                        else:
-                            did_wfc_fail = True
-                            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                        wfc_time_finish = result[4]
-                        is_wfc_finished = True
-                        is_grid_drawn = True
-                        is_wfc_started = False
-                        if grid_render_speed == "Nth":
-                            last_image = result[2][-1]
-                            wfc_order_list = result[2][::wfc_slice_num]
-                            wfc_order_list.append(last_image)
-                            wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
-                            completed_wfc_pattern_group.add(wfc_output_2)
-                            if render_wfc_at_end:
-                                draw_second_grid = True
-                                is_wfc_anim_ongoing = True
-                    # elif isinstance(result, float):
-                    #     wfc_time_finish = result
-                    #     is_wfc_finished = True
+                    if result[0]:
+                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                    else:
+                        did_wfc_fail = True
+                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                    wfc_time_finish = result[3]
+                    is_wfc_finished = True
+                    is_grid_drawn = True
+                    is_wfc_started = False
+                    if grid_render_speed == "Nth":
+                        last_image = result[2][-1]
+                        wfc_order_list = result[2][::wfc_slice_num]
+                        wfc_order_list.append(last_image)
+                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
+                        completed_wfc_pattern_group.add(wfc_output_2)
+                        if render_wfc_at_end:
+                            draw_second_grid = True
+                            is_wfc_anim_ongoing = True
 
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
