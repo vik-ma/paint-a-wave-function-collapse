@@ -764,7 +764,7 @@ def main():
 
     did_wfc_fail = False
 
-    render_wfc_at_end = False
+    render_wfc_at_end = True
 
     while run:
         clock.tick(FPS)
@@ -784,9 +784,7 @@ def main():
                     is_grid_drawn = True
                     is_wfc_started = False
                     if grid_render_speed == "Nth":
-                        last_image = result[2][-1]
-                        wfc_order_list = result[2][::wfc_slice_num]
-                        wfc_order_list.append(last_image)
+                        wfc_order_list = result[2]
                         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
                         if render_wfc_at_end:
@@ -939,11 +937,14 @@ def main():
 
             # Animation
             if draw_second_grid:
+                last_image = wfc_order_list[-1]
+                sliced_list = wfc_order_list[::wfc_slice_num]
+                sliced_list.append(last_image)
                 if is_wfc_anim_ongoing:
-                    if wfc_list_count < len(wfc_order_list):
+                    if wfc_list_count < len(sliced_list):
                         final_pixels = []
 
-                        for i in wfc_order_list[wfc_list_count]:
+                        for i in sliced_list[wfc_list_count]:
                             row = []
                             for j in i:
                                 if isinstance(j, list):
@@ -959,7 +960,7 @@ def main():
                         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
                         wfc_list_count += 1
-                    if wfc_list_count == len(wfc_order_list):
+                    if wfc_list_count == len(sliced_list):
                         is_wfc_anim_ongoing = False
 
             if replay_animation_button.draw(screen):
