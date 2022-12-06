@@ -624,10 +624,8 @@ def main():
     replay_animation_button = Button(WHITE, 570, 300, 210, 40, "Replay WFC Animation", BLACK, LIGHTGREY)
     skip_animation_button = Button(WHITE, 570, 350, 210, 40, "Skip WFC Animation", BLACK, LIGHTGREY)
 
-    set_speed_instant_button = Button(WHITE, 250, 550, 100, 40, "Instant", BLACK, LIGHTGREY)
-    set_speed_faster_button = Button(WHITE, 360, 550, 100, 40, "Faster", BLACK, LIGHTGREY)
-    set_speed_slow_button = Button(WHITE, 470, 550, 100, 40, "Slow", BLACK, LIGHTGREY)
-    set_speed_nth_button = Button(WHITE, 580, 550, 100, 40, "Nth", BLACK, LIGHTGREY)
+    toggle_anim_during_wfc_button = Button(WHITE, 480, 560, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
+    toggle_anim_after_wfc_button = Button(WHITE, 480, 590, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
 
     increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
     decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
@@ -764,6 +762,7 @@ def main():
 
     did_wfc_fail = False
 
+    render_wfc_during_execution = True
     render_wfc_at_end = True
 
     while run:
@@ -1021,17 +1020,18 @@ def main():
                     if wfc_slice_num > 1:
                         wfc_slice_num -= 1
 
-            if set_speed_instant_button.draw(screen):
-                grid_render_speed = "Instant"
+            if toggle_anim_during_wfc_button.draw(screen):
+                if render_wfc_during_execution:
+                    render_wfc_during_execution = False
+                else:
+                    render_wfc_during_execution = True
 
-            if set_speed_faster_button.draw(screen):
-                grid_render_speed = "Faster"
+            if toggle_anim_after_wfc_button.draw(screen):
+                if render_wfc_at_end:
+                    render_wfc_at_end = False
+                else:
+                    render_wfc_at_end = True
 
-            if set_speed_slow_button.draw(screen):
-                grid_render_speed = "Slow" 
-
-            if set_speed_nth_button.draw(screen):
-                grid_render_speed = "Nth"   
 
             pattern_group.draw(screen)
             tile_group.draw(screen)
