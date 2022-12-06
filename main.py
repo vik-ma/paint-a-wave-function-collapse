@@ -624,8 +624,8 @@ def main():
     replay_animation_button = Button(WHITE, 570, 300, 210, 40, "Replay WFC Animation", BLACK, LIGHTGREY)
     skip_animation_button = Button(WHITE, 570, 350, 210, 40, "Skip WFC Animation", BLACK, LIGHTGREY)
 
-    toggle_anim_during_wfc_button = Button(WHITE, 480, 560, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
-    toggle_anim_after_wfc_button = Button(WHITE, 480, 590, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
+    toggle_anim_during_wfc_button = Button(WHITE, 520, 560, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
+    toggle_anim_after_wfc_button = Button(WHITE, 520, 590, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
 
     increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
     decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
@@ -765,8 +765,10 @@ def main():
     render_wfc_during_execution = True
     render_wfc_at_end = True
 
-    anim_during_wfc_text = info_font.render("Yes", True, DARKISHGREEN)
-    anim_after_wfc_text = info_font.render("Yes", True, DARKISHGREEN)
+    anim_during_wfc_info_text = info_font.render("Show current state of WFC during execution:", True, BLACK)
+    anim_after_wfc_info_text = info_font.render("Show animation of WFC after completion:", True, BLACK)
+    anim_during_wfc_value_text = info_font.render("Yes", True, GREEN)
+    anim_after_wfc_value_text = info_font.render("Yes", True, GREEN)
 
     while run:
         clock.tick(FPS)
@@ -1023,25 +1025,26 @@ def main():
                     if wfc_slice_num > 1:
                         wfc_slice_num -= 1
 
-
-            screen.blit(anim_during_wfc_text, (400, 560))
-            screen.blit(anim_after_wfc_text, (400, 590))
+            screen.blit(anim_during_wfc_info_text, (30, 560))
+            screen.blit(anim_after_wfc_info_text, (30, 590))
+            screen.blit(anim_during_wfc_value_text, (478, 560))
+            screen.blit(anim_after_wfc_value_text, (478, 590))
 
             if toggle_anim_during_wfc_button.draw(screen):
                 if render_wfc_during_execution:
                     render_wfc_during_execution = False
-                    anim_during_wfc_text = info_font.render("No", True, DARKRED)
+                    anim_during_wfc_value_text = info_font.render("No", True, DARKRED)
                 else:
                     render_wfc_during_execution = True
-                    anim_during_wfc_text = info_font.render("Yes", True, GREEN)
+                    anim_during_wfc_value_text = info_font.render("Yes", True, GREEN)
 
             if toggle_anim_after_wfc_button.draw(screen):
                 if render_wfc_at_end:
                     render_wfc_at_end = False
-                    anim_after_wfc_text = info_font.render("No", True, DARKRED)
+                    anim_after_wfc_value_text = info_font.render("No", True, DARKRED)
                 else:
                     render_wfc_at_end = True
-                    anim_after_wfc_text = info_font.render("Yes", True, GREEN)
+                    anim_after_wfc_value_text = info_font.render("Yes", True, GREEN)
 
 
             pattern_group.draw(screen)
