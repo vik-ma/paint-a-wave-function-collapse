@@ -611,7 +611,8 @@ def main():
 
     make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
     test_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
-    switch_state_button = Button(WHITE, 50, 550, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+
+    switch_state_button = Button(WHITE, 630, 580, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
     increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
     decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
