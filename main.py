@@ -765,6 +765,9 @@ def main():
     render_wfc_during_execution = True
     render_wfc_at_end = True
 
+    anim_during_wfc_text = info_font.render("Yes", True, DARKISHGREEN)
+    anim_after_wfc_text = info_font.render("Yes", True, DARKISHGREEN)
+
     while run:
         clock.tick(FPS)
         draw_window(screen)
@@ -1020,17 +1023,25 @@ def main():
                     if wfc_slice_num > 1:
                         wfc_slice_num -= 1
 
+
+            screen.blit(anim_during_wfc_text, (400, 560))
+            screen.blit(anim_after_wfc_text, (400, 590))
+
             if toggle_anim_during_wfc_button.draw(screen):
                 if render_wfc_during_execution:
                     render_wfc_during_execution = False
+                    anim_during_wfc_text = info_font.render("No", True, DARKRED)
                 else:
                     render_wfc_during_execution = True
+                    anim_during_wfc_text = info_font.render("Yes", True, GREEN)
 
             if toggle_anim_after_wfc_button.draw(screen):
                 if render_wfc_at_end:
                     render_wfc_at_end = False
+                    anim_after_wfc_text = info_font.render("No", True, DARKRED)
                 else:
                     render_wfc_at_end = True
+                    anim_after_wfc_text = info_font.render("Yes", True, GREEN)
 
 
             pattern_group.draw(screen)
