@@ -582,7 +582,7 @@ def get_grid_size_text_color(size):
         return GREEN
     elif size >= 15 and size < 22:
         return YELLOW
-    return ORANGE
+    return DARKRED
 
 def test_threading():
     time.sleep(2)
