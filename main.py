@@ -770,6 +770,7 @@ def main():
     anim_after_wfc_value_text = info_font.render("Yes", True, GREEN)
 
     sliced_list = []
+    last_image = None
 
     while run:
         clock.tick(FPS)
@@ -789,6 +790,9 @@ def main():
                     is_grid_drawn = True
                     is_wfc_started = False
                     wfc_order_list = result[2]
+                    last_image = wfc_order_list[-1]
+                    sliced_list = wfc_order_list[::wfc_slice_num]
+                    sliced_list.append(last_image)
                     if render_wfc_at_end:
                         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
@@ -892,9 +896,6 @@ def main():
 
             # Animation
             if draw_second_grid:
-                last_image = wfc_order_list[-1]
-                sliced_list = wfc_order_list[::wfc_slice_num]
-                sliced_list.append(last_image)
                 if is_wfc_anim_ongoing:
                     if wfc_list_count < len(sliced_list):
                         final_pixels = []
@@ -969,12 +970,18 @@ def main():
             wfc_slice_num_text = info_font.render(str(wfc_slice_num), True, (0, 0, 255))
             screen.blit(wfc_slice_num_text, (454, 520))
             if increase_nth_button.draw(screen):
-                if wfc_slice_num < 10:
-                    wfc_slice_num += 1
+                if not is_wfc_anim_ongoing:
+                    if wfc_slice_num < 10:
+                        wfc_slice_num += 1
+                        sliced_list = wfc_order_list[::wfc_slice_num]
+                        sliced_list.append(last_image)
 
             if decrease_nth_button.draw(screen):
-                if wfc_slice_num > 1:
-                    wfc_slice_num -= 1
+                if not is_wfc_anim_ongoing:
+                    if wfc_slice_num > 1:
+                        wfc_slice_num -= 1
+                        sliced_list = wfc_order_list[::wfc_slice_num]
+                        sliced_list.append(last_image)
 
             screen.blit(anim_during_wfc_info_text, (30, 560))
             screen.blit(anim_after_wfc_info_text, (30, 590))
