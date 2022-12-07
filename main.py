@@ -1065,6 +1065,8 @@ def main():
                 game_state = "wfc"
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
+            #Preview Tile Border
+            pygame.draw.rect(screen, BLACK, (preview_tile.x - 1, preview_tile.y - 1, (preview_tile.width * enlargement_scale) + 2, (preview_tile.height * enlargement_scale) + 2), 1)
 
             if switch_state_button.draw(screen):
                 game_state = "wfc"
