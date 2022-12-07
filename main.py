@@ -386,7 +386,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     
 
 
-def execute_wave_function_collapse(patterns, output_width, output_height, thread_queue, render_wfc_at_end):
+def execute_wave_function_collapse(patterns, output_width, output_height, thread_queue, render_wfc_during_execution):
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
@@ -416,17 +416,17 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
-            if not render_wfc_at_end:
+            if render_wfc_during_execution:
                 thread_queue.put(deepcopy(coefficients))
 
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
 
-            if not render_wfc_at_end:
+            if render_wfc_during_execution:
                 thread_queue.put(deepcopy(coefficients))
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
             
-            if not render_wfc_at_end:
+            if render_wfc_during_execution:
                 thread_queue.put(deepcopy(coefficients))
 
 
@@ -801,7 +801,6 @@ def main():
                 screen.blit(wfc_in_progress_text, (48, 370))
                 if render_wfc_during_execution and not thread_queue.empty():
                     current_wfc_state = thread_queue.queue[-1]
-                    print(type(current_wfc_state))
                     if isinstance(current_wfc_state, list):
 
                         final_pixels = []
@@ -819,8 +818,8 @@ def main():
                                 row.append(first_pixel)
                             final_pixels.append(row)
 
-                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
-                        completed_wfc_pattern_group.add(wfc_output_2)
+                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
+                        completed_wfc_pattern_group.add(wfc_output)
                         # print(thread_queue.qsize())
 
                 #     if grid_render_speed == "Slow":
@@ -877,7 +876,7 @@ def main():
                     is_wfc_started = True
                     is_wfc_finished = False
                     wfc_time_start = time.perf_counter()
-                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_at_end))
+                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution))
                     get_wfc_output.start()
                 # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
                 # if get_wfc_output[0]:
