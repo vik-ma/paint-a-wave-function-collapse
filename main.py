@@ -788,20 +788,20 @@ def main():
                     is_wfc_finished = True
                     is_grid_drawn = True
                     is_wfc_started = False
-                    if grid_render_speed == "Nth":
-                        wfc_order_list = result[2]
+                    wfc_order_list = result[2]
+                    if render_wfc_at_end:
                         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
-                        if render_wfc_at_end:
-                            draw_second_grid = True
-                            is_wfc_anim_ongoing = True
+                        draw_second_grid = True
+                        is_wfc_anim_ongoing = True
 
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
                 wfc_in_progress_text = info_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
                 screen.blit(wfc_in_progress_text, (48, 370))
-                if not render_wfc_at_end and not thread_queue.empty():
+                if render_wfc_during_execution and not thread_queue.empty():
                     current_wfc_state = thread_queue.queue[-1]
+                    print(type(current_wfc_state))
                     if isinstance(current_wfc_state, list):
 
                         final_pixels = []
