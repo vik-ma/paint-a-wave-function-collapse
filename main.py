@@ -769,6 +769,8 @@ def main():
     anim_during_wfc_value_text = info_font.render("Yes", True, GREEN)
     anim_after_wfc_value_text = info_font.render("Yes", True, GREEN)
 
+    sliced_list = []
+
     while run:
         clock.tick(FPS)
         draw_window(screen)
@@ -923,7 +925,7 @@ def main():
 
             if skip_animation_button.draw(screen):
                 if is_wfc_anim_ongoing:
-                    wfc_list_count = len(wfc_order_list) - 1
+                    wfc_list_count = len(sliced_list) - 1
 
             if test_button.draw(screen):
                 print(thread_queue.qsize())
