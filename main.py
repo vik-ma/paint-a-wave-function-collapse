@@ -736,8 +736,6 @@ def main():
 
     tile_col_limit = 8
 
-    grid_render_speed = "Nth"
-
     wfc_slice_num = 5
 
     is_wfc_anim_ongoing = False
@@ -820,28 +818,6 @@ def main():
 
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output)
-                        # print(thread_queue.qsize())
-
-                #     if grid_render_speed == "Slow":
-                #         wfc_order_list = result[2]
-                #         draw_second_grid = True
-                #         is_wfc_anim_ongoing = True
-                #     elif grid_render_speed == "Faster":
-                #         wfc_order_list = result[3]
-                #         draw_second_grid = True
-                #         is_wfc_anim_ongoing = True
-                #     elif grid_render_speed == "Instant":
-                #         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
-                #         draw_second_grid = False
-                #         completed_wfc_pattern_group.add(wfc_output_2)
-                #     elif grid_render_speed == "Nth":
-                #         last_image = result[2][-1]
-                #         wfc_order_list = result[2][::wfc_slice_num]
-                #         wfc_order_list.append(last_image)
-                #         draw_second_grid = True
-                #         is_wfc_anim_ongoing = True
-
-                #     is_wfc_started = False
 
 
             if is_wfc_finished:
@@ -878,33 +854,6 @@ def main():
                     wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution))
                     get_wfc_output.start()
-                # get_wfc_output = execute_wave_function_collapse(patterns, output_width, output_height)
-                # if get_wfc_output[0]:
-                #     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
-                #     is_grid_drawn = True  
-                # else:
-                #     render_error_msg = True
-                #     wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, get_wfc_output[1], enlargement_scale)
-                #     is_grid_drawn = True  
-
-                # if grid_render_speed == "Slow":
-                #     wfc_order_list = get_wfc_output[2]
-                #     draw_second_grid = True
-                #     is_wfc_anim_ongoing = True
-                # elif grid_render_speed == "Faster":
-                #     wfc_order_list = get_wfc_output[3]
-                #     draw_second_grid = True
-                #     is_wfc_anim_ongoing = True
-                # elif grid_render_speed == "Instant":
-                #     wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, get_wfc_output[1], enlargement_scale)
-                #     draw_second_grid = False
-                #     completed_wfc_pattern_group.add(wfc_output_2)
-                # elif grid_render_speed == "Nth":
-                #     last_image = get_wfc_output[2][-1]
-                #     wfc_order_list = get_wfc_output[2][::wfc_slice_num]
-                #     wfc_order_list.append(last_image)
-                #     draw_second_grid = True
-                #     is_wfc_anim_ongoing = True
 
             current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
             grid_size_text = info_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
@@ -1011,19 +960,19 @@ def main():
                 second_grid_y_pos = pattern_list[1]
                 pattern_dict = get_pattern_dict(pattern_tile_list)
 
-            current_speed_text = info_font.render(f"Current Speed: {grid_render_speed}", True, (0, 0, 0))
-            screen.blit(current_speed_text, (250, 520))
+            current_speed_text = info_font.render(f"Current Speed:", True, (0, 0, 0))
+            screen.blit(current_speed_text, (300, 520))
 
-            if grid_render_speed == "Nth":
-                nth_text = info_font.render(str(wfc_slice_num), True, (0, 0, 255))
-                screen.blit(nth_text, (450, 520))
-                if increase_nth_button.draw(screen):
-                    if wfc_slice_num < 10:
-                        wfc_slice_num += 1
+            
+            wfc_slice_num_text = info_font.render(str(wfc_slice_num), True, (0, 0, 255))
+            screen.blit(wfc_slice_num_text, (454, 520))
+            if increase_nth_button.draw(screen):
+                if wfc_slice_num < 10:
+                    wfc_slice_num += 1
 
-                if decrease_nth_button.draw(screen):
-                    if wfc_slice_num > 1:
-                        wfc_slice_num -= 1
+            if decrease_nth_button.draw(screen):
+                if wfc_slice_num > 1:
+                    wfc_slice_num -= 1
 
             screen.blit(anim_during_wfc_info_text, (30, 560))
             screen.blit(anim_after_wfc_info_text, (30, 590))
