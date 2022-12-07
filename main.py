@@ -980,20 +980,22 @@ def main():
             screen.blit(anim_after_wfc_value_text, (478, 590))
 
             if toggle_anim_during_wfc_button.draw(screen):
-                if render_wfc_during_execution:
-                    render_wfc_during_execution = False
-                    anim_during_wfc_value_text = info_font.render("No", True, DARKRED)
-                else:
-                    render_wfc_during_execution = True
-                    anim_during_wfc_value_text = info_font.render("Yes", True, GREEN)
+                if not is_wfc_anim_ongoing and not is_wfc_started:
+                    if render_wfc_during_execution:
+                        render_wfc_during_execution = False
+                        anim_during_wfc_value_text = info_font.render("No", True, DARKRED)
+                    else:
+                        render_wfc_during_execution = True
+                        anim_during_wfc_value_text = info_font.render("Yes", True, GREEN)
 
             if toggle_anim_after_wfc_button.draw(screen):
-                if render_wfc_at_end:
-                    render_wfc_at_end = False
-                    anim_after_wfc_value_text = info_font.render("No", True, DARKRED)
-                else:
-                    render_wfc_at_end = True
-                    anim_after_wfc_value_text = info_font.render("Yes", True, GREEN)
+                if not is_wfc_anim_ongoing and not is_wfc_started:
+                    if render_wfc_at_end:
+                        render_wfc_at_end = False
+                        anim_after_wfc_value_text = info_font.render("No", True, DARKRED)
+                    else:
+                        render_wfc_at_end = True
+                        anim_after_wfc_value_text = info_font.render("Yes", True, GREEN)
 
 
             pattern_group.draw(screen)
