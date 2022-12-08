@@ -1088,7 +1088,6 @@ def main():
                     paint_grid_rows -= 1
                     new_grid = []
                     for col in range(paint_grid_cols):
-                        print(col)
                         new_row = []
                         for row in range(paint_grid_rows):
                             new_row.append(paint_grid[col][row])
@@ -1101,7 +1100,11 @@ def main():
                 if paint_grid_cols < paint_grid_size_limit_upper:
                     paint_grid_cols += 1
                     paint_grid_rows += 1
-                    paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
+                    new_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
+                    for col in range(paint_grid_cols - 1):
+                        for row in range(paint_grid_rows - 1):
+                            new_grid[col][row] = paint_grid[col][row]
+                    paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
                     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
 
