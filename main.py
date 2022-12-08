@@ -631,10 +631,11 @@ def main():
     increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
     decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
 
-    test_paint_button = Button(WHITE, 600, 550, 150, 40, "TEST", BLACK, LIGHTGREY)
+    test_paint_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
 
     increase_pattern_size_button = Button(WHITE, 580, 450, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
     decrease_pattern_size_button = Button(WHITE, 580, 400, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
+    clear_paint_grid_button = Button(WHITE, 580, 350, 210, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
     save_tile_button = Button(WHITE, 50, 450, 150, 40, "Save Tile", BLACK, LIGHTGREY)
     toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
@@ -1107,6 +1108,12 @@ def main():
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
                     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
+
+            if clear_paint_grid_button.draw(screen):
+                paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
+                paint_grid_pix_array = create_pix_array(paint_grid)
+                preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
+
 
             if test_paint_button.draw(screen):
                 print("TEST")
