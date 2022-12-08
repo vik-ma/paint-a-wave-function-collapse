@@ -791,9 +791,13 @@ def main():
                     is_grid_drawn = True
                     is_wfc_started = False
                     wfc_order_list = result[2]
-                    last_image = wfc_order_list[-1]
-                    sliced_list = wfc_order_list[::wfc_slice_num]
-                    sliced_list.append(last_image)
+                    if wfc_order_list != []:
+                        last_image = wfc_order_list[-1]
+                        sliced_list = wfc_order_list[::wfc_slice_num]
+                        sliced_list.append(last_image)
+                    else:
+                        wfc_order_list.append(result[1])
+                        sliced_list = []
                     if render_wfc_at_end:
                         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
