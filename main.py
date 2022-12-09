@@ -896,6 +896,12 @@ def main():
                         pattern_dict = get_pattern_dict(pattern_tile_list)
                         grid_y_pos = pattern_list[1]
                         second_grid_y_pos = pattern_list[1]
+                        completed_wfc_pattern_group.empty()
+                        tile_group.empty()
+                        old_pix_array = wfc_output.pix_array
+                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
+                        completed_wfc_pattern_group.add(wfc_output)
+                        wfc_output_2.y = second_grid_y_pos
                         print(len(patterns[0]))
 
             draw_selected_tile_border(screen, selected_tile)
