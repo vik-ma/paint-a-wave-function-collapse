@@ -901,9 +901,10 @@ def main():
                                 completed_wfc_pattern_group.empty()
                                 tile_group.empty()
                                 old_pix_array = wfc_output.pix_array
+                                old_pix_array_second = wfc_output_2.pix_array
                                 wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
-                                # completed_wfc_pattern_group.add(wfc_output)
-                                # wfc_output_2.y = second_grid_y_pos
+                                wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
+                                completed_wfc_pattern_group.add(wfc_output_2)
                             print(len(patterns[0]))
 
             draw_selected_tile_border(screen, selected_tile)
