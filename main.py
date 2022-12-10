@@ -773,6 +773,9 @@ def main():
     sliced_list = []
     last_image = None
 
+    def change_to_disabled_button_color():
+        make_grid_button.color = RED
+
     while run:
         clock.tick(FPS)
         draw_window(screen)
@@ -944,7 +947,7 @@ def main():
                     wfc_list_count = len(sliced_list) - 1
 
             if test_button.draw(screen):
-                print(thread_queue.qsize())
+                change_to_disabled_button_color()
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
@@ -1140,7 +1143,6 @@ def main():
 
 
         pygame.display.update()
-
 
     pygame.quit()
 
