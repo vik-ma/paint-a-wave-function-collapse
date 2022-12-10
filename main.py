@@ -774,7 +774,7 @@ def main():
     last_image = None
 
     def change_button_color(state):
-        state_color = {"disabled": RED, "enabled": WHITE}
+        state_color = {"disabled": DARKGREY, "enabled": WHITE}
 
         make_grid_button.color = state_color[state]
         increase_output_size_button.color = state_color[state]
@@ -794,6 +794,7 @@ def main():
         if game_state == "wfc":
             if not threading.active_count() > standard_threads:
                 if not thread_queue.empty() and is_wfc_started:
+                    change_button_color("enabled")
                     result = thread_queue.queue[-1]
                     if result[0]:
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
@@ -876,6 +877,7 @@ def main():
                     is_wfc_anim_ongoing = False
                     is_wfc_started = True
                     is_wfc_finished = False
+                    change_button_color("disabled")
                     wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution))
                     get_wfc_output.start()
@@ -959,7 +961,6 @@ def main():
 
             if test_button.draw(screen):
                 change_button_color("disabled")
-                change_button_color("enabled")
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
