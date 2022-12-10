@@ -773,19 +773,19 @@ def main():
     sliced_list = []
     last_image = None
 
-    def change_to_disabled_button_color():
-        DISABLED_BUTTON_COLOR = RED
+    def change_button_color(state):
+        state_color = {"disabled": RED, "enabled": WHITE}
 
-        make_grid_button.color = DISABLED_BUTTON_COLOR
-        increase_output_size_button.color = DISABLED_BUTTON_COLOR
-        decrease_output_size_button.color = DISABLED_BUTTON_COLOR
-        replay_animation_button.color = DISABLED_BUTTON_COLOR
-        increase_nth_button.color = DISABLED_BUTTON_COLOR
-        decrease_nth_button.color = DISABLED_BUTTON_COLOR
-        toggle_anim_after_wfc_button.color = DISABLED_BUTTON_COLOR
-        toggle_anim_during_wfc_button.color = DISABLED_BUTTON_COLOR
-        set_pattern_size_2_button.color = DISABLED_BUTTON_COLOR
-        set_pattern_size_3_button.color = DISABLED_BUTTON_COLOR
+        make_grid_button.color = state_color[state]
+        increase_output_size_button.color = state_color[state]
+        decrease_output_size_button.color = state_color[state]
+        replay_animation_button.color = state_color[state]
+        increase_nth_button.color = state_color[state]
+        decrease_nth_button.color = state_color[state]
+        toggle_anim_after_wfc_button.color = state_color[state]
+        toggle_anim_during_wfc_button.color = state_color[state]
+        set_pattern_size_2_button.color = state_color[state]
+        set_pattern_size_3_button.color = state_color[state]
 
     while run:
         clock.tick(FPS)
@@ -958,7 +958,8 @@ def main():
                     wfc_list_count = len(sliced_list) - 1
 
             if test_button.draw(screen):
-                change_to_disabled_button_color()
+                change_button_color("disabled")
+                change_button_color("enabled")
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
