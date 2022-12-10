@@ -774,7 +774,18 @@ def main():
     last_image = None
 
     def change_to_disabled_button_color():
-        make_grid_button.color = RED
+        DISABLED_BUTTON_COLOR = RED
+
+        make_grid_button.color = DISABLED_BUTTON_COLOR
+        increase_output_size_button.color = DISABLED_BUTTON_COLOR
+        decrease_output_size_button.color = DISABLED_BUTTON_COLOR
+        replay_animation_button.color = DISABLED_BUTTON_COLOR
+        increase_nth_button.color = DISABLED_BUTTON_COLOR
+        decrease_nth_button.color = DISABLED_BUTTON_COLOR
+        toggle_anim_after_wfc_button.color = DISABLED_BUTTON_COLOR
+        toggle_anim_during_wfc_button.color = DISABLED_BUTTON_COLOR
+        set_pattern_size_2_button.color = DISABLED_BUTTON_COLOR
+        set_pattern_size_3_button.color = DISABLED_BUTTON_COLOR
 
     while run:
         clock.tick(FPS)
