@@ -774,18 +774,31 @@ def main():
     last_image = None
 
     def change_button_color(state):
-        state_color = {"disabled": DARKGREY, "enabled": WHITE}
+        state_colors = {"disabled": {"color": DARKGREY, "hover_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY}} 
 
-        make_grid_button.color = state_color[state]
-        increase_output_size_button.color = state_color[state]
-        decrease_output_size_button.color = state_color[state]
-        replay_animation_button.color = state_color[state]
-        increase_nth_button.color = state_color[state]
-        decrease_nth_button.color = state_color[state]
-        toggle_anim_after_wfc_button.color = state_color[state]
-        toggle_anim_during_wfc_button.color = state_color[state]
-        set_pattern_size_2_button.color = state_color[state]
-        set_pattern_size_3_button.color = state_color[state]
+        increase_output_size_button.color = state_colors[state]["color"]
+        make_grid_button.color = state_colors[state]["color"]
+        increase_output_size_button.color = state_colors[state]["color"]
+        decrease_output_size_button.color = state_colors[state]["color"]
+        replay_animation_button.color = state_colors[state]["color"]
+        increase_nth_button.color = state_colors[state]["color"]
+        decrease_nth_button.color = state_colors[state]["color"]
+        toggle_anim_after_wfc_button.color = state_colors[state]["color"]
+        toggle_anim_during_wfc_button.color = state_colors[state]["color"]
+        set_pattern_size_2_button.color = state_colors[state]["color"]
+        set_pattern_size_3_button.color = state_colors[state]["color"]
+
+        increase_output_size_button.hover_color = state_colors[state]["hover_color"]
+        make_grid_button.hover_color = state_colors[state]["hover_color"]
+        increase_output_size_button.hover_color = state_colors[state]["hover_color"]
+        decrease_output_size_button.hover_color = state_colors[state]["hover_color"]
+        replay_animation_button.hover_color = state_colors[state]["hover_color"]
+        increase_nth_button.hover_color = state_colors[state]["hover_color"]
+        decrease_nth_button.hover_color = state_colors[state]["hover_color"]
+        toggle_anim_after_wfc_button.hover_color = state_colors[state]["hover_color"]
+        toggle_anim_during_wfc_button.hover_color = state_colors[state]["hover_color"]
+        set_pattern_size_2_button.hover_color = state_colors[state]["hover_color"]
+        set_pattern_size_3_button.hover_color = state_colors[state]["hover_color"]
 
     while run:
         clock.tick(FPS)
