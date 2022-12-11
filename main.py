@@ -973,27 +973,29 @@ def main():
 
 
             if set_pattern_size_2_button.draw(screen):
-                pattern_size = 2
-                prob_text_x_offset = -2
-                prob_text_y_offset = -11
-                patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
-                pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                pattern_tile_list = pattern_list[0]
-                grid_y_pos = pattern_list[1]
-                second_grid_y_pos = pattern_list[1]
-                pattern_dict = get_pattern_dict(pattern_tile_list)
+                if not is_wfc_anim_ongoing and not is_wfc_started:
+                    pattern_size = 2
+                    prob_text_x_offset = -2
+                    prob_text_y_offset = -11
+                    patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+                    pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                    pattern_tile_list = pattern_list[0]
+                    grid_y_pos = pattern_list[1]
+                    second_grid_y_pos = pattern_list[1]
+                    pattern_dict = get_pattern_dict(pattern_tile_list)
 
 
             if set_pattern_size_3_button.draw(screen):
-                pattern_size = 3
-                prob_text_x_offset = 2
-                prob_text_y_offset = -11
-                patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
-                pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                pattern_tile_list = pattern_list[0]
-                grid_y_pos = pattern_list[1]
-                second_grid_y_pos = pattern_list[1]
-                pattern_dict = get_pattern_dict(pattern_tile_list)
+                if not is_wfc_anim_ongoing and not is_wfc_started:
+                    pattern_size = 3
+                    prob_text_x_offset = 2
+                    prob_text_y_offset = -11
+                    patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+                    pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                    pattern_tile_list = pattern_list[0]
+                    grid_y_pos = pattern_list[1]
+                    second_grid_y_pos = pattern_list[1]
+                    pattern_dict = get_pattern_dict(pattern_tile_list)
 
             current_speed_text = info_font.render(f"Current Speed:", True, (0, 0, 0))
             screen.blit(current_speed_text, (300, 520))
