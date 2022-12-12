@@ -832,6 +832,7 @@ def main():
                         completed_wfc_pattern_group.add(wfc_output_2)
                         draw_second_grid = True
                         is_wfc_anim_ongoing = True
+                        change_button_color("enabled", enabled_buttons_during_wfc_post_anim_list)
 
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
@@ -969,6 +970,7 @@ def main():
                         wfc_list_count += 1
                     if wfc_list_count == len(sliced_list):
                         is_wfc_anim_ongoing = False
+                        change_button_color("disabled", enabled_buttons_during_wfc_post_anim_list)
 
             if replay_animation_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started and len(wfc_order_list) > 0:
@@ -978,6 +980,7 @@ def main():
             if skip_animation_button.draw(screen):
                 if is_wfc_anim_ongoing:
                     wfc_list_count = len(sliced_list) - 1
+                    change_button_color("disabled", enabled_buttons_during_wfc_post_anim_list)
 
             if test_button.draw(screen):
                 wfc_state["interrupt"] = True
