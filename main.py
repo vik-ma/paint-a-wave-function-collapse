@@ -386,7 +386,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     
 
 
-def execute_wave_function_collapse(patterns, output_width, output_height, thread_queue, render_wfc_during_execution):
+def execute_wave_function_collapse(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state):
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
@@ -416,6 +416,10 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
+            if wfc_state["interrupt"]:
+                print("break")
+                break
+
             if render_wfc_during_execution:
                 thread_queue.put(deepcopy(coefficients))
 
@@ -428,6 +432,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
             
             if render_wfc_during_execution:
                 thread_queue.put(deepcopy(coefficients))
+
 
 
     except Exception as e:
@@ -780,6 +785,8 @@ def main():
                                         toggle_anim_during_wfc_button, set_pattern_size_2_button,
                                         set_pattern_size_3_button]
 
+    wfc_state = {"interrupt": False}
+
     def change_button_color(state):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "text_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "text_color": BLACK}} 
 
@@ -880,7 +887,7 @@ def main():
                     is_wfc_finished = False
                     change_button_color("disabled")
                     wfc_time_start = time.perf_counter()
-                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution))
+                    get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
                     get_wfc_output.start()
 
             current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
@@ -961,7 +968,7 @@ def main():
                     wfc_list_count = len(sliced_list) - 1
 
             if test_button.draw(screen):
-                change_button_color("disabled")
+                wfc_state["interrupt"] = True
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
