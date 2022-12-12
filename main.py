@@ -614,8 +614,10 @@ def main():
     paint_grid_tile_group = pygame.sprite.Group()
     paint_color_group = pygame.sprite.Group()
 
-    make_grid_button = Button(WHITE, 600, 50, 150, 40, "Make Grid", BLACK, LIGHTGREY)
-    test_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
+    make_grid_button = Button(WHITE, 600, 10, 150, 40, "Make Grid", BLACK, LIGHTGREY)
+    test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
+
+    cancel_wfc_button = Button(WHITE, 600, 60, 150, 40, "Cancel WFC", BLACK, LIGHTGREY)
 
     switch_state_button = Button(WHITE, 630, 580, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
@@ -863,7 +865,7 @@ def main():
                     screen.blit(wfc_failed_text, (48, 370))
 
             draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
-        
+
             if show_probability:
                 prob_text = probability_font.render("Pattern Probability", True, DARKPURPLE)
                 screen.blit(prob_text, (48, 3))
@@ -885,10 +887,14 @@ def main():
                     is_wfc_anim_ongoing = False
                     is_wfc_started = True
                     is_wfc_finished = False
+                    wfc_state["interrupt"] = False
                     change_button_color("disabled")
                     wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
                     get_wfc_output.start()
+
+            if cancel_wfc_button.draw(screen):
+                wfc_state["interrupt"] = True
 
             current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
             grid_size_text = info_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
