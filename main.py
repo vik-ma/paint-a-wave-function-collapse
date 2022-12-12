@@ -789,10 +789,10 @@ def main():
 
     wfc_state = {"interrupt": False}
 
-    def change_button_color(state):
+    def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "text_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "text_color": BLACK}} 
 
-        for button in disabled_buttons_during_wfc_list:
+        for button in button_list:
             button.color = state_colors[state]["color"]
             button.hover_color = state_colors[state]["hover_color"]
             button.text_color = state_colors[state]["text_color"]
@@ -804,7 +804,7 @@ def main():
         if game_state == "wfc":
             if not threading.active_count() > standard_threads:
                 if not thread_queue.empty() and is_wfc_started:
-                    change_button_color("enabled")
+                    change_button_color("enabled", disabled_buttons_during_wfc_list)
                     result = thread_queue.queue[-1]
                     if result[0]:
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
@@ -888,7 +888,7 @@ def main():
                     is_wfc_started = True
                     is_wfc_finished = False
                     wfc_state["interrupt"] = False
-                    change_button_color("disabled")
+                    change_button_color("disabled", disabled_buttons_during_wfc_list)
                     wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
                     get_wfc_output.start()
