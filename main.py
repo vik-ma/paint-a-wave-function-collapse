@@ -617,7 +617,7 @@ def main():
     make_grid_button = Button(WHITE, 600, 10, 150, 40, "Make Grid", BLACK, LIGHTGREY)
     test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
 
-    cancel_wfc_button = Button(WHITE, 600, 60, 150, 40, "Cancel WFC", BLACK, LIGHTGREY)
+    cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
     switch_state_button = Button(WHITE, 630, 580, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
@@ -630,7 +630,7 @@ def main():
     toggle_show_probability_button = Button(WHITE, 550, 500, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
 
     replay_animation_button = Button(WHITE, 570, 300, 210, 40, "Replay WFC Animation", BLACK, LIGHTGREY)
-    skip_animation_button = Button(WHITE, 570, 350, 210, 40, "Skip WFC Animation", BLACK, LIGHTGREY)
+    skip_animation_button = Button(GREY, 570, 350, 210, 40, "Skip WFC Animation", DARKGREY, GREY)
 
     toggle_anim_during_wfc_button = Button(WHITE, 520, 560, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 520, 590, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
@@ -786,6 +786,10 @@ def main():
                                         decrease_nth_button, toggle_anim_after_wfc_button,
                                         toggle_anim_during_wfc_button, set_pattern_size_2_button,
                                         set_pattern_size_3_button]
+    
+    enabled_buttons_during_wfc_render_list = [cancel_wfc_button]
+
+    enabled_buttons_during_wfc_post_anim_list = [skip_animation_button]
 
     wfc_state = {"interrupt": False}
 
@@ -889,12 +893,14 @@ def main():
                     is_wfc_finished = False
                     wfc_state["interrupt"] = False
                     change_button_color("disabled", disabled_buttons_during_wfc_list)
+                    change_button_color("enabled", enabled_buttons_during_wfc_render_list)
                     wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
                     get_wfc_output.start()
 
             if cancel_wfc_button.draw(screen):
-                wfc_state["interrupt"] = True
+                if is_wfc_started:
+                    wfc_state["interrupt"] = True
 
             current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
             grid_size_text = info_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
