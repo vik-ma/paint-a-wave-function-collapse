@@ -815,6 +815,7 @@ def main():
                     else:
                         did_wfc_fail = True
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                    completed_wfc_pattern_group.add(wfc_output)
                     wfc_time_finish = result[3]
                     is_wfc_finished = True
                     is_grid_drawn = True
