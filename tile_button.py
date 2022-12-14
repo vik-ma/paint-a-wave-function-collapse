@@ -12,19 +12,19 @@ class TileButton():
         self.clicked = False
 
     def draw(self, surface):
-            action = False
-            pos = pygame.mouse.get_pos()
+        action = False
+        pos = pygame.mouse.get_pos()
 
-            if self.rect.collidepoint(pos):
-                if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                    self.clicked = True
-                    action = True
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                action = True
 
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.clicked = False
-                
-            surface.blit(self.image, (self.rect.x, self.rect.y))
-            pygame.draw.rect(surface, (0, 0, 0), (self.x - 1, self.y - 1, self.width + 2, self.height + 2), 1)
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
 
+        surface.blit(self.image, (self.rect.x, self.rect.y))
 
-            return action
+        pygame.draw.rect(surface, (0, 0, 0), (self.x - 1, self.y - 1, self.width + 2, self.height + 2), 1)
+
+        return action

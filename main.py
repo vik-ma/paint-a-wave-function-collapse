@@ -523,8 +523,7 @@ def create_tile_buttons(initial_tile_list):
     return tile_buttons
 
 def draw_selected_tile_border(screen, tile):
-    if tile is not None:
-        pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 4)
+    pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 4)
 
 def show_prob(patterns):
     count = 1
@@ -834,6 +833,9 @@ def main():
                         draw_second_grid = True
                         is_wfc_anim_ongoing = True
                         change_button_color("enabled", enabled_buttons_during_wfc_post_anim_list)
+                    else:
+                        for tile_button in tile_buttons:
+                            tile_button.image.set_alpha(255)
 
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
@@ -896,6 +898,8 @@ def main():
                     wfc_state["interrupt"] = False
                     change_button_color("disabled", disabled_buttons_during_wfc_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_render_list)
+                    for tile_button in tile_buttons:
+                        tile_button.image.set_alpha(160)
                     wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
                     get_wfc_output.start()
@@ -921,6 +925,7 @@ def main():
                     output_height -= 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
 
+            draw_selected_tile_border(screen, selected_tile)
 
             # Original tiles
             for index, tile_button in enumerate(tile_buttons):
@@ -944,8 +949,9 @@ def main():
                                 wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
                                 completed_wfc_pattern_group.add(wfc_output_2)
                             print(len(patterns[0]))
+                        
 
-            draw_selected_tile_border(screen, selected_tile)
+
 
             # Animation
             if draw_second_grid:
@@ -972,6 +978,8 @@ def main():
                     if wfc_list_count == len(sliced_list):
                         is_wfc_anim_ongoing = False
                         change_button_color("disabled", enabled_buttons_during_wfc_post_anim_list)
+                        for tile_button in tile_buttons:
+                            tile_button.image.set_alpha(255)
 
             if replay_animation_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started and len(wfc_order_list) > 0:
@@ -984,7 +992,7 @@ def main():
                     change_button_color("disabled", enabled_buttons_during_wfc_post_anim_list)
 
             if test_button.draw(screen):
-                wfc_state["interrupt"] = True
+                tile_buttons[0].image.set_alpha(160) 
 
             if toggle_show_probability_button.draw(screen):
                 if show_probability:
