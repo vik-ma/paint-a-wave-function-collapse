@@ -607,10 +607,8 @@ def main():
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-    tile_group = pygame.sprite.Group()
     pattern_group = pygame.sprite.Group()
     completed_wfc_pattern_group = pygame.sprite.Group()
-    paint_grid_tile_group = pygame.sprite.Group()
     paint_color_group = pygame.sprite.Group()
 
     make_grid_button = Button(WHITE, 600, 10, 150, 40, "Make Grid", BLACK, LIGHTGREY)
@@ -881,13 +879,9 @@ def main():
                     patt_prob = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
                     screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
 
-            if is_grid_drawn:
-                tile_group.add(wfc_output)
-
             if make_grid_button.draw(screen):
                 if not is_wfc_started:
                     completed_wfc_pattern_group.empty()
-                    tile_group.empty()
                     thread_queue = queue.Queue()
                     wfc_list_count = 0
                     is_grid_drawn = False
@@ -942,11 +936,11 @@ def main():
                             second_grid_y_pos = pattern_list[1]
                             if wfc_output != None:
                                 completed_wfc_pattern_group.empty()
-                                tile_group.empty()
                                 old_pix_array = wfc_output.pix_array
                                 old_pix_array_second = wfc_output_2.pix_array
                                 wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
                                 wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
+                                completed_wfc_pattern_group.add(wfc_output)
                                 completed_wfc_pattern_group.add(wfc_output_2)
                             print(len(patterns[0]))
                         
@@ -1073,7 +1067,6 @@ def main():
 
 
             pattern_group.draw(screen)
-            tile_group.draw(screen)
             completed_wfc_pattern_group.draw(screen)
             
 
@@ -1135,8 +1128,6 @@ def main():
 
             if switch_state_button.draw(screen):
                 game_state = "wfc"
-            
-            # paint_grid_tile_group.draw(screen)
 
             if draw_paint_grid_lines:
                 for col in range(1, paint_grid_cols):
