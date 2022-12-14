@@ -799,6 +799,17 @@ def main():
             button.hover_color = state_colors[state]["hover_color"]
             button.text_color = state_colors[state]["text_color"]
 
+    def adjust_grid_position(wfc_output, wfc_output_2):
+        if wfc_output != None:
+            completed_wfc_pattern_group.empty()
+            old_pix_array = wfc_output.pix_array
+            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
+            completed_wfc_pattern_group.add(wfc_output)
+            if wfc_output_2 != None:
+                old_pix_array_second = wfc_output_2.pix_array
+                wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
+                completed_wfc_pattern_group.add(wfc_output_2)
+
     while run:
         clock.tick(FPS)
         draw_window(screen)
@@ -936,15 +947,7 @@ def main():
                             pattern_dict = get_pattern_dict(pattern_tile_list)
                             grid_y_pos = pattern_list[1]
                             second_grid_y_pos = pattern_list[1]
-                            if wfc_output != None:
-                                completed_wfc_pattern_group.empty()
-                                old_pix_array = wfc_output.pix_array
-                                wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
-                                completed_wfc_pattern_group.add(wfc_output)
-                                if wfc_output_2 != None:
-                                    old_pix_array_second = wfc_output_2.pix_array
-                                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
-                                    completed_wfc_pattern_group.add(wfc_output_2)
+                            adjust_grid_position(wfc_output, wfc_output_2)
                             print(len(patterns[0]))
                         
 
@@ -1122,7 +1125,7 @@ def main():
                 pattern_dict = get_pattern_dict(pattern_tile_list)
                 grid_y_pos = pattern_list[1]
                 second_grid_y_pos = pattern_list[1]
-                
+                adjust_grid_position(wfc_output, wfc_output_2)
                 game_state = "wfc"
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
