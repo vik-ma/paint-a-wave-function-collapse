@@ -650,6 +650,7 @@ def main():
     draw_second_grid = False
 
     wfc_output = None
+    wfc_output_2 = None
 
     enlargement_scale = 8
 
@@ -832,6 +833,7 @@ def main():
                         is_wfc_anim_ongoing = True
                         change_button_color("enabled", enabled_buttons_during_wfc_post_anim_list)
                     else:
+                        wfc_output_2 = None
                         for tile_button in tile_buttons:
                             tile_button.image.set_alpha(255)
 
@@ -937,11 +939,12 @@ def main():
                             if wfc_output != None:
                                 completed_wfc_pattern_group.empty()
                                 old_pix_array = wfc_output.pix_array
-                                old_pix_array_second = wfc_output_2.pix_array
                                 wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
-                                wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
                                 completed_wfc_pattern_group.add(wfc_output)
-                                completed_wfc_pattern_group.add(wfc_output_2)
+                                if wfc_output_2 != None:
+                                    old_pix_array_second = wfc_output_2.pix_array
+                                    wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
+                                    completed_wfc_pattern_group.add(wfc_output_2)
                             print(len(patterns[0]))
                         
 
