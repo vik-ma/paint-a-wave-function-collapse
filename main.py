@@ -626,7 +626,7 @@ def main():
 
     toggle_show_probability_button = Button(WHITE, 550, 500, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
 
-    replay_animation_button = Button(WHITE, 570, 300, 210, 40, "Replay WFC Animation", BLACK, LIGHTGREY)
+    replay_animation_button = Button(GREY, 570, 300, 210, 40, "Replay WFC Animation", DARKGREY, GREY)
     skip_animation_button = Button(GREY, 570, 350, 210, 40, "Skip WFC Animation", DARKGREY, GREY)
 
     toggle_anim_during_wfc_button = Button(WHITE, 520, 560, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
@@ -985,6 +985,7 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_started and len(wfc_order_list) > 0:
                     wfc_list_count = 0
                     is_wfc_anim_ongoing = True
+                    change_button_color("enabled", enabled_buttons_during_wfc_post_anim_list)
 
             if skip_animation_button.draw(screen):
                 if is_wfc_anim_ongoing:
