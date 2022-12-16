@@ -645,8 +645,6 @@ def main():
 
     run = True
 
-    is_grid_drawn = False
-
     draw_second_grid = False
 
     wfc_output = None
@@ -827,7 +825,6 @@ def main():
                     completed_wfc_pattern_group.add(wfc_output)
                     wfc_time_finish = result[3]
                     is_wfc_finished = True
-                    is_grid_drawn = True
                     is_wfc_started = False
                     wfc_order_list = result[2]
                     if wfc_order_list != []:
@@ -897,7 +894,6 @@ def main():
                     completed_wfc_pattern_group.empty()
                     thread_queue = queue.Queue()
                     wfc_list_count = 0
-                    is_grid_drawn = False
                     did_wfc_fail = False
                     is_wfc_anim_ongoing = False
                     is_wfc_started = True
