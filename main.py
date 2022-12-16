@@ -776,11 +776,11 @@ def main():
     sliced_list = []
     last_image = None
 
-    disabled_buttons_during_wfc_exec_list = [increase_output_size_button, decrease_output_size_button,
-                                            skip_animation_button, replay_animation_button,
-                                            increase_nth_button, decrease_nth_button,
-                                            toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
-                                            set_pattern_size_2_button, set_pattern_size_3_button]
+    disabled_buttons_during_wfc_exec_and_post_anim_list = [increase_output_size_button, decrease_output_size_button,
+                                                        skip_animation_button, replay_animation_button,
+                                                        increase_nth_button, decrease_nth_button,
+                                                        toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
+                                                        set_pattern_size_2_button, set_pattern_size_3_button]
     
     disabled_buttons_during_wfc_exec_but_not_post_anim_list = [make_grid_button, skip_animation_button]
 
@@ -842,7 +842,7 @@ def main():
                         is_wfc_anim_ongoing = True
                     else:
                         wfc_output_2 = None
-                        change_button_color("enabled", disabled_buttons_during_wfc_exec_list)
+                        change_button_color("enabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                         change_button_color("enabled", [make_grid_button])
                         for tile_button in tile_buttons:
                             tile_button.image.set_alpha(255)
@@ -901,7 +901,7 @@ def main():
                     is_wfc_started = True
                     is_wfc_finished = False
                     wfc_state["interrupt"] = False
-                    change_button_color("disabled", disabled_buttons_during_wfc_exec_list)
+                    change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
                     for tile_button in tile_buttons:
@@ -977,7 +977,7 @@ def main():
                     if wfc_list_count == len(sliced_list):
                         is_wfc_anim_ongoing = False
                         change_button_color("disabled", enabled_buttons_during_wfc_post_anim_list)
-                        change_button_color("enabled", disabled_buttons_during_wfc_exec_list)
+                        change_button_color("enabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                         for tile_button in tile_buttons:
                             tile_button.image.set_alpha(255)
 
