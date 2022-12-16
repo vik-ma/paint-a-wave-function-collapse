@@ -827,6 +827,7 @@ def main():
                     is_wfc_finished = True
                     is_wfc_started = False
                     wfc_order_list = result[2]
+                    change_button_color("disabled", enabled_buttons_during_wfc_exec_list)
                     if wfc_order_list != []:
                         last_image = wfc_order_list[-1]
                         sliced_list = wfc_order_list[::wfc_slice_num]
