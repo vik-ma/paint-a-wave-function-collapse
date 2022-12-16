@@ -776,13 +776,14 @@ def main():
     sliced_list = []
     last_image = None
 
-    disabled_buttons_during_wfc_exec_list = [make_grid_button, increase_output_size_button, 
-                                            decrease_output_size_button, skip_animation_button,
-                                            replay_animation_button, increase_nth_button,
-                                            decrease_nth_button, toggle_anim_after_wfc_button,
-                                            toggle_anim_during_wfc_button, set_pattern_size_2_button,
-                                            set_pattern_size_3_button]
+    disabled_buttons_during_wfc_exec_list = [increase_output_size_button, decrease_output_size_button,
+                                            skip_animation_button, replay_animation_button,
+                                            increase_nth_button, decrease_nth_button,
+                                            toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
+                                            set_pattern_size_2_button, set_pattern_size_3_button]
     
+    disabled_buttons_during_wfc_exec_but_not_post_anim_list = [make_grid_button, skip_animation_button]
+
     enabled_buttons_during_wfc_exec_list = [cancel_wfc_button]
 
     enabled_buttons_during_wfc_post_anim_list = [skip_animation_button]
@@ -815,7 +816,6 @@ def main():
         if game_state == "wfc":
             if not threading.active_count() > standard_threads:
                 if not thread_queue.empty() and is_wfc_started:
-                    change_button_color("enabled", disabled_buttons_during_wfc_exec_list)
                     result = thread_queue.queue[-1]
                     if result[0]:
                         wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
@@ -837,11 +837,13 @@ def main():
                     if render_wfc_at_end:
                         wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
+                        change_button_color("enabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                         draw_second_grid = True
                         is_wfc_anim_ongoing = True
                     else:
                         wfc_output_2 = None
                         change_button_color("enabled", disabled_buttons_during_wfc_exec_list)
+                        change_button_color("enabled", [make_grid_button])
                         for tile_button in tile_buttons:
                             tile_button.image.set_alpha(255)
 
@@ -900,6 +902,7 @@ def main():
                     is_wfc_finished = False
                     wfc_state["interrupt"] = False
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_list)
+                    change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
                     for tile_button in tile_buttons:
                         tile_button.image.set_alpha(160)
@@ -974,6 +977,7 @@ def main():
                     if wfc_list_count == len(sliced_list):
                         is_wfc_anim_ongoing = False
                         change_button_color("disabled", enabled_buttons_during_wfc_post_anim_list)
+                        change_button_color("enabled", disabled_buttons_during_wfc_exec_list)
                         for tile_button in tile_buttons:
                             tile_button.image.set_alpha(255)
 
