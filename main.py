@@ -777,10 +777,10 @@ def main():
     last_image = None
 
     disabled_buttons_during_wfc_exec_and_post_anim_list = [increase_output_size_button, decrease_output_size_button,
-                                                        increase_nth_button, decrease_nth_button,
-                                                        toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
-                                                        set_pattern_size_2_button, set_pattern_size_3_button, 
-                                                        replay_animation_button]
+                                                          increase_nth_button, decrease_nth_button,
+                                                          toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
+                                                          set_pattern_size_2_button, set_pattern_size_3_button, 
+                                                          replay_animation_button, switch_state_button]
     
     disabled_buttons_during_wfc_exec_but_not_post_anim_list = [make_grid_button, skip_animation_button]
 
@@ -1084,7 +1084,8 @@ def main():
             pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
 
             if switch_state_button.draw(screen):
-                game_state = "paint"
+                if not is_wfc_anim_ongoing and not is_wfc_started:
+                    game_state = "paint"
 
         if game_state == "paint":
             current_speed_text = info_font.render("Current Color:", True, (0, 0, 0))
