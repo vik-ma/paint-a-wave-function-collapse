@@ -906,7 +906,7 @@ def main():
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
                     for tile_button in tile_buttons:
-                        tile_button.image.set_alpha(160)
+                        tile_button.image.set_alpha(100)
                     wfc_time_start = time.perf_counter()
                     get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
                     get_wfc_output.start()
