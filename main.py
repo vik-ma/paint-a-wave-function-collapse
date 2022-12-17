@@ -595,9 +595,8 @@ def test_threading():
 def main():
     pygame.init()
 
-    error_font = pygame.font.Font(pygame.font.get_default_font(), 24)
-    info_font = pygame.font.Font(pygame.font.get_default_font(), 20)
-    probability_font = pygame.font.Font(pygame.font.get_default_font(), 10)
+    size_20_font = pygame.font.Font(pygame.font.get_default_font(), 20)
+    size_10_font = pygame.font.Font(pygame.font.get_default_font(), 10)
 
     WIDTH = 800
     HEIGHT = 640
@@ -768,10 +767,10 @@ def main():
     render_wfc_during_execution = True
     render_wfc_at_end = True
 
-    anim_during_wfc_info_text = info_font.render("Show current state of WFC during execution:", True, BLACK)
-    anim_after_wfc_info_text = info_font.render("Show animation of WFC after completion:", True, BLACK)
-    anim_during_wfc_value_text = info_font.render("Yes", True, GREEN)
-    anim_after_wfc_value_text = info_font.render("Yes", True, GREEN)
+    anim_during_wfc_info_text = size_20_font.render("Show current state of WFC during execution:", True, BLACK)
+    anim_after_wfc_info_text = size_20_font.render("Show animation of WFC after completion:", True, BLACK)
+    anim_during_wfc_value_text = size_20_font.render("Yes", True, GREEN)
+    anim_after_wfc_value_text = size_20_font.render("Yes", True, GREEN)
 
     sliced_list = []
     last_image = None
@@ -850,7 +849,7 @@ def main():
 
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
-                wfc_in_progress_text = info_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
+                wfc_in_progress_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
                 screen.blit(wfc_in_progress_text, (48, 370))
                 if render_wfc_during_execution and not thread_queue.empty():
                     current_wfc_state = thread_queue.queue[-1]
@@ -877,19 +876,19 @@ def main():
 
             if is_wfc_finished:
                 if not did_wfc_fail:
-                    wfc_finished_text = info_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
+                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
                     screen.blit(wfc_finished_text, (48, 370))
                 else:
-                    wfc_failed_text = info_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
+                    wfc_failed_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
                     screen.blit(wfc_failed_text, (48, 370))
 
             draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
 
             if show_probability:
-                prob_text = probability_font.render("Pattern Probability", True, DARKPURPLE)
+                prob_text = size_10_font.render("Pattern Probability", True, DARKPURPLE)
                 screen.blit(prob_text, (48, 3))
                 for patt in patterns[0]:
-                    patt_prob = probability_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
+                    patt_prob = size_10_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
                     screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
 
             if make_grid_button.draw(screen):
@@ -915,8 +914,8 @@ def main():
                 if is_wfc_started:
                     wfc_state["interrupt"] = True
 
-            current_grid_size_text = info_font.render(f"Grid Size: ", True, (0, 0, 0))
-            grid_size_text = info_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
+            current_grid_size_text = size_20_font.render(f"Grid Size: ", True, (0, 0, 0))
+            grid_size_text = size_20_font.render(f"{output_width} x {output_height}", True, grid_size_text_color)
 
             screen.blit(current_grid_size_text, (580, 175))
             screen.blit(grid_size_text, (685, 175))
@@ -1030,11 +1029,11 @@ def main():
                     second_grid_y_pos = pattern_list[1]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-            current_speed_text = info_font.render(f"Current Speed:", True, (0, 0, 0))
+            current_speed_text = size_20_font.render(f"Current Speed:", True, (0, 0, 0))
             screen.blit(current_speed_text, (300, 520))
 
             
-            wfc_slice_num_text = info_font.render(str(wfc_slice_num), True, (0, 0, 255))
+            wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
             screen.blit(wfc_slice_num_text, (454, 520))
             if increase_nth_button.draw(screen):
                 if not is_wfc_anim_ongoing:
@@ -1059,19 +1058,19 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     if render_wfc_during_execution:
                         render_wfc_during_execution = False
-                        anim_during_wfc_value_text = info_font.render("No", True, DARKRED)
+                        anim_during_wfc_value_text = size_20_font.render("No", True, DARKRED)
                     else:
                         render_wfc_during_execution = True
-                        anim_during_wfc_value_text = info_font.render("Yes", True, GREEN)
+                        anim_during_wfc_value_text = size_20_font.render("Yes", True, GREEN)
 
             if toggle_anim_after_wfc_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     if render_wfc_at_end:
                         render_wfc_at_end = False
-                        anim_after_wfc_value_text = info_font.render("No", True, DARKRED)
+                        anim_after_wfc_value_text = size_20_font.render("No", True, DARKRED)
                     else:
                         render_wfc_at_end = True
-                        anim_after_wfc_value_text = info_font.render("Yes", True, GREEN)
+                        anim_after_wfc_value_text = size_20_font.render("Yes", True, GREEN)
 
 
             pattern_group.draw(screen)
@@ -1088,7 +1087,7 @@ def main():
                     game_state = "paint"
 
         if game_state == "paint":
-            current_speed_text = info_font.render("Current Color:", True, (0, 0, 0))
+            current_speed_text = size_20_font.render("Current Color:", True, (0, 0, 0))
             screen.blit(current_speed_text, (50, 86))
 
             if current_color_tile.draw(screen, border=True):
