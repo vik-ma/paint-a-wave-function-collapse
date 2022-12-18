@@ -15,6 +15,7 @@ from rule_index import RuleIndex
 from initial_tile import InitialTile
 from tile_button import TileButton
 from paint_tile import PaintTile
+from info_box import InfoBox
 
 
 WHITE = (255, 255, 255)
