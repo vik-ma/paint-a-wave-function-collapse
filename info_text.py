@@ -1,7 +1,7 @@
 import pygame
 
 
-class InfoBox():
+class InfoText():
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
