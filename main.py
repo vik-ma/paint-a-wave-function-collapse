@@ -635,13 +635,13 @@ def main():
     increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
     decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
 
-    test_paint_button = Button(WHITE, 600, 100, 150, 40, "TEST", BLACK, LIGHTGREY)
+    test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
-    increase_pattern_size_button = Button(WHITE, 580, 450, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
-    decrease_pattern_size_button = Button(WHITE, 580, 400, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
-    clear_paint_grid_button = Button(WHITE, 580, 350, 210, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
-    save_tile_button = Button(WHITE, 50, 450, 150, 40, "Save Tile", BLACK, LIGHTGREY)
-    toggle_grid_lines_button = Button(WHITE, 250, 450, 200, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+    increase_pattern_size_button = Button(WHITE, 580, 300, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
+    decrease_pattern_size_button = Button(WHITE, 580, 350, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
+    clear_paint_grid_button = Button(WHITE, 580, 100, 210, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
+    save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
+    toggle_grid_lines_button = Button(WHITE, 580, 200, 210, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     run = True
 
@@ -712,7 +712,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "wfc"
+    game_state = "paint"
 
     paint_grid_x_pos = 50
     paint_grid_y_pos = 120
@@ -732,7 +732,7 @@ def main():
 
     current_color_tile = PaintTile(30, 30, 200, 80, current_color)
 
-    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
+    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
     draw_paint_grid_lines = True
 
@@ -1106,7 +1106,7 @@ def main():
                         paint_grid[x][y] = PaintTile(paint_grid_tile_size, paint_grid_tile_size, paint_grid[x][y].x, paint_grid[x][y].y, current_color)
 
                         paint_grid_pix_array = create_pix_array(paint_grid)
-                        preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
+                        preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
             # Grid border
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1) 
@@ -1159,7 +1159,7 @@ def main():
                         new_grid.append(new_row)
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
-                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
+                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
             if increase_pattern_size_button.draw(screen):
                 if paint_grid_cols < paint_grid_size_limit_upper:
@@ -1171,7 +1171,7 @@ def main():
                             new_grid[col][row] = paint_grid[col][row]
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
-                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
+                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
             if clear_paint_grid_button.draw(screen):
                 paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
