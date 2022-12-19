@@ -721,7 +721,7 @@ def main():
 
     paint_grid_cols = 4
     paint_grid_rows = 4
-    paint_grid_size_limit_upper = 9
+    paint_grid_size_limit_upper = 8
     paint_grid_size_limit_lower = 3
 
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
