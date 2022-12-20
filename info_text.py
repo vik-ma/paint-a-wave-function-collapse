@@ -10,6 +10,10 @@ class InfoText():
         self.hover_box_width = hover_box_width
         self.hover_box_height = hover_box_height
 
-    def show(self, surface):
-        pygame.draw.rect(surface, (0,0,0), (self.x, self.y, self.width + 1, self.height + 1), 1)
+    def draw(self, surface):
+        pos = pygame.mouse.get_pos()
+
+        
+
+        pygame.draw.rect(surface, (0,0,0), (self.x, self.y, self.hover_box_width + 1, self.hover_box_height + 1), 1)
 

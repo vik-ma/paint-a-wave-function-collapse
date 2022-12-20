@@ -712,7 +712,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "paint"
+    game_state = "wfc"
 
     paint_grid_x_pos = 50
     paint_grid_y_pos = 120
@@ -789,6 +789,10 @@ def main():
     enabled_buttons_during_wfc_exec_list = [cancel_wfc_button]
 
     wfc_state = {"interrupt": False}
+
+    infotext_main_test = size_20_font.render("TEST TEST", True, BLACK)
+    infotext_hover_test = size_20_font.render("HOVER TEST", True, BLACK)
+    infotext_test = InfoText(10, 450, infotext_main_test, infotext_hover_test, 200, 100)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "text_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "text_color": BLACK}} 
@@ -1073,6 +1077,7 @@ def main():
                         render_wfc_at_end = True
                         anim_after_wfc_value_text = size_20_font.render("Yes", True, GREEN)
 
+            infotext_test.draw(screen)
 
             pattern_group.draw(screen)
             completed_wfc_pattern_group.draw(screen)
