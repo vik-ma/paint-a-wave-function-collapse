@@ -789,10 +789,10 @@ def main():
     enabled_buttons_during_wfc_exec_list = [cancel_wfc_button]
 
     wfc_state = {"interrupt": False}
-
-    infotext_main_test = size_20_font.render("TEST TEST", True, BLACK)
-    infotext_hover_test = size_20_font.render("HOVER TEST", True, BLACK)
-    infotext_test = InfoText(10, 450, infotext_main_test, infotext_hover_test, 200, 100)
+    
+    infotext_main_test = "TEST TEST"
+    infotext_hover_test = "HOVER TEST"
+    infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, infotext_hover_test, 200, 100)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "text_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "text_color": BLACK}} 
