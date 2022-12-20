@@ -18,5 +18,7 @@ class InfoText():
         surface.blit(self.render_text, (self.x, self.y))
 
         if self.rect.collidepoint(pos):
+            hover_box_rect = pygame.Rect(pos[0], pos[1], self.hover_box_width, self.hover_box_height)
+            pygame.draw.rect(surface, (255, 255, 255), hover_box_rect)
             pygame.draw.rect(surface, (0,0,0), (pos[0], pos[1], self.hover_box_width + 1, self.hover_box_height + 1), 1)
 
