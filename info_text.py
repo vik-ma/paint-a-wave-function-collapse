@@ -6,12 +6,13 @@ class InfoText():
         self.x = x
         self.y = y
         self.main_text = main_text
-        self.hover_box_text = hover_box_text
+        # self.hover_box_text = hover_box_text
         self.hover_box_width = hover_box_width
         self.hover_box_height = hover_box_height
         self.font = font
         self.rect = pygame.Rect(self.x, self.y, self.font.size(main_text)[0], self.font.size(main_text)[1])
         self.render_text = self.font.render(main_text, True, (0, 0, 0))
+        self.hover_box_text = self.font.render(hover_box_text, True, (0, 0, 0))
 
     def draw(self, surface):
         pos = pygame.mouse.get_pos()
@@ -19,6 +20,10 @@ class InfoText():
 
         if self.rect.collidepoint(pos):
             hover_box_rect = pygame.Rect(pos[0], pos[1], self.hover_box_width, self.hover_box_height)
+            hover_box_text_rect = self.hover_box_text.get_rect(center = (pos[0]+self.hover_box_width/2, pos[1]+self.hover_box_height/2))
+            
             pygame.draw.rect(surface, (255, 255, 255), hover_box_rect)
+            
+            surface.blit(self.hover_box_text, hover_box_text_rect)
             pygame.draw.rect(surface, (0,0,0), (pos[0], pos[1], self.hover_box_width + 1, self.hover_box_height + 1), 1)
 
