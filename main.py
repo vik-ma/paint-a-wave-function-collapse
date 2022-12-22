@@ -791,7 +791,8 @@ def main():
     wfc_state = {"interrupt": False}
     
     infotext_main_test = "TEST TEST"
-    infotext_hover_test = "HOVER TEST"
+    infotext_hover_test = ["HOVER TEST", "test test", "test test3", "4test test"]
+    # infotext_hover_test = ["HOVER TEST"]
     infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, infotext_hover_test, 200, 100)
 
     def change_button_color(state, button_list):
