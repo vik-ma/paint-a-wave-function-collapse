@@ -2,21 +2,23 @@ import pygame
 
 
 class InfoText():
-    def __init__(self, x, y, main_text, font, hover_box_text, hover_box_width, hover_box_height):
+    def __init__(self, x, y, main_text, main_text_font, hover_box_text_font, hover_box_text, hover_box_width, hover_box_height):
         self.x = x
         self.y = y
         self.main_text = main_text
         # self.hover_box_text = hover_box_text
         self.hover_box_width = hover_box_width
         self.hover_box_height = hover_box_height
-        self.font = font
-        self.rect = pygame.Rect(self.x, self.y, self.font.size(main_text)[0], self.font.size(main_text)[1])
-        self.render_text = self.font.render(main_text, True, (0, 0, 0))
+        self.main_text_font = main_text_font
+        self.rect = pygame.Rect(self.x, self.y, self.main_text_font.size(main_text)[0], self.main_text_font.size(main_text)[1])
+        self.render_text = self.main_text_font.render(main_text, True, (0, 0, 0))
+        self.hover_box_text_font = hover_box_text_font
         self.hover_box_text = []
         for text_line in hover_box_text:
-            self.hover_box_text.append(self.font.render(text_line, True, (0, 0, 0)))
+            self.hover_box_text.append(self.hover_box_text_font.render(text_line, True, (0, 0, 0)))
         # self.hover_box_text = self.font.render(hover_box_text, True, (0, 0, 0))
-        self.text_line_height = font.get_linesize()
+
+        self.text_line_height = self.hover_box_text_font.get_linesize()
 
 
     def draw(self, surface):

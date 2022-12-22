@@ -597,6 +597,7 @@ def main():
     pygame.init()
 
     size_20_font = pygame.font.Font(pygame.font.get_default_font(), 20)
+    size_15_font = pygame.font.Font(pygame.font.get_default_font(), 15)
     size_10_font = pygame.font.Font(pygame.font.get_default_font(), 10)
 
     WIDTH = 800
@@ -793,7 +794,7 @@ def main():
     infotext_main_test = "TEST TEST"
     infotext_hover_test = ["HOVER TEST", "test test", "test test3", "4test test"]
     # infotext_hover_test = ["HOVER TEST"]
-    infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, infotext_hover_test, 200, 100)
+    infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, size_15_font, infotext_hover_test, 200, 100)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "text_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "text_color": BLACK}} 
