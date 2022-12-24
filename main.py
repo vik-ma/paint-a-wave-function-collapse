@@ -1038,8 +1038,8 @@ def main():
                     second_grid_y_pos = pattern_list[1]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-            current_speed_text = size_20_font.render(f"Current Speed:", True, (0, 0, 0))
-            screen.blit(current_speed_text, (300, 520))
+            current_color_text = size_20_font.render(f"Current Speed:", True, (0, 0, 0))
+            screen.blit(current_color_text, (300, 520))
 
             
             wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
@@ -1100,8 +1100,8 @@ def main():
                     game_state = "paint"
 
         if game_state == "paint":
-            current_speed_text = size_20_font.render("Current Color:", True, (0, 0, 0))
-            screen.blit(current_speed_text, (50, 86))
+            current_color_text = size_20_font.render("Current Color:", True, (0, 0, 0))
+            screen.blit(current_color_text, (50, 86))
 
             if current_color_tile.draw(screen, border=True):
                 pass
