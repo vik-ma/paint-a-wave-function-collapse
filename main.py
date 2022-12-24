@@ -644,7 +644,7 @@ def main():
     save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
     toggle_grid_lines_button = Button(WHITE, 580, 200, 210, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
-    help_button = Button(WHITE, 630, 545, 150, 40, "Help", BLACK, LIGHTGREY)
+    help_button = Button(WHITE, 630, 545, 150, 40, "HELP", BLACK, LIGHTGREY)
 
     run = True
 
@@ -1093,7 +1093,7 @@ def main():
             pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
 
             if help_button.draw(screen):
-                print("help")
+                game_state = "help"
 
             if switch_state_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
@@ -1148,7 +1148,7 @@ def main():
             pygame.draw.rect(screen, BLACK, (preview_tile.x - 1, preview_tile.y - 1, (preview_tile.width * enlargement_scale) + 2, (preview_tile.height * enlargement_scale) + 2), 1)
 
             if help_button.draw(screen):
-                print("help")
+                game_state = "help"
 
             if switch_state_button.draw(screen):
                 game_state = "wfc"
@@ -1198,6 +1198,13 @@ def main():
                 print("TEST")
 
             paint_color_group.draw(screen)
+
+        if game_state == "help":
+            help_title_text = size_20_font.render("HELP", True, (0, 0, 0))
+            screen.blit(help_title_text, (50, 20))
+
+            if switch_state_button.draw(screen):
+                game_state = "wfc"
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
