@@ -617,7 +617,7 @@ def main():
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
-    switch_state_button = Button(WHITE, 630, 580, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+    switch_state_button = Button(WHITE, 630, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
 
     increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
     decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
@@ -643,6 +643,8 @@ def main():
     clear_paint_grid_button = Button(WHITE, 580, 100, 210, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
     save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
     toggle_grid_lines_button = Button(WHITE, 580, 200, 210, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+
+    help_button = Button(WHITE, 630, 545, 150, 40, "Help", BLACK, LIGHTGREY)
 
     run = True
 
@@ -1090,6 +1092,9 @@ def main():
             # Second grid border
             pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
 
+            if help_button.draw(screen):
+                print("help")
+
             if switch_state_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     game_state = "paint"
@@ -1141,6 +1146,9 @@ def main():
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
             #Preview Tile Border
             pygame.draw.rect(screen, BLACK, (preview_tile.x - 1, preview_tile.y - 1, (preview_tile.width * enlargement_scale) + 2, (preview_tile.height * enlargement_scale) + 2), 1)
+
+            if help_button.draw(screen):
+                print("help")
 
             if switch_state_button.draw(screen):
                 game_state = "wfc"
