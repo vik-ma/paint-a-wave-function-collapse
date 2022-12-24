@@ -783,7 +783,8 @@ def main():
                                                           increase_nth_button, decrease_nth_button,
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
                                                           set_pattern_size_2_button, set_pattern_size_3_button, 
-                                                          replay_animation_button, switch_state_button]
+                                                          replay_animation_button, switch_state_button,
+                                                          help_button]
     
     disabled_buttons_during_wfc_exec_but_not_post_anim_list = [make_grid_button, skip_animation_button]
 
@@ -1093,7 +1094,8 @@ def main():
             pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
 
             if help_button.draw(screen):
-                game_state = "help"
+                if not is_wfc_anim_ongoing and not is_wfc_started:
+                    game_state = "help"
 
             if switch_state_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
