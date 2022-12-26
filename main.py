@@ -707,6 +707,8 @@ def main():
 
     output_width = 20
     output_height = 20
+    
+    grid_size = output_width
 
     tile_buttons = create_tile_buttons(initial_tile_list)   
 
@@ -911,6 +913,7 @@ def main():
                     is_wfc_finished = False
                     wfc_state["interrupt"] = False
                     wfc_output_2 = None
+                    grid_size = output_width
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
@@ -992,7 +995,7 @@ def main():
                             tile_button.image.set_alpha(255)
                 if wfc_output_2 != None:
                     # Second grid border
-                    pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+                    pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
 
 
             if replay_animation_button.draw(screen):
@@ -1093,7 +1096,7 @@ def main():
             
 
             # Grid border
-            pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (output_width * enlargement_scale) + 2, (output_height * enlargement_scale) + 2), 1)
+            pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
         
             if help_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
