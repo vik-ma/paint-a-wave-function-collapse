@@ -803,7 +803,7 @@ def main():
 
     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
 
-
+    wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "text_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "text_color": BLACK}} 
@@ -889,7 +889,7 @@ def main():
                         completed_wfc_pattern_group.add(wfc_output)
 
             if wfc_output != None:
-                screen.blit(wfc_grid_size_text, (50, 340))
+                screen.blit(wfc_grid_size_text, (50, wfc_grid_size_text_y_pos))
 
             if is_wfc_finished:
                 if not did_wfc_fail:
@@ -921,6 +921,7 @@ def main():
                     wfc_output_2 = None
                     grid_size = output_width
                     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
+                    wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
