@@ -801,6 +801,10 @@ def main():
                         "for a full sentence.", "This is a test for a full", "sentence."]
     infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, size_16_font, infotext_hover_test, 200, 100)
 
+    wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
+
+
+
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "text_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "text_color": BLACK}} 
 
@@ -884,6 +888,8 @@ def main():
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output)
 
+            if wfc_output != None:
+                screen.blit(wfc_grid_size_text, (50, 340))
 
             if is_wfc_finished:
                 if not did_wfc_fail:
@@ -914,6 +920,7 @@ def main():
                     wfc_state["interrupt"] = False
                     wfc_output_2 = None
                     grid_size = output_width
+                    wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
