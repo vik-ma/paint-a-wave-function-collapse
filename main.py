@@ -1003,6 +1003,9 @@ def main():
                     wfc_list_count = 0
                     is_wfc_anim_ongoing = True
                     change_button_color("enabled", enabled_buttons_only_during_wfc_post_anim)
+                    if not draw_second_grid:
+                        draw_second_grid = True
+                        is_wfc_anim_ongoing = True
 
             if skip_animation_button.draw(screen):
                 if is_wfc_anim_ongoing:
