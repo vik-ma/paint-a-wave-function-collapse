@@ -813,11 +813,11 @@ def main():
         if wfc_output != None:
             completed_wfc_pattern_group.empty()
             old_pix_array = wfc_output.pix_array
-            wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
+            wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
             completed_wfc_pattern_group.add(wfc_output)
             if wfc_output_2 != None:
                 old_pix_array_second = wfc_output_2.pix_array
-                wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
+                wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
                 completed_wfc_pattern_group.add(wfc_output_2)
 
     while run:
@@ -829,10 +829,10 @@ def main():
                 if not thread_queue.empty() and is_wfc_started:
                     result = thread_queue.queue[-1]
                     if result[0]:
-                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
                     else:
                         did_wfc_fail = True
-                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
+                        wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
                     completed_wfc_pattern_group.add(wfc_output)
                     wfc_time_finish = result[3]
                     is_wfc_finished = True
@@ -847,7 +847,7 @@ def main():
                         wfc_order_list.append(result[1])
                         sliced_list = []
                     if render_wfc_at_end:
-                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
+                        wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
                         change_button_color("enabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                         draw_second_grid = True
@@ -881,7 +881,7 @@ def main():
                                 row.append(first_pixel)
                             final_pixels.append(row)
 
-                        wfc_output = Tile(output_width, output_height, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
+                        wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output)
 
 
@@ -984,7 +984,7 @@ def main():
                                 row.append(first_pixel)
                             final_pixels.append(row)
 
-                        wfc_output_2 = Tile(output_width, output_height, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
+                        wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output_2)
                         wfc_list_count += 1
                     if wfc_list_count == len(sliced_list):
