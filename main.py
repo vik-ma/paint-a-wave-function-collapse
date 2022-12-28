@@ -801,6 +801,9 @@ def main():
                         "for a full sentence.", "This is a test for a full", "sentence."]
     infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, size_16_font, infotext_hover_test, 200, 100)
 
+    prob_hoverbox_text = ["Likelyhood of pattern", "occurring"]
+    prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, size_16_font, prob_hoverbox_text, 200, 50)
+
     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
 
     wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
@@ -900,13 +903,6 @@ def main():
                     screen.blit(wfc_failed_text, (48, 370))
 
             draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
-
-            if show_probability:
-                prob_text = size_10_font.render("Pattern Probability", True, DARKPURPLE)
-                screen.blit(prob_text, (48, 3))
-                for patt in patterns[0]:
-                    patt_prob = size_10_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
-                    screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
 
             if make_grid_button.draw(screen):
                 if not is_wfc_started:
@@ -1116,6 +1112,14 @@ def main():
             if switch_state_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     game_state = "paint"
+
+            if show_probability:
+                # prob_text = size_10_font.render("Pattern Probability", True, DARKPURPLE)
+                # screen.blit(prob_text, (48, 3))
+                for patt in patterns[0]:
+                    patt_prob = size_10_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
+                    screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
+                prob_text.draw(screen)
 
         if game_state == "paint":
             current_color_text = size_20_font.render("Current Color:", True, (0, 0, 0))
