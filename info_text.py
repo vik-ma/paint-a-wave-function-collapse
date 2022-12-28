@@ -2,7 +2,7 @@ import pygame
 
 
 class InfoText():
-    def __init__(self, x, y, main_text, main_text_font, hover_box_text_font, hover_box_text, hover_box_width, hover_box_height):
+    def __init__(self, x, y, main_text, main_text_font, hover_box_text_font, hover_box_text, hover_box_width, hover_box_height, main_text_color):
         self.x = x
         self.y = y
         self.main_text = main_text
@@ -10,7 +10,7 @@ class InfoText():
         self.hover_box_height = hover_box_height
         self.main_text_font = main_text_font
         self.rect = pygame.Rect(self.x, self.y, self.main_text_font.size(main_text)[0], self.main_text_font.size(main_text)[1])
-        self.render_main_text = self.main_text_font.render(main_text, True, (0, 0, 0))
+        self.render_main_text = self.main_text_font.render(main_text, True, main_text_color)
         self.hover_box_text_font = hover_box_text_font
         self.hover_box_text = []
         for text_line in hover_box_text:

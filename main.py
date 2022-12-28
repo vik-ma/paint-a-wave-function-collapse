@@ -799,10 +799,10 @@ def main():
     infotext_main_test = "TEST TEST"
     infotext_hover_test = ["This is a test for a full", "sentence. This is a test", 
                         "for a full sentence.", "This is a test for a full", "sentence."]
-    infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, size_16_font, infotext_hover_test, 200, 100)
+    infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, size_16_font, infotext_hover_test, 200, 100, BLACK)
 
     prob_hoverbox_text = ["Likelyhood of pattern", "occurring"]
-    prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, size_16_font, prob_hoverbox_text, 200, 50)
+    prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, size_16_font, prob_hoverbox_text, 200, 50, DARKPURPLE)
 
     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
 
