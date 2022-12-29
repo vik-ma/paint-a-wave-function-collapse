@@ -779,8 +779,11 @@ def main():
     anim_during_wfc_hover_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
     anim_during_wfc_infotext = InfoText(30, 560, anim_during_wfc_main_text, size_18_font, size_17_font, anim_during_wfc_hover_text, 355, len(anim_during_wfc_hover_text) * hover_box_line_height + 14, BLACK)
 
+    anim_after_wfc_main_text = "Animate WFC after execution"
+    anim_after_wfc_hover_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
+    anim_after_wfc_infotext = InfoText(30, 580, anim_after_wfc_main_text, size_18_font, size_17_font, anim_after_wfc_hover_text, 302, len(anim_after_wfc_hover_text) * hover_box_line_height + 14, BLACK)
     # anim_during_wfc_info_text = size_18_font.render("Show current state of WFC during execution:", True, BLACK)
-    anim_after_wfc_info_text = size_18_font.render("Show animation of WFC after completion:", True, BLACK)
+    # anim_after_wfc_info_text = size_18_font.render("Show animation of WFC after completion:", True, BLACK)
     anim_during_wfc_value_text = size_18_font.render("Yes", True, GREEN)
     anim_after_wfc_value_text = size_18_font.render("Yes", True, GREEN)
 
@@ -1078,11 +1081,12 @@ def main():
                         sliced_list.append(last_image)
 
             # screen.blit(anim_during_wfc_info_text, (30, 560))
-            screen.blit(anim_after_wfc_info_text, (30, 590))
+            # screen.blit(anim_after_wfc_info_text, (30, 590))
             screen.blit(anim_during_wfc_value_text, (478, 560))
             screen.blit(anim_after_wfc_value_text, (478, 590))
 
             anim_during_wfc_infotext.draw(screen)
+            anim_after_wfc_infotext.draw(screen)
 
             if toggle_anim_during_wfc_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
