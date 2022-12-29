@@ -625,7 +625,7 @@ def main():
     set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
     set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
-    toggle_show_probability_button = Button(WHITE, 550, 500, 230, 40, "Hide Pattern Probability", BLACK, LIGHTGREY)
+    toggle_show_patterns_button = Button(WHITE, 570, 500, 180, 40, "Hide Patterns", BLACK, LIGHTGREY)
 
     replay_animation_button = Button(GREY, 570, 300, 210, 40, "Replay WFC Animation", DARKGREY, GREY)
     skip_animation_button = Button(GREY, 570, 350, 210, 40, "Skip WFC Animation", DARKGREY, GREY)
@@ -902,8 +902,6 @@ def main():
                     wfc_failed_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
                     screen.blit(wfc_failed_text, (48, 370))
 
-            draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
-
             if make_grid_button.draw(screen):
                 if not is_wfc_started:
                     completed_wfc_pattern_group.empty()
@@ -1019,13 +1017,13 @@ def main():
             if test_button.draw(screen):
                 tile_buttons[0].image.set_alpha(160) 
 
-            if toggle_show_probability_button.draw(screen):
+            if toggle_show_patterns_button.draw(screen):
                 if show_probability:
                     show_probability = False
-                    toggle_show_probability_button.text = "Show Pattern Probability"
+                    toggle_show_patterns_button.text = "Show Patterns"
                 else:
                     show_probability = True
-                    toggle_show_probability_button.text = "Hide Pattern Probability"
+                    toggle_show_patterns_button.text = "Hide Patterns"
 
 
             if set_pattern_size_2_button.draw(screen):
@@ -1098,7 +1096,7 @@ def main():
 
             infotext_test.draw(screen)
 
-            pattern_group.draw(screen)
+            
             completed_wfc_pattern_group.draw(screen)
             
 
@@ -1114,8 +1112,8 @@ def main():
                     game_state = "paint"
 
             if show_probability:
-                # prob_text = size_10_font.render("Pattern Probability", True, DARKPURPLE)
-                # screen.blit(prob_text, (48, 3))
+                draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
+                pattern_group.draw(screen)
                 for patt in patterns[0]:
                     patt_prob = size_10_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
                     screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
