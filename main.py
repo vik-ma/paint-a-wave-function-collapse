@@ -433,9 +433,6 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
             
             if render_wfc_during_execution:
                 thread_queue.put(deepcopy(coefficients))
-
-
-
     except Exception as e:
         wfc_completed = False
         # print("WFC FAIL: ", e)
@@ -597,8 +594,11 @@ def main():
     pygame.init()
 
     size_20_font = pygame.font.Font(pygame.font.get_default_font(), 20)
+    size_18_font = pygame.font.Font(pygame.font.get_default_font(), 18)
+    size_17_font = pygame.font.Font(pygame.font.get_default_font(), 17)
     size_16_font = pygame.font.Font(pygame.font.get_default_font(), 16)
     size_10_font = pygame.font.Font(pygame.font.get_default_font(), 10)
+
 
     WIDTH = 800
     HEIGHT = 640
@@ -773,10 +773,16 @@ def main():
     render_wfc_during_execution = True
     render_wfc_at_end = True
 
-    anim_during_wfc_info_text = size_20_font.render("Show current state of WFC during execution:", True, BLACK)
-    anim_after_wfc_info_text = size_20_font.render("Show animation of WFC after completion:", True, BLACK)
-    anim_during_wfc_value_text = size_20_font.render("Yes", True, GREEN)
-    anim_after_wfc_value_text = size_20_font.render("Yes", True, GREEN)
+    hover_box_line_height = size_17_font.get_linesize()
+
+    anim_during_wfc_main_text = "Animate WFC state during execution"
+    anim_during_wfc_hover_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
+    anim_during_wfc_infotext = InfoText(30, 560, anim_during_wfc_main_text, size_18_font, size_17_font, anim_during_wfc_hover_text, 355, len(anim_during_wfc_hover_text) * hover_box_line_height + 14, BLACK)
+
+    # anim_during_wfc_info_text = size_18_font.render("Show current state of WFC during execution:", True, BLACK)
+    anim_after_wfc_info_text = size_18_font.render("Show animation of WFC after completion:", True, BLACK)
+    anim_during_wfc_value_text = size_18_font.render("Yes", True, GREEN)
+    anim_after_wfc_value_text = size_18_font.render("Yes", True, GREEN)
 
     sliced_list = []
     last_image = None
@@ -1071,10 +1077,12 @@ def main():
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
 
-            screen.blit(anim_during_wfc_info_text, (30, 560))
+            # screen.blit(anim_during_wfc_info_text, (30, 560))
             screen.blit(anim_after_wfc_info_text, (30, 590))
             screen.blit(anim_during_wfc_value_text, (478, 560))
             screen.blit(anim_after_wfc_value_text, (478, 590))
+
+            anim_during_wfc_infotext.draw(screen)
 
             if toggle_anim_during_wfc_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
