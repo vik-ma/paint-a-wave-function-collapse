@@ -630,8 +630,8 @@ def main():
     replay_animation_button = Button(GREY, 570, 300, 210, 40, "Replay WFC Animation", DARKGREY, GREY)
     skip_animation_button = Button(GREY, 570, 350, 210, 40, "Skip WFC Animation", DARKGREY, GREY)
 
-    toggle_anim_during_wfc_button = Button(WHITE, 520, 560, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
-    toggle_anim_after_wfc_button = Button(WHITE, 520, 590, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
+    toggle_anim_during_wfc_button = Button(WHITE, 410, 558, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
+    toggle_anim_after_wfc_button = Button(WHITE, 410, 580, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
 
     increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
     decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
@@ -775,17 +775,16 @@ def main():
 
     hover_box_line_height = size_17_font.get_linesize()
 
-    anim_during_wfc_main_text = "Animate WFC state during execution"
+    anim_during_wfc_main_text = "Animate WFC state during execution:"
     anim_during_wfc_hover_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
     anim_during_wfc_infotext = InfoText(30, 560, anim_during_wfc_main_text, size_18_font, size_17_font, anim_during_wfc_hover_text, 355, len(anim_during_wfc_hover_text) * hover_box_line_height + 14, BLACK)
 
-    anim_after_wfc_main_text = "Animate WFC after execution"
+    anim_after_wfc_main_text = "Animate WFC after execution:"
     anim_after_wfc_hover_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
     anim_after_wfc_infotext = InfoText(30, 580, anim_after_wfc_main_text, size_18_font, size_17_font, anim_after_wfc_hover_text, 302, len(anim_after_wfc_hover_text) * hover_box_line_height + 14, BLACK)
-    # anim_during_wfc_info_text = size_18_font.render("Show current state of WFC during execution:", True, BLACK)
-    # anim_after_wfc_info_text = size_18_font.render("Show animation of WFC after completion:", True, BLACK)
-    anim_during_wfc_value_text = size_18_font.render("Yes", True, GREEN)
-    anim_after_wfc_value_text = size_18_font.render("Yes", True, GREEN)
+    
+    anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
+    anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
 
     sliced_list = []
     last_image = None
@@ -805,11 +804,6 @@ def main():
 
     wfc_state = {"interrupt": False}
     
-    infotext_main_test = "TEST TEST"
-    infotext_hover_test = ["This is a test for a full", "sentence. This is a test", 
-                        "for a full sentence.", "This is a test for a full", "sentence."]
-    infotext_test = InfoText(10, 450, infotext_main_test, size_20_font, size_16_font, infotext_hover_test, 200, 100, BLACK)
-
     prob_hoverbox_text = ["Likelyhood of pattern", "occurring"]
     prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, size_16_font, prob_hoverbox_text, 200, 50, DARKPURPLE)
 
@@ -1080,10 +1074,8 @@ def main():
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
 
-            # screen.blit(anim_during_wfc_info_text, (30, 560))
-            # screen.blit(anim_after_wfc_info_text, (30, 590))
-            screen.blit(anim_during_wfc_value_text, (478, 560))
-            screen.blit(anim_after_wfc_value_text, (478, 590))
+            screen.blit(anim_during_wfc_value_text, (370, 560))
+            screen.blit(anim_after_wfc_value_text, (370, 580))
 
             anim_during_wfc_infotext.draw(screen)
             anim_after_wfc_infotext.draw(screen)
@@ -1092,21 +1084,19 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     if render_wfc_during_execution:
                         render_wfc_during_execution = False
-                        anim_during_wfc_value_text = size_20_font.render("No", True, DARKRED)
+                        anim_during_wfc_value_text = size_17_font.render("OFF", True, DARKRED)
                     else:
                         render_wfc_during_execution = True
-                        anim_during_wfc_value_text = size_20_font.render("Yes", True, GREEN)
+                        anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
 
             if toggle_anim_after_wfc_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     if render_wfc_at_end:
                         render_wfc_at_end = False
-                        anim_after_wfc_value_text = size_20_font.render("No", True, DARKRED)
+                        anim_after_wfc_value_text = size_17_font.render("OFF", True, DARKRED)
                     else:
                         render_wfc_at_end = True
-                        anim_after_wfc_value_text = size_20_font.render("Yes", True, GREEN)
-
-            infotext_test.draw(screen)
+                        anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
 
             
             completed_wfc_pattern_group.draw(screen)
