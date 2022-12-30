@@ -809,8 +809,9 @@ def main():
 
     wfc_state = {"interrupt": False}
     
-    prob_hoverbox_text = ["Likelyhood of pattern", "occurring"]
-    prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, size_16_font, prob_hoverbox_text, 200, 50, DARKPURPLE, anim_after_wfc_hover_box)
+    prob_hover_box_text = ["Likelyhood of pattern", "occurring."]
+    prob_hover_box = HoverBox(200, len(prob_hover_box_text) * hover_box_line_height + 14, prob_hover_box_text, size_17_font)
+    prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, size_16_font, prob_hover_box_text, 200, 50, DARKPURPLE, prob_hover_box)
 
     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
 
