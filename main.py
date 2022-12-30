@@ -776,13 +776,17 @@ def main():
 
     hover_box_line_height = size_17_font.get_linesize()
 
+    anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
+    anim_after_wfc_hover_box_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
+    
+    anim_during_wfc_hover_box = HoverBox(355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, size_17_font)
+    anim_after_wfc_hover_box = HoverBox(302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, size_17_font)
+
     anim_during_wfc_main_text = "Animate WFC state during execution:"
-    anim_during_wfc_hover_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
-    anim_during_wfc_infotext = InfoText(30, 560, anim_during_wfc_main_text, size_18_font, size_17_font, anim_during_wfc_hover_text, 355, len(anim_during_wfc_hover_text) * hover_box_line_height + 14, BLACK)
+    anim_during_wfc_infotext = InfoText(30, 560, anim_during_wfc_main_text, size_18_font, size_17_font, [], 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, BLACK, anim_during_wfc_hover_box)
 
     anim_after_wfc_main_text = "Animate WFC after execution:"
-    anim_after_wfc_hover_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
-    anim_after_wfc_infotext = InfoText(30, 580, anim_after_wfc_main_text, size_18_font, size_17_font, anim_after_wfc_hover_text, 302, len(anim_after_wfc_hover_text) * hover_box_line_height + 14, BLACK)
+    anim_after_wfc_infotext = InfoText(30, 580, anim_after_wfc_main_text, size_18_font, size_17_font, [], 302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, BLACK, anim_after_wfc_hover_box)
     
     anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
     anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
@@ -806,7 +810,7 @@ def main():
     wfc_state = {"interrupt": False}
     
     prob_hoverbox_text = ["Likelyhood of pattern", "occurring"]
-    prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, size_16_font, prob_hoverbox_text, 200, 50, DARKPURPLE)
+    prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, size_16_font, prob_hoverbox_text, 200, 50, DARKPURPLE, anim_after_wfc_hover_box)
 
     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
 
