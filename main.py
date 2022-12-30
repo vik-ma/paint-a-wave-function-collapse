@@ -16,6 +16,7 @@ from initial_tile import InitialTile
 from tile_button import TileButton
 from paint_tile import PaintTile
 from info_text import InfoText
+from hover_box import HoverBox
 
 
 WHITE = (255, 255, 255)
