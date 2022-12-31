@@ -13,10 +13,12 @@ class InfoText():
         self.hover_box_group = hover_box_group
 
 
-    def draw(self, surface):
+    def draw(self, surface, hover_box):
         pos = pygame.mouse.get_pos()
         surface.blit(self.render_main_text, (self.x, self.y))
 
         if self.rect.collidepoint(pos):
-            pass
+            hover_box.x = pos[0]
+            hover_box.y = pos[1]
+            self.hover_box_group.add(self.hover_box)
             # self.hover_box.show(surface, pos[0], pos[1])

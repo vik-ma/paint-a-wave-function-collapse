@@ -1023,6 +1023,8 @@ def main():
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
             if test_button.draw(screen):
+                # hover_box_group.add(anim_after_wfc_hover_box)
+                anim_after_wfc_hover_box.update_image(50, 150)
                 hover_box_group.add(anim_after_wfc_hover_box)
 
 
@@ -1083,8 +1085,8 @@ def main():
             screen.blit(anim_during_wfc_value_text, (370, 560))
             screen.blit(anim_after_wfc_value_text, (370, 580))
 
-            anim_during_wfc_infotext.draw(screen)
-            anim_after_wfc_infotext.draw(screen)
+            anim_during_wfc_infotext.draw(screen, anim_during_wfc_hover_box)
+            anim_after_wfc_infotext.draw(screen, anim_after_wfc_hover_box)
 
             if toggle_anim_during_wfc_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
@@ -1125,7 +1127,7 @@ def main():
                 for patt in patterns[0]:
                     patt_prob = size_10_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
                     screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
-                prob_text.draw(screen)
+                prob_text.draw(screen, prob_hover_box)
             
             hover_box_group.draw(screen)
 
