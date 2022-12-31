@@ -19,6 +19,9 @@ class HoverBox(pygame.sprite.Sprite):
         self.image.fill((255,255,255))
         # self.pygame.draw.rect(surface, (255, 255, 255), self.rect)
         pygame.draw.rect(self.image, (0,0,0), (x, y, width, height), 1)
+        for line_y_pos, text_line in enumerate(self.text):
+            hover_box_text_rect = text_line.get_rect(left = x + 14, top = (y + 8 + (line_y_pos * self.text_line_height)))
+            self.image.blit(text_line, hover_box_text_rect)
 
 
     # def show(self, surface, x, y):
