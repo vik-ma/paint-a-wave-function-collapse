@@ -614,8 +614,10 @@ def main():
     paint_color_group = pygame.sprite.Group()
     hover_box_group = pygame.sprite.Group()
 
-    make_grid_button = Button(WHITE, 600, 10, 150, 40, "Make Grid", BLACK, LIGHTGREY)
-    test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
+    test_hoverbox = HoverBox(0, 0, 355, 50, ["adadsdsaadssad","adsdsadsa"], size_17_font)
+    
+    make_grid_button = Button(WHITE, 600, 10, 150, 40, "Make Grid", BLACK, LIGHTGREY, hover_box=test_hoverbox, hover_box_group=hover_box_group)
+    test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY, hover_box=test_hoverbox, hover_box_group=hover_box_group)
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 

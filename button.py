@@ -2,7 +2,7 @@ import pygame
 
 
 class Button():
-    def __init__(self, color, x, y, width, height, text, text_color, hover_color, *, small_text=False):
+    def __init__(self, color, x, y, width, height, text, text_color, hover_color, *, small_text=False, hover_box=None, hover_box_group=None):
         self.color = color
         self.x = x
         self.y = y
@@ -14,9 +14,14 @@ class Button():
         self.clicked = False
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.hover_color = hover_color
+        self.has_hover_box = False
         if small_text:
             self.font = pygame.font.SysFont('Arial Bold', 16)
-
+        if hover_box is not None:
+            self.hover_box = hover_box
+            self.hover_box_group = hover_box_group
+            self.is_showing_hover_box = False
+            self.has_hover_box = True
 
     def draw(self, surface):
         action = False
@@ -32,6 +37,14 @@ class Button():
             if pygame.mouse.get_pressed()[0] and self.clicked == False:
                 self.clicked = True
                 action = True
+            if self.has_hover_box:
+                self.hover_box.update_image(pos[0], pos[1])
+                self.hover_box_group.add(self.hover_box)
+                self.is_showing_hover_box = True
+        else:
+            if self.has_hover_box and self.is_showing_hover_box:
+                self.hover_box_group.remove(self.hover_box)
+                self.is_showing_hover_box = False
 
         if pygame.mouse.get_pressed()[0] == False:
             self.clicked = False
