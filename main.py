@@ -147,6 +147,15 @@ sample_pixel_array_4x4_test = [
 
 sample_initial_tile_7 = InitialTile(sample_pixel_array_4x4_test, 4, 4)
 
+print_tile_test = [
+    ((255, 255, 255), (255, 255, 255), (186, 85, 211), (0, 255, 255)), 
+    ((255, 255, 255), (186, 85, 211), (186, 85, 211), (0, 255, 255)), 
+    ((186, 85, 211), (186, 85, 211), (0, 255, 255), (0, 255, 255)), 
+    ((0, 255, 255), (0, 255, 255), (0, 255, 255), (255, 255, 255))
+    ]
+
+sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
+
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
     rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
@@ -336,7 +345,6 @@ def observe(coefficients, probability, coefficients_state):
     # for pattern in possible_patterns:
     #     if max_p < probability[pattern]:
     #         max_p == probability[pattern]
-
     # semi_random_pattern = random.choice([pat for pat in possible_patterns if probability[pat]>=max_p])
 
     semi_random_pattern = random.choice([pat for pat in possible_patterns])
@@ -593,6 +601,9 @@ def test_threading():
     time.sleep(2)
     print("TEST")
 
+def print_tile_colors(tile):
+    print(tile.pix_array)
+
 def main():
     pygame.init()
 
@@ -694,6 +705,10 @@ def main():
     initial_tile_list.append(sample_tile_10)
     tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
 
+    sample_tile_11 = Tile(sample_initial_tile_8.width, sample_initial_tile_8.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_8.pix_array, enlargement_scale)
+    initial_tile_list.append(sample_tile_11)
+    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
+    
     pattern_size = 2
 
     selected_tile_index = 0
@@ -1234,7 +1249,7 @@ def main():
 
 
             if test_paint_button.draw(screen):
-                print("TEST")
+                print(preview_tile.pix_array)
 
             paint_color_group.draw(screen)
 
