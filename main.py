@@ -309,7 +309,7 @@ def get_min_entropy_at_pos(coefficients, probability):
     for x, col in enumerate(coefficients):
         for y, row in enumerate(col):
             entropy = get_shannon_entropy((x, y), coefficients, probability)
-            
+
             if entropy == 0:
                 continue
             
@@ -329,14 +329,17 @@ def observe(coefficients, probability, coefficients_state):
     
     # Choose a pattern at lowest entropy position which is most frequent in the sample
     possible_patterns = get_possible_patterns_at_position(min_entropy_pos, coefficients)
-    
+
+    # --THIS DOESN'T DO ANYTHING--
     # calculate max probability for patterns that are left
-    max_p = 0
-    for pattern in possible_patterns:
-        if max_p < probability[pattern]:
-            max_p == probability[pattern]
-    
-    semi_random_pattern = random.choice([pat for pat in possible_patterns if probability[pat]>=max_p])
+    # max_p = 0
+    # for pattern in possible_patterns:
+    #     if max_p < probability[pattern]:
+    #         max_p == probability[pattern]
+
+    # semi_random_pattern = random.choice([pat for pat in possible_patterns if probability[pat]>=max_p])
+
+    semi_random_pattern = random.choice([pat for pat in possible_patterns])
     
     # Set this pattern to be the only available at this position
     coefficients[min_entropy_pos[0]][min_entropy_pos[1]] = semi_random_pattern
