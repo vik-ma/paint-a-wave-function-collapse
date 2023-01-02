@@ -616,7 +616,7 @@ def main():
 
     test_hoverbox = HoverBox(0, 0, 355, 50, ["adadsdsaadssad","adsdsadsa"], size_17_font)
     
-    make_grid_button = Button(WHITE, 600, 10, 150, 40, "Make Grid", BLACK, LIGHTGREY, hover_box=test_hoverbox, hover_box_group=hover_box_group)
+    make_grid_button = Button(WHITE, 600, 10, 150, 40, "Make Grid", BLACK, LIGHTGREY)
     test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY, hover_box=test_hoverbox, hover_box_group=hover_box_group)
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
@@ -1063,8 +1063,8 @@ def main():
                     second_grid_y_pos = pattern_list[1]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-            current_color_text = size_20_font.render(f"Current Speed:", True, (0, 0, 0))
-            screen.blit(current_color_text, (300, 520))
+            current_speed_text = size_20_font.render(f"Current Speed:", True, (0, 0, 0))
+            screen.blit(current_speed_text, (300, 520))
 
             
             wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
