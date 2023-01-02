@@ -1227,7 +1227,7 @@ def main():
             if clear_paint_grid_button.draw(screen):
                 paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
                 paint_grid_pix_array = create_pix_array(paint_grid)
-                preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 400, paint_grid_pix_array, enlargement_scale)
+                preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
 
             if test_paint_button.draw(screen):
