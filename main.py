@@ -322,7 +322,7 @@ def get_min_entropy_at_pos(coefficients, probability):
 def observe(coefficients, probability, coefficients_state):
     # Find the lowest entropy
     min_entropy_pos = get_min_entropy_at_pos(coefficients, probability)
-    
+
     if min_entropy_pos == None:
         print("All tiles have 0 entropy")
         return
@@ -335,7 +335,6 @@ def observe(coefficients, probability, coefficients_state):
     for pattern in possible_patterns:
         if max_p < probability[pattern]:
             max_p == probability[pattern]
-    
     
     semi_random_pattern = random.choice([pat for pat in possible_patterns if probability[pat]>=max_p])
     
@@ -1020,6 +1019,7 @@ def main():
                     wfc_list_count = 0
                     is_wfc_anim_ongoing = True
                     change_button_color("enabled", enabled_buttons_only_during_wfc_post_anim)
+                    change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                     if not draw_second_grid:
                         draw_second_grid = True
                         is_wfc_anim_ongoing = True
