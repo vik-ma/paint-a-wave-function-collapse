@@ -814,6 +814,10 @@ def main():
     prob_hover_box = HoverBox(0, 0, 200, len(prob_hover_box_text) * hover_box_line_height + 14, prob_hover_box_text, size_17_font)
     prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, DARKPURPLE, prob_hover_box, hover_box_group)
 
+    current_speed_hover_box_text = [""]
+    current_speed_hover_box = HoverBox(0, 0, 200, len(current_speed_hover_box_text) * hover_box_line_height + 14, current_speed_hover_box_text, size_17_font)
+    current_speed_text = InfoText(300, 520, "Current Speed:", size_17_font, BLACK, current_speed_hover_box, hover_box_group)
+
     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
 
     wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
@@ -1063,9 +1067,7 @@ def main():
                     second_grid_y_pos = pattern_list[1]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-            current_speed_text = size_20_font.render(f"Current Speed:", True, (0, 0, 0))
-            screen.blit(current_speed_text, (300, 520))
-
+            current_speed_text.draw(screen)
             
             wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
             screen.blit(wfc_slice_num_text, (454, 520))
