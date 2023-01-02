@@ -814,9 +814,10 @@ def main():
     prob_hover_box = HoverBox(0, 0, 200, len(prob_hover_box_text) * hover_box_line_height + 14, prob_hover_box_text, size_17_font)
     prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, DARKPURPLE, prob_hover_box, hover_box_group)
 
-    current_speed_hover_box_text = [""]
-    current_speed_hover_box = HoverBox(0, 0, 200, len(current_speed_hover_box_text) * hover_box_line_height + 14, current_speed_hover_box_text, size_17_font)
+    current_speed_hover_box_text = ["The number represents every Nth state of the", "wave function collapse.", "1 will show the entire wave function collapse", "and will take a very long time to finish."]
+    current_speed_hover_box = HoverBox(0, 0, 400, len(current_speed_hover_box_text) * hover_box_line_height + 14, current_speed_hover_box_text, size_17_font)
     current_speed_text = InfoText(300, 520, "Current Speed:", size_17_font, BLACK, current_speed_hover_box, hover_box_group)
+
 
     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
 
@@ -1073,7 +1074,7 @@ def main():
             screen.blit(wfc_slice_num_text, (454, 520))
             if increase_nth_button.draw(screen):
                 if not is_wfc_anim_ongoing:
-                    if wfc_slice_num < 10:
+                    if wfc_slice_num < 15:
                         wfc_slice_num += 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
