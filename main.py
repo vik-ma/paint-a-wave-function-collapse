@@ -814,9 +814,9 @@ def main():
     prob_hover_box = HoverBox(0, 0, 200, len(prob_hover_box_text) * hover_box_line_height + 14, prob_hover_box_text, size_17_font)
     prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, DARKPURPLE, prob_hover_box, hover_box_group)
 
-    current_speed_hover_box_text = ["The number represents every Nth state of the", "wave function collapse.", "1 will show the entire wave function collapse", "and will take a very long time to finish."]
-    current_speed_hover_box = HoverBox(0, 0, 400, len(current_speed_hover_box_text) * hover_box_line_height + 14, current_speed_hover_box_text, size_17_font)
-    current_speed_text = InfoText(300, 520, "Current Speed:", size_17_font, BLACK, current_speed_hover_box, hover_box_group)
+    replay_speed_hover_box_text = ["The number represents every Nth state of the", "wave function collapse.", "'1' will show the wave function collapse in its", "entirety and takes a very long time to finish."]
+    replay_speed_hover_box = HoverBox(0, 0, 400, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, size_17_font)
+    replay_speed_text = InfoText(300, 520, "Replay Speed:", size_17_font, BLACK, replay_speed_hover_box, hover_box_group)
 
 
     wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
@@ -1068,7 +1068,7 @@ def main():
                     second_grid_y_pos = pattern_list[1]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-            current_speed_text.draw(screen)
+            replay_speed_text.draw(screen)
             
             wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
             screen.blit(wfc_slice_num_text, (454, 520))
