@@ -639,7 +639,7 @@ def main():
 
     test_hoverbox = HoverBox(0, 0, 355, 50, ["adadsdsaadssad","adsdsadsa"], size_17_font)
     
-    make_grid_button = Button(WHITE, 600, 10, 150, 40, "Make Grid", BLACK, LIGHTGREY)
+    new_wfc_button = Button(WHITE, 600, 10, 150, 40, "Start WFC", BLACK, LIGHTGREY)
     test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY, hover_box=test_hoverbox, hover_box_group=hover_box_group)
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
@@ -802,7 +802,7 @@ def main():
                                                           replay_animation_button, switch_state_button,
                                                           help_button]
     
-    disabled_buttons_during_wfc_exec_but_not_post_anim_list = [make_grid_button, skip_animation_button]
+    disabled_buttons_during_wfc_exec_but_not_post_anim_list = [new_wfc_button, skip_animation_button]
 
     enabled_buttons_only_during_wfc_post_anim = [skip_animation_button]
 
@@ -876,7 +876,7 @@ def main():
                         is_wfc_anim_ongoing = True
                     else:
                         change_button_color("enabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
-                        change_button_color("enabled", [make_grid_button])
+                        change_button_color("enabled", [new_wfc_button])
                         for tile_button in tile_buttons:
                             tile_button.image.set_alpha(255)
 
@@ -917,7 +917,7 @@ def main():
                     wfc_failed_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
                     screen.blit(wfc_failed_text, (48, 370))
 
-            if make_grid_button.draw(screen):
+            if new_wfc_button.draw(screen):
                 if not is_wfc_started:
                     completed_wfc_pattern_group.empty()
                     thread_queue = queue.Queue()
