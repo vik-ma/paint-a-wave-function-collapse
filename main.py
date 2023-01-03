@@ -671,6 +671,8 @@ def main():
     save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
     toggle_grid_lines_button = Button(WHITE, 580, 200, 210, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
+    delete_tile_button = Button(WHITE, 430, 300, 130, 40, "Delete Tile", BLACK, LIGHTGREY)
+
     help_button = Button(WHITE, 630, 545, 150, 40, "HELP", BLACK, LIGHTGREY)
 
     run = True
@@ -800,7 +802,7 @@ def main():
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
                                                           set_pattern_size_2_button, set_pattern_size_3_button, 
                                                           replay_animation_button, switch_state_button,
-                                                          help_button]
+                                                          help_button, delete_tile_button]
     
     disabled_buttons_during_wfc_exec_but_not_post_anim_list = [new_wfc_button, skip_animation_button]
 
@@ -1111,6 +1113,8 @@ def main():
                         render_wfc_at_end = True
                         anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
 
+            if delete_tile_button.draw(screen):
+                print("test")
             
             completed_wfc_pattern_group.draw(screen)
             
