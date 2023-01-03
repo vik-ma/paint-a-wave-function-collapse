@@ -83,6 +83,8 @@ DOWN_LEFT = (-1, 1)
 DOWN_RIGHT = (1, 1)
 directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
+sample_tile_list = []
+
 sample_pixel_array = [
     (WHITE, WHITE, WHITE, WHITE),
     (WHITE, BLACK, BLACK, BLACK),
@@ -91,6 +93,7 @@ sample_pixel_array = [
     ]
 
 sample_initial_tile_1 = InitialTile(sample_pixel_array, 4, 4)
+sample_tile_list.append(sample_initial_tile_1)
 
 sample_pixel_array_5x5 = [
     (WHITE, WHITE, WHITE, WHITE, WHITE),
@@ -101,6 +104,7 @@ sample_pixel_array_5x5 = [
 ]
 
 sample_initial_tile_2 = InitialTile(sample_pixel_array_5x5, 5, 5)
+sample_tile_list.append(sample_initial_tile_2)
 
 sample_pixel_array_5x4 = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -111,6 +115,7 @@ sample_pixel_array_5x4 = [
 ]
 
 sample_initial_tile_3 = InitialTile(sample_pixel_array_5x4, 5, 4)
+sample_tile_list.append(sample_initial_tile_3)
 
 sample_pixel_array_3x4 = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -119,6 +124,7 @@ sample_pixel_array_3x4 = [
 ]
 
 sample_initial_tile_4 = InitialTile(sample_pixel_array_3x4, 3, 4)
+sample_tile_list.append(sample_initial_tile_4)
 
 sample_pixel_array_3x3 = [
     (WHITE, WHITE, WHITE),
@@ -127,6 +133,7 @@ sample_pixel_array_3x3 = [
 ]
 
 sample_initial_tile_5 = InitialTile(sample_pixel_array_3x3, 3, 3)
+sample_tile_list.append(sample_initial_tile_5)
 
 sample_pixel_array_5x4_test = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -137,6 +144,7 @@ sample_pixel_array_5x4_test = [
 ]
 
 sample_initial_tile_6 = InitialTile(sample_pixel_array_5x4_test, 5, 4)
+sample_tile_list.append(sample_initial_tile_6)
 
 sample_pixel_array_4x4_test = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -146,6 +154,7 @@ sample_pixel_array_4x4_test = [
     ]
 
 sample_initial_tile_7 = InitialTile(sample_pixel_array_4x4_test, 4, 4)
+sample_tile_list.append(sample_initial_tile_7)
 
 print_tile_test = [
     ((255, 255, 255), (255, 255, 255), (186, 85, 211), (0, 255, 255)), 
@@ -155,6 +164,7 @@ print_tile_test = [
     ]
 
 sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
+sample_tile_list.append(sample_initial_tile_8)
 
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
@@ -677,37 +687,10 @@ def main():
     tile_list_x_offset = 16
     tile_list_y_pos = 400
 
-    sample_tile_1 = Tile(sample_initial_tile_1.width, sample_initial_tile_1.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_1.pix_array, enlargement_scale)
-    initial_tile_list.append(sample_tile_1)
-    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
-    sample_tile_2 = Tile(sample_initial_tile_2.width, sample_initial_tile_2.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_2.pix_array, enlargement_scale)
-    initial_tile_list.append(sample_tile_2)
-
-
-    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
-    sample_tile_6 = Tile(sample_initial_tile_3.width, sample_initial_tile_3.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_3.pix_array, enlargement_scale)
-    initial_tile_list.append(sample_tile_6)
-    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
-
-    sample_tile_7 = Tile(sample_initial_tile_4.width, sample_initial_tile_4.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_4.pix_array, enlargement_scale)
-    initial_tile_list.append(sample_tile_7)
-    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
-    
-    sample_tile_8 = Tile(sample_initial_tile_5.width, sample_initial_tile_5.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_5.pix_array, enlargement_scale)
-    initial_tile_list.append(sample_tile_8)
-    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
-
-    sample_tile_9 = Tile(sample_initial_tile_6.width, sample_initial_tile_6.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_6.pix_array, enlargement_scale)
-    initial_tile_list.append(sample_tile_9)
-    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
-
-    sample_tile_10 = Tile(sample_initial_tile_7.width, sample_initial_tile_7.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_7.pix_array, enlargement_scale)
-    initial_tile_list.append(sample_tile_10)
-    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
-
-    sample_tile_11 = Tile(sample_initial_tile_8.width, sample_initial_tile_8.height, tile_list_x_pos, tile_list_y_pos, sample_initial_tile_8.pix_array, enlargement_scale)
-    initial_tile_list.append(sample_tile_11)
-    tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
+    for tile in sample_tile_list:
+        new_tile = Tile(tile.width, tile.height, tile_list_x_pos, tile_list_y_pos, tile.pix_array, enlargement_scale)
+        initial_tile_list.append(new_tile)
+        tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
     
     pattern_size = 2
 
