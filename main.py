@@ -1120,12 +1120,13 @@ def main():
 
             if delete_tile_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_started:
-                    initial_tile_list.remove(initial_tile_list[selected_tile_index])
-                    initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_x_offset, enlargement_scale)
-                    tile_buttons = create_tile_buttons(initial_tile_list)
-                    if selected_tile_index >= len(initial_tile_list):
-                        selected_tile_index -= 1
-                    selected_tile = tile_buttons[selected_tile_index]
+                    if len(initial_tile_list) > 1:
+                        initial_tile_list.remove(initial_tile_list[selected_tile_index])
+                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_x_offset, enlargement_scale)
+                        tile_buttons = create_tile_buttons(initial_tile_list)
+                        if selected_tile_index >= len(initial_tile_list):
+                            selected_tile_index -= 1
+                        selected_tile = tile_buttons[selected_tile_index]
 
             
             completed_wfc_pattern_group.draw(screen)
