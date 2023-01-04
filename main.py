@@ -614,18 +614,26 @@ def test_threading():
 def print_tile_colors(tile):
     print(tile.pix_array)
 
-def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_x_offset, enlargement_scale):
+def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_max_height, initial_tile_col_limit):
     x_pos = tile_list_x_pos
     y_pos = tile_list_y_pos
     
     tile_width = 0
 
     new_tile_list = []
-    for tile in tile_list:
+
+    for i, tile in enumerate(tile_list, start=1):
         new_tile = Tile(tile.width, tile.height, x_pos, y_pos, tile.pix_array, enlargement_scale)
         new_tile_list.append(new_tile)
-        tile_width = tile.width * enlargement_scale
-        x_pos += tile_width + tile_list_x_offset
+        
+        if i % initial_tile_col_limit == 0:
+            x_pos = tile_list_x_pos
+            y_pos = tile_list_y_pos + initial_tile_max_height * enlargement_scale + tile_list_offset
+            tile_width = 0
+        else:
+            tile_width = tile.width * enlargement_scale
+            x_pos += tile_width + tile_list_offset
+
     return new_tile_list
     
 
@@ -704,8 +712,9 @@ def main():
     tile_list_offset = 12
 
     initial_tile_max_height = 5
- 
-    initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale)
+    initial_tile_col_limit = 8
+
+    initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_max_height, initial_tile_col_limit)
 
     pattern_size = 2
 
@@ -761,8 +770,6 @@ def main():
     draw_paint_grid_lines = True
 
     color_panel = create_paint_color_tiles()
-
-    tile_col_limit = 8
 
     wfc_slice_num = 5
 
@@ -1129,18 +1136,22 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     if len(initial_tile_list) > 1:
                         initial_tile_list.remove(initial_tile_list[selected_tile_index])
-                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale)
-                        tile_buttons = create_tile_buttons(initial_tile_list)
-                        if selected_tile_index >= len(initial_tile_list):
-                            selected_tile_index -= 1
-                        selected_tile = tile_buttons[selected_tile_index]
 
-                        tiles_in_row = len(initial_tile_list) % tile_col_limit
+                        tiles_in_row = len(initial_tile_list) % initial_tile_col_limit
                         max_height = 0
                         for tile in initial_tile_list[-tiles_in_row:]:
                             if tile.height > max_height:
                                 max_height = tile.height
                         initial_tile_max_height = max_height
+
+                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_max_height, initial_tile_col_limit)
+                        tile_buttons = create_tile_buttons(initial_tile_list)
+
+                        if selected_tile_index >= len(initial_tile_list):
+                            selected_tile_index -= 1
+                        selected_tile = tile_buttons[selected_tile_index]
+
+
             
 
             completed_wfc_pattern_group.draw(screen)
@@ -1193,7 +1204,7 @@ def main():
 
             if save_tile_button.draw(screen):
                 prev_tile = initial_tile_list[-1]
-                if len(tile_buttons) % tile_col_limit == 0:
+                if len(tile_buttons) % initial_tile_col_limit == 0:
                     x_pos = 50
                     y_pos = prev_tile.y + initial_tile_max_height * enlargement_scale + tile_list_offset
                 else:
