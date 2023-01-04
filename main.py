@@ -614,22 +614,27 @@ def test_threading():
 def print_tile_colors(tile):
     print(tile.pix_array)
 
-def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_max_height, initial_tile_col_limit):
+def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit):
     x_pos = tile_list_x_pos
     y_pos = tile_list_y_pos
     
     tile_width = 0
+    row_max_height = 0
 
     new_tile_list = []
 
     for i, tile in enumerate(tile_list, start=1):
         new_tile = Tile(tile.width, tile.height, x_pos, y_pos, tile.pix_array, enlargement_scale)
         new_tile_list.append(new_tile)
+
+        if tile.height > row_max_height:
+            row_max_height = tile.height
         
         if i % initial_tile_col_limit == 0:
             x_pos = tile_list_x_pos
-            y_pos = tile_list_y_pos + initial_tile_max_height * enlargement_scale + tile_list_offset
+            y_pos = tile_list_y_pos + row_max_height * enlargement_scale + tile_list_offset
             tile_width = 0
+            row_max_height = 0
         else:
             tile_width = tile.width * enlargement_scale
             x_pos += tile_width + tile_list_offset
@@ -714,7 +719,7 @@ def main():
     initial_tile_max_height = 5
     initial_tile_col_limit = 8
 
-    initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_max_height, initial_tile_col_limit)
+    initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit)
 
     pattern_size = 2
 
@@ -1144,7 +1149,7 @@ def main():
                                 max_height = tile.height
                         initial_tile_max_height = max_height
 
-                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_max_height, initial_tile_col_limit)
+                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit)
                         tile_buttons = create_tile_buttons(initial_tile_list)
 
                         if selected_tile_index >= len(initial_tile_list):
