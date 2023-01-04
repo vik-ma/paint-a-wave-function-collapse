@@ -699,7 +699,7 @@ def main():
 
     enlargement_scale = 8
 
-    tile_list_x_offset = 16
+    tile_list_x_offset = 12
  
     initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_offset, enlargement_scale)
 
