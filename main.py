@@ -990,7 +990,6 @@ def main():
                             grid_y_pos = pattern_list[1]
                             second_grid_y_pos = pattern_list[1]
                             adjust_grid_position(wfc_output, wfc_output_2)
-                            print(len(patterns[0]))
                         
 
 
@@ -1134,6 +1133,13 @@ def main():
                             selected_tile_index -= 1
                         selected_tile = tile_buttons[selected_tile_index]
 
+                        tiles_in_row = len(initial_tile_list) % tile_col_limit
+                        max_height = 0
+                        for tile in initial_tile_list[-tiles_in_row:]:
+                            if tile.height > max_height:
+                                max_height = tile.height
+                        initial_tile_max_height = max_height
+            
             
             completed_wfc_pattern_group.draw(screen)
             
