@@ -699,9 +699,11 @@ def main():
 
     enlargement_scale = 8
 
-    tile_list_x_offset = 12
+    tile_list_offset = 12
+
+    initial_tile_max_height = 5
  
-    initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_offset, enlargement_scale)
+    initial_tile_list = create_tile_list(sample_tile_list, tile_list_offset, enlargement_scale)
 
     pattern_size = 2
 
@@ -1126,7 +1128,7 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     if len(initial_tile_list) > 1:
                         initial_tile_list.remove(initial_tile_list[selected_tile_index])
-                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_offset, enlargement_scale)
+                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_offset, enlargement_scale)
                         tile_buttons = create_tile_buttons(initial_tile_list)
                         if selected_tile_index >= len(initial_tile_list):
                             selected_tile_index -= 1
@@ -1182,23 +1184,33 @@ def main():
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1) 
 
             if save_tile_button.draw(screen):
+                prev_tile = initial_tile_list[-1]
                 if len(tile_buttons) % tile_col_limit == 0:
-                    tile_list_x_pos = 50
-                    tile_list_y_pos += 50
-                new_tile_button = Tile(paint_grid_cols, paint_grid_rows, tile_list_x_pos, tile_list_y_pos, paint_grid_pix_array, enlargement_scale)
+                    x_pos = 50
+                    y_pos = prev_tile.y + initial_tile_max_height * enlargement_scale + tile_list_offset
+                else:
+                    x_pos = prev_tile.x + prev_tile.width * enlargement_scale + tile_list_offset
+                    y_pos = prev_tile.y
+                
+                if paint_grid_rows > initial_tile_max_height:
+                    initial_tile_max_height = paint_grid_rows
+
+                new_tile_button = Tile(paint_grid_cols, paint_grid_rows, x_pos, y_pos, paint_grid_pix_array, enlargement_scale)
                 initial_tile_list.append(new_tile_button)
-                tile_list_x_pos += initial_tile_list[-1].width * enlargement_scale + tile_list_x_offset
                 tile_buttons = create_tile_buttons(initial_tile_list)
 
                 selected_tile = tile_buttons[-1]
                 selected_tile_index = len(tile_buttons)-1
+
                 patterns = get_patterns(pattern_size, initial_tile_list[-1])
                 pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                 pattern_tile_list = pattern_list[0]
                 pattern_dict = get_pattern_dict(pattern_tile_list)
+
                 grid_y_pos = pattern_list[1]
                 second_grid_y_pos = pattern_list[1]
                 adjust_grid_position(wfc_output, wfc_output_2)
+
                 game_state = "wfc"
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
