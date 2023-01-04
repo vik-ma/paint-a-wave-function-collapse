@@ -1156,6 +1156,15 @@ def main():
                             selected_tile_index -= 1
                         selected_tile = tile_buttons[selected_tile_index]
 
+                        patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+                        pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                        pattern_tile_list = pattern_list[0]
+                        pattern_dict = get_pattern_dict(pattern_tile_list)
+
+                        grid_y_pos = pattern_list[1]
+                        second_grid_y_pos = pattern_list[1]
+                        adjust_grid_position(wfc_output, wfc_output_2)
+
 
             
 
