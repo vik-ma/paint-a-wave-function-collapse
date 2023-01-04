@@ -614,18 +614,18 @@ def test_threading():
 def print_tile_colors(tile):
     print(tile.pix_array)
 
-def create_tile_list(tile_list, tile_list_x_offset, enlargement_scale):
-    tile_list_x_pos = 50
-    tile_list_y_pos = 400
+def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_x_offset, enlargement_scale):
+    x_pos = tile_list_x_pos
+    y_pos = tile_list_y_pos
     
     tile_width = 0
 
     new_tile_list = []
     for tile in tile_list:
-        new_tile = Tile(tile.width, tile.height, tile_list_x_pos, tile_list_y_pos, tile.pix_array, enlargement_scale)
+        new_tile = Tile(tile.width, tile.height, x_pos, y_pos, tile.pix_array, enlargement_scale)
         new_tile_list.append(new_tile)
         tile_width = tile.width * enlargement_scale
-        tile_list_x_pos += tile_width + tile_list_x_offset
+        x_pos += tile_width + tile_list_x_offset
     return new_tile_list
     
 
@@ -699,11 +699,13 @@ def main():
 
     enlargement_scale = 8
 
+    tile_list_x_pos = 50
+    tile_list_y_pos = 400
     tile_list_offset = 12
 
     initial_tile_max_height = 5
  
-    initial_tile_list = create_tile_list(sample_tile_list, tile_list_offset, enlargement_scale)
+    initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale)
 
     pattern_size = 2
 
@@ -1127,7 +1129,7 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_started:
                     if len(initial_tile_list) > 1:
                         initial_tile_list.remove(initial_tile_list[selected_tile_index])
-                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_offset, enlargement_scale)
+                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale)
                         tile_buttons = create_tile_buttons(initial_tile_list)
                         if selected_tile_index >= len(initial_tile_list):
                             selected_tile_index -= 1
@@ -1140,7 +1142,7 @@ def main():
                                 max_height = tile.height
                         initial_tile_max_height = max_height
             
-            
+
             completed_wfc_pattern_group.draw(screen)
             
 
