@@ -704,8 +704,8 @@ def main():
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
     save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
 
-    save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
-    delete_tile_button = Button(WHITE, 430, 300, 130, 40, "Delete Tile", BLACK, LIGHTGREY)
+    save_tile_button = Button(WHITE, 300, 550, 130, 40, "Save Tile", BLACK, LIGHTGREY)
+    delete_tile_button = Button(WHITE, 450, 550, 130, 40, "Delete Tile", BLACK, LIGHTGREY)
 
     help_button = Button(WHITE, 630, 545, 150, 40, "HELP", BLACK, LIGHTGREY)
 
@@ -1144,40 +1144,6 @@ def main():
                     else:
                         render_wfc_at_end = True
                         anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
-
-            if delete_tile_button.draw(screen):
-                if not is_wfc_anim_ongoing and not is_wfc_started:
-                    if len(initial_tile_list) > 1:
-                        initial_tile_list.remove(initial_tile_list[selected_tile_index])
-
-                        tiles_in_row = len(initial_tile_list) % initial_tile_col_limit
-                        max_height = 0
-                        for tile in initial_tile_list[-tiles_in_row:]:
-                            if tile.height > max_height:
-                                max_height = tile.height
-                        initial_tile_max_height = max_height
-
-                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit)
-                        tile_buttons = create_tile_buttons(initial_tile_list)
-
-                        if selected_tile_index >= len(initial_tile_list):
-                            selected_tile_index -= 1
-                        selected_tile = tile_buttons[selected_tile_index]
-
-                        patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
-                        pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                        pattern_tile_list = pattern_list[0]
-                        pattern_dict = get_pattern_dict(pattern_tile_list)
-
-                        grid_y_pos = pattern_list[1]
-                        second_grid_y_pos = pattern_list[1]
-                        adjust_grid_position(wfc_output, wfc_output_2)
-
-                        if len(initial_tile_list) == 1:
-                            change_button_color("disabled", [delete_tile_button])
-                        if len(initial_tile_list) == max_initial_tiles - 1:
-                            save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
-
             
 
             completed_wfc_pattern_group.draw(screen)
@@ -1261,9 +1227,43 @@ def main():
                     adjust_grid_position(wfc_output, wfc_output_2)
                     print(initial_tile_max_height)
                     if len(initial_tile_list) == max_initial_tiles:
-                        save_tile_button = Button(GREY, 350, 550, 150, 40, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group)
+                        save_tile_button = Button(GREY, 300, 550, 130, 40, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group)
 
                     game_state = "wfc"
+
+            if delete_tile_button.draw(screen):
+                if not is_wfc_anim_ongoing and not is_wfc_started:
+                    if len(initial_tile_list) > 1:
+                        initial_tile_list.remove(initial_tile_list[selected_tile_index])
+
+                        tiles_in_row = len(initial_tile_list) % initial_tile_col_limit
+                        max_height = 0
+                        for tile in initial_tile_list[-tiles_in_row:]:
+                            if tile.height > max_height:
+                                max_height = tile.height
+                        initial_tile_max_height = max_height
+
+                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit)
+                        tile_buttons = create_tile_buttons(initial_tile_list)
+
+                        if selected_tile_index >= len(initial_tile_list):
+                            selected_tile_index -= 1
+                        selected_tile = tile_buttons[selected_tile_index]
+
+                        patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+                        pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                        pattern_tile_list = pattern_list[0]
+                        pattern_dict = get_pattern_dict(pattern_tile_list)
+
+                        grid_y_pos = pattern_list[1]
+                        second_grid_y_pos = pattern_list[1]
+                        adjust_grid_position(wfc_output, wfc_output_2)
+
+                        if len(initial_tile_list) == 1:
+                            change_button_color("disabled", [delete_tile_button])
+                        if len(initial_tile_list) == max_initial_tiles - 1:
+                            save_tile_button = Button(WHITE, 300, 550, 130, 40, "Save Tile", BLACK, LIGHTGREY)
+
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
             #Preview Tile Border
@@ -1320,7 +1320,6 @@ def main():
                 preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
             screen.blit(current_paint_tile_size_text, (600, 270))
-
 
             # Initial Tile Buttons
             draw_selected_tile_border(screen, selected_tile)
