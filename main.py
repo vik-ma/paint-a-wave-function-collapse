@@ -665,6 +665,8 @@ def main():
     paint_color_group = pygame.sprite.Group()
     hover_box_group = pygame.sprite.Group()
 
+    hover_box_line_height = size_17_font.get_linesize()
+
     test_hoverbox = HoverBox(0, 0, 355, 50, ["adadsdsaadssad","adsdsadsa"], size_17_font)
     
     new_wfc_button = Button(WHITE, 600, 10, 150, 40, "Start WFC", BLACK, LIGHTGREY)
@@ -696,9 +698,13 @@ def main():
     increase_pattern_size_button = Button(WHITE, 580, 300, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
     decrease_pattern_size_button = Button(WHITE, 580, 350, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
     clear_paint_grid_button = Button(WHITE, 580, 100, 210, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
-    save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
+
     toggle_grid_lines_button = Button(WHITE, 580, 200, 210, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
+    save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
+    save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
+
+    save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
     delete_tile_button = Button(WHITE, 430, 300, 130, 40, "Delete Tile", BLACK, LIGHTGREY)
 
     help_button = Button(WHITE, 630, 545, 150, 40, "HELP", BLACK, LIGHTGREY)
@@ -804,8 +810,6 @@ def main():
 
     render_wfc_during_execution = True
     render_wfc_at_end = True
-
-    hover_box_line_height = size_17_font.get_linesize()
 
     anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
     anim_during_wfc_hover_box = HoverBox(0, 0, 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, size_17_font)
@@ -1169,8 +1173,7 @@ def main():
                         if len(initial_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
                         if len(initial_tile_list) == max_initial_tiles - 1:
-                            change_button_color("enabled", [save_tile_button])
-
+                            save_tile_button = Button(WHITE, 350, 550, 150, 40, "Save Tile", BLACK, LIGHTGREY)
 
             
 
@@ -1255,7 +1258,7 @@ def main():
                     adjust_grid_position(wfc_output, wfc_output_2)
 
                     if len(initial_tile_list) == max_initial_tiles:
-                        change_button_color("disabled", [save_tile_button])
+                        save_tile_button = Button(GREY, 350, 550, 150, 40, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group)
 
                     game_state = "wfc"
 
@@ -1314,6 +1317,7 @@ def main():
                 print(preview_tile.pix_array)
 
             paint_color_group.draw(screen)
+            hover_box_group.draw(screen)
 
         if game_state == "help":
             help_title_text = size_20_font.render("HELP", True, (0, 0, 0))
