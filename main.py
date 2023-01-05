@@ -1234,6 +1234,7 @@ def main():
                     if len(tile_buttons) % initial_tile_col_limit == 0:
                         x_pos = 50
                         y_pos = prev_tile.y + initial_tile_max_height * enlargement_scale + tile_list_offset
+                        initial_tile_max_height = paint_grid_rows
                     else:
                         x_pos = prev_tile.x + prev_tile.width * enlargement_scale + tile_list_offset
                         y_pos = prev_tile.y
@@ -1256,7 +1257,7 @@ def main():
                     grid_y_pos = pattern_list[1]
                     second_grid_y_pos = pattern_list[1]
                     adjust_grid_position(wfc_output, wfc_output_2)
-
+                    print(initial_tile_max_height)
                     if len(initial_tile_list) == max_initial_tiles:
                         save_tile_button = Button(GREY, 350, 550, 150, 40, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group)
 
