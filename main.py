@@ -1165,6 +1165,9 @@ def main():
                         second_grid_y_pos = pattern_list[1]
                         adjust_grid_position(wfc_output, wfc_output_2)
 
+                        if len(initial_tile_list) == 1:
+                            change_button_color("disabled", [delete_tile_button])
+
 
             
 
@@ -1217,6 +1220,9 @@ def main():
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1) 
 
             if save_tile_button.draw(screen):
+                if len(initial_tile_list) == 1:
+                    change_button_color("enabled", [delete_tile_button])
+
                 prev_tile = initial_tile_list[-1]
                 if len(tile_buttons) % initial_tile_col_limit == 0:
                     x_pos = 50
