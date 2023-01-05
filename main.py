@@ -632,7 +632,7 @@ def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offs
         
         if i % initial_tile_col_limit == 0:
             x_pos = tile_list_x_pos
-            y_pos = tile_list_y_pos + row_max_height * enlargement_scale + tile_list_offset
+            y_pos = y_pos + row_max_height * enlargement_scale + tile_list_offset
             tile_width = 0
             row_max_height = 0
         else:
