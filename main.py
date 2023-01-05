@@ -997,9 +997,8 @@ def main():
                     output_height -= 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
 
+            # Initial Tile Buttons            
             draw_selected_tile_border(screen, selected_tile)
-
-            # Original tiles
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
                     if not is_wfc_anim_ongoing and not is_wfc_started:
@@ -1321,6 +1320,23 @@ def main():
                 preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
             screen.blit(current_paint_tile_size_text, (600, 270))
+
+
+            # Initial Tile Buttons
+            draw_selected_tile_border(screen, selected_tile)
+            for index, tile_button in enumerate(tile_buttons):
+                if tile_button.draw(screen):
+                    if not is_wfc_anim_ongoing and not is_wfc_started:
+                        if index != selected_tile_index:
+                            selected_tile = tile_buttons[index]
+                            selected_tile_index = index
+                            patterns = get_patterns(pattern_size, initial_tile_list[index])
+                            pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                            pattern_tile_list = pattern_list[0]
+                            pattern_dict = get_pattern_dict(pattern_tile_list)
+                            grid_y_pos = pattern_list[1]
+                            second_grid_y_pos = pattern_list[1]
+                            adjust_grid_position(wfc_output, wfc_output_2)
 
             if test_paint_button.draw(screen):
                 print(preview_tile.pix_array)
