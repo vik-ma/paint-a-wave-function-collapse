@@ -759,6 +759,8 @@ def main():
 
     game_state = "wfc"
 
+    current_color_text = size_20_font.render("Current Color:", True, (0, 0, 0))
+
     paint_grid_x_pos = 50
     paint_grid_y_pos = 120
 
@@ -768,6 +770,8 @@ def main():
     paint_grid_rows = 4
     paint_grid_size_limit_upper = 8
     paint_grid_size_limit_lower = 3
+
+    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
 
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
@@ -1202,7 +1206,6 @@ def main():
             hover_box_group.draw(screen)
 
         if game_state == "paint":
-            current_color_text = size_20_font.render("Current Color:", True, (0, 0, 0))
             screen.blit(current_color_text, (50, 86))
 
             if current_color_tile.draw(screen, border=True):
@@ -1295,6 +1298,8 @@ def main():
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
                     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
+                    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
+
 
             if increase_pattern_size_button.draw(screen):
                 if paint_grid_cols < paint_grid_size_limit_upper:
@@ -1307,12 +1312,15 @@ def main():
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
                     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
+                    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
+
 
             if clear_paint_grid_button.draw(screen):
                 paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
                 paint_grid_pix_array = create_pix_array(paint_grid)
                 preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
+            screen.blit(current_paint_tile_size_text, (600, 270))
 
             if test_paint_button.draw(screen):
                 print(preview_tile.pix_array)
