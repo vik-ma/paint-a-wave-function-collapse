@@ -1168,6 +1168,8 @@ def main():
 
                         if len(initial_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
+                        if len(initial_tile_list) == max_initial_tiles - 1:
+                            change_button_color("enabled", [save_tile_button])
 
 
             
