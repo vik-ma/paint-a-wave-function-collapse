@@ -585,19 +585,20 @@ def create_pix_array(paint_grid):
 
 def create_paint_color_tiles():
     y = 10
-    x = 17
+    x = 20
     col_limit = 17
     color_tile_list = []
     for col in range(34):
-        if col % col_limit == 0 and col > 1:
+        if col % col_limit == 0 and col > 0:
             y += 33
-            x -= col * 33
-        x += 33
+            x = 20
         if col < len(color_list):
             color_tile = PaintTile(30, 30, x, y, (color_list[col]))
         else:
             color_tile = PaintTile(30, 30, x, y, GREY)
         color_tile_list.append(color_tile)
+        x += 33        
+
     return color_tile_list
 
 def get_grid_size_text_color(size):
@@ -757,11 +758,11 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "wfc"
+    game_state = "paint"
 
     current_color_text = size_20_font.render("Current Color:", True, (0, 0, 0))
 
-    paint_grid_x_pos = 50
+    paint_grid_x_pos = 20
     paint_grid_y_pos = 120
 
     paint_grid_tile_size = 50
@@ -779,7 +780,7 @@ def main():
 
     current_color = WHITE
 
-    current_color_tile = PaintTile(30, 30, 200, 80, current_color)
+    current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 150, 80, current_color)
 
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
@@ -1171,7 +1172,7 @@ def main():
             hover_box_group.draw(screen)
 
         if game_state == "paint":
-            screen.blit(current_color_text, (50, 86))
+            screen.blit(current_color_text, (paint_grid_x_pos, 86))
 
             if current_color_tile.draw(screen, border=True):
                 pass
