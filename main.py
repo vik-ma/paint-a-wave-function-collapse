@@ -1031,12 +1031,26 @@ def main():
                     output_width += 1
                     output_height += 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
+                    if output_width == output_grid_upper_limit:
+                        change_button_color("disabled", [increase_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_output_size_button)
+                    if output_width == output_grid_lower_limit + 1:
+                        change_button_color("enabled", [decrease_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_output_size_button)
+
 
             if decrease_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width > output_grid_lower_limit and not is_wfc_executing:
                     output_width -= 1
                     output_height -= 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
+                    if output_width == output_grid_lower_limit:
+                        change_button_color("disabled", [decrease_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_output_size_button)
+                    if output_width == output_grid_upper_limit - 1:
+                        change_button_color("enabled", [increase_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_output_size_button)
+
 
             # Initial Tile Buttons            
             draw_selected_tile_border(screen, selected_tile)
