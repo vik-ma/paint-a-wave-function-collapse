@@ -85,6 +85,17 @@ directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
 sample_tile_list = []
 
+max_size_white_tile = [
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255))
+    ]
+
 sample_pixel_array = [
     (WHITE, WHITE, WHITE, WHITE),
     (WHITE, BLACK, BLACK, BLACK),
@@ -116,6 +127,9 @@ sample_pixel_array_5x4 = [
 
 sample_initial_tile_3 = InitialTile(sample_pixel_array_5x4, 5, 4)
 sample_tile_list.append(sample_initial_tile_3)
+
+max_initial_tile = InitialTile(max_size_white_tile, 8, 8)
+sample_tile_list.append(max_initial_tile)
 
 sample_pixel_array_3x4 = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -165,6 +179,9 @@ print_tile_test = [
 
 sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
 sample_tile_list.append(sample_initial_tile_8)
+
+for i in range(9):
+    sample_tile_list.append(max_initial_tile)
 
 def get_rotated_pix_array(pix_array):
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
