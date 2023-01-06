@@ -183,19 +183,20 @@ print_tile_test = [
 
 sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
 
-# sample_tile_list.append(sample_initial_tile_1)
-# sample_tile_list.append(sample_initial_tile_2)
-# sample_tile_list.append(sample_initial_tile_3)
-# sample_tile_list.append(max_initial_tile)
-# sample_tile_list.append(sample_initial_tile_4)
-# sample_tile_list.append(sample_initial_tile_5)
-# sample_tile_list.append(sample_initial_tile_6)
-# sample_tile_list.append(sample_initial_tile_7)
-# sample_tile_list.append(sample_initial_tile_8)
-# for i in range(9):
-#     sample_tile_list.append(max_initial_tile)
-for i in range(24):
+sample_tile_list.append(sample_initial_tile_1)
+sample_tile_list.append(sample_initial_tile_2)
+sample_tile_list.append(sample_initial_tile_3)
+sample_tile_list.append(max_initial_tile_7x7)
+sample_tile_list.append(sample_initial_tile_4)
+sample_tile_list.append(sample_initial_tile_5)
+sample_tile_list.append(sample_initial_tile_6)
+sample_tile_list.append(sample_initial_tile_7)
+sample_tile_list.append(sample_initial_tile_8)
+for i in range(9):
     sample_tile_list.append(max_initial_tile_7x7)
+
+# for i in range(24):
+#     sample_tile_list.append(max_initial_tile_7x7)
 
 
 def get_rotated_pix_array(pix_array):
@@ -793,7 +794,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "paint"
+    game_state = "wfc"
 
     current_color_text = size_20_font.render("Current Color:", True, (0, 0, 0))
 
@@ -1153,6 +1154,12 @@ def main():
                         wfc_slice_num += 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
+                        if wfc_slice_num == wfc_slice_num_upper_limit:
+                            change_button_color("disabled", [increase_nth_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_nth_button)
+                        if wfc_slice_num == wfc_slice_num_lower_limit + 1:
+                            change_button_color("enabled", [decrease_nth_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_nth_button)
 
             if decrease_nth_button.draw(screen):
                 if not is_wfc_anim_ongoing:
@@ -1160,6 +1167,12 @@ def main():
                         wfc_slice_num -= 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
+                        if wfc_slice_num == wfc_slice_num_lower_limit:
+                            change_button_color("disabled", [decrease_nth_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_nth_button)
+                        if wfc_slice_num == wfc_slice_num_upper_limit - 1:
+                            change_button_color("enabled", [increase_nth_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_nth_button)
 
             screen.blit(anim_during_wfc_value_text, (370, 560))
             screen.blit(anim_after_wfc_value_text, (370, 580))
