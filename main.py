@@ -1331,7 +1331,10 @@ def main():
                     paint_grid_pix_array = create_pix_array(paint_grid)
                     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
                     current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
-
+                    if paint_grid_cols == paint_grid_size_limit_lower:
+                        change_button_color("disabled", [decrease_pattern_size_button])
+                    if paint_grid_cols == paint_grid_size_limit_upper - 1:
+                        change_button_color("enabled", [increase_pattern_size_button])
 
             if increase_pattern_size_button.draw(screen):
                 if paint_grid_cols < paint_grid_size_limit_upper:
@@ -1345,6 +1348,10 @@ def main():
                     paint_grid_pix_array = create_pix_array(paint_grid)
                     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
                     current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
+                    if paint_grid_cols == paint_grid_size_limit_upper:
+                        change_button_color("disabled", [increase_pattern_size_button])
+                    if paint_grid_cols == paint_grid_size_limit_lower + 1:
+                        change_button_color("enabled", [decrease_pattern_size_button])
 
 
             if clear_paint_grid_button.draw(screen):
