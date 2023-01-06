@@ -85,7 +85,7 @@ directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
 sample_tile_list = []
 
-max_size_white_tile = [
+max_size_white_tile_8x8 = [
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
@@ -96,7 +96,19 @@ max_size_white_tile = [
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255))
     ]
 
-max_initial_tile = InitialTile(max_size_white_tile, 8, 8)
+max_initial_tile_8x8 = InitialTile(max_size_white_tile_8x8, 8, 8)
+
+max_size_white_tile_7x7 = [
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
+  ]
+
+max_initial_tile_7x7 = InitialTile(max_size_white_tile_7x7, 7, 7)
 
 sample_pixel_array = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -183,7 +195,7 @@ sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
 # for i in range(9):
 #     sample_tile_list.append(max_initial_tile)
 for i in range(24):
-    sample_tile_list.append(max_initial_tile)
+    sample_tile_list.append(max_initial_tile_7x7)
 
 
 def get_rotated_pix_array(pix_array):
@@ -789,7 +801,7 @@ def main():
 
     paint_grid_cols = 4
     paint_grid_rows = 4
-    paint_grid_size_limit_upper = 8
+    paint_grid_size_limit_upper = 7
     paint_grid_size_limit_lower = 3
 
     current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
