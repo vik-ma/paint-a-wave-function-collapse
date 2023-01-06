@@ -780,6 +780,9 @@ def main():
 
     output_width = 20
     output_height = 20
+
+    output_grid_upper_limit = 30
+    output_grid_lower_limit = 10
     
     grid_size = output_width
 
@@ -821,6 +824,9 @@ def main():
     color_panel = create_paint_color_tiles()
 
     wfc_slice_num = 5
+       
+    wfc_slice_num_upper_limit = 15
+    wfc_slice_num_lower_limit = 1
 
     is_wfc_anim_ongoing = False
 
@@ -1020,12 +1026,13 @@ def main():
             screen.blit(grid_size_text, (685, 175))
             
             if increase_output_size_button.draw(screen):
-                if not is_wfc_anim_ongoing and output_width < 30 and not is_wfc_executing:
+                if not is_wfc_anim_ongoing and output_width < output_grid_upper_limit and not is_wfc_executing:
                     output_width += 1
                     output_height += 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
+
             if decrease_output_size_button.draw(screen):
-                if not is_wfc_anim_ongoing and output_width > 10 and not is_wfc_executing:
+                if not is_wfc_anim_ongoing and output_width > output_grid_lower_limit and not is_wfc_executing:
                     output_width -= 1
                     output_height -= 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
@@ -1142,14 +1149,14 @@ def main():
             screen.blit(wfc_slice_num_text, (454, 520))
             if increase_nth_button.draw(screen):
                 if not is_wfc_anim_ongoing:
-                    if wfc_slice_num < 15:
+                    if wfc_slice_num < wfc_slice_num_upper_limit:
                         wfc_slice_num += 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
 
             if decrease_nth_button.draw(screen):
                 if not is_wfc_anim_ongoing:
-                    if wfc_slice_num > 1:
+                    if wfc_slice_num > wfc_slice_num_lower_limit:
                         wfc_slice_num -= 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
