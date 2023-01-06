@@ -780,7 +780,7 @@ def main():
 
     current_color = WHITE
 
-    current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 150, 80, current_color)
+    current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 150, 82, current_color)
 
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
@@ -1172,7 +1172,7 @@ def main():
             hover_box_group.draw(screen)
 
         if game_state == "paint":
-            screen.blit(current_color_text, (paint_grid_x_pos, 86))
+            screen.blit(current_color_text, (paint_grid_x_pos, 88))
 
             if current_color_tile.draw(screen, border=True):
                 pass
@@ -1320,7 +1320,7 @@ def main():
                 paint_grid_pix_array = create_pix_array(paint_grid)
                 preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
 
-            screen.blit(current_paint_tile_size_text, (600, 270))
+            screen.blit(current_paint_tile_size_text, (220, 88))
 
             # Initial Tile Buttons
             draw_selected_tile_border(screen, selected_tile)
