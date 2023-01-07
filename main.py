@@ -708,7 +708,8 @@ def main():
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
-    switch_state_button = Button(WHITE, 630, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+    switch_state_button = Button(WHITE, 10, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+    help_button = Button(WHITE, 170, 590, 100, 40, "HELP", BLACK, LIGHTGREY)
 
     increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
     decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
@@ -740,8 +741,6 @@ def main():
 
     save_tile_button = Button(WHITE, 300, 550, 130, 40, "Save Tile", BLACK, LIGHTGREY)
     delete_tile_button = Button(WHITE, 450, 550, 130, 40, "Delete Tile", BLACK, LIGHTGREY)
-
-    help_button = Button(WHITE, 630, 545, 150, 40, "HELP", BLACK, LIGHTGREY)
 
     run = True
 
