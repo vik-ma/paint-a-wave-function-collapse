@@ -731,9 +731,9 @@ def main():
 
     increase_pattern_size_button = Button(WHITE, 580, 300, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
     decrease_pattern_size_button = Button(WHITE, 580, 350, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
-    clear_paint_grid_button = Button(WHITE, 580, 100, 210, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
-
-    toggle_grid_lines_button = Button(WHITE, 580, 200, 210, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+    
+    clear_paint_grid_button = Button(WHITE, 610, 10, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
+    toggle_grid_lines_button = Button(WHITE, 610, 55, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
     save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
@@ -794,7 +794,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "wfc"
+    game_state = "paint"
 
     current_color_text = size_20_font.render("Current Color:", True, (0, 0, 0))
 
@@ -1411,8 +1411,8 @@ def main():
                             second_grid_y_pos = pattern_list[1]
                             adjust_grid_position(wfc_output, wfc_output_2)
 
-            if test_paint_button.draw(screen):
-                print(preview_tile.pix_array)
+            # if test_paint_button.draw(screen):
+            #     print(preview_tile.pix_array)
 
             paint_color_group.draw(screen)
             hover_box_group.draw(screen)
