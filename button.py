@@ -2,13 +2,14 @@ import pygame
 
 
 class Button():
-    def __init__(self, color, x, y, width, height, text, text_color, hover_color, *, small_text=False, hover_box=None, hover_box_group=None):
+    def __init__(self, color, x, y, width, height, text, text_color, hover_color, *, small_text=False, big_text=False, hover_box=None, hover_box_group=None):
         self.color = color
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.font = pygame.font.SysFont('Arial Bold', 27)
+        # self.font = pygame.font.SysFont('Arial Bold', 27)
+        self.font = pygame.font.SysFont('Arial Bold', 25)
         self.text = text
         self.text_color = text_color
         self.clicked = False
@@ -17,6 +18,8 @@ class Button():
         self.has_hover_box = False
         if small_text:
             self.font = pygame.font.SysFont('Arial Bold', 16)
+        if big_text:
+            self.font = pygame.font.SysFont('Arial Bold', 32)
         if hover_box is not None:
             self.hover_box = hover_box
             self.hover_box_group = hover_box_group
