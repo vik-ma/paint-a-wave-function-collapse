@@ -729,8 +729,8 @@ def main():
 
     test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
-    increase_pattern_size_button = Button(WHITE, 580, 300, 210, 40, "Increase Pattern Size", BLACK, LIGHTGREY)
-    decrease_pattern_size_button = Button(WHITE, 580, 350, 210, 40, "Decrease Pattern Size", BLACK, LIGHTGREY)
+    increase_pattern_size_button = Button(WHITE, 361, 80, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
+    decrease_pattern_size_button = Button(WHITE, 361, 98, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
     
     clear_paint_grid_button = Button(WHITE, 610, 10, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
     toggle_grid_lines_button = Button(WHITE, 610, 55, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
