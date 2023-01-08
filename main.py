@@ -759,7 +759,7 @@ def main():
     enlargement_scale = 8
 
     tile_list_x_pos = 450
-    tile_list_y_pos = 300
+    tile_list_y_pos = 220
     tile_list_offset = 12
 
     initial_tile_max_height = 5
