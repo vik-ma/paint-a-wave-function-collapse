@@ -741,7 +741,12 @@ def main():
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
     save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
 
-    save_tile_button = Button(WHITE, 300, 550, 130, 40, "Save Tile", BLACK, LIGHTGREY)
+    save_tile_button_x_pos = 300
+    save_tile_button_y_pos = 550
+    save_tile_button_width = 130
+    save_tile_button_height = 40
+    save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY)
+
     delete_tile_button = Button(WHITE, 450, 550, 130, 40, "Delete Tile", BLACK, LIGHTGREY)
 
     run = True
@@ -1297,7 +1302,7 @@ def main():
                     adjust_grid_position(wfc_output, wfc_output_2)
                     print(initial_tile_max_height)
                     if len(initial_tile_list) == max_initial_tiles:
-                        save_tile_button = Button(GREY, 300, 550, 130, 40, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group)
+                        save_tile_button = Button(GREY, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group)
 
                     game_state = "wfc"
 
@@ -1332,7 +1337,7 @@ def main():
                         if len(initial_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
                         if len(initial_tile_list) == max_initial_tiles - 1:
-                            save_tile_button = Button(WHITE, 300, 550, 130, 40, "Save Tile", BLACK, LIGHTGREY)
+                            save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY)
 
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
