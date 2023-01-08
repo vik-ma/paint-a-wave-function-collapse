@@ -819,7 +819,9 @@ def main():
 
     current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 150, 82, current_color)
 
-    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
+    preview_tile_x_pos = 450
+    preview_tile_y_pos = 150
+    preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
     draw_paint_grid_lines = True
 
@@ -1256,7 +1258,7 @@ def main():
                         paint_grid[x][y] = PaintTile(paint_grid_tile_size, paint_grid_tile_size, paint_grid[x][y].x, paint_grid[x][y].y, current_color)
 
                         paint_grid_pix_array = create_pix_array(paint_grid)
-                        preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
+                        preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
             # Grid border
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1) 
@@ -1364,7 +1366,7 @@ def main():
                         new_grid.append(new_row)
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
-                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
+                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
                     current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
                     if paint_grid_cols == paint_grid_size_limit_lower:
                         change_button_color("disabled", [decrease_paint_grid_size_button])
@@ -1381,7 +1383,7 @@ def main():
                             new_grid[col][row] = paint_grid[col][row]
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
-                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
+                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
                     current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
                     if paint_grid_cols == paint_grid_size_limit_upper:
                         change_button_color("disabled", [increase_paint_grid_size_button])
@@ -1392,7 +1394,7 @@ def main():
             if clear_paint_grid_button.draw(screen):
                 paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
                 paint_grid_pix_array = create_pix_array(paint_grid)
-                preview_tile = Tile(paint_grid_cols, paint_grid_rows, 50, 550, paint_grid_pix_array, enlargement_scale)
+                preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
             screen.blit(current_paint_tile_size_text, (220, 88))
 
