@@ -743,7 +743,8 @@ def main():
     save_tile_button = Button(WHITE, 300, 550, 130, 40, "Save Tile", BLACK, LIGHTGREY)
     delete_tile_button = Button(WHITE, 450, 550, 130, 40, "Delete Tile", BLACK, LIGHTGREY)
 
-    arrow_button_test = ArrowButton(WHITE, 500, 300, 26, 17, LIGHTGREY)
+    arrow_button_test = ArrowButton(WHITE, 500, 300, 26, 17, LIGHTGREY, is_pointing_up=True)
+    down_arrow_button_test = ArrowButton(WHITE, 500, 320, 26, 17, LIGHTGREY, is_pointing_up=False)
 
     run = True
 
@@ -1335,6 +1336,8 @@ def main():
 
             if arrow_button_test.draw(screen):
                 print("arrow")
+            if down_arrow_button_test.draw(screen):
+                print("down")
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
             #Preview Tile Border
