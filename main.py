@@ -741,13 +741,13 @@ def main():
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
     save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
 
-    save_tile_button_x_pos = 550
-    save_tile_button_y_pos = 150
-    save_tile_button_width = 130
-    save_tile_button_height = 40
-    save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY)
+    save_tile_button_x_pos = 610
+    save_tile_button_y_pos = 120
+    save_tile_button_width = 150
+    save_tile_button_height = 46
+    save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
-    delete_tile_button = Button(WHITE, 450, 580, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
+    delete_tile_button = Button(WHITE, 450, 590, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
 
     run = True
 
@@ -824,8 +824,8 @@ def main():
 
     current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 150, 82, current_color)
 
-    preview_tile_x_pos = 450
-    preview_tile_y_pos = 150
+    preview_tile_x_pos = 470
+    preview_tile_y_pos = 120
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
     draw_paint_grid_lines = True
@@ -1302,7 +1302,7 @@ def main():
                     adjust_grid_position(wfc_output, wfc_output_2)
                     print(initial_tile_max_height)
                     if len(initial_tile_list) == max_initial_tiles:
-                        save_tile_button = Button(GREY, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group)
+                        save_tile_button = Button(GREY, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group, big_text=True)
 
                     game_state = "wfc"
 
@@ -1337,7 +1337,7 @@ def main():
                         if len(initial_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
                         if len(initial_tile_list) == max_initial_tiles - 1:
-                            save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY)
+                            save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
