@@ -196,7 +196,7 @@ sample_tile_list.append(sample_initial_tile_8)
 for i in range(9):
     sample_tile_list.append(max_initial_tile_7x7)
 
-# for i in range(24):
+# for i in range(25):
 #     sample_tile_list.append(max_initial_tile_7x7)
 
 
@@ -753,13 +753,13 @@ def main():
 
     enlargement_scale = 8
 
-    tile_list_x_pos = 50
-    tile_list_y_pos = 400
+    tile_list_x_pos = 450
+    tile_list_y_pos = 300
     tile_list_offset = 12
 
     initial_tile_max_height = 5
-    initial_tile_col_limit = 8
-    max_initial_tiles = 24
+    initial_tile_col_limit = 5
+    max_initial_tiles = 25
 
     initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit)
 
