@@ -726,8 +726,8 @@ def main():
     toggle_anim_during_wfc_button = Button(WHITE, 410, 558, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 410, 580, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
 
-    increase_nth_button = Button(WHITE, 480, 510, 50, 16, "Increase", BLACK, LIGHTGREY, small_text=True)
-    decrease_nth_button = Button(WHITE, 480, 528, 50, 16, "Decrease", BLACK, LIGHTGREY, small_text=True)
+    increase_replay_speed_button = ArrowButton(WHITE, 480, 510, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_replay_speed_button = ArrowButton(WHITE, 480, 529, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
     test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
@@ -873,7 +873,7 @@ def main():
     last_image = None
 
     disabled_buttons_during_wfc_exec_and_post_anim_list = [increase_output_size_button, decrease_output_size_button,
-                                                          increase_nth_button, decrease_nth_button,
+                                                          increase_replay_speed_button, decrease_replay_speed_button,
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
                                                           set_pattern_size_2_button, set_pattern_size_3_button, 
                                                           replay_animation_button, switch_state_button,
@@ -1163,31 +1163,31 @@ def main():
             
             wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
             screen.blit(wfc_slice_num_text, (454, 520))
-            if increase_nth_button.draw(screen):
+            if increase_replay_speed_button.draw(screen):
                 if not is_wfc_anim_ongoing:
                     if wfc_slice_num < wfc_slice_num_upper_limit:
                         wfc_slice_num += 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
                         if wfc_slice_num == wfc_slice_num_upper_limit:
-                            change_button_color("disabled", [increase_nth_button])
-                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_nth_button)
+                            change_button_color("disabled", [increase_replay_speed_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_replay_speed_button)
                         if wfc_slice_num == wfc_slice_num_lower_limit + 1:
-                            change_button_color("enabled", [decrease_nth_button])
-                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_nth_button)
+                            change_button_color("enabled", [decrease_replay_speed_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_replay_speed_button)
 
-            if decrease_nth_button.draw(screen):
+            if decrease_replay_speed_button.draw(screen):
                 if not is_wfc_anim_ongoing:
                     if wfc_slice_num > wfc_slice_num_lower_limit:
                         wfc_slice_num -= 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
                         if wfc_slice_num == wfc_slice_num_lower_limit:
-                            change_button_color("disabled", [decrease_nth_button])
-                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_nth_button)
+                            change_button_color("disabled", [decrease_replay_speed_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_replay_speed_button)
                         if wfc_slice_num == wfc_slice_num_upper_limit - 1:
-                            change_button_color("enabled", [increase_nth_button])
-                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_nth_button)
+                            change_button_color("enabled", [increase_replay_speed_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_replay_speed_button)
 
             screen.blit(anim_during_wfc_value_text, (370, 560))
             screen.blit(anim_after_wfc_value_text, (370, 580))
