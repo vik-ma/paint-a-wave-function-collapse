@@ -735,8 +735,8 @@ def main():
     decrease_paint_grid_size_button = ArrowButton(WHITE, 361, 97, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
 
-    clear_paint_grid_button = Button(WHITE, 610, 10, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
-    toggle_grid_lines_button = Button(WHITE, 610, 55, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+    clear_paint_grid_button = Button(WHITE, 20, 480, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
+    toggle_grid_lines_button = Button(WHITE, 200, 480, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
     save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
