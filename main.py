@@ -17,6 +17,7 @@ from tile_button import TileButton
 from paint_tile import PaintTile
 from info_text import InfoText
 from hover_box import HoverBox
+from arrow_button import ArrowButton
 
 
 WHITE = (255, 255, 255)
@@ -742,6 +743,8 @@ def main():
     save_tile_button = Button(WHITE, 300, 550, 130, 40, "Save Tile", BLACK, LIGHTGREY)
     delete_tile_button = Button(WHITE, 450, 550, 130, 40, "Delete Tile", BLACK, LIGHTGREY)
 
+    arrow_button_test = ArrowButton(WHITE, 500, 300, 26, 17, LIGHTGREY)
+
     run = True
 
     draw_second_grid = False
@@ -1330,6 +1333,8 @@ def main():
                         if len(initial_tile_list) == max_initial_tiles - 1:
                             save_tile_button = Button(WHITE, 300, 550, 130, 40, "Save Tile", BLACK, LIGHTGREY)
 
+            if arrow_button_test.draw(screen):
+                print("arrow")
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
             #Preview Tile Border
