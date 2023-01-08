@@ -901,12 +901,12 @@ def main():
     wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
 
     def change_button_color(state, button_list):
-        state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "text_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "text_color": BLACK}} 
+        state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
 
         for button in button_list:
             button.color = state_colors[state]["color"]
             button.hover_color = state_colors[state]["hover_color"]
-            button.text_color = state_colors[state]["text_color"]
+            button.foreground_color = state_colors[state]["foreground_color"]
 
     def adjust_grid_position(wfc_output, wfc_output_2):
         if wfc_output != None:

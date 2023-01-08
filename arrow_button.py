@@ -1,14 +1,14 @@
 import pygame
 
 class ArrowButton():
-    def __init__(self, color, x, y, width, height, arrow_color, hover_color, *, is_pointing_up):
+    def __init__(self, color, x, y, width, height, foreground_color, hover_color, *, is_pointing_up):
         self.color = color
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.hover_color = hover_color
-        self.arrow_color = arrow_color
+        self.foreground_color = foreground_color
 
         self.clicked = False
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -34,7 +34,7 @@ class ArrowButton():
         if pygame.mouse.get_pressed()[0] == False:
             self.clicked = False
 
-        pygame.draw.polygon(surface, self.arrow_color, self.arrow_coords)
+        pygame.draw.polygon(surface, self.foreground_color, self.arrow_coords)
         #Border
         pygame.draw.rect(surface, (0,0,0), (self.x, self.y, self.width + 1, self.height + 1), 1)
 
