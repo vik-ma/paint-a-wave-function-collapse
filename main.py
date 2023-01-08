@@ -731,8 +731,8 @@ def main():
 
     test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
-    increase_paint_grid_size_button = ArrowButton(WHITE, 361, 78, 26, 17, LIGHTGREY, is_pointing_up=True)
-    decrease_paint_grid_size_button = ArrowButton(WHITE, 361, 97, 26, 17, LIGHTGREY, is_pointing_up=False)
+    increase_paint_grid_size_button = ArrowButton(WHITE, 361, 78, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_paint_grid_size_button = ArrowButton(WHITE, 361, 97, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
 
     clear_paint_grid_button = Button(WHITE, 610, 10, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
