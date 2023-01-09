@@ -713,8 +713,8 @@ def main():
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
-    switch_state_button = Button(WHITE, 10, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
-    help_button = Button(WHITE, 170, 590, 100, 40, "HELP", BLACK, LIGHTGREY)
+    switch_state_button = Button(WHITE, 20, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+    help_button = Button(WHITE, 180, 590, 100, 40, "HELP", BLACK, LIGHTGREY)
 
     increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
     decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
@@ -783,9 +783,9 @@ def main():
 
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-    grid_x_pos = 50
+    grid_x_pos = 20
     grid_y_pos = pattern_list[1]
-    second_grid_x_pos = 300
+    second_grid_x_pos = 270
     second_grid_y_pos = pattern_list[1]
 
     output_width = 20
@@ -803,7 +803,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "paint"
+    game_state = "wfc"
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
