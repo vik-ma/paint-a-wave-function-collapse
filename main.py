@@ -716,8 +716,8 @@ def main():
     switch_state_button = Button(WHITE, 20, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
     help_button = Button(WHITE, 180, 590, 100, 40, "HELP", BLACK, LIGHTGREY)
 
-    increase_output_size_button = Button(WHITE, 570, 200, 210, 40, "Increase Grid Size", BLACK, LIGHTGREY)
-    decrease_output_size_button = Button(WHITE, 570, 250, 210, 40, "Decrease Grid Size", BLACK, LIGHTGREY)
+    increase_wfc_output_size_button = ArrowButton(WHITE, 760, 165, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_wfc_output_size_button = ArrowButton(WHITE, 760, 184, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
     set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
     set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
@@ -892,7 +892,7 @@ def main():
     sliced_list = []
     last_image = None
 
-    disabled_buttons_during_wfc_exec_and_post_anim_list = [increase_output_size_button, decrease_output_size_button,
+    disabled_buttons_during_wfc_exec_and_post_anim_list = [increase_wfc_output_size_button, decrease_wfc_output_size_button,
                                                           increase_replay_speed_button, decrease_replay_speed_button,
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
                                                           set_pattern_size_2_button, set_pattern_size_3_button, 
@@ -1047,30 +1047,30 @@ def main():
             screen.blit(current_grid_size_text, (580, 175))
             screen.blit(grid_size_text, (685, 175))
             
-            if increase_output_size_button.draw(screen):
+            if increase_wfc_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width < output_grid_upper_limit and not is_wfc_executing:
                     output_width += 1
                     output_height += 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
                     if output_width == output_grid_upper_limit:
-                        change_button_color("disabled", [increase_output_size_button])
-                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_output_size_button)
+                        change_button_color("disabled", [increase_wfc_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_wfc_output_size_button)
                     if output_width == output_grid_lower_limit + 1:
-                        change_button_color("enabled", [decrease_output_size_button])
-                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_output_size_button)
+                        change_button_color("enabled", [decrease_wfc_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_wfc_output_size_button)
 
 
-            if decrease_output_size_button.draw(screen):
+            if decrease_wfc_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width > output_grid_lower_limit and not is_wfc_executing:
                     output_width -= 1
                     output_height -= 1
                     grid_size_text_color = get_grid_size_text_color(output_width)
                     if output_width == output_grid_lower_limit:
-                        change_button_color("disabled", [decrease_output_size_button])
-                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_output_size_button)
+                        change_button_color("disabled", [decrease_wfc_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_wfc_output_size_button)
                     if output_width == output_grid_upper_limit - 1:
-                        change_button_color("enabled", [increase_output_size_button])
-                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_output_size_button)
+                        change_button_color("enabled", [increase_wfc_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_wfc_output_size_button)
 
 
             # Initial Tile Buttons            
