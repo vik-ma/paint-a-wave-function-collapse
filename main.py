@@ -199,7 +199,7 @@ sample_tile_list.append(sample_initial_tile_8)
 for i in range(9):
     sample_tile_list.append(max_initial_tile_7x7)
 
-# for i in range(25):
+# for i in range(20):
 #     sample_tile_list.append(max_initial_tile_7x7)
 
 
@@ -750,7 +750,7 @@ def main():
     save_tile_button_height = 46
     save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
-    delete_tile_button = Button(WHITE, 400, 590, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
+    delete_tile_button = Button(WHITE, 450, 590, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
 
     run = True
 
@@ -761,13 +761,13 @@ def main():
 
     enlargement_scale = 8
 
-    tile_list_x_pos = 400
-    tile_list_y_pos = 220
+    tile_list_x_pos = 455
+    tile_list_y_pos = 310
     tile_list_offset = 12
 
     initial_tile_max_height = 5
     initial_tile_col_limit = 5
-    max_initial_tiles = 25
+    max_initial_tiles = 20
 
     initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit)
 
@@ -803,7 +803,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "wfc"
+    game_state = "paint"
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
@@ -1270,8 +1270,8 @@ def main():
 
             current_color_tile.draw(screen, border=True)
 
-            pygame.draw.line(screen, BLACK, (385, 206), (800, 206))
-            pygame.draw.line(screen, BLACK, (385, 206), (385, 640))
+            pygame.draw.line(screen, BLACK, (440, 296), (800, 296))
+            pygame.draw.line(screen, BLACK, (440, 296), (440, 640))
 
             screen.blit(current_tile_text, (preview_tile_x_pos-3, 104))
 
