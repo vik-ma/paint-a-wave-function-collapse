@@ -75,6 +75,7 @@ color_list = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
 BACKGROUND_COLOR = (155, 155, 155)
 
 SCREEN_TEXT_COLOR = (30, 30, 30)
+IMPORTANT_SCREEN_TEXT_COLOR = (200, 10, 50)
 
 UP = (0, -1)
 LEFT = (-1, 0)
@@ -683,6 +684,7 @@ def main():
     pygame.init()
 
     size_20_font = pygame.font.Font(pygame.font.get_default_font(), 20)
+    size_19_font = pygame.font.Font(pygame.font.get_default_font(), 19)
     size_18_font = pygame.font.Font(pygame.font.get_default_font(), 18)
     size_17_font = pygame.font.Font(pygame.font.get_default_font(), 17)
     size_16_font = pygame.font.Font(pygame.font.get_default_font(), 16)
@@ -736,8 +738,8 @@ def main():
     increase_paint_grid_size_button = ArrowButton(WHITE, 340, 94, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_paint_grid_size_button = ArrowButton(WHITE, 340, 113, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
-    clear_paint_grid_button = Button(WHITE, 20, 500, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
-    toggle_grid_lines_button = Button(WHITE, 200, 500, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+    clear_paint_grid_button = Button(WHITE, 20, 520, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
+    toggle_grid_lines_button = Button(WHITE, 200, 520, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
     save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
@@ -806,7 +808,7 @@ def main():
     current_color_text = size_20_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
     paint_grid_x_pos = 20
-    paint_grid_y_pos = 135
+    paint_grid_y_pos = 158
 
     paint_grid_tile_size = 50
 
@@ -814,6 +816,9 @@ def main():
     paint_grid_rows = 4
     paint_grid_size_limit_upper = 7
     paint_grid_size_limit_lower = 3
+
+    paint_guide_color_text = size_18_font.render("Click on a color in the color panel to change color", True, IMPORTANT_SCREEN_TEXT_COLOR)
+    paint_guide_grid_text = size_18_font.render("Click on a square in the grid to paint the tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
 
@@ -832,9 +837,6 @@ def main():
     draw_paint_grid_lines = True
 
     color_panel = create_paint_color_tiles()
-
-    paint_guide_color_text = size_18_font.render("Click on a color in the color panel to change color!", True, SCREEN_TEXT_COLOR)
-    paint_guide_grid_text = size_18_font.render("Click on a square in the grid to paint the tile!", True, SCREEN_TEXT_COLOR)
 
     wfc_slice_num = 5
        
@@ -1251,6 +1253,7 @@ def main():
 
         if game_state == "paint":
             screen.blit(paint_guide_color_text, (20, 5))
+            screen.blit(paint_guide_grid_text, (20, 134))
             screen.blit(current_color_text, (paint_grid_x_pos, 104))
             screen.blit(current_paint_tile_size_text, (200, 104))
 
