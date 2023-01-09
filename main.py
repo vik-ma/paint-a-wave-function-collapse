@@ -708,26 +708,26 @@ def main():
 
     hover_box_line_height = size_17_font.get_linesize()
 
-    test_hoverbox = HoverBox(0, 0, 355, 50, ["adadsdsaadssad","adsdsadsa"], size_17_font)
+    # test_hoverbox = HoverBox(0, 0, 355, 50, ["adadsdsaadssad","adsdsadsa"], size_17_font)
     
     new_wfc_button = Button(WHITE, 600, 10, 150, 40, "Start WFC", BLACK, LIGHTGREY, big_text=True)
-    test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY, hover_box=test_hoverbox, hover_box_group=hover_box_group)
+    # test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY, hover_box=test_hoverbox, hover_box_group=hover_box_group)
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
-    switch_state_button = Button(WHITE, 20, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
-    help_button = Button(WHITE, 180, 590, 100, 40, "HELP", BLACK, LIGHTGREY)
+    switch_state_button = Button(WHITE, 640, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+    help_button = Button(WHITE, 325, 590, 100, 40, "HELP", BLACK, LIGHTGREY)
 
     increase_wfc_output_size_button = ArrowButton(WHITE, 760, 165, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_wfc_output_size_button = ArrowButton(WHITE, 760, 184, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
-    set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
-    set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
+    # set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+    # set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
-    toggle_show_patterns_button = Button(WHITE, 570, 500, 180, 40, "Hide Patterns", BLACK, LIGHTGREY)
+    toggle_show_patterns_button = Button(WHITE, 18, 590, 150, 40, "Hide Patterns", BLACK, LIGHTGREY)
 
-    replay_animation_button = Button(GREY, 570, 300, 210, 40, "Replay WFC Animation", DARKGREY, GREY)
-    skip_animation_button = Button(GREY, 570, 350, 210, 40, "Skip WFC Animation", DARKGREY, GREY)
+    replay_animation_button = Button(GREY, 570, 200, 210, 40, "Replay WFC Animation", DARKGREY, GREY)
+    skip_animation_button = Button(GREY, 570, 250, 210, 40, "Skip WFC Animation", DARKGREY, GREY)
 
     toggle_anim_during_wfc_button = Button(WHITE, 374, 533, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 374, 558, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
@@ -735,7 +735,7 @@ def main():
     increase_replay_speed_button = ArrowButton(WHITE, 170, 490, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_replay_speed_button = ArrowButton(WHITE, 170, 509, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
-    test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
+    # test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
     increase_paint_grid_size_button = ArrowButton(WHITE, 305, 94, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_paint_grid_size_button = ArrowButton(WHITE, 305, 113, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
@@ -897,7 +897,7 @@ def main():
     disabled_buttons_during_wfc_exec_and_post_anim_list = [increase_wfc_output_size_button, decrease_wfc_output_size_button,
                                                           increase_replay_speed_button, decrease_replay_speed_button,
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
-                                                          set_pattern_size_2_button, set_pattern_size_3_button, 
+                                                        #   set_pattern_size_2_button, set_pattern_size_3_button, 
                                                           replay_animation_button, switch_state_button,
                                                           help_button, delete_tile_button]
     
@@ -924,7 +924,7 @@ def main():
     wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
 
     settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
-    settings_sub_text = size_14_font.render("Hover over the settings to learn more", True, IMPORTANT_SCREEN_TEXT_COLOR)
+    settings_sub_text = size_17_font.render("Hover over the settings to learn more", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
@@ -1149,9 +1149,9 @@ def main():
                     wfc_list_count = len(sliced_list) - 1
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
-            if test_button.draw(screen):
-                # hover_box_group.add(anim_after_wfc_hover_box)
-                hover_box_group.empty()
+            # if test_button.draw(screen):
+            #     hover_box_group.add(anim_after_wfc_hover_box)
+            #     hover_box_group.empty()
 
 
             if toggle_show_patterns_button.draw(screen):
@@ -1163,30 +1163,30 @@ def main():
                     toggle_show_patterns_button.text = "Hide Patterns"
 
 
-            if set_pattern_size_2_button.draw(screen):
-                if not is_wfc_anim_ongoing and not is_wfc_executing:
-                    pattern_size = 2
-                    prob_text_x_offset = -2
-                    prob_text_y_offset = -11
-                    patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
-                    pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                    pattern_tile_list = pattern_list[0]
-                    grid_y_pos = pattern_list[1]
-                    second_grid_y_pos = pattern_list[1]
-                    pattern_dict = get_pattern_dict(pattern_tile_list)
+            # if set_pattern_size_2_button.draw(screen):
+            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
+            #         pattern_size = 2
+            #         prob_text_x_offset = -2
+            #         prob_text_y_offset = -11
+            #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+            #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+            #         pattern_tile_list = pattern_list[0]
+            #         grid_y_pos = pattern_list[1]
+            #         second_grid_y_pos = pattern_list[1]
+            #         pattern_dict = get_pattern_dict(pattern_tile_list)
 
 
-            if set_pattern_size_3_button.draw(screen):
-                if not is_wfc_anim_ongoing and not is_wfc_executing:
-                    pattern_size = 3
-                    prob_text_x_offset = 2
-                    prob_text_y_offset = -11
-                    patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
-                    pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                    pattern_tile_list = pattern_list[0]
-                    grid_y_pos = pattern_list[1]
-                    second_grid_y_pos = pattern_list[1]
-                    pattern_dict = get_pattern_dict(pattern_tile_list)
+            # if set_pattern_size_3_button.draw(screen):
+            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
+            #         pattern_size = 3
+            #         prob_text_x_offset = 2
+            #         prob_text_y_offset = -11
+            #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+            #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+            #         pattern_tile_list = pattern_list[0]
+            #         grid_y_pos = pattern_list[1]
+            #         second_grid_y_pos = pattern_list[1]
+            #         pattern_dict = get_pattern_dict(pattern_tile_list)
 
             pygame.draw.line(screen, BLACK, (0, 420), (440, 420))
             screen.blit(settings_text, (20, 435))
