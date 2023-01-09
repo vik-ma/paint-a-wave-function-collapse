@@ -75,7 +75,7 @@ color_list = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
 BACKGROUND_COLOR = (155, 155, 155)
 
 SCREEN_TEXT_COLOR = (30, 30, 30)
-IMPORTANT_SCREEN_TEXT_COLOR = (170, 0, 20)
+IMPORTANT_SCREEN_TEXT_COLOR = (170, 0, 30)
 
 UP = (0, -1)
 LEFT = (-1, 0)
@@ -819,6 +819,11 @@ def main():
 
     paint_guide_color_text = size_18_font.render("Click on a color in the color panel to change color", True, IMPORTANT_SCREEN_TEXT_COLOR)
     paint_guide_grid_text = size_18_font.render("Click on a square in the grid to paint the tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
+    
+    paint_guide_save_text_lines = ["Click on 'Save Tile' to", "save the current tile", "and go back to WFC"]
+    paint_guide_save_text = []
+    for line in paint_guide_save_text_lines:
+        paint_guide_save_text.append(size_18_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
     current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
 
@@ -1258,9 +1263,10 @@ def main():
             screen.blit(current_color_text, (paint_grid_x_pos, 104))
             screen.blit(current_paint_tile_size_text, (180, 104))
 
+            for y, line in enumerate(paint_guide_save_text):
+                screen.blit(line, (600, 30 + y * 18))
 
-            if current_color_tile.draw(screen, border=True):
-                pass
+            current_color_tile.draw(screen, border=True)
 
             for color in color_panel:
                 if color.draw(screen, border=True):
