@@ -728,11 +728,11 @@ def main():
     replay_animation_button = Button(GREY, 570, 300, 210, 40, "Replay WFC Animation", DARKGREY, GREY)
     skip_animation_button = Button(GREY, 570, 350, 210, 40, "Skip WFC Animation", DARKGREY, GREY)
 
-    toggle_anim_during_wfc_button = Button(WHITE, 410, 558, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
-    toggle_anim_after_wfc_button = Button(WHITE, 410, 580, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
+    toggle_anim_during_wfc_button = Button(WHITE, 380, 508, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
+    toggle_anim_after_wfc_button = Button(WHITE, 380, 528, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
 
-    increase_replay_speed_button = ArrowButton(WHITE, 480, 510, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
-    decrease_replay_speed_button = ArrowButton(WHITE, 480, 529, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
+    increase_replay_speed_button = ArrowButton(WHITE, 170, 470, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_replay_speed_button = ArrowButton(WHITE, 170, 489, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
     test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
@@ -880,12 +880,12 @@ def main():
     anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
     anim_during_wfc_hover_box = HoverBox(0, 0, 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, size_17_font)
     anim_during_wfc_main_text = "Animate WFC state during execution:"
-    anim_during_wfc_infotext = InfoText(30, 560, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
+    anim_during_wfc_infotext = InfoText(20, 510, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
 
     anim_after_wfc_hover_box_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
     anim_after_wfc_hover_box = HoverBox(0, 0, 302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, size_17_font)
     anim_after_wfc_main_text = "Animate WFC after execution:"
-    anim_after_wfc_infotext = InfoText(30, 580, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
+    anim_after_wfc_infotext = InfoText(20, 530, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
     
     anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
     anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
@@ -1224,8 +1224,8 @@ def main():
                             change_button_color("enabled", [increase_replay_speed_button])
                             disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_replay_speed_button)
 
-            screen.blit(anim_during_wfc_value_text, (370, 560))
-            screen.blit(anim_after_wfc_value_text, (370, 580))
+            screen.blit(anim_during_wfc_value_text, (340, 510))
+            screen.blit(anim_after_wfc_value_text, (340, 530))
 
             anim_during_wfc_infotext.draw(screen)
             anim_after_wfc_infotext.draw(screen)
