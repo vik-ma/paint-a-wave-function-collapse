@@ -688,6 +688,7 @@ def main():
     size_18_font = pygame.font.Font(pygame.font.get_default_font(), 18)
     size_17_font = pygame.font.Font(pygame.font.get_default_font(), 17)
     size_16_font = pygame.font.Font(pygame.font.get_default_font(), 16)
+    size_14_font = pygame.font.Font(pygame.font.get_default_font(), 14)
     size_10_font = pygame.font.Font(pygame.font.get_default_font(), 10)
 
 
@@ -803,7 +804,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "paint"
+    game_state = "wfc"
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
@@ -879,12 +880,12 @@ def main():
     anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
     anim_during_wfc_hover_box = HoverBox(0, 0, 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, size_17_font)
     anim_during_wfc_main_text = "Animate WFC state during execution:"
-    anim_during_wfc_infotext = InfoText(30, 560, anim_during_wfc_main_text, size_17_font, BLACK, anim_during_wfc_hover_box, hover_box_group)
+    anim_during_wfc_infotext = InfoText(30, 560, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
 
     anim_after_wfc_hover_box_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
     anim_after_wfc_hover_box = HoverBox(0, 0, 302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, size_17_font)
     anim_after_wfc_main_text = "Animate WFC after execution:"
-    anim_after_wfc_infotext = InfoText(30, 580, anim_after_wfc_main_text, size_17_font, BLACK, anim_after_wfc_hover_box, hover_box_group)
+    anim_after_wfc_infotext = InfoText(30, 580, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
     
     anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
     anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
@@ -913,12 +914,16 @@ def main():
 
     replay_speed_hover_box_text = ["The number represents every Nth state of the", "wave function collapse.", "'1' will show the wave function collapse in its", "entirety and takes a very long time to finish."]
     replay_speed_hover_box = HoverBox(0, 0, 400, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, size_17_font)
-    replay_speed_text = InfoText(300, 520, "Replay Speed:", size_17_font, BLACK, replay_speed_hover_box, hover_box_group)
+    replay_speed_text = InfoText(20, 480, "Replay Speed:", size_17_font, SCREEN_TEXT_COLOR, replay_speed_hover_box, hover_box_group)
 
+    wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
 
-    wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
+    wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, SCREEN_TEXT_COLOR)
 
     wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
+
+    settings_text = size_20_font.render("Settings", True, SCREEN_TEXT_COLOR)
+    settings_sub_text = size_14_font.render("Hover over the settings to learn more", True, SCREEN_TEXT_COLOR)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
@@ -1182,16 +1187,22 @@ def main():
                     second_grid_y_pos = pattern_list[1]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
 
+            pygame.draw.line(screen, BLACK, (0, 420), (440, 420))
+            screen.blit(settings_text, (20, 430))
+            screen.blit(settings_sub_text, (20, 450))
+
+
             replay_speed_text.draw(screen)
             
-            wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
-            screen.blit(wfc_slice_num_text, (454, 520))
+            screen.blit(wfc_slice_num_text, (144, 480))
+
             if increase_replay_speed_button.draw(screen):
                 if not is_wfc_anim_ongoing:
                     if wfc_slice_num < wfc_slice_num_upper_limit:
                         wfc_slice_num += 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
+                        wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
                         if wfc_slice_num == wfc_slice_num_upper_limit:
                             change_button_color("disabled", [increase_replay_speed_button])
                             disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_replay_speed_button)
@@ -1205,6 +1216,7 @@ def main():
                         wfc_slice_num -= 1
                         sliced_list = wfc_order_list[::wfc_slice_num]
                         sliced_list.append(last_image)
+                        wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
                         if wfc_slice_num == wfc_slice_num_lower_limit:
                             change_button_color("disabled", [decrease_replay_speed_button])
                             disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_replay_speed_button)
