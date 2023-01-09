@@ -750,7 +750,7 @@ def main():
     save_tile_button_height = 46
     save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
-    delete_tile_button = Button(WHITE, 450, 590, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
+    delete_tile_button = Button(WHITE, 400, 590, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
 
     run = True
 
@@ -761,7 +761,7 @@ def main():
 
     enlargement_scale = 8
 
-    tile_list_x_pos = 450
+    tile_list_x_pos = 400
     tile_list_y_pos = 220
     tile_list_offset = 12
 
@@ -835,8 +835,8 @@ def main():
 
     current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 114, 98, current_color)
 
-    preview_tile_x_pos = 470
-    preview_tile_y_pos = 120
+    preview_tile_x_pos = 500
+    preview_tile_y_pos = 150
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
     draw_paint_grid_lines = True
@@ -1267,6 +1267,9 @@ def main():
                 screen.blit(line, (600, 30 + y * 18))
 
             current_color_tile.draw(screen, border=True)
+
+            pygame.draw.line(screen, BLACK, (385, 206), (800, 206))
+            pygame.draw.line(screen, BLACK, (385, 206), (385, 640))
 
             for color in color_panel:
                 if color.draw(screen, border=True):
