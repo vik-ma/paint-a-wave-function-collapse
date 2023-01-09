@@ -74,6 +74,8 @@ color_list = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
 
 BACKGROUND_COLOR = (155, 155, 155)
 
+SCREEN_TEXT_COLOR = (30, 30, 30)
+
 UP = (0, -1)
 LEFT = (-1, 0)
 DOWN = (0, 1)
@@ -618,7 +620,7 @@ def create_pix_array(paint_grid):
     return pix_array
 
 def create_paint_color_tiles():
-    y = 10
+    y = 28
     x = 20
     col_limit = 17
     color_tile_list = []
@@ -731,11 +733,11 @@ def main():
 
     test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
-    increase_paint_grid_size_button = ArrowButton(WHITE, 340, 78, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
-    decrease_paint_grid_size_button = ArrowButton(WHITE, 340, 97, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
+    increase_paint_grid_size_button = ArrowButton(WHITE, 340, 94, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_paint_grid_size_button = ArrowButton(WHITE, 340, 113, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
-    clear_paint_grid_button = Button(WHITE, 20, 480, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
-    toggle_grid_lines_button = Button(WHITE, 200, 480, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+    clear_paint_grid_button = Button(WHITE, 20, 500, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
+    toggle_grid_lines_button = Button(WHITE, 200, 500, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
     save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
@@ -801,10 +803,10 @@ def main():
 
     game_state = "paint"
 
-    current_color_text = size_20_font.render("Paint Color:", True, (0, 0, 0))
+    current_color_text = size_20_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
     paint_grid_x_pos = 20
-    paint_grid_y_pos = 120
+    paint_grid_y_pos = 135
 
     paint_grid_tile_size = 50
 
@@ -813,7 +815,7 @@ def main():
     paint_grid_size_limit_upper = 7
     paint_grid_size_limit_lower = 3
 
-    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
+    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
 
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
@@ -821,7 +823,7 @@ def main():
 
     current_color = CRIMSON
 
-    current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 126, 82, current_color)
+    current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 126, 98, current_color)
 
     preview_tile_x_pos = 470
     preview_tile_y_pos = 120
@@ -830,6 +832,9 @@ def main():
     draw_paint_grid_lines = True
 
     color_panel = create_paint_color_tiles()
+
+    paint_guide_color_text = size_18_font.render("Click on a color in the color panel to change color!", True, SCREEN_TEXT_COLOR)
+    paint_guide_grid_text = size_18_font.render("Click on a square in the grid to paint the tile!", True, SCREEN_TEXT_COLOR)
 
     wfc_slice_num = 5
        
@@ -1245,7 +1250,10 @@ def main():
             hover_box_group.draw(screen)
 
         if game_state == "paint":
-            screen.blit(current_color_text, (paint_grid_x_pos, 88))
+            screen.blit(paint_guide_color_text, (20, 5))
+            screen.blit(current_color_text, (paint_grid_x_pos, 104))
+            screen.blit(current_paint_tile_size_text, (200, 104))
+
 
             if current_color_tile.draw(screen, border=True):
                 pass
@@ -1371,7 +1379,7 @@ def main():
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
                     preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
-                    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
+                    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
                     if paint_grid_cols == paint_grid_size_limit_lower:
                         change_button_color("disabled", [decrease_paint_grid_size_button])
                     if paint_grid_cols == paint_grid_size_limit_upper - 1:
@@ -1388,7 +1396,7 @@ def main():
                     paint_grid = new_grid
                     paint_grid_pix_array = create_pix_array(paint_grid)
                     preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
-                    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, (0,0,0))
+                    current_paint_tile_size_text = size_20_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
                     if paint_grid_cols == paint_grid_size_limit_upper:
                         change_button_color("disabled", [increase_paint_grid_size_button])
                     if paint_grid_cols == paint_grid_size_limit_lower + 1:
@@ -1399,8 +1407,6 @@ def main():
                 paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
                 paint_grid_pix_array = create_pix_array(paint_grid)
                 preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
-
-            screen.blit(current_paint_tile_size_text, (200, 88))
 
             # Initial Tile Buttons
             draw_selected_tile_border(screen, selected_tile)
@@ -1420,7 +1426,6 @@ def main():
 
             # if test_paint_button.draw(screen):
             #     print(preview_tile.pix_array)
-
             paint_color_group.draw(screen)
             hover_box_group.draw(screen)
 
