@@ -744,8 +744,8 @@ def main():
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
     save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
 
-    save_tile_button_x_pos = 610
-    save_tile_button_y_pos = 104
+    save_tile_button_x_pos = 615
+    save_tile_button_y_pos = 120
     save_tile_button_width = 150
     save_tile_button_height = 46
     save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY, big_text=True)
@@ -1002,6 +1002,9 @@ def main():
 
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output)
+
+            pygame.draw.line(screen, BLACK, (440, 296), (800, 296))
+            pygame.draw.line(screen, BLACK, (440, 296), (440, 640))
 
             if wfc_output != None:
                 screen.blit(wfc_grid_size_text, (50, wfc_grid_size_text_y_pos))
@@ -1266,7 +1269,7 @@ def main():
             screen.blit(current_paint_tile_size_text, (180, 104))
 
             for y, line in enumerate(paint_guide_save_text):
-                screen.blit(line, (600, 40 + y * 18))
+                screen.blit(line, (600, 28 + y * 18))
 
             current_color_tile.draw(screen, border=True)
 
