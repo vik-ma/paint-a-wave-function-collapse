@@ -546,13 +546,13 @@ def draw_patterns(pattern_group, pattern_list, screen, enlargement_scale):
 
 def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     y_offset = 30
-    x_offset = 25
+    x_offset = 20
     if pattern_size == 3:
         y_offset = 38
         x_offset = 33
-    x = 50
-    y = 25
-    col_limit = 15
+    x = 15
+    y = 325
+    col_limit = 19
     tile_list = []
 
     for col in range(len(patterns)):
@@ -735,14 +735,7 @@ def main():
     clear_paint_grid_button = Button(WHITE, 20, 520, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
     toggle_grid_lines_button = Button(WHITE, 200, 520, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
-    save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
-    save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, hover_box_font)
-
-    save_tile_button_x_pos = 615
-    save_tile_button_y_pos = 120
-    save_tile_button_width = 150
-    save_tile_button_height = 46
-    save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY, big_text=True)
+    save_tile_button = Button(WHITE, 615, 120, 150, 46, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
     delete_tile_button = Button(WHITE, 450, 590, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
 
@@ -778,9 +771,9 @@ def main():
     pattern_dict = get_pattern_dict(pattern_tile_list)
 
     grid_x_pos = 20
-    grid_y_pos = pattern_list[1]
+    grid_y_pos = 50
     second_grid_x_pos = 270
-    second_grid_y_pos = pattern_list[1]
+    second_grid_y_pos = 50
 
     output_width = 20
     output_height = 20
@@ -908,7 +901,7 @@ def main():
                               "These patterns will build the final image",
                               "through the Wave Function Collapse."]
     patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
-    patterns_text = InfoText(48, 3, "Patterns", size_20_font, DARKPURPLE, patterns_hover_box, hover_box_group)
+    patterns_text = InfoText(13, 300, "Patterns", size_20_font, DARKPURPLE, patterns_hover_box, hover_box_group)
 
     replay_speed_hover_box_text = ["The number represents every Nth state of the", 
                                   "wave function collapse.", 
@@ -1099,9 +1092,9 @@ def main():
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
                             pattern_dict = get_pattern_dict(pattern_tile_list)
-                            grid_y_pos = pattern_list[1]
-                            second_grid_y_pos = pattern_list[1]
-                            adjust_grid_position(wfc_output, wfc_output_2)
+                            # grid_y_pos = pattern_list[1]
+                            # second_grid_y_pos = pattern_list[1]
+                            # adjust_grid_position(wfc_output, wfc_output_2)
                         
 
 
@@ -1272,9 +1265,6 @@ def main():
             if show_patterns:
                 draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
                 pattern_group.draw(screen)
-                # for patt in patterns[0]:
-                #     patt_prob = size_10_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
-                #     screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
                 patterns_text.draw(screen)
             
             hover_box_group.draw(screen)
@@ -1346,9 +1336,9 @@ def main():
                     pattern_tile_list = pattern_list[0]
                     pattern_dict = get_pattern_dict(pattern_tile_list)
 
-                    grid_y_pos = pattern_list[1]
-                    second_grid_y_pos = pattern_list[1]
-                    adjust_grid_position(wfc_output, wfc_output_2)
+                    # grid_y_pos = pattern_list[1]
+                    # second_grid_y_pos = pattern_list[1]
+                    # adjust_grid_position(wfc_output, wfc_output_2)
                     print(initial_tile_max_height)
                     if len(initial_tile_list) == max_initial_tiles:
                         change_button_color("disabled", [save_tile_button])
@@ -1381,9 +1371,9 @@ def main():
                         pattern_tile_list = pattern_list[0]
                         pattern_dict = get_pattern_dict(pattern_tile_list)
 
-                        grid_y_pos = pattern_list[1]
-                        second_grid_y_pos = pattern_list[1]
-                        adjust_grid_position(wfc_output, wfc_output_2)
+                        # grid_y_pos = pattern_list[1]
+                        # second_grid_y_pos = pattern_list[1]
+                        # adjust_grid_position(wfc_output, wfc_output_2)
 
                         if len(initial_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
@@ -1463,9 +1453,9 @@ def main():
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
                             pattern_dict = get_pattern_dict(pattern_tile_list)
-                            grid_y_pos = pattern_list[1]
-                            second_grid_y_pos = pattern_list[1]
-                            adjust_grid_position(wfc_output, wfc_output_2)
+                            # grid_y_pos = pattern_list[1]
+                            # second_grid_y_pos = pattern_list[1]
+                            # adjust_grid_position(wfc_output, wfc_output_2)
 
             # if test_paint_button.draw(screen):
             #     print(preview_tile.pix_array)
