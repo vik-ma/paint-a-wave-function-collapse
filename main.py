@@ -707,7 +707,7 @@ def main():
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
-    switch_state_button = Button(WHITE, 640, 590, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+    switch_state_button = Button(WHITE, 640, 316, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
     help_button = Button(WHITE, 325, 590, 100, 40, "HELP", BLACK, LIGHTGREY)
 
     increase_wfc_output_size_button = ArrowButton(WHITE, 760, 165, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
@@ -749,7 +749,7 @@ def main():
     enlargement_scale = 8
 
     tile_list_x_pos = 455
-    tile_list_y_pos = 310
+    tile_list_y_pos = 368
     tile_list_offset = 12
 
     initial_tile_max_height = 5
@@ -769,9 +769,9 @@ def main():
     pattern_tile_list = pattern_list[0]
 
     grid_x_pos = 20
-    grid_y_pos = 50
+    grid_y_pos = 40
     second_grid_x_pos = 270
-    second_grid_y_pos = 50
+    second_grid_y_pos = 40
 
     output_width = 20
     output_height = 20
@@ -901,6 +901,7 @@ def main():
     patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
     patterns_text = InfoText(13, 310, "Patterns", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
+    num_patterns_warning_text = size_17_font.render("WARNING: This many patterns can take a really long time to finish!", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     replay_speed_hover_box_text = ["The number represents every Nth state of the", 
                                   "wave function collapse.", 
@@ -1006,8 +1007,8 @@ def main():
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output)
 
-            pygame.draw.line(screen, BLACK, (440, 296), (800, 296))
-            pygame.draw.line(screen, BLACK, (440, 296), (440, 640))
+            pygame.draw.line(screen, BLACK, (440, 310), (800, 310))
+            pygame.draw.line(screen, BLACK, (440, 310), (440, 640))
 
             if wfc_output != None:
                 screen.blit(wfc_grid_size_text, (50, wfc_grid_size_text_y_pos))
@@ -1255,6 +1256,9 @@ def main():
                 patterns_text.draw(screen)
                 screen.blit(num_patterns_text, (105, 312))
             
+            if len(pattern_tile_list) > 35:
+                screen.blit(num_patterns_warning_text, (13, 288))
+
             hover_box_group.draw(screen)
 
         if game_state == "paint":
@@ -1269,8 +1273,8 @@ def main():
 
             current_color_tile.draw(screen, border=True)
 
-            pygame.draw.line(screen, BLACK, (440, 296), (800, 296))
-            pygame.draw.line(screen, BLACK, (440, 296), (440, 640))
+            pygame.draw.line(screen, BLACK, (440, 310), (800, 310))
+            pygame.draw.line(screen, BLACK, (440, 310), (440, 640))
 
             screen.blit(current_tile_text, (preview_tile_x_pos-3, 104))
 
