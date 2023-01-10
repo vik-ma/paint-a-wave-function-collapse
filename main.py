@@ -872,12 +872,12 @@ def main():
 
     anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", 
                                       "collapse as it's being executed."]
-    anim_during_wfc_hover_box = HoverBox(0, 0, 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, hover_box_font)
+    anim_during_wfc_hover_box = HoverBox(0, 0, 380, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, hover_box_font)
     anim_during_wfc_main_text = "Animate WFC state during execution:"
     anim_during_wfc_infotext = InfoText(20, 535, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
 
     anim_after_wfc_hover_box_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
-    anim_after_wfc_hover_box = HoverBox(0, 0, 302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
+    anim_after_wfc_hover_box = HoverBox(0, 0, 325, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
     anim_after_wfc_main_text = "Animate WFC after execution:"
     anim_after_wfc_infotext = InfoText(20, 560, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
     
@@ -914,7 +914,7 @@ def main():
                                   "wave function collapse.", 
                                   "'1' will show the wave function collapse in its", 
                                   "entirety and takes a very long time to finish."]
-    replay_speed_hover_box = HoverBox(0, 0, 400, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
+    replay_speed_hover_box = HoverBox(0, 0, 425, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
     replay_speed_text = InfoText(20, 500, "Replay Speed:", size_17_font, SCREEN_TEXT_COLOR, replay_speed_hover_box, hover_box_group)
 
     wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, BLUE)
