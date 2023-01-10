@@ -190,14 +190,14 @@ sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
 sample_tile_list.append(sample_initial_tile_1)
 sample_tile_list.append(sample_initial_tile_2)
 sample_tile_list.append(sample_initial_tile_3)
-sample_tile_list.append(max_initial_tile_7x7)
+# sample_tile_list.append(max_initial_tile_7x7)
 sample_tile_list.append(sample_initial_tile_4)
 sample_tile_list.append(sample_initial_tile_5)
 sample_tile_list.append(sample_initial_tile_6)
 sample_tile_list.append(sample_initial_tile_7)
 sample_tile_list.append(sample_initial_tile_8)
-for i in range(9):
-    sample_tile_list.append(max_initial_tile_7x7)
+# for i in range(9):
+#     sample_tile_list.append(max_initial_tile_7x7)
 
 # for i in range(20):
 #     sample_tile_list.append(max_initial_tile_7x7)
@@ -551,7 +551,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
         y_offset = 38
         x_offset = 33
     x = 15
-    y = 325
+    y = 335
     col_limit = 19
     tile_list = []
 
@@ -768,8 +768,6 @@ def main():
 
     pattern_tile_list = pattern_list[0]
 
-    pattern_dict = get_pattern_dict(pattern_tile_list)
-
     grid_x_pos = 20
     grid_y_pos = 50
     second_grid_x_pos = 270
@@ -901,7 +899,8 @@ def main():
                               "These patterns will build the final image",
                               "through the Wave Function Collapse."]
     patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
-    patterns_text = InfoText(13, 300, "Patterns", size_20_font, DARKPURPLE, patterns_hover_box, hover_box_group)
+    patterns_text = InfoText(13, 310, "Patterns", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
+    num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
 
     replay_speed_hover_box_text = ["The number represents every Nth state of the", 
                                   "wave function collapse.", 
@@ -1091,14 +1090,9 @@ def main():
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
-                            pattern_dict = get_pattern_dict(pattern_tile_list)
-                            # grid_y_pos = pattern_list[1]
-                            # second_grid_y_pos = pattern_list[1]
-                            # adjust_grid_position(wfc_output, wfc_output_2)
+                            num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
+
                         
-
-
-
             # Animation
             if draw_second_grid:
                 if is_wfc_anim_ongoing:
@@ -1147,9 +1141,8 @@ def main():
                     wfc_list_count = len(sliced_list) - 1
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
-            # if test_button.draw(screen):
-            #     hover_box_group.add(anim_after_wfc_hover_box)
-            #     hover_box_group.empty()
+            if test_button.draw(screen):
+                pass
 
 
             if toggle_show_patterns_button.draw(screen):
@@ -1169,9 +1162,6 @@ def main():
             #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
             #         pattern_tile_list = pattern_list[0]
-            #         grid_y_pos = pattern_list[1]
-            #         second_grid_y_pos = pattern_list[1]
-            #         pattern_dict = get_pattern_dict(pattern_tile_list)
 
 
             # if set_pattern_size_3_button.draw(screen):
@@ -1182,9 +1172,6 @@ def main():
             #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
             #         pattern_tile_list = pattern_list[0]
-            #         grid_y_pos = pattern_list[1]
-            #         second_grid_y_pos = pattern_list[1]
-            #         pattern_dict = get_pattern_dict(pattern_tile_list)
 
             pygame.draw.line(screen, BLACK, (0, 420), (440, 420))
             screen.blit(settings_text, (20, 435))
@@ -1266,6 +1253,7 @@ def main():
                 draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
                 pattern_group.draw(screen)
                 patterns_text.draw(screen)
+                screen.blit(num_patterns_text, (105, 312))
             
             hover_box_group.draw(screen)
 
@@ -1334,12 +1322,8 @@ def main():
                     patterns = get_patterns(pattern_size, initial_tile_list[-1])
                     pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                     pattern_tile_list = pattern_list[0]
-                    pattern_dict = get_pattern_dict(pattern_tile_list)
+                    num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
 
-                    # grid_y_pos = pattern_list[1]
-                    # second_grid_y_pos = pattern_list[1]
-                    # adjust_grid_position(wfc_output, wfc_output_2)
-                    print(initial_tile_max_height)
                     if len(initial_tile_list) == max_initial_tiles:
                         change_button_color("disabled", [save_tile_button])
 
@@ -1369,11 +1353,7 @@ def main():
                         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                         pattern_tile_list = pattern_list[0]
-                        pattern_dict = get_pattern_dict(pattern_tile_list)
-
-                        # grid_y_pos = pattern_list[1]
-                        # second_grid_y_pos = pattern_list[1]
-                        # adjust_grid_position(wfc_output, wfc_output_2)
+                        num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
 
                         if len(initial_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
@@ -1452,10 +1432,7 @@ def main():
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
-                            pattern_dict = get_pattern_dict(pattern_tile_list)
-                            # grid_y_pos = pattern_list[1]
-                            # second_grid_y_pos = pattern_list[1]
-                            # adjust_grid_position(wfc_output, wfc_output_2)
+                            num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
 
             # if test_paint_button.draw(screen):
             #     print(preview_tile.pix_array)
