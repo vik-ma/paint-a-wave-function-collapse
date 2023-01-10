@@ -698,7 +698,9 @@ def main():
     paint_color_group = pygame.sprite.Group()
     hover_box_group = pygame.sprite.Group()
 
-    hover_box_line_height = size_18_font.get_linesize()
+    hover_box_font = size_18_font
+    hover_box_line_height = hover_box_font.get_linesize()
+
     
     new_wfc_button = Button(WHITE, 600, 10, 150, 40, "Start WFC", BLACK, LIGHTGREY, big_text=True)
     test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
@@ -734,7 +736,7 @@ def main():
     toggle_grid_lines_button = Button(WHITE, 200, 520, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
-    save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_18_font)
+    save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, hover_box_font)
 
     save_tile_button_x_pos = 615
     save_tile_button_y_pos = 120
@@ -870,12 +872,12 @@ def main():
 
     anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", 
                                       "collapse as it's being executed."]
-    anim_during_wfc_hover_box = HoverBox(0, 0, 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, size_18_font)
+    anim_during_wfc_hover_box = HoverBox(0, 0, 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, hover_box_font)
     anim_during_wfc_main_text = "Animate WFC state during execution:"
     anim_during_wfc_infotext = InfoText(20, 535, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
 
     anim_after_wfc_hover_box_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
-    anim_after_wfc_hover_box = HoverBox(0, 0, 302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, size_18_font)
+    anim_after_wfc_hover_box = HoverBox(0, 0, 302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
     anim_after_wfc_main_text = "Animate WFC after execution:"
     anim_after_wfc_infotext = InfoText(20, 560, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
     
@@ -905,14 +907,14 @@ def main():
                               "and vertically flipped variants.",
                               "These patterns will build the final image",
                               "through the Wave Function Collapse."]
-    patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, size_18_font)
+    patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
     patterns_text = InfoText(48, 3, "Patterns", size_20_font, DARKPURPLE, patterns_hover_box, hover_box_group)
 
     replay_speed_hover_box_text = ["The number represents every Nth state of the", 
                                   "wave function collapse.", 
                                   "'1' will show the wave function collapse in its", 
                                   "entirety and takes a very long time to finish."]
-    replay_speed_hover_box = HoverBox(0, 0, 400, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, size_18_font)
+    replay_speed_hover_box = HoverBox(0, 0, 400, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
     replay_speed_text = InfoText(20, 500, "Replay Speed:", size_17_font, SCREEN_TEXT_COLOR, replay_speed_hover_box, hover_box_group)
 
     wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, BLUE)
