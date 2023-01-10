@@ -739,7 +739,7 @@ def main():
 
     save_tile_button = Button(WHITE, 615, 120, 150, 46, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
-    delete_tile_button = Button(WHITE, 450, 590, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
+    delete_tile_button = Button(WHITE, 600, 260, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
 
     run = True
 
