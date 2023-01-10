@@ -789,6 +789,7 @@ def main():
     wfc_list_count = 0
 
     game_state = "wfc"
+    previous_game_state = "wfc"
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
@@ -1251,10 +1252,12 @@ def main():
             if help_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
                     game_state = "help"
+                    previous_game_state = "wfc"
 
             if switch_state_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
                     game_state = "paint"
+                    previous_game_state = "paint"
 
             if show_patterns:
                 draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
@@ -1338,6 +1341,7 @@ def main():
                         change_button_color("disabled", [save_tile_button])
 
                     game_state = "wfc"
+                    previous_game_state = "wfc"
 
 
 
@@ -1376,9 +1380,11 @@ def main():
 
             if help_button.draw(screen):
                 game_state = "help"
+                previous_game_state = "paint"
 
             if switch_state_button.draw(screen):
                 game_state = "wfc"
+                previous_game_state = "wfc"
 
             if draw_paint_grid_lines:
                 for col in range(1, paint_grid_cols):
@@ -1455,7 +1461,7 @@ def main():
             screen.blit(help_title_text, (50, 20))
 
             if switch_state_button.draw(screen):
-                game_state = "wfc"
+                game_state = previous_game_state
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
