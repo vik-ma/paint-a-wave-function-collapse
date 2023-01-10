@@ -924,6 +924,11 @@ def main():
     for line in tile_list_full_text_lines:
         tile_list_full_text.append(size_20_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
+    initial_tiles_hover_box_text = ["FILL IN LATER", "asdasd"]
+    initial_tiles_hover_box = HoverBox(0, 0, 225, len(initial_tiles_hover_box_text) * hover_box_line_height + 14, initial_tiles_hover_box_text, hover_box_font)
+    initial_tiles_text = InfoText(tile_list_x_pos-2, tile_list_y_pos-42, "Initial Tiles", size_27_font, SCREEN_TEXT_COLOR, initial_tiles_hover_box, hover_box_group) 
+
+
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
 
@@ -1080,7 +1085,8 @@ def main():
                         disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_wfc_output_size_button)
 
 
-            # Initial Tile Buttons            
+            # Initial Tile Buttons        
+            initial_tiles_text.draw(screen)
             draw_selected_tile_border(screen, selected_tile)
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
@@ -1426,6 +1432,7 @@ def main():
                 preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
             # Initial Tile Buttons
+            initial_tiles_text.draw(screen) 
             draw_selected_tile_border(screen, selected_tile)
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
