@@ -702,10 +702,10 @@ def main():
     hover_box_line_height = hover_box_font.get_linesize()
 
     
-    new_wfc_button = Button(WHITE, 600, 10, 150, 40, "Start WFC", BLACK, LIGHTGREY, big_text=True)
-    test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
+    new_wfc_button = Button(WHITE, 630, 10, 150, 40, "Start WFC", BLACK, LIGHTGREY, big_text=True)
+    test_button = Button(WHITE, 630, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
 
-    cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
+    cancel_wfc_button = Button(GREY, 630, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
     paint_new_tile_button = Button(WHITE, 640, 318, 150, 40, "Paint New Tile", BLACK, LIGHTGREY)
     return_to_wfc_button = Button(WHITE, 10, 590, 180, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
@@ -771,9 +771,9 @@ def main():
     pattern_tile_list = pattern_list[0]
 
     grid_x_pos = 20
-    grid_y_pos = 40
+    grid_y_pos = 30
     second_grid_x_pos = 270
-    second_grid_y_pos = 40
+    second_grid_y_pos = 30
 
     output_width = 20
     output_height = 20
@@ -915,9 +915,8 @@ def main():
 
     wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, BLUE)
 
-    wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, SCREEN_TEXT_COLOR)
-
-    wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
+    # wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, SCREEN_TEXT_COLOR)
+    # wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
 
     settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
     settings_sub_text = size_17_font.render("Hover over the settings to learn more", True, IMPORTANT_SCREEN_TEXT_COLOR)
@@ -931,6 +930,7 @@ def main():
     initial_tiles_hover_box = HoverBox(0, 0, 225, len(initial_tiles_hover_box_text) * hover_box_line_height + 14, initial_tiles_hover_box_text, hover_box_font)
     initial_tiles_text = InfoText(tile_list_x_pos-2, tile_list_y_pos-42, "Initial Tiles", size_27_font, SCREEN_TEXT_COLOR, initial_tiles_hover_box, hover_box_group) 
 
+    wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
@@ -1018,8 +1018,10 @@ def main():
             pygame.draw.line(screen, BLACK, (440, 310), (800, 310))
             pygame.draw.line(screen, BLACK, (440, 310), (440, 640))
 
-            if wfc_output != None:
-                screen.blit(wfc_grid_size_text, (50, wfc_grid_size_text_y_pos))
+            screen.blit(wfc_guide_text, (20, 5))
+
+            # if wfc_output != None:
+            #     screen.blit(wfc_grid_size_text, (50, wfc_grid_size_text_y_pos))
 
             if is_wfc_finished:
                 if not did_wfc_fail:
@@ -1041,8 +1043,8 @@ def main():
                     wfc_state["interrupt"] = False
                     wfc_output_2 = None
                     grid_size = output_width
-                    wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
-                    wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
+                    # wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
+                    # wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
