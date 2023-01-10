@@ -707,7 +707,9 @@ def main():
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
-    switch_state_button = Button(WHITE, 640, 316, 150, 40, "SWITCH STATE", BLACK, LIGHTGREY)
+    paint_new_tile_button = Button(WHITE, 640, 318, 150, 40, "Paint New Tile", BLACK, LIGHTGREY)
+    return_to_wfc_button = Button(WHITE, 10, 590, 180, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
+    
     help_button = Button(WHITE, 325, 590, 100, 40, "HELP", BLACK, LIGHTGREY)
 
     increase_wfc_output_size_button = ArrowButton(WHITE, 760, 165, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
@@ -789,7 +791,7 @@ def main():
     wfc_list_count = 0
 
     game_state = "wfc"
-    previous_game_state = "wfc"
+    previous_game_state = game_state
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
@@ -883,7 +885,7 @@ def main():
                                                           increase_replay_speed_button, decrease_replay_speed_button,
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
                                                         #   set_pattern_size_2_button, set_pattern_size_3_button, 
-                                                          replay_animation_button, switch_state_button,
+                                                          replay_animation_button, paint_new_tile_button,
                                                           help_button, delete_tile_button]
     
     disabled_buttons_during_wfc_exec_but_not_post_anim_list = [new_wfc_button, skip_animation_button]
@@ -1254,7 +1256,7 @@ def main():
                     game_state = "help"
                     previous_game_state = "wfc"
 
-            if switch_state_button.draw(screen):
+            if paint_new_tile_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
                     game_state = "paint"
                     previous_game_state = "paint"
@@ -1382,7 +1384,7 @@ def main():
                 game_state = "help"
                 previous_game_state = "paint"
 
-            if switch_state_button.draw(screen):
+            if return_to_wfc_button.draw(screen):
                 game_state = "wfc"
                 previous_game_state = "wfc"
 
@@ -1460,7 +1462,7 @@ def main():
             help_title_text = size_20_font.render("HELP", True, (0, 0, 0))
             screen.blit(help_title_text, (50, 20))
 
-            if switch_state_button.draw(screen):
+            if paint_new_tile_button.draw(screen):
                 game_state = previous_game_state
 
         for event in pygame.event.get():
