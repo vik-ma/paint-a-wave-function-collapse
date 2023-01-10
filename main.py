@@ -926,6 +926,11 @@ def main():
     settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
     settings_sub_text = size_17_font.render("Hover over the settings to learn more", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
+    tile_list_full_text_lines = ["List of initial tiles full!", "Delete a tile to add a new one"]
+    tile_list_full_text = []
+    for line in tile_list_full_text_lines:
+        tile_list_full_text.append(size_20_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
+
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
 
@@ -1308,6 +1313,10 @@ def main():
             # Grid border
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1) 
 
+            if len(initial_tile_list) == max_initial_tiles:
+                for y, line in enumerate(tile_list_full_text):
+                    screen.blit(line, (490, 196 + y * 20))
+
             if save_tile_button.draw(screen):
                 if len(initial_tile_list) < max_initial_tiles:
                     if len(initial_tile_list) == 1:
@@ -1342,9 +1351,11 @@ def main():
                     adjust_grid_position(wfc_output, wfc_output_2)
                     print(initial_tile_max_height)
                     if len(initial_tile_list) == max_initial_tiles:
-                        save_tile_button = Button(GREY, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", DARKGREY, GREY, hover_box=save_tile_hover_box, hover_box_group=hover_box_group, big_text=True)
+                        change_button_color("disabled", [save_tile_button])
 
                     game_state = "wfc"
+
+
 
             if delete_tile_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
@@ -1377,8 +1388,7 @@ def main():
                         if len(initial_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
                         if len(initial_tile_list) == max_initial_tiles - 1:
-                            save_tile_button = Button(WHITE, save_tile_button_x_pos, save_tile_button_y_pos, save_tile_button_width, save_tile_button_height, "Save Tile", BLACK, LIGHTGREY, big_text=True)
-
+                            change_button_color("enabled", [save_tile_button])
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
             #Preview Tile Border
