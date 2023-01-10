@@ -386,18 +386,10 @@ def observe(coefficients, probability, coefficients_state):
     # Choose a pattern at lowest entropy position which is most frequent in the sample
     possible_patterns = get_possible_patterns_at_position(min_entropy_pos, coefficients)
 
-    # --THIS DOESN'T DO ANYTHING--
-    # calculate max probability for patterns that are left
-    # max_p = 0
-    # for pattern in possible_patterns:
-    #     if max_p < probability[pattern]:
-    #         max_p == probability[pattern]
-    # semi_random_pattern = random.choice([pat for pat in possible_patterns if probability[pat]>=max_p])
-
-    semi_random_pattern = random.choice([pat for pat in possible_patterns])
+    random_pattern = random.choice([pat for pat in possible_patterns])
     
     # Set this pattern to be the only available at this position
-    coefficients[min_entropy_pos[0]][min_entropy_pos[1]] = semi_random_pattern
+    coefficients[min_entropy_pos[0]][min_entropy_pos[1]] = random_pattern
     current_coefficients = deepcopy(coefficients)
     coefficients_state.append(current_coefficients)
 
@@ -706,12 +698,10 @@ def main():
     paint_color_group = pygame.sprite.Group()
     hover_box_group = pygame.sprite.Group()
 
-    hover_box_line_height = size_17_font.get_linesize()
-
-    # test_hoverbox = HoverBox(0, 0, 355, 50, ["adadsdsaadssad","adsdsadsa"], size_17_font)
+    hover_box_line_height = size_18_font.get_linesize()
     
     new_wfc_button = Button(WHITE, 600, 10, 150, 40, "Start WFC", BLACK, LIGHTGREY, big_text=True)
-    # test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY, hover_box=test_hoverbox, hover_box_group=hover_box_group)
+    test_button = Button(WHITE, 600, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
 
     cancel_wfc_button = Button(GREY, 600, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
@@ -735,7 +725,7 @@ def main():
     increase_replay_speed_button = ArrowButton(WHITE, 170, 490, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_replay_speed_button = ArrowButton(WHITE, 170, 509, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
-    # test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
+    test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
     increase_paint_grid_size_button = ArrowButton(WHITE, 305, 94, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_paint_grid_size_button = ArrowButton(WHITE, 305, 113, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
@@ -744,7 +734,7 @@ def main():
     toggle_grid_lines_button = Button(WHITE, 200, 520, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     save_tile_hover_box_text = ["Can't add more tiles!", "Delete a tile to add a new one."]
-    save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_17_font)
+    save_tile_hover_box = HoverBox(0, 0, 267, len(save_tile_hover_box_text) * hover_box_line_height + 14, save_tile_hover_box_text, size_18_font)
 
     save_tile_button_x_pos = 615
     save_tile_button_y_pos = 120
@@ -859,7 +849,7 @@ def main():
     prob_text_x_offset = -2
     prob_text_y_offset = -11
 
-    show_probability = True
+    show_patterns = True
 
     get_wfc_output = None
 
@@ -878,13 +868,14 @@ def main():
     render_wfc_during_execution = True
     render_wfc_at_end = True
 
-    anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", "collapse as it's being executed."]
-    anim_during_wfc_hover_box = HoverBox(0, 0, 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, size_17_font)
+    anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", 
+                                      "collapse as it's being executed."]
+    anim_during_wfc_hover_box = HoverBox(0, 0, 355, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, size_18_font)
     anim_during_wfc_main_text = "Animate WFC state during execution:"
     anim_during_wfc_infotext = InfoText(20, 535, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
 
     anim_after_wfc_hover_box_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
-    anim_after_wfc_hover_box = HoverBox(0, 0, 302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, size_17_font)
+    anim_after_wfc_hover_box = HoverBox(0, 0, 302, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, size_18_font)
     anim_after_wfc_main_text = "Animate WFC after execution:"
     anim_after_wfc_infotext = InfoText(20, 560, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
     
@@ -909,12 +900,19 @@ def main():
 
     wfc_state = {"interrupt": False}
     
-    prob_hover_box_text = ["Likelyhood of pattern", "occurring."]
-    prob_hover_box = HoverBox(0, 0, 200, len(prob_hover_box_text) * hover_box_line_height + 14, prob_hover_box_text, size_17_font)
-    prob_text = InfoText(48, 3, "Pattern Probability", size_10_font, DARKPURPLE, prob_hover_box, hover_box_group)
+    patterns_hover_box_text = ["Every different 2x2 pattern extracted from", 
+                              "the initial tile, including rotated, horizontally", 
+                              "and vertically flipped variants.",
+                              "These patterns will build the final image",
+                              "through the Wave Function Collapse."]
+    patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, size_18_font)
+    patterns_text = InfoText(48, 3, "Patterns", size_20_font, DARKPURPLE, patterns_hover_box, hover_box_group)
 
-    replay_speed_hover_box_text = ["The number represents every Nth state of the", "wave function collapse.", "'1' will show the wave function collapse in its", "entirety and takes a very long time to finish."]
-    replay_speed_hover_box = HoverBox(0, 0, 400, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, size_17_font)
+    replay_speed_hover_box_text = ["The number represents every Nth state of the", 
+                                  "wave function collapse.", 
+                                  "'1' will show the wave function collapse in its", 
+                                  "entirety and takes a very long time to finish."]
+    replay_speed_hover_box = HoverBox(0, 0, 400, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, size_18_font)
     replay_speed_text = InfoText(20, 500, "Replay Speed:", size_17_font, SCREEN_TEXT_COLOR, replay_speed_hover_box, hover_box_group)
 
     wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, BLUE)
@@ -1155,11 +1153,11 @@ def main():
 
 
             if toggle_show_patterns_button.draw(screen):
-                if show_probability:
-                    show_probability = False
+                if show_patterns:
+                    show_patterns = False
                     toggle_show_patterns_button.text = "Show Patterns"
                 else:
-                    show_probability = True
+                    show_patterns = True
                     toggle_show_patterns_button.text = "Hide Patterns"
 
 
@@ -1264,13 +1262,13 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
                     game_state = "paint"
 
-            if show_probability:
+            if show_patterns:
                 draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
                 pattern_group.draw(screen)
-                for patt in patterns[0]:
-                    patt_prob = size_10_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
-                    screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
-                prob_text.draw(screen)
+                # for patt in patterns[0]:
+                #     patt_prob = size_10_font.render("{0:.2f}".format(round(patterns[2][patt], 2)), True, DARKPURPLE)
+                #     screen.blit(patt_prob, (pattern_dict[patt.pix_array][0] + prob_text_x_offset, pattern_dict[patt.pix_array][1] + prob_text_y_offset))
+                patterns_text.draw(screen)
             
             hover_box_group.draw(screen)
 
