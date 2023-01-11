@@ -932,6 +932,11 @@ def main():
     for line in tile_list_full_text_lines:
         tile_list_full_text.append(size_20_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
+    tile_list_guide_text_lines = ["Click on a tile below to change the", "start tile, or click the button to", "paint your own custom tile."]
+    tile_list_guide_text = []
+    for line in tile_list_guide_text_lines:
+        tile_list_guide_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
+
     initial_tiles_hover_box_text = ["FILL IN LATER", "asdasd"]
     initial_tiles_hover_box = HoverBox(0, 0, 225, len(initial_tiles_hover_box_text) * hover_box_line_height + 14, initial_tiles_hover_box_text, hover_box_font)
     initial_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Tile Selection", size_27_font, SCREEN_TEXT_COLOR, initial_tiles_hover_box, hover_box_group) 
@@ -1065,6 +1070,9 @@ def main():
 
             screen.blit(current_output_size_text, (550, 175))
             screen.blit(output_size_text, (685, 175))
+
+            for y, line in enumerate(tile_list_guide_text):
+                screen.blit(line, (510, 246 + y * 20))
             
             if increase_wfc_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width < output_grid_upper_limit and not is_wfc_executing:
@@ -1274,8 +1282,8 @@ def main():
                 patterns_text.draw(screen)
                 screen.blit(num_patterns_text, (105, 312))
             
-            if len(pattern_tile_list) > 35:
-                screen.blit(num_patterns_warning_text, (13, 291))
+            # if len(pattern_tile_list) > 35:
+            screen.blit(num_patterns_warning_text, (13, 291))
 
             hover_box_group.draw(screen)
 
