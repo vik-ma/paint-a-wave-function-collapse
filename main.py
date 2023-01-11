@@ -821,7 +821,7 @@ def main():
 
     current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
 
-    current_tile_text = size_20_font.render("Current Tile", True, SCREEN_TEXT_COLOR)
+    painted_tile_text = size_20_font.render("Painted Tile", True, SCREEN_TEXT_COLOR)
 
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
@@ -832,7 +832,7 @@ def main():
     current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 114, 98, current_color)
 
     preview_tile_x_pos = 455
-    preview_tile_y_pos = 130
+    preview_tile_y_pos = 128
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
     draw_paint_grid_lines = True
@@ -1058,7 +1058,7 @@ def main():
                 if is_wfc_executing:
                     wfc_state["interrupt"] = True
 
-            screen.blit(selected_tile_text, (wfc_choice_tile_x_pos-2, wfc_choice_tile_y_pos-20))
+            screen.blit(selected_tile_text, (wfc_choice_tile_x_pos-2, wfc_choice_tile_y_pos-22))
 
             screen.blit(wfc_choice_tile_image, (wfc_choice_tile_x_pos, wfc_choice_tile_y_pos))
             pygame.draw.rect(screen, BLACK, (wfc_choice_tile_x_pos-1, wfc_choice_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
@@ -1294,7 +1294,7 @@ def main():
             pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
             pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
 
-            screen.blit(current_tile_text, (preview_tile_x_pos-3, 104))
+            screen.blit(painted_tile_text, (preview_tile_x_pos-2, 102))
 
             for color in color_panel:
                 if color.draw(screen, border=True):
