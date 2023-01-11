@@ -870,8 +870,8 @@ def main():
     anim_during_wfc_main_text = "Animate WFC state during execution:"
     anim_during_wfc_infotext = InfoText(15, 550, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
 
-    anim_after_wfc_hover_box_text = ["Replays the time lapse of the wave function collapse", "in a second grid once it has reached completion."]
-    anim_after_wfc_hover_box = HoverBox(0, 0, 490, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
+    anim_after_wfc_hover_box_text = ["Replays a more detailed time lapse of the wave function", "collapse in a second grid once it has reached completion."]
+    anim_after_wfc_hover_box = HoverBox(0, 0, 525, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
     anim_after_wfc_main_text = "Replay WFC once it's completed:"
     anim_after_wfc_infotext = InfoText(15, 572, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
     
