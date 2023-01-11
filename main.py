@@ -927,14 +927,18 @@ def main():
     patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
     patterns_text = InfoText(13, 310, "Patterns", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
-    num_patterns_warning_text = size_17_font.render("WARNING: This many patterns can take a really long time to finish!", True, IMPORTANT_SCREEN_TEXT_COLOR)
+    
+    num_patterns_warning_text_lines = ["WARNING: This many patterns can", "take a really long time to finish!"]
+    num_patterns_warning_text = []
+    for line in num_patterns_warning_text_lines:
+        num_patterns_warning_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
     tile_list_full_text_lines = ["List of initial tiles full!", "Delete a tile to add a new one"]
     tile_list_full_text = []
     for line in tile_list_full_text_lines:
         tile_list_full_text.append(size_20_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
-    tile_list_guide_text_lines = ["Click on a tile below to change the", "start tile, or click the button to", "paint your own custom tile."]
+    tile_list_guide_text_lines = ["Click on a tile below to change", "the start tile, or click the button", "to paint your own custom tile."]
     tile_list_guide_text = []
     for line in tile_list_guide_text_lines:
         tile_list_guide_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
@@ -1074,7 +1078,7 @@ def main():
             screen.blit(output_size_text, (685, 175))
 
             for y, line in enumerate(tile_list_guide_text):
-                screen.blit(line, (510, 246 + y * 18))
+                screen.blit(line, (510, 250 + y * 18))
             
             if increase_wfc_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width < output_grid_upper_limit and not is_wfc_executing:
@@ -1284,8 +1288,9 @@ def main():
                 patterns_text.draw(screen)
                 screen.blit(num_patterns_text, (105, 312))
             
-            # if len(pattern_tile_list) > 35:
-            screen.blit(num_patterns_warning_text, (13, 291))
+            if len(pattern_tile_list) > 35:
+                for y, line in enumerate(num_patterns_warning_text):
+                    screen.blit(line, (13, 406 + y * 18))
 
             hover_box_group.draw(screen)
 
