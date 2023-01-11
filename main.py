@@ -707,7 +707,7 @@ def main():
 
     cancel_wfc_button = Button(GREY, 630, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
-    paint_new_tile_button = Button(WHITE, 640, 318, 150, 40, "Paint New Tile", BLACK, LIGHTGREY)
+    paint_new_tile_button = Button(WHITE, 650, 321, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
     return_to_wfc_button = Button(WHITE, 10, 590, 180, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
     help_button = Button(WHITE, 525, 50, 100, 40, "HELP", BLACK, LIGHTGREY)
@@ -720,8 +720,8 @@ def main():
 
     toggle_show_patterns_button = Button(WHITE, 13, 595, 150, 35, "Hide Patterns", BLACK, LIGHTGREY)
 
-    replay_animation_button = Button(GREY, 570, 200, 170, 40, "Replay last WFC", DARKGREY, GREY)
-    skip_animation_button = Button(GREY, 570, 110, 210, 40, "Skip Replay Animation", DARKGREY, GREY)
+    replay_animation_button = Button(GREY, 570, 200, 170, 40, "Replay Last WFC", DARKGREY, GREY)
+    skip_animation_button = Button(GREY, 570, 110, 130, 40, "Skip Replay", DARKGREY, GREY)
 
     toggle_anim_during_wfc_button = Button(WHITE, 374, 548, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 374, 570, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
@@ -907,7 +907,7 @@ def main():
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
                                                         #   set_pattern_size_2_button, set_pattern_size_3_button, 
                                                           replay_animation_button, paint_new_tile_button,
-                                                          help_button, delete_tile_button]
+                                                          help_button]
     
     disabled_buttons_during_wfc_exec_but_not_post_anim_list = [start_wfc_button, skip_animation_button]
 
@@ -934,7 +934,7 @@ def main():
 
     initial_tiles_hover_box_text = ["FILL IN LATER", "asdasd"]
     initial_tiles_hover_box = HoverBox(0, 0, 225, len(initial_tiles_hover_box_text) * hover_box_line_height + 14, initial_tiles_hover_box_text, hover_box_font)
-    initial_tiles_text = InfoText(tile_list_x_pos-2, tile_list_y_pos-42, "Initial Tiles", size_27_font, SCREEN_TEXT_COLOR, initial_tiles_hover_box, hover_box_group) 
+    initial_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Tile Selection", size_27_font, SCREEN_TEXT_COLOR, initial_tiles_hover_box, hover_box_group) 
 
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
