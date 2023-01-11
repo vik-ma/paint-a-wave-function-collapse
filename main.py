@@ -771,9 +771,9 @@ def main():
     pattern_tile_list = pattern_list[0]
 
     grid_x_pos = 15
-    grid_y_pos = 30
+    grid_y_pos = 28
     second_grid_x_pos = 265
-    second_grid_y_pos = 30
+    second_grid_y_pos = 28
 
     output_width = 20
     output_height = 20
@@ -842,9 +842,6 @@ def main():
 
     output_size_text_color = get_output_size_text_color(output_width)
 
-    prob_text_x_offset = -2
-    prob_text_y_offset = -11
-
     show_patterns = True
 
     get_wfc_output = None
@@ -853,6 +850,9 @@ def main():
     is_wfc_executing = False
 
     is_wfc_finished = False
+
+    wfc_finished_text = None
+    wfc_state_text_pos = (13, 272)
     
     thread_queue = queue.Queue()
 
@@ -920,9 +920,6 @@ def main():
     patterns_text = InfoText(13, 310, "Patterns", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
     num_patterns_warning_text = size_17_font.render("WARNING: This many patterns can take a really long time to finish!", True, IMPORTANT_SCREEN_TEXT_COLOR)
-
-    # wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, SCREEN_TEXT_COLOR)
-    # wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
 
     tile_list_full_text_lines = ["List of initial tiles full!", "Delete a tile to add a new one"]
     tile_list_full_text = []
@@ -995,7 +992,7 @@ def main():
             else:                
                 time_progressed = time.perf_counter() - wfc_time_start
                 wfc_in_progress_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
-                screen.blit(wfc_in_progress_text, (48, 370))
+                screen.blit(wfc_in_progress_text, wfc_state_text_pos)
                 if render_wfc_during_execution and not thread_queue.empty():
                     current_wfc_state = thread_queue.queue[-1]
                     if isinstance(current_wfc_state, list):
@@ -1023,16 +1020,12 @@ def main():
 
             screen.blit(wfc_guide_text, (15, 5))
 
-            # if wfc_output != None:
-            #     screen.blit(wfc_grid_size_text, (50, wfc_grid_size_text_y_pos))
-
             if is_wfc_finished:
                 if not did_wfc_fail:
                     wfc_finished_text = size_20_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
-                    screen.blit(wfc_finished_text, (48, 370))
                 else:
-                    wfc_failed_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
-                    screen.blit(wfc_failed_text, (48, 370))
+                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
+                screen.blit(wfc_finished_text, wfc_state_text_pos)
 
             if start_wfc_button.draw(screen):
                 if not is_wfc_executing:
@@ -1046,8 +1039,6 @@ def main():
                     wfc_state["interrupt"] = False
                     wfc_output_2 = None
                     grid_size = output_width
-                    # wfc_grid_size_text = size_20_font.render(f"Rendered Grid Size: {grid_size}x{grid_size}", True, BLACK)
-                    # wfc_grid_size_text_y_pos = grid_y_pos + (grid_size * enlargement_scale) + 10
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
@@ -1273,7 +1264,7 @@ def main():
                 screen.blit(num_patterns_text, (105, 312))
             
             if len(pattern_tile_list) > 35:
-                screen.blit(num_patterns_warning_text, (13, 288))
+                screen.blit(num_patterns_warning_text, (13, 291))
 
             hover_box_group.draw(screen)
 
