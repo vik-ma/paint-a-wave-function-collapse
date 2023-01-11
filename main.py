@@ -545,11 +545,11 @@ def draw_patterns(pattern_group, pattern_list, screen, enlargement_scale):
         pygame.draw.rect(screen, (0, 0, 0), (pattern.x - 1, pattern.y - 1, pattern.width * enlargement_scale + 2, pattern.height * enlargement_scale + 2), 1)
 
 def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
-    y_offset = 30
+    y_offset = 24
     x_offset = 20
-    if pattern_size == 3:
-        y_offset = 38
-        x_offset = 33
+    # if pattern_size == 3:
+    #     y_offset = 38
+    #     x_offset = 33
     x = 15
     y = 335
     col_limit = 19
@@ -710,7 +710,7 @@ def main():
     paint_new_tile_button = Button(WHITE, 640, 318, 150, 40, "Paint New Tile", BLACK, LIGHTGREY)
     return_to_wfc_button = Button(WHITE, 10, 590, 180, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
-    help_button = Button(WHITE, 465, 260, 100, 40, "HELP", BLACK, LIGHTGREY)
+    help_button = Button(WHITE, 525, 50, 100, 40, "HELP", BLACK, LIGHTGREY)
 
     increase_wfc_output_size_button = ArrowButton(WHITE, 760, 165, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_wfc_output_size_button = ArrowButton(WHITE, 760, 184, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
@@ -721,7 +721,7 @@ def main():
     toggle_show_patterns_button = Button(WHITE, 13, 595, 150, 35, "Hide Patterns", BLACK, LIGHTGREY)
 
     replay_animation_button = Button(GREY, 570, 200, 170, 40, "Replay last WFC", DARKGREY, GREY)
-    skip_animation_button = Button(GREY, 570, 250, 210, 40, "Skip Replay Animation", DARKGREY, GREY)
+    skip_animation_button = Button(GREY, 570, 110, 210, 40, "Skip Replay Animation", DARKGREY, GREY)
 
     toggle_anim_during_wfc_button = Button(WHITE, 374, 548, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 374, 570, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
@@ -1015,8 +1015,8 @@ def main():
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output)
 
-            pygame.draw.line(screen, BLACK, (440, 310), (800, 310))
-            pygame.draw.line(screen, BLACK, (440, 310), (440, 640))
+            pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
+            pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
 
             screen.blit(wfc_guide_text, (15, 5))
 
@@ -1179,8 +1179,8 @@ def main():
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
             #         pattern_tile_list = pattern_list[0]
 
-            pygame.draw.line(screen, BLACK, (0, 447), (440, 447))
-            screen.blit(settings_text, (15, 455))
+            pygame.draw.line(screen, BLACK, (0, 450), (440, 450))
+            screen.blit(settings_text, (15, 458))
             screen.blit(settings_sub_text, (15, 487))
 
 
@@ -1280,8 +1280,8 @@ def main():
 
             current_color_tile.draw(screen, border=True)
 
-            pygame.draw.line(screen, BLACK, (440, 310), (800, 310))
-            pygame.draw.line(screen, BLACK, (440, 310), (440, 640))
+            pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
+            pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
 
             screen.blit(current_tile_text, (preview_tile_x_pos-3, 104))
 
