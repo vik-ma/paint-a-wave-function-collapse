@@ -540,6 +540,8 @@ def draw_window(screen):
 
 def draw_patterns(pattern_group, pattern_list, screen, enlargement_scale):
     pattern_group.empty()
+    pattern_limit = 57
+    pattern_list = pattern_list[:pattern_limit]
     for pattern in pattern_list:
         pattern_group.add(pattern)
         pygame.draw.rect(screen, (0, 0, 0), (pattern.x - 1, pattern.y - 1, pattern.width * enlargement_scale + 2, pattern.height * enlargement_scale + 2), 1)
@@ -1072,7 +1074,7 @@ def main():
             screen.blit(output_size_text, (685, 175))
 
             for y, line in enumerate(tile_list_guide_text):
-                screen.blit(line, (510, 246 + y * 20))
+                screen.blit(line, (510, 246 + y * 18))
             
             if increase_wfc_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width < output_grid_upper_limit and not is_wfc_executing:
