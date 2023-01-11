@@ -720,8 +720,8 @@ def main():
 
     toggle_show_patterns_button = Button(WHITE, 18, 590, 150, 40, "Hide Patterns", BLACK, LIGHTGREY)
 
-    replay_animation_button = Button(GREY, 570, 200, 210, 40, "Replay WFC Animation", DARKGREY, GREY)
-    skip_animation_button = Button(GREY, 570, 250, 210, 40, "Skip WFC Animation", DARKGREY, GREY)
+    replay_animation_button = Button(GREY, 570, 200, 170, 40, "Replay last WFC", DARKGREY, GREY)
+    skip_animation_button = Button(GREY, 570, 250, 210, 40, "Skip Replay Animation", DARKGREY, GREY)
 
     toggle_anim_during_wfc_button = Button(WHITE, 374, 533, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 374, 558, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
@@ -870,9 +870,9 @@ def main():
     anim_during_wfc_main_text = "Animate WFC state during execution:"
     anim_during_wfc_infotext = InfoText(20, 535, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
 
-    anim_after_wfc_hover_box_text = ["Shows the progession of the wave", "function collapse in a second grid", "after it's finished."]
-    anim_after_wfc_hover_box = HoverBox(0, 0, 325, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
-    anim_after_wfc_main_text = "Animate WFC after execution:"
+    anim_after_wfc_hover_box_text = ["Replays the progession of the wave", "function collapse in a second grid", "once it's finished executing."]
+    anim_after_wfc_hover_box = HoverBox(0, 0, 335, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
+    anim_after_wfc_main_text = "Replay WFC once it's completed:"
     anim_after_wfc_infotext = InfoText(20, 560, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
     
     anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
