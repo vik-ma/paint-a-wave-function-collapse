@@ -787,6 +787,12 @@ def main():
 
     selected_tile = tile_buttons[selected_tile_index]
 
+    wfc_choice_tile_x_pos = 515
+    wfc_choice_tile_y_pos = 60
+    wfc_choice_tile_image = selected_tile.image
+
+    selected_tile_text = size_17_font.render("Selected Tile", True, SCREEN_TEXT_COLOR)
+
     wfc_order_list = []
     wfc_list_count = 0
 
@@ -1052,6 +1058,10 @@ def main():
                 if is_wfc_executing:
                     wfc_state["interrupt"] = True
 
+            screen.blit(selected_tile_text, (wfc_choice_tile_x_pos-2, wfc_choice_tile_y_pos-20))
+
+            screen.blit(wfc_choice_tile_image, (wfc_choice_tile_x_pos, wfc_choice_tile_y_pos))
+            pygame.draw.rect(screen, BLACK, (wfc_choice_tile_x_pos-1, wfc_choice_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
 
             screen.blit(current_output_size_text, (550, 175))
             screen.blit(output_size_text, (685, 175))
@@ -1093,6 +1103,7 @@ def main():
                         if index != selected_tile_index:
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
+                            wfc_choice_tile_image = selected_tile.image
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
@@ -1247,10 +1258,10 @@ def main():
             # Grid border
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
         
-            if help_button.draw(screen):
-                if not is_wfc_anim_ongoing and not is_wfc_executing:
-                    game_state = "help"
-                    previous_game_state = "wfc"
+            # if help_button.draw(screen):
+            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
+            #         game_state = "help"
+            #         previous_game_state = "wfc"
 
             if paint_new_tile_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
@@ -1329,6 +1340,7 @@ def main():
 
                     selected_tile = tile_buttons[-1]
                     selected_tile_index = len(tile_buttons)-1
+                    wfc_choice_tile_image = selected_tile.image
 
                     patterns = get_patterns(pattern_size, initial_tile_list[-1])
                     pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
@@ -1361,6 +1373,7 @@ def main():
                         if selected_tile_index >= len(initial_tile_list):
                             selected_tile_index -= 1
                         selected_tile = tile_buttons[selected_tile_index]
+                        wfc_choice_tile_image = selected_tile.image
 
                         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
@@ -1376,9 +1389,9 @@ def main():
             #Preview Tile Border
             pygame.draw.rect(screen, BLACK, (preview_tile.x - 1, preview_tile.y - 1, (preview_tile.width * enlargement_scale) + 2, (preview_tile.height * enlargement_scale) + 2), 1)
 
-            if help_button.draw(screen):
-                game_state = "help"
-                previous_game_state = "paint"
+            # if help_button.draw(screen):
+            #     game_state = "help"
+            #     previous_game_state = "paint"
 
             if return_to_wfc_button.draw(screen):
                 game_state = "wfc"
@@ -1444,6 +1457,7 @@ def main():
                         if index != selected_tile_index:
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
+                            wfc_choice_tile_image = selected_tile.image
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
