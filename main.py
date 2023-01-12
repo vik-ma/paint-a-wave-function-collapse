@@ -789,11 +789,11 @@ def main():
 
     selected_tile = tile_buttons[selected_tile_index]
 
-    wfc_choice_tile_x_pos = 515
-    wfc_choice_tile_y_pos = 60
-    wfc_choice_tile_image = selected_tile.image
+    selected_base_tile_x_pos = 515
+    selected_base_tile_y_pos = 60
+    selected_base_tile_image = selected_tile.image
 
-    selected_base_tile_text = size_17_font.render("Base Tile", True, SCREEN_TEXT_COLOR)
+    selected_base_tile_text = size_20_font.render("Base Tile", True, SCREEN_TEXT_COLOR)
 
     wfc_order_list = []
     wfc_list_count = 0
@@ -834,7 +834,7 @@ def main():
     current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 114, 99, current_color)
 
     preview_tile_x_pos = 455
-    preview_tile_y_pos = 128
+    preview_tile_y_pos = 127
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
     draw_paint_grid_lines = True
@@ -1069,10 +1069,10 @@ def main():
                 if is_wfc_executing:
                     wfc_state["interrupt"] = True
 
-            screen.blit(selected_base_tile_text, (wfc_choice_tile_x_pos-2, wfc_choice_tile_y_pos-22))
+            screen.blit(selected_base_tile_text, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-23))
 
-            screen.blit(wfc_choice_tile_image, (wfc_choice_tile_x_pos, wfc_choice_tile_y_pos))
-            pygame.draw.rect(screen, BLACK, (wfc_choice_tile_x_pos-1, wfc_choice_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
+            screen.blit(selected_base_tile_image, (selected_base_tile_x_pos, selected_base_tile_y_pos))
+            pygame.draw.rect(screen, BLACK, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
 
             screen.blit(current_output_size_text, (550, 175))
             screen.blit(output_size_text, (685, 175))
@@ -1117,7 +1117,7 @@ def main():
                         if index != selected_tile_index:
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
-                            wfc_choice_tile_image = selected_tile.image
+                            selected_base_tile_image = selected_tile.image
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
@@ -1308,7 +1308,7 @@ def main():
             pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
             pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
 
-            screen.blit(painted_tile_text, (preview_tile_x_pos-1, 104))
+            screen.blit(painted_tile_text, (preview_tile_x_pos-1, preview_tile_y_pos-23))
 
             for color in color_panel:
                 if color.draw(screen, border=True):
@@ -1354,7 +1354,7 @@ def main():
 
                     selected_tile = tile_buttons[-1]
                     selected_tile_index = len(tile_buttons)-1
-                    wfc_choice_tile_image = selected_tile.image
+                    selected_base_tile_image = selected_tile.image
 
                     patterns = get_patterns(pattern_size, initial_tile_list[-1])
                     pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
@@ -1387,7 +1387,7 @@ def main():
                         if selected_tile_index >= len(initial_tile_list):
                             selected_tile_index -= 1
                         selected_tile = tile_buttons[selected_tile_index]
-                        wfc_choice_tile_image = selected_tile.image
+                        selected_base_tile_image = selected_tile.image
 
                         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
@@ -1471,7 +1471,7 @@ def main():
                         if index != selected_tile_index:
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
-                            wfc_choice_tile_image = selected_tile.image
+                            selected_base_tile_image = selected_tile.image
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
