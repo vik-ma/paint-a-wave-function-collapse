@@ -933,10 +933,10 @@ def main():
     for line in num_patterns_warning_text_lines:
         num_patterns_warning_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
-    tile_list_full_text_lines = ["List of Base Tiles full!", "Delete a tile to add a new one"]
+    tile_list_full_text_lines = ["List of Base Tiles full!", "Delete a tile first!"]
     tile_list_full_text = []
     for line in tile_list_full_text_lines:
-        tile_list_full_text.append(size_20_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
+        tile_list_full_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
     tile_list_guide_text_lines = ["Click on a tile below to change", "the Base Tile, or click the button", "to paint your own custom tile"]
     tile_list_guide_text = []
@@ -1329,7 +1329,7 @@ def main():
 
             if len(initial_tile_list) == max_initial_tiles:
                 for y, line in enumerate(tile_list_full_text):
-                    screen.blit(line, (500, 216 + y * 20))
+                    screen.blit(line, (600, 220 + y * 18))
 
             if save_tile_button.draw(screen):
                 if len(initial_tile_list) < max_initial_tiles:
