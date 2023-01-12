@@ -710,7 +710,7 @@ def main():
     cancel_wfc_button = Button(GREY, 630, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
     paint_new_tile_button = Button(WHITE, 650, 321, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
-    return_to_wfc_button = Button(WHITE, 7, 595, 190, 38, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
+    return_to_wfc_button = Button(WHITE, 600, 7, 190, 38, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
     help_button = Button(WHITE, 324, 595, 100, 38, "HELP", DARKPURPLE, LIGHTGREY, big_text=True)
 
