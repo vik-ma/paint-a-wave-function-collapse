@@ -720,7 +720,7 @@ def main():
     # set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
     # set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
-    toggle_show_patterns_button = Button(WHITE, 13, 595, 150, 35, "Hide Patterns", BLACK, LIGHTGREY)
+    # toggle_show_patterns_button = Button(WHITE, 13, 595, 150, 35, "Hide Patterns", BLACK, LIGHTGREY)
 
     replay_animation_button = Button(GREY, 570, 200, 170, 40, "Replay Last WFC", DARKGREY, GREY)
     skip_animation_button = Button(GREY, 570, 110, 130, 40, "Skip Replay", DARKGREY, GREY)
@@ -850,7 +850,7 @@ def main():
 
     output_size_text_color = get_output_size_text_color(output_width)
 
-    show_patterns = True
+    # show_patterns = True
 
     get_wfc_output = None
 
@@ -1176,13 +1176,13 @@ def main():
             #     pass
 
 
-            if toggle_show_patterns_button.draw(screen):
-                if show_patterns:
-                    show_patterns = False
-                    toggle_show_patterns_button.text = "Show Patterns"
-                else:
-                    show_patterns = True
-                    toggle_show_patterns_button.text = "Hide Patterns"
+            # if toggle_show_patterns_button.draw(screen):
+            #     if show_patterns:
+            #         show_patterns = False
+            #         toggle_show_patterns_button.text = "Show Patterns"
+            #     else:
+            #         show_patterns = True
+            #         toggle_show_patterns_button.text = "Hide Patterns"
 
 
             # if set_pattern_size_2_button.draw(screen):
@@ -1282,11 +1282,11 @@ def main():
                     game_state = "paint"
                     previous_game_state = "paint"
 
-            if show_patterns:
-                draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
-                pattern_group.draw(screen)
-                patterns_text.draw(screen)
-                screen.blit(num_patterns_text, (256, 312))
+            # if show_patterns:
+            draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
+            pattern_group.draw(screen)
+            patterns_text.draw(screen)
+            screen.blit(num_patterns_text, (256, 312))
             
             if len(pattern_tile_list) > 35:
                 for y, line in enumerate(num_patterns_warning_text):
