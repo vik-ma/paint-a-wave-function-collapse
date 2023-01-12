@@ -187,20 +187,21 @@ print_tile_test = [
 
 sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
 
-# sample_tile_list.append(sample_initial_tile_1)
-# sample_tile_list.append(sample_initial_tile_2)
-# sample_tile_list.append(sample_initial_tile_3)
-# # sample_tile_list.append(max_initial_tile_7x7)
-# sample_tile_list.append(sample_initial_tile_4)
-# sample_tile_list.append(sample_initial_tile_5)
-# sample_tile_list.append(sample_initial_tile_6)
-# sample_tile_list.append(sample_initial_tile_7)
-# sample_tile_list.append(sample_initial_tile_8)
+sample_tile_list.append(sample_initial_tile_1)
+sample_tile_list.append(sample_initial_tile_2)
+sample_tile_list.append(sample_initial_tile_3)
+# sample_tile_list.append(max_initial_tile_7x7)
+sample_tile_list.append(sample_initial_tile_4)
+sample_tile_list.append(sample_initial_tile_5)
+sample_tile_list.append(sample_initial_tile_6)
+sample_tile_list.append(sample_initial_tile_7)
+sample_tile_list.append(sample_initial_tile_8)
+
 # for i in range(9):
 #     sample_tile_list.append(max_initial_tile_7x7)
 
-for i in range(20):
-    sample_tile_list.append(max_initial_tile_7x7)
+# for i in range(20):
+#     sample_tile_list.append(max_initial_tile_7x7)
 
 
 def get_rotated_pix_array(pix_array):
@@ -710,7 +711,7 @@ def main():
     cancel_wfc_button = Button(GREY, 630, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
     paint_new_tile_button = Button(WHITE, 650, 321, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
-    return_to_wfc_button = Button(WHITE, 600, 7, 190, 38, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
+    return_to_wfc_button = Button(WHITE, 600, 7, 190, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
     help_button = Button(WHITE, 324, 595, 100, 38, "HELP", DARKPURPLE, LIGHTGREY, big_text=True)
 
@@ -791,7 +792,7 @@ def main():
 
     selected_base_tile_x_pos = 515
     selected_base_tile_y_pos = 60
-    selected_base_tile_image = selected_tile.image
+    selected_base_tile_image = selected_tile.image.copy()
 
     selected_base_tile_text = size_20_font.render("Base Tile", True, SCREEN_TEXT_COLOR)
 
@@ -1118,7 +1119,7 @@ def main():
                         if index != selected_tile_index:
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
-                            selected_base_tile_image = selected_tile.image
+                            selected_base_tile_image = selected_tile.image.copy()
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
@@ -1174,7 +1175,7 @@ def main():
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
             # if test_button.draw(screen):
-            #     pass
+            #     print(selected_base_tile_image == selected_tile.image)
 
 
             # if toggle_show_patterns_button.draw(screen):
@@ -1355,7 +1356,7 @@ def main():
 
                     selected_tile = tile_buttons[-1]
                     selected_tile_index = len(tile_buttons)-1
-                    selected_base_tile_image = selected_tile.image
+                    selected_base_tile_image = selected_tile.image.copy()
 
                     patterns = get_patterns(pattern_size, initial_tile_list[-1])
                     pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
@@ -1388,7 +1389,7 @@ def main():
                         if selected_tile_index >= len(initial_tile_list):
                             selected_tile_index -= 1
                         selected_tile = tile_buttons[selected_tile_index]
-                        selected_base_tile_image = selected_tile.image
+                        selected_base_tile_image = selected_tile.image.copy()
 
                         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
                         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
@@ -1472,7 +1473,7 @@ def main():
                         if index != selected_tile_index:
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
-                            selected_base_tile_image = selected_tile.image
+                            selected_base_tile_image = selected_tile.image.copy()
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
                             pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             pattern_tile_list = pattern_list[0]
