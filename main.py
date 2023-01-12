@@ -920,11 +920,11 @@ def main():
     wfc_state = {"interrupt": False}
     
     patterns_hover_box_text = ["Every different 2x2 pattern extracted from", 
-                              "the initial tile, including rotated, horizontally", 
+                              "the Base Tile, including rotated, horizontally", 
                               "and vertically flipped variants.",
                               "These patterns will build the final image",
                               "through the Wave Function Collapse."]
-    patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
+    patterns_hover_box = HoverBox(0, 0, 413, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
     patterns_text = InfoText(13, 310, "Patterns From Base Tile", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
     
@@ -938,16 +938,16 @@ def main():
     for line in tile_list_full_text_lines:
         tile_list_full_text.append(size_20_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
-    tile_list_guide_text_lines = ["Click on a tile below to change", "the start tile, or click the button", "to paint your own custom tile"]
+    tile_list_guide_text_lines = ["Click on a tile below to change", "the Base Tile, or click the button", "to paint your own custom tile"]
     tile_list_guide_text = []
     for line in tile_list_guide_text_lines:
         tile_list_guide_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
-    initial_tiles_hover_box_text = ["FILL IN LATER", "asdasd"]
-    initial_tiles_hover_box = HoverBox(0, 0, 225, len(initial_tiles_hover_box_text) * hover_box_line_height + 14, initial_tiles_hover_box_text, hover_box_font)
-    initial_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Tile Selection", size_27_font, SCREEN_TEXT_COLOR, initial_tiles_hover_box, hover_box_group) 
+    base_tiles_hover_box_text = ["FILL IN LATER", "asdasd"]
+    base_tiles_hover_box = HoverBox(0, 0, 225, len(base_tiles_hover_box_text) * hover_box_line_height + 14, base_tiles_hover_box_text, hover_box_font)
+    base_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Base Tiles", size_27_font, SCREEN_TEXT_COLOR, base_tiles_hover_box, hover_box_group) 
 
-    wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected base tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
+    wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
@@ -1109,7 +1109,7 @@ def main():
 
 
             # Initial Tile Buttons        
-            initial_tiles_text.draw(screen)
+            base_tiles_text.draw(screen)
             draw_selected_tile_border(screen, selected_tile)
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
@@ -1464,7 +1464,7 @@ def main():
                 preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
             # Initial Tile Buttons
-            initial_tiles_text.draw(screen) 
+            base_tiles_text.draw(screen) 
             draw_selected_tile_border(screen, selected_tile)
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
