@@ -187,20 +187,20 @@ print_tile_test = [
 
 sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
 
-sample_tile_list.append(sample_initial_tile_1)
-sample_tile_list.append(sample_initial_tile_2)
-sample_tile_list.append(sample_initial_tile_3)
-# sample_tile_list.append(max_initial_tile_7x7)
-sample_tile_list.append(sample_initial_tile_4)
-sample_tile_list.append(sample_initial_tile_5)
-sample_tile_list.append(sample_initial_tile_6)
-sample_tile_list.append(sample_initial_tile_7)
-sample_tile_list.append(sample_initial_tile_8)
+# sample_tile_list.append(sample_initial_tile_1)
+# sample_tile_list.append(sample_initial_tile_2)
+# sample_tile_list.append(sample_initial_tile_3)
+# # sample_tile_list.append(max_initial_tile_7x7)
+# sample_tile_list.append(sample_initial_tile_4)
+# sample_tile_list.append(sample_initial_tile_5)
+# sample_tile_list.append(sample_initial_tile_6)
+# sample_tile_list.append(sample_initial_tile_7)
+# sample_tile_list.append(sample_initial_tile_8)
 # for i in range(9):
 #     sample_tile_list.append(max_initial_tile_7x7)
 
-# for i in range(20):
-#     sample_tile_list.append(max_initial_tile_7x7)
+for i in range(20):
+    sample_tile_list.append(max_initial_tile_7x7)
 
 
 def get_rotated_pix_array(pix_array):
@@ -933,7 +933,7 @@ def main():
     for line in num_patterns_warning_text_lines:
         num_patterns_warning_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
-    tile_list_full_text_lines = ["List of initial tiles full!", "Delete a tile to add a new one"]
+    tile_list_full_text_lines = ["List of Base Tiles full!", "Delete a tile to add a new one"]
     tile_list_full_text = []
     for line in tile_list_full_text_lines:
         tile_list_full_text.append(size_20_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
@@ -1078,7 +1078,7 @@ def main():
             screen.blit(output_size_text, (685, 175))
 
             for y, line in enumerate(tile_list_guide_text):
-                screen.blit(line, (510, 250 + y * 18))
+                screen.blit(line, (525, 250 + y * 18))
             
             if increase_wfc_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width < output_grid_upper_limit and not is_wfc_executing:
@@ -1302,7 +1302,7 @@ def main():
             screen.blit(current_paint_tile_size_text, (180, 104))
 
             for y, line in enumerate(paint_guide_save_text):
-                screen.blit(line, (600, 28 + y * 18))
+                screen.blit(line, (600, 60 + y * 18))
 
             current_color_tile.draw(screen, border=True)
 
@@ -1330,7 +1330,7 @@ def main():
 
             if len(initial_tile_list) == max_initial_tiles:
                 for y, line in enumerate(tile_list_full_text):
-                    screen.blit(line, (490, 196 + y * 20))
+                    screen.blit(line, (500, 216 + y * 20))
 
             if save_tile_button.draw(screen):
                 if len(initial_tile_list) < max_initial_tiles:
