@@ -793,7 +793,7 @@ def main():
     wfc_choice_tile_y_pos = 60
     wfc_choice_tile_image = selected_tile.image
 
-    selected_tile_text = size_17_font.render("Selected Tile", True, SCREEN_TEXT_COLOR)
+    selected_base_tile_text = size_17_font.render("Base Tile", True, SCREEN_TEXT_COLOR)
 
     wfc_order_list = []
     wfc_list_count = 0
@@ -925,7 +925,7 @@ def main():
                               "These patterns will build the final image",
                               "through the Wave Function Collapse."]
     patterns_hover_box = HoverBox(0, 0, 417, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
-    patterns_text = InfoText(13, 310, "Patterns", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
+    patterns_text = InfoText(13, 310, "Patterns From Base Tile", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
     
     num_patterns_warning_text_lines = ["WARNING: This many patterns can", "take a really long time to finish!"]
@@ -938,7 +938,7 @@ def main():
     for line in tile_list_full_text_lines:
         tile_list_full_text.append(size_20_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
-    tile_list_guide_text_lines = ["Click on a tile below to change", "the start tile, or click the button", "to paint your own custom tile."]
+    tile_list_guide_text_lines = ["Click on a tile below to change", "the start tile, or click the button", "to paint your own custom tile"]
     tile_list_guide_text = []
     for line in tile_list_guide_text_lines:
         tile_list_guide_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
@@ -947,7 +947,7 @@ def main():
     initial_tiles_hover_box = HoverBox(0, 0, 225, len(initial_tiles_hover_box_text) * hover_box_line_height + 14, initial_tiles_hover_box_text, hover_box_font)
     initial_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Tile Selection", size_27_font, SCREEN_TEXT_COLOR, initial_tiles_hover_box, hover_box_group) 
 
-    wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
+    wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected base tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
@@ -1069,7 +1069,7 @@ def main():
                 if is_wfc_executing:
                     wfc_state["interrupt"] = True
 
-            screen.blit(selected_tile_text, (wfc_choice_tile_x_pos-2, wfc_choice_tile_y_pos-22))
+            screen.blit(selected_base_tile_text, (wfc_choice_tile_x_pos-2, wfc_choice_tile_y_pos-22))
 
             screen.blit(wfc_choice_tile_image, (wfc_choice_tile_x_pos, wfc_choice_tile_y_pos))
             pygame.draw.rect(screen, BLACK, (wfc_choice_tile_x_pos-1, wfc_choice_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
@@ -1286,7 +1286,7 @@ def main():
                 draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
                 pattern_group.draw(screen)
                 patterns_text.draw(screen)
-                screen.blit(num_patterns_text, (105, 312))
+                screen.blit(num_patterns_text, (256, 312))
             
             if len(pattern_tile_list) > 35:
                 for y, line in enumerate(num_patterns_warning_text):
