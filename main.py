@@ -710,9 +710,9 @@ def main():
     cancel_wfc_button = Button(GREY, 630, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
 
     paint_new_tile_button = Button(WHITE, 650, 321, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
-    return_to_wfc_button = Button(WHITE, 10, 590, 180, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
+    return_to_wfc_button = Button(WHITE, 7, 595, 190, 38, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
-    help_button = Button(WHITE, 525, 50, 100, 40, "HELP", BLACK, LIGHTGREY)
+    help_button = Button(WHITE, 324, 595, 100, 38, "HELP", DARKPURPLE, LIGHTGREY, big_text=True)
 
     increase_wfc_output_size_button = ArrowButton(WHITE, 760, 165, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_wfc_output_size_button = ArrowButton(WHITE, 760, 184, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
@@ -1271,10 +1271,10 @@ def main():
             # Grid border
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
         
-            # if help_button.draw(screen):
-            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
-            #         game_state = "help"
-            #         previous_game_state = "wfc"
+            if help_button.draw(screen):
+                if not is_wfc_anim_ongoing and not is_wfc_executing:
+                    game_state = "help"
+                    previous_game_state = "wfc"
 
             if paint_new_tile_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
@@ -1403,9 +1403,9 @@ def main():
             #Preview Tile Border
             pygame.draw.rect(screen, BLACK, (preview_tile.x - 1, preview_tile.y - 1, (preview_tile.width * enlargement_scale) + 2, (preview_tile.height * enlargement_scale) + 2), 1)
 
-            # if help_button.draw(screen):
-            #     game_state = "help"
-            #     previous_game_state = "paint"
+            if help_button.draw(screen):
+                game_state = "help"
+                previous_game_state = "paint"
 
             if return_to_wfc_button.draw(screen):
                 game_state = "wfc"
