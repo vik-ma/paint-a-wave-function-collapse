@@ -728,8 +728,8 @@ def main():
     toggle_anim_during_wfc_button = Button(WHITE, 374, 548, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 374, 570, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
 
-    increase_replay_speed_button = ArrowButton(WHITE, 170, 513, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
-    decrease_replay_speed_button = ArrowButton(WHITE, 170, 532, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
+    increase_replay_speed_button = ArrowButton(WHITE, 170, 512, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_replay_speed_button = ArrowButton(WHITE, 170, 531, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
     test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
@@ -841,7 +841,7 @@ def main():
 
     color_panel = create_paint_color_tiles()
 
-    wfc_slice_num = 5
+    wfc_replay_slice_num = 5
        
     wfc_slice_num_upper_limit = 15
     wfc_slice_num_lower_limit = 1
@@ -875,6 +875,18 @@ def main():
     current_output_size_text = size_20_font.render(f"Output Size: ", True, (0, 0, 0))
     output_size_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
 
+    settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
+    settings_sub_text = size_17_font.render("Hover over the settings for more information", True, IMPORTANT_SCREEN_TEXT_COLOR)
+
+    replay_speed_hover_box_text = ["The number represents every Nth state of the", 
+                                  "wave function collapse.", 
+                                  "'1' will show the wave function collapse in its", 
+                                  "entirety and takes a very long time to finish."]
+    replay_speed_hover_box = HoverBox(0, 0, 425, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
+    replay_speed_text = InfoText(15, 522, "Replay Speed:", size_17_font, SCREEN_TEXT_COLOR, replay_speed_hover_box, hover_box_group)
+
+    replay_speed_value_text = size_20_font.render(str(wfc_replay_slice_num), True, BLUE)
+
     anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", 
                                       "collapse as it's being executed."]
     anim_during_wfc_hover_box = HoverBox(0, 0, 380, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, hover_box_font)
@@ -888,18 +900,6 @@ def main():
     
     anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
     anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
-
-    replay_speed_hover_box_text = ["The number represents every Nth state of the", 
-                                  "wave function collapse.", 
-                                  "'1' will show the wave function collapse in its", 
-                                  "entirety and takes a very long time to finish."]
-    replay_speed_hover_box = HoverBox(0, 0, 425, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
-    replay_speed_text = InfoText(15, 525, "Replay Speed:", size_17_font, SCREEN_TEXT_COLOR, replay_speed_hover_box, hover_box_group)
-
-    wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, BLUE)
-
-    settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
-    settings_sub_text = size_17_font.render("Hover over the settings for more information", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     sliced_list = []
     last_image = None
@@ -989,7 +989,7 @@ def main():
                     change_button_color("disabled", enabled_buttons_during_wfc_exec_list)
                     if wfc_order_list != []:
                         last_image = wfc_order_list[-1]
-                        sliced_list = wfc_order_list[::wfc_slice_num]
+                        sliced_list = wfc_order_list[::wfc_replay_slice_num]
                         sliced_list.append(last_image)
                     else:
                         wfc_order_list.append(result[1])
@@ -1204,48 +1204,47 @@ def main():
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
             #         pattern_tile_list = pattern_list[0]
 
-            pygame.draw.line(screen, BLACK, (0, 450), (440, 450))
-            screen.blit(settings_text, (15, 458))
-            screen.blit(settings_sub_text, (15, 487))
+            pygame.draw.line(screen, BLACK, (0, 452), (440, 452))
 
+            screen.blit(settings_text, (15, 460))
+            screen.blit(settings_sub_text, (15, 489))
 
             replay_speed_text.draw(screen)
-            
-            screen.blit(wfc_slice_num_text, (139, 524))
-
-            if increase_replay_speed_button.draw(screen):
-                if not is_wfc_anim_ongoing:
-                    if wfc_slice_num < wfc_slice_num_upper_limit:
-                        wfc_slice_num += 1
-                        sliced_list = wfc_order_list[::wfc_slice_num]
-                        sliced_list.append(last_image)
-                        wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
-                        if wfc_slice_num == wfc_slice_num_upper_limit:
-                            change_button_color("disabled", [increase_replay_speed_button])
-                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_replay_speed_button)
-                        if wfc_slice_num == wfc_slice_num_lower_limit + 1:
-                            change_button_color("enabled", [decrease_replay_speed_button])
-                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_replay_speed_button)
-
-            if decrease_replay_speed_button.draw(screen):
-                if not is_wfc_anim_ongoing:
-                    if wfc_slice_num > wfc_slice_num_lower_limit:
-                        wfc_slice_num -= 1
-                        sliced_list = wfc_order_list[::wfc_slice_num]
-                        sliced_list.append(last_image)
-                        wfc_slice_num_text = size_20_font.render(str(wfc_slice_num), True, (0, 0, 255))
-                        if wfc_slice_num == wfc_slice_num_lower_limit:
-                            change_button_color("disabled", [decrease_replay_speed_button])
-                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_replay_speed_button)
-                        if wfc_slice_num == wfc_slice_num_upper_limit - 1:
-                            change_button_color("enabled", [increase_replay_speed_button])
-                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_replay_speed_button)
+            screen.blit(replay_speed_value_text, (139, 521))
 
             screen.blit(anim_during_wfc_value_text, (334, 550))
             screen.blit(anim_after_wfc_value_text, (334, 572))
 
             anim_during_wfc_infotext.draw(screen)
             anim_after_wfc_infotext.draw(screen)
+
+            if increase_replay_speed_button.draw(screen):
+                if not is_wfc_anim_ongoing:
+                    if wfc_replay_slice_num < wfc_slice_num_upper_limit:
+                        wfc_replay_slice_num += 1
+                        sliced_list = wfc_order_list[::wfc_replay_slice_num]
+                        sliced_list.append(last_image)
+                        replay_speed_value_text = size_20_font.render(str(wfc_replay_slice_num), True, (0, 0, 255))
+                        if wfc_replay_slice_num == wfc_slice_num_upper_limit:
+                            change_button_color("disabled", [increase_replay_speed_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_replay_speed_button)
+                        if wfc_replay_slice_num == wfc_slice_num_lower_limit + 1:
+                            change_button_color("enabled", [decrease_replay_speed_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_replay_speed_button)
+
+            if decrease_replay_speed_button.draw(screen):
+                if not is_wfc_anim_ongoing:
+                    if wfc_replay_slice_num > wfc_slice_num_lower_limit:
+                        wfc_replay_slice_num -= 1
+                        sliced_list = wfc_order_list[::wfc_replay_slice_num]
+                        sliced_list.append(last_image)
+                        replay_speed_value_text = size_20_font.render(str(wfc_replay_slice_num), True, (0, 0, 255))
+                        if wfc_replay_slice_num == wfc_slice_num_lower_limit:
+                            change_button_color("disabled", [decrease_replay_speed_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_replay_speed_button)
+                        if wfc_replay_slice_num == wfc_slice_num_upper_limit - 1:
+                            change_button_color("enabled", [increase_replay_speed_button])
+                            disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_replay_speed_button)
 
             if toggle_anim_during_wfc_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
@@ -1290,7 +1289,7 @@ def main():
             
             if len(pattern_tile_list) > 35:
                 for y, line in enumerate(num_patterns_warning_text):
-                    screen.blit(line, (13, 406 + y * 18))
+                    screen.blit(line, (13, 409 + y * 18))
 
             hover_box_group.draw(screen)
 
