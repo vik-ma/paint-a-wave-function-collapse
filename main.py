@@ -816,7 +816,8 @@ def main():
     paint_guide_color_text = size_18_font.render("Click on a color in the color panel to change color", True, IMPORTANT_SCREEN_TEXT_COLOR)
     paint_guide_grid_text = size_18_font.render("Click on a square in the grid to paint the tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
     
-    paint_guide_save_text_lines = ["Click on 'Save Tile' to", "save the current tile", "and go back to WFC"]
+    # paint_guide_save_text_lines = ["Click on 'Save Tile' to", "save the current tile", "and go back to WFC"]
+    paint_guide_save_text_lines = ["Click on 'Save Tile' to", "save the current tile"]
     paint_guide_save_text = []
     for line in paint_guide_save_text_lines:
         paint_guide_save_text.append(size_18_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
@@ -1301,7 +1302,7 @@ def main():
             screen.blit(current_paint_tile_size_text, (175, 105))
 
             for y, line in enumerate(paint_guide_save_text):
-                screen.blit(line, (600, 60 + y * 18))
+                screen.blit(line, (600, 80 + y * 18))
 
             current_color_tile.draw(screen, border=True)
 
