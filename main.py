@@ -1339,7 +1339,7 @@ def main():
 
                     prev_tile = initial_tile_list[-1]
                     if len(tile_buttons) % initial_tile_col_limit == 0:
-                        x_pos = 50
+                        x_pos = tile_list_x_pos
                         y_pos = prev_tile.y + initial_tile_max_height * enlargement_scale + tile_list_offset
                         initial_tile_max_height = paint_grid_rows
                     else:
