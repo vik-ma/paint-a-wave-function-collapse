@@ -616,13 +616,13 @@ def create_pix_array(paint_grid):
 
 def create_paint_color_tiles():
     y = 28
-    x = 20
+    x = 10
     col_limit = 17
     color_tile_list = []
     for col in range(34):
         if col % col_limit == 0 and col > 0:
             y += 33
-            x = 20
+            x = 10
         if col < len(color_list):
             color_tile = PaintTile(30, 30, x, y, (color_list[col]))
         else:
@@ -733,11 +733,11 @@ def main():
 
     test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
-    increase_paint_grid_size_button = ArrowButton(WHITE, 305, 94, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
-    decrease_paint_grid_size_button = ArrowButton(WHITE, 305, 113, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
+    increase_paint_grid_size_button = ArrowButton(WHITE, 300, 95, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_paint_grid_size_button = ArrowButton(WHITE, 300, 114, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
-    clear_paint_grid_button = Button(WHITE, 20, 520, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
-    toggle_grid_lines_button = Button(WHITE, 200, 520, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
+    clear_paint_grid_button = Button(WHITE, 9, 520, 170, 40, "Clear Paint Grid", BLACK, LIGHTGREY)
+    toggle_grid_lines_button = Button(WHITE, 190, 520, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     save_tile_button = Button(WHITE, 615, 120, 150, 46, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
@@ -803,7 +803,7 @@ def main():
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
-    paint_grid_x_pos = 20
+    paint_grid_x_pos = 10
     paint_grid_y_pos = 158
 
     paint_grid_tile_size = 50
@@ -831,7 +831,7 @@ def main():
 
     current_color = CRIMSON
 
-    current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 114, 98, current_color)
+    current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 114, 99, current_color)
 
     preview_tile_x_pos = 455
     preview_tile_y_pos = 128
@@ -1294,11 +1294,11 @@ def main():
             hover_box_group.draw(screen)
 
         if game_state == "paint":
-            screen.blit(paint_guide_color_text, (20, 5))
-            screen.blit(paint_guide_grid_text, (20, 133))
+            screen.blit(paint_guide_color_text, (10, 5))
+            screen.blit(paint_guide_grid_text, (10, 133))
 
-            screen.blit(current_color_text, (paint_grid_x_pos, 104))
-            screen.blit(current_paint_tile_size_text, (180, 104))
+            screen.blit(current_color_text, (paint_grid_x_pos, 105))
+            screen.blit(current_paint_tile_size_text, (175, 105))
 
             for y, line in enumerate(paint_guide_save_text):
                 screen.blit(line, (600, 60 + y * 18))
@@ -1308,7 +1308,7 @@ def main():
             pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
             pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
 
-            screen.blit(painted_tile_text, (preview_tile_x_pos-2, 102))
+            screen.blit(painted_tile_text, (preview_tile_x_pos-1, 104))
 
             for color in color_panel:
                 if color.draw(screen, border=True):
