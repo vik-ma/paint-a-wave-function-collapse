@@ -553,7 +553,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     # if pattern_size == 3:
     #     y_offset = 38
     #     x_offset = 33
-    x = 15
+    x = 10
     y = 335
     col_limit = 19
     tile_list = []
@@ -773,9 +773,9 @@ def main():
 
     pattern_tile_list = pattern_list[0]
 
-    grid_x_pos = 15
+    grid_x_pos = 10
     grid_y_pos = 28
-    second_grid_x_pos = 265
+    second_grid_x_pos = 260
     second_grid_y_pos = 28
 
     output_width = 20
@@ -862,7 +862,7 @@ def main():
     is_wfc_finished = False
 
     wfc_finished_text = None
-    wfc_state_text_pos = (13, 272)
+    wfc_state_text_pos = (8, 280)
     
     thread_queue = queue.Queue()
 
@@ -927,7 +927,7 @@ def main():
                               "These patterns will build the final image",
                               "through the Wave Function Collapse."]
     patterns_hover_box = HoverBox(0, 0, 413, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
-    patterns_text = InfoText(13, 310, "Patterns From Base Tile", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
+    patterns_text = InfoText(8, 310, "Patterns From Base Tile", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
     
     num_patterns_warning_text_lines = ["WARNING: This many patterns can", "take a really long time to finish!"]
@@ -1037,7 +1037,7 @@ def main():
             pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
             pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
 
-            screen.blit(wfc_guide_text, (15, 5))
+            screen.blit(wfc_guide_text, (10, 5))
 
             if is_wfc_finished:
                 if not did_wfc_fail:
@@ -1287,11 +1287,11 @@ def main():
             draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
             pattern_group.draw(screen)
             patterns_text.draw(screen)
-            screen.blit(num_patterns_text, (256, 312))
+            screen.blit(num_patterns_text, (251, 312))
             
             if len(pattern_tile_list) > 35:
                 for y, line in enumerate(num_patterns_warning_text):
-                    screen.blit(line, (13, 409 + y * 18))
+                    screen.blit(line, (8, 409 + y * 18))
 
             hover_box_group.draw(screen)
 
