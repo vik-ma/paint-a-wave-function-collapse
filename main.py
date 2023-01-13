@@ -869,8 +869,8 @@ def main():
     render_wfc_during_execution = True
     render_wfc_at_end = True
 
-    output_size_hover_box_text = ["Larger output size", "increases execution", "time exponentially."]
-    output_size_hover_box = HoverBox(200, len(output_size_hover_box_text) * hover_box_line_height + 14, output_size_hover_box_text, hover_box_font)
+    output_size_hover_box_text = ["Larger output", "size increases", "execution time", "exponentially."]
+    output_size_hover_box = HoverBox(155, len(output_size_hover_box_text) * hover_box_line_height + 14, output_size_hover_box_text, hover_box_font)
     output_size_text = InfoText(630, selected_base_tile_y_pos-23, "Output Size", size_20_font, SCREEN_TEXT_COLOR, output_size_hover_box, hover_box_group)
     output_size_value_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
 
