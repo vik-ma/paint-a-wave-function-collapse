@@ -12,7 +12,7 @@ from tile import Tile
 from button import Button
 from pattern import Pattern
 from rule_index import RuleIndex
-from initial_tile import InitialTile
+from sample_tile import SampleTile
 from tile_button import TileButton
 from paint_tile import PaintTile
 from info_text import InfoText
@@ -100,7 +100,7 @@ max_size_white_tile_8x8 = [
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255))
     ]
 
-max_initial_tile_8x8 = InitialTile(max_size_white_tile_8x8, 8, 8)
+max_initial_tile_8x8 = SampleTile(max_size_white_tile_8x8, 8, 8)
 
 max_size_white_tile_7x7 = [
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
@@ -112,7 +112,7 @@ max_size_white_tile_7x7 = [
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
   ]
 
-max_initial_tile_7x7 = InitialTile(max_size_white_tile_7x7, 7, 7)
+max_initial_tile_7x7 = SampleTile(max_size_white_tile_7x7, 7, 7)
 
 sample_pixel_array = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -121,7 +121,7 @@ sample_pixel_array = [
     (WHITE, BLACK, BLACK, BLACK),
     ]
 
-sample_initial_tile_1 = InitialTile(sample_pixel_array, 4, 4)
+sample_initial_tile_1 = SampleTile(sample_pixel_array, 4, 4)
 
 sample_pixel_array_5x5 = [
     (WHITE, WHITE, WHITE, WHITE, WHITE),
@@ -131,7 +131,7 @@ sample_pixel_array_5x5 = [
     (GREEN, GREEN, GREEN, GREEN, WHITE)
 ]
 
-sample_initial_tile_2 = InitialTile(sample_pixel_array_5x5, 5, 5)
+sample_initial_tile_2 = SampleTile(sample_pixel_array_5x5, 5, 5)
 
 sample_pixel_array_5x4 = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -141,7 +141,7 @@ sample_pixel_array_5x4 = [
     (WHITE, BLACK, BLACK, GREEN)
 ]
 
-sample_initial_tile_3 = InitialTile(sample_pixel_array_5x4, 5, 4)
+sample_initial_tile_3 = SampleTile(sample_pixel_array_5x4, 5, 4)
 
 sample_pixel_array_3x4 = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -149,7 +149,7 @@ sample_pixel_array_3x4 = [
     (WHITE, LIGHTGREY, WHITE, GREEN)
 ]
 
-sample_initial_tile_4 = InitialTile(sample_pixel_array_3x4, 3, 4)
+sample_initial_tile_4 = SampleTile(sample_pixel_array_3x4, 3, 4)
 
 sample_pixel_array_3x3 = [
     (WHITE, WHITE, WHITE),
@@ -157,7 +157,7 @@ sample_pixel_array_3x3 = [
     (WHITE, BLACK, GREEN)
 ]
 
-sample_initial_tile_5 = InitialTile(sample_pixel_array_3x3, 3, 3)
+sample_initial_tile_5 = SampleTile(sample_pixel_array_3x3, 3, 3)
 
 sample_pixel_array_5x4_test = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -167,7 +167,7 @@ sample_pixel_array_5x4_test = [
     (WHITE, BLACK, WHITE, GREEN)
 ]
 
-sample_initial_tile_6 = InitialTile(sample_pixel_array_5x4_test, 5, 4)
+sample_initial_tile_6 = SampleTile(sample_pixel_array_5x4_test, 5, 4)
 
 sample_pixel_array_4x4_test = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -176,7 +176,7 @@ sample_pixel_array_4x4_test = [
     (WHITE, BLACK, WHITE, GREEN)
     ]
 
-sample_initial_tile_7 = InitialTile(sample_pixel_array_4x4_test, 4, 4)
+sample_initial_tile_7 = SampleTile(sample_pixel_array_4x4_test, 4, 4)
 
 print_tile_test = [
     ((255, 255, 255), (255, 255, 255), (186, 85, 211), (0, 255, 255)), 
@@ -185,7 +185,7 @@ print_tile_test = [
     ((0, 255, 255), (0, 255, 255), (0, 255, 255), (255, 255, 255))
     ]
 
-sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
+sample_initial_tile_8 = SampleTile(print_tile_test, 4, 4)
 
 sample_tile_list.append(sample_initial_tile_1)
 sample_tile_list.append(sample_initial_tile_2)
