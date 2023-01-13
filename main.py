@@ -190,7 +190,7 @@ sample_initial_tile_8 = InitialTile(print_tile_test, 4, 4)
 sample_tile_list.append(sample_initial_tile_1)
 sample_tile_list.append(sample_initial_tile_2)
 sample_tile_list.append(sample_initial_tile_3)
-# sample_tile_list.append(max_initial_tile_7x7)
+sample_tile_list.append(max_initial_tile_7x7)
 sample_tile_list.append(sample_initial_tile_4)
 sample_tile_list.append(sample_initial_tile_5)
 sample_tile_list.append(sample_initial_tile_6)
@@ -704,25 +704,24 @@ def main():
     hover_box_font = size_18_font
     hover_box_line_height = hover_box_font.get_linesize()
 
-    
-    start_wfc_button = Button(WHITE, 630, 5, 150, 44, "Start WFC", BLACK, LIGHTGREY, big_text=True)
     test_button = Button(WHITE, 630, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
+    
+    start_wfc_button = Button(WHITE, 509, 114, 150, 44, "Start WFC", BLACK, LIGHTGREY, big_text=True)
+    cancel_wfc_button = Button(GREY, 668, 118, 120, 40, "Cancel WFC", DARKGREY, GREY)
 
-    cancel_wfc_button = Button(GREY, 630, 60, 150, 40, "Cancel WFC", DARKGREY, GREY)
+    skip_animation_button = Button(GREY, 509, 163, 130, 40, "Skip Replay", DARKGREY, GREY)
+    replay_animation_button = Button(GREY, 509, 208, 170, 40, "Replay Last WFC", DARKGREY, GREY)
 
     paint_new_tile_button = Button(WHITE, 650, 321, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
     return_to_wfc_button = Button(WHITE, 600, 7, 190, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
     help_button = Button(WHITE, 9, 595, 100, 38, "HELP", BLACK, LIGHTGREY, big_text=True)
 
-    increase_wfc_output_size_button = ArrowButton(WHITE, 760, 165, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
-    decrease_wfc_output_size_button = ArrowButton(WHITE, 760, 184, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
+    increase_wfc_output_size_button = ArrowButton(WHITE, 715, 47, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_wfc_output_size_button = ArrowButton(WHITE, 715, 66, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
     # set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
     # set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
-
-    replay_animation_button = Button(GREY, 570, 200, 170, 40, "Replay Last WFC", DARKGREY, GREY)
-    skip_animation_button = Button(GREY, 570, 110, 130, 40, "Skip Replay", DARKGREY, GREY)
 
     toggle_anim_during_wfc_button = Button(WHITE, 369, 548, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 369, 570, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
@@ -744,7 +743,7 @@ def main():
 
     run = True
 
-    draw_second_grid = False
+    draw_second_grid = True
 
     wfc_output = None
     wfc_output_2 = None
@@ -788,8 +787,8 @@ def main():
 
     selected_tile = tile_buttons[selected_tile_index]
 
-    selected_base_tile_x_pos = 515
-    selected_base_tile_y_pos = 60
+    selected_base_tile_x_pos = 510
+    selected_base_tile_y_pos = 50
     selected_base_tile_image = selected_tile.image.copy()
 
     selected_base_tile_text = size_20_font.render("Base Tile", True, SCREEN_TEXT_COLOR)
@@ -872,7 +871,7 @@ def main():
 
     output_size_hover_box_text = ["Larger output size", "increases execution", "time exponentially."]
     output_size_hover_box = HoverBox(200, len(output_size_hover_box_text) * hover_box_line_height + 14, output_size_hover_box_text, hover_box_font)
-    output_size_text = InfoText(550, 175, "Output Size:", size_20_font, SCREEN_TEXT_COLOR, output_size_hover_box, hover_box_group)
+    output_size_text = InfoText(630, selected_base_tile_y_pos-23, "Output Size", size_20_font, SCREEN_TEXT_COLOR, output_size_hover_box, hover_box_group)
     output_size_value_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
 
     settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
@@ -1075,10 +1074,10 @@ def main():
             pygame.draw.rect(screen, BLACK, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
 
             output_size_text.draw(screen)
-            screen.blit(output_size_value_text, (685, 175))
+            screen.blit(output_size_value_text, (640, selected_base_tile_y_pos+7))
 
             for y, line in enumerate(tile_list_guide_text):
-                screen.blit(line, (525, 250 + y * 18))
+                screen.blit(line, (510, 253 + y * 18))
             
             if increase_wfc_output_size_button.draw(screen):
                 if not is_wfc_anim_ongoing and output_width < output_grid_upper_limit and not is_wfc_executing:
