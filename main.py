@@ -721,8 +721,6 @@ def main():
     # set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
     # set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
-    # toggle_show_patterns_button = Button(WHITE, 13, 595, 150, 35, "Hide Patterns", BLACK, LIGHTGREY)
-
     replay_animation_button = Button(GREY, 570, 200, 170, 40, "Replay Last WFC", DARKGREY, GREY)
     skip_animation_button = Button(GREY, 570, 110, 130, 40, "Skip Replay", DARKGREY, GREY)
 
@@ -851,8 +849,6 @@ def main():
     is_wfc_anim_ongoing = False
 
     output_size_text_color = get_output_size_text_color(output_width)
-
-    # show_patterns = True
 
     get_wfc_output = None
 
@@ -1178,16 +1174,6 @@ def main():
 
             # if test_button.draw(screen):
             #     print(selected_base_tile_image == selected_tile.image)
-
-
-            # if toggle_show_patterns_button.draw(screen):
-            #     if show_patterns:
-            #         show_patterns = False
-            #         toggle_show_patterns_button.text = "Show Patterns"
-            #     else:
-            #         show_patterns = True
-            #         toggle_show_patterns_button.text = "Hide Patterns"
-
 
             # if set_pattern_size_2_button.draw(screen):
             #     if not is_wfc_anim_ongoing and not is_wfc_executing:

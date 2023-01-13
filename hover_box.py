@@ -10,8 +10,6 @@ class HoverBox(pygame.sprite.Sprite):
         self.text = []
         for text_line in text:
             self.text.append(self.font.render(text_line, True, (0, 0, 0)))
-
-        # self.update_image(x, y)
         
     def update_image(self, x, y):
         #Box
