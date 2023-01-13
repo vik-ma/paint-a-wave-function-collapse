@@ -715,7 +715,8 @@ def main():
     paint_new_tile_button = Button(WHITE, 650, 321, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
     return_to_wfc_button = Button(WHITE, 600, 7, 190, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
-    help_button = Button(WHITE, 9, 595, 100, 38, "HELP", BLACK, LIGHTGREY, big_text=True)
+    help_button = Button(WHITE, 9, 595, 90, 38, "HELP", BLACK, LIGHTGREY, big_text=True)
+    return_from_help_button = Button(WHITE, 673, 589, 120, 44, "RETURN", BLACK, LIGHTGREY, big_text=True)
 
     increase_wfc_output_size_button = ArrowButton(WHITE, 715, 47, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_wfc_output_size_button = ArrowButton(WHITE, 715, 66, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
@@ -1475,7 +1476,7 @@ def main():
             help_title_text = size_20_font.render("HELP", True, (0, 0, 0))
             screen.blit(help_title_text, (50, 20))
 
-            if paint_new_tile_button.draw(screen):
+            if return_from_help_button.draw(screen):
                 game_state = previous_game_state
 
         for event in pygame.event.get():
