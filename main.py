@@ -875,7 +875,7 @@ def main():
     render_wfc_at_end = True
 
     output_size_hover_box_text = ["Larger output size", "increases execution", "time exponentially."]
-    output_size_hover_box = HoverBox(0, 0, 200, len(output_size_hover_box_text) * hover_box_line_height + 14, output_size_hover_box_text, hover_box_font)
+    output_size_hover_box = HoverBox(200, len(output_size_hover_box_text) * hover_box_line_height + 14, output_size_hover_box_text, hover_box_font)
     output_size_text = InfoText(550, 175, "Output Size:", size_20_font, SCREEN_TEXT_COLOR, output_size_hover_box, hover_box_group)
     output_size_value_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
 
@@ -886,19 +886,19 @@ def main():
                                   "wave function collapse.", 
                                   "'1' will show the wave function collapse in its", 
                                   "entirety and takes a very long time to finish."]
-    replay_speed_hover_box = HoverBox(0, 0, 425, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
+    replay_speed_hover_box = HoverBox(425, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
     replay_speed_text = InfoText(10, 522, "Replay Speed:", size_17_font, SCREEN_TEXT_COLOR, replay_speed_hover_box, hover_box_group)
 
     replay_speed_value_text = size_20_font.render(str(wfc_replay_slice_num), True, BLUE)
 
     anim_during_wfc_hover_box_text = ["Shows the progress of the wave function", 
                                       "collapse as it's being executed."]
-    anim_during_wfc_hover_box = HoverBox(0, 0, 380, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, hover_box_font)
+    anim_during_wfc_hover_box = HoverBox(380, len(anim_during_wfc_hover_box_text) * hover_box_line_height + 14, anim_during_wfc_hover_box_text, hover_box_font)
     anim_during_wfc_main_text = "Animate WFC state during execution:"
     anim_during_wfc_infotext = InfoText(10, 550, anim_during_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_during_wfc_hover_box, hover_box_group)
 
     anim_after_wfc_hover_box_text = ["Replays a more detailed time lapse of the wave function", "collapse in a second grid once it has reached completion."]
-    anim_after_wfc_hover_box = HoverBox(0, 0, 525, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
+    anim_after_wfc_hover_box = HoverBox(525, len(anim_after_wfc_hover_box_text) * hover_box_line_height + 14, anim_after_wfc_hover_box_text, hover_box_font)
     anim_after_wfc_main_text = "Replay WFC once it's completed:"
     anim_after_wfc_infotext = InfoText(10, 572, anim_after_wfc_main_text, size_17_font, SCREEN_TEXT_COLOR, anim_after_wfc_hover_box, hover_box_group)
     
@@ -928,7 +928,7 @@ def main():
                               "and vertically flipped variants.",
                               "These patterns will build the final image",
                               "through the Wave Function Collapse."]
-    patterns_hover_box = HoverBox(0, 0, 413, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
+    patterns_hover_box = HoverBox(413, len(patterns_hover_box_text) * hover_box_line_height + 14, patterns_hover_box_text, hover_box_font)
     patterns_text = InfoText(8, 310, "Patterns From Base Tile", size_20_font, SCREEN_TEXT_COLOR, patterns_hover_box, hover_box_group)
     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
     
@@ -948,7 +948,7 @@ def main():
         tile_list_guide_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
     base_tiles_hover_box_text = ["FILL IN LATER", "asdasd"]
-    base_tiles_hover_box = HoverBox(0, 0, 225, len(base_tiles_hover_box_text) * hover_box_line_height + 14, base_tiles_hover_box_text, hover_box_font)
+    base_tiles_hover_box = HoverBox(225, len(base_tiles_hover_box_text) * hover_box_line_height + 14, base_tiles_hover_box_text, hover_box_font)
     base_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Base Tiles", size_27_font, SCREEN_TEXT_COLOR, base_tiles_hover_box, hover_box_group) 
 
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)

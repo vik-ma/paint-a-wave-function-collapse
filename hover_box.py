@@ -1,7 +1,7 @@
 import pygame
 
 class HoverBox(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height, text, font):
+    def __init__(self, width, height, text, font):
         pygame.sprite.Sprite.__init__(self)
         self.width = width
         self.height = height
@@ -11,7 +11,7 @@ class HoverBox(pygame.sprite.Sprite):
         for text_line in text:
             self.text.append(self.font.render(text_line, True, (0, 0, 0)))
 
-        self.update_image(x, y)
+        # self.update_image(x, y)
         
     def update_image(self, x, y):
         #Box
