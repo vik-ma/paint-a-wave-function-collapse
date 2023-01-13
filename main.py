@@ -872,7 +872,7 @@ def main():
     output_size_hover_box_text = ["Larger output", "size increases", "execution time", "exponentially."]
     output_size_hover_box = HoverBox(155, len(output_size_hover_box_text) * hover_box_line_height + 14, output_size_hover_box_text, hover_box_font)
     output_size_text = InfoText(630, selected_base_tile_y_pos-23, "Output Size", size_20_font, SCREEN_TEXT_COLOR, output_size_hover_box, hover_box_group)
-    output_size_value_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
+    output_size_value_text = InfoText(640, selected_base_tile_y_pos+7, f"{output_width} x {output_height}", size_20_font, output_size_text_color, output_size_hover_box, hover_box_group)
 
     settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
     settings_sub_text = size_17_font.render("Hover over the settings for more information", True, IMPORTANT_SCREEN_TEXT_COLOR)
@@ -1074,7 +1074,7 @@ def main():
             pygame.draw.rect(screen, BLACK, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
 
             output_size_text.draw(screen)
-            screen.blit(output_size_value_text, (640, selected_base_tile_y_pos+7))
+            output_size_value_text.draw(screen)
 
             for y, line in enumerate(tile_list_guide_text):
                 screen.blit(line, (510, 253 + y * 18))
@@ -1084,7 +1084,7 @@ def main():
                     output_width += 1
                     output_height += 1
                     output_size_text_color = get_output_size_text_color(output_width)
-                    output_size_value_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
+                    output_size_value_text.render_main_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
                     if output_width == output_grid_upper_limit:
                         change_button_color("disabled", [increase_wfc_output_size_button])
                         disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_wfc_output_size_button)
@@ -1098,7 +1098,7 @@ def main():
                     output_width -= 1
                     output_height -= 1
                     output_size_text_color = get_output_size_text_color(output_width)
-                    output_size_value_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
+                    output_size_value_text.render_main_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
                     if output_width == output_grid_lower_limit:
                         change_button_color("disabled", [decrease_wfc_output_size_button])
                         disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_wfc_output_size_button)
