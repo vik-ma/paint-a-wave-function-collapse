@@ -557,14 +557,6 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
         tile_list.append(tile)
     return tile_list
 
-def draw_patterns(pattern_group, pattern_list, screen, enlargement_scale):
-    pattern_group.empty()
-    pattern_limit = 57
-    pattern_list = pattern_list[:pattern_limit]
-    for pattern in pattern_list:
-        pattern_group.add(pattern)
-        pygame.draw.rect(screen, BLACK, (pattern.x - 1, pattern.y - 1, pattern.width * enlargement_scale + 2, pattern.height * enlargement_scale + 2), 1)
-
 def update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit):
     pattern_group.empty()
     pattern_tile_list = pattern_tile_list[:pattern_draw_limit]
@@ -644,10 +636,6 @@ def get_output_size_text_color(size):
     elif size >= 15 and size < 22:
         return YELLOW
     return IMPORTANT_SCREEN_TEXT_COLOR
-
-def test_threading():
-    time.sleep(2)
-    print("TEST")
 
 def print_tile_colors(tile):
     print(tile.pix_array)
@@ -821,7 +809,6 @@ def main():
     paint_guide_color_text = size_18_font.render("Click on a color in the color panel to change color", True, IMPORTANT_SCREEN_TEXT_COLOR)
     paint_guide_grid_text = size_18_font.render("Click on a square in the grid to paint the tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
     
-    # paint_guide_save_text_lines = ["Click on 'Save Tile' to", "save the current tile", "and go back to WFC"]
     paint_guide_save_text_lines = ["Click on 'Save Tile' to", "save the current tile"]
     paint_guide_save_text = []
     for line in paint_guide_save_text_lines:
@@ -1049,6 +1036,9 @@ def main():
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output)
 
+            # Grid border
+            pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
+        
             pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
             pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
 
@@ -1208,10 +1198,17 @@ def main():
             #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-
+            # Patterns section
             for pattern in pattern_tile_list[:pattern_draw_limit]:
                 pygame.draw.rect(screen, BLACK, (pattern.x - 1, pattern.y - 1, pattern.width * enlargement_scale + 2, pattern.height * enlargement_scale + 2), 1)
 
+            screen.blit(num_patterns_text, (251, 312))
+            
+            if len(pattern_tile_list) > 35:
+                for y, line in enumerate(num_patterns_warning_text):
+                    screen.blit(line, (8, 409 + y * 18))
+
+            # Settings Section
             pygame.draw.line(screen, BLACK, (0, 452), (440, 452))
 
             screen.blit(settings_text, (10, 460))
@@ -1272,13 +1269,6 @@ def main():
                         render_wfc_at_end = True
                         anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
             
-
-            completed_wfc_pattern_group.draw(screen)
-            
-
-            # Grid border
-            pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
-        
             if help_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
                     game_state = "help"
@@ -1289,15 +1279,9 @@ def main():
                     game_state = "paint"
                     previous_game_state = "paint"
 
-            # draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
+            completed_wfc_pattern_group.draw(screen)
             pattern_group.draw(screen)
             patterns_text.draw(screen)
-            screen.blit(num_patterns_text, (251, 312))
-            
-            if len(pattern_tile_list) > 35:
-                for y, line in enumerate(num_patterns_warning_text):
-                    screen.blit(line, (8, 409 + y * 18))
-
             hover_box_group.draw(screen)
 
         if game_state == "paint":
@@ -1483,7 +1467,7 @@ def main():
                             pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
                             update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
-                            
+
             # if test_paint_button.draw(screen):
             #     print(preview_tile.pix_array)
             paint_color_group.draw(screen)
