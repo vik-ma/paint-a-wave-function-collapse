@@ -948,7 +948,7 @@ def main():
     for line in tile_list_guide_text_lines:
         tile_list_guide_text.append(size_17_font.render(line, True, IMPORTANT_SCREEN_TEXT_COLOR))
 
-    base_tiles_hover_box_text = ["The Wave Function Collapse", "algorithm will procedurally", "generate a new image based", "on the patterns in the Base", "Tile."]
+    base_tiles_hover_box_text = ["The wave function collapse", "algorithm will procedurally", "generate a new image based", "on the patterns in the Base", "Tile."]
     base_tiles_hover_box = HoverBox(275, len(base_tiles_hover_box_text) * hover_box_line_height + 14, base_tiles_hover_box_text, hover_box_font)
     base_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Base Tiles", size_27_font, SCREEN_TEXT_COLOR, base_tiles_hover_box, hover_box_group) 
 
