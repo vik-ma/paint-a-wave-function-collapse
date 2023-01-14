@@ -917,6 +917,9 @@ def main():
 
     wfc_state = {"interrupt": False}
     
+    switch_state_cooldown = False
+    switch_state_cooldown_value = 15
+
     patterns_hover_box_text = ["Every different 2x2 pattern extracted from", 
                               "the Base Tile, including rotated, horizontally", 
                               "and vertically flipped variants.",
@@ -1036,6 +1039,12 @@ def main():
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         completed_wfc_pattern_group.add(wfc_output)
 
+            if switch_state_cooldown:
+                switch_state_cooldown_value -= 1
+                if switch_state_cooldown_value == 0:
+                    switch_state_cooldown = False
+                    switch_state_cooldown_value = 15
+
             # Grid border
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
         
@@ -1052,7 +1061,7 @@ def main():
                 screen.blit(wfc_finished_text, wfc_state_text_pos)
 
             if start_wfc_button.draw(screen):
-                if not is_wfc_executing:
+                if not is_wfc_executing and not switch_state_cooldown:
                     completed_wfc_pattern_group.empty()
                     thread_queue = queue.Queue()
                     wfc_list_count = 0
@@ -1354,6 +1363,8 @@ def main():
 
                     if len(initial_tile_list) == max_initial_tiles:
                         change_button_color("disabled", [save_tile_button])
+
+                    switch_state_cooldown = True
 
                     game_state = "wfc"
                     previous_game_state = "wfc"
