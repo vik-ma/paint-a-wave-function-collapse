@@ -797,7 +797,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "wfc"
+    game_state = "help"
     previous_game_state = game_state
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
@@ -953,6 +953,12 @@ def main():
     base_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Base Tiles", size_27_font, SCREEN_TEXT_COLOR, base_tiles_hover_box, hover_box_group) 
 
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
+
+    help_state_title_text_1 = size_27_font.render("What Is This?", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_2 = size_27_font.render("How To Use", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_3 = size_20_font.render("What Affects The Speed Of The WFC?", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_4 = size_20_font.render("Why Does The Wave Function Collapse Fail?", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_5 = size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, SCREEN_TEXT_COLOR)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
@@ -1478,11 +1484,15 @@ def main():
             hover_box_group.draw(screen)
 
         if game_state == "help":
-            help_title_text = size_20_font.render("HELP", True, (0, 0, 0))
-            screen.blit(help_title_text, (50, 20))
+            screen.blit(help_state_title_text_1, (10, 10))
+            screen.blit(help_state_title_text_2, (10, 110))
+            screen.blit(help_state_title_text_3, (10, 210))
+            screen.blit(help_state_title_text_4, (10, 310))
+            screen.blit(help_state_title_text_5, (10, 410))
 
             if return_from_help_button.draw(screen):
-                game_state = previous_game_state
+                # game_state = previous_game_state
+                game_state = "wfc"
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
