@@ -538,15 +538,6 @@ def swap_x_y_order_dict(order_dict):
 def draw_window(screen):
     screen.fill(BACKGROUND_COLOR)
 
-
-def draw_patterns(pattern_group, pattern_list, screen, enlargement_scale):
-    pattern_group.empty()
-    pattern_limit = 57
-    pattern_list = pattern_list[:pattern_limit]
-    for pattern in pattern_list:
-        pattern_group.add(pattern)
-        pygame.draw.rect(screen, (0, 0, 0), (pattern.x - 1, pattern.y - 1, pattern.width * enlargement_scale + 2, pattern.height * enlargement_scale + 2), 1)
-
 def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     y_offset = 24
     x_offset = 20
@@ -565,6 +556,20 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
         tile = Tile(pattern_size, pattern_size, (col * (pattern_size + x_offset) + x), y, patterns[col].pix_array, enlargement_scale)
         tile_list.append(tile)
     return tile_list
+
+def draw_patterns(pattern_group, pattern_list, screen, enlargement_scale):
+    pattern_group.empty()
+    pattern_limit = 57
+    pattern_list = pattern_list[:pattern_limit]
+    for pattern in pattern_list:
+        pattern_group.add(pattern)
+        pygame.draw.rect(screen, BLACK, (pattern.x - 1, pattern.y - 1, pattern.width * enlargement_scale + 2, pattern.height * enlargement_scale + 2), 1)
+
+def update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit):
+    pattern_group.empty()
+    pattern_tile_list = pattern_tile_list[:pattern_draw_limit]
+    for pattern in pattern_tile_list:
+        pattern_group.add(pattern)
 
 def create_tile_buttons(initial_tile_list):
     tile_buttons = []
@@ -767,9 +772,10 @@ def main():
 
     patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
     
-    pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+    pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
-    pattern_tile_list = pattern_list
+    pattern_draw_limit = 57 
+    update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
 
     grid_x_pos = 10
     grid_y_pos = 28
@@ -1130,10 +1136,9 @@ def main():
                             selected_tile_index = index
                             selected_base_tile_image = selected_tile.image.copy()
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
-                            pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                            pattern_tile_list = pattern_list
+                            pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
-
+                            update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
                         
             # Animation
             if draw_second_grid:
@@ -1193,7 +1198,6 @@ def main():
             #         prob_text_y_offset = -11
             #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-            #         pattern_tile_list = pattern_list
 
 
             # if set_pattern_size_3_button.draw(screen):
@@ -1203,7 +1207,10 @@ def main():
             #         prob_text_y_offset = -11
             #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-            #         pattern_tile_list = pattern_list
+
+
+            for pattern in pattern_tile_list[:pattern_draw_limit]:
+                pygame.draw.rect(screen, BLACK, (pattern.x - 1, pattern.y - 1, pattern.width * enlargement_scale + 2, pattern.height * enlargement_scale + 2), 1)
 
             pygame.draw.line(screen, BLACK, (0, 452), (440, 452))
 
@@ -1282,8 +1289,7 @@ def main():
                     game_state = "paint"
                     previous_game_state = "paint"
 
-            # if show_patterns:
-            draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
+            # draw_patterns(pattern_group, pattern_tile_list, screen, enlargement_scale)
             pattern_group.draw(screen)
             patterns_text.draw(screen)
             screen.blit(num_patterns_text, (251, 312))
@@ -1358,9 +1364,9 @@ def main():
                     selected_base_tile_image = selected_tile.image.copy()
 
                     patterns = get_patterns(pattern_size, initial_tile_list[-1])
-                    pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                    pattern_tile_list = pattern_list
+                    pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
+                    update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
 
                     if len(initial_tile_list) == max_initial_tiles:
                         change_button_color("disabled", [save_tile_button])
@@ -1391,9 +1397,9 @@ def main():
                         selected_base_tile_image = selected_tile.image.copy()
 
                         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
-                        pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                        pattern_tile_list = pattern_list
+                        pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                         num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
+                        update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
 
                         if len(initial_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
@@ -1474,10 +1480,10 @@ def main():
                             selected_tile_index = index
                             selected_base_tile_image = selected_tile.image.copy()
                             patterns = get_patterns(pattern_size, initial_tile_list[index])
-                            pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                            pattern_tile_list = pattern_list
+                            pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
-
+                            update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
+                            
             # if test_paint_button.draw(screen):
             #     print(preview_tile.pix_array)
             paint_color_group.draw(screen)
