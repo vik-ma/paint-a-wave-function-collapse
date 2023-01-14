@@ -957,6 +957,20 @@ def main():
     help_state_title_text_5 = size_20_font.render("Why Does The Wave Function Collapse Fail?", True, SCREEN_TEXT_COLOR)
     help_state_title_text_6 = size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, SCREEN_TEXT_COLOR)
 
+    help_state_sub_text_lines_1 = ["test 1, line 1", "test 1, line 2"]
+    help_state_sub_text_1 = []
+    for line in help_state_sub_text_lines_1:
+        help_state_sub_text_1.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
+
+    help_state_sub_text_lines_2 = ["test 2, line 1", "test 2, line 2"]
+    help_state_sub_text_2 = []
+    for line in help_state_sub_text_lines_2:
+        help_state_sub_text_2.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
+
+    help_state_sub_text_list = []
+    help_state_sub_text_list.append([help_state_sub_text_1, 35])
+    help_state_sub_text_list.append([help_state_sub_text_2, 135])
+
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
 
@@ -1492,6 +1506,10 @@ def main():
             screen.blit(help_state_title_text_4, (10, 310))
             screen.blit(help_state_title_text_5, (10, 410))
             screen.blit(help_state_title_text_6, (10, 510))
+
+            for sub_text in help_state_sub_text_list:
+                for y, line in enumerate(sub_text[0]):
+                    screen.blit(line, (10, sub_text[1] + y * 18))
 
             if return_from_help_button.draw(screen):
                 # game_state = previous_game_state
