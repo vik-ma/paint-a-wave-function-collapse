@@ -952,9 +952,10 @@ def main():
 
     help_state_title_text_1 = size_27_font.render("What Is This?", True, SCREEN_TEXT_COLOR)
     help_state_title_text_2 = size_27_font.render("How To Use", True, SCREEN_TEXT_COLOR)
-    help_state_title_text_3 = size_20_font.render("What Affects The Speed Of The WFC?", True, SCREEN_TEXT_COLOR)
-    help_state_title_text_4 = size_20_font.render("Why Does The Wave Function Collapse Fail?", True, SCREEN_TEXT_COLOR)
-    help_state_title_text_5 = size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_3 = size_20_font.render("What Does 'Cancel WFC' button do?", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_4 = size_20_font.render("What Affects The Speed Of The WFC?", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_5 = size_20_font.render("Why Does The Wave Function Collapse Fail?", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_6 = size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, SCREEN_TEXT_COLOR)
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
@@ -1490,6 +1491,7 @@ def main():
             screen.blit(help_state_title_text_3, (10, 210))
             screen.blit(help_state_title_text_4, (10, 310))
             screen.blit(help_state_title_text_5, (10, 410))
+            screen.blit(help_state_title_text_6, (10, 510))
 
             if return_from_help_button.draw(screen):
                 # game_state = previous_game_state
