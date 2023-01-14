@@ -878,11 +878,16 @@ def main():
     settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
     settings_sub_text = size_17_font.render("Hover over the settings for more information", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
-    replay_speed_hover_box_text = ["The number represents every Nth state of the", 
-                                  "wave function collapse.", 
+    # replay_speed_hover_box_text = ["The number represents every Nth state of the", 
+    #                               "wave function collapse.", 
+    #                               "'1' will show the wave function collapse in its", 
+    #                               "entirety and takes a very long time to finish."]
+
+    replay_speed_hover_box_text = ["The replay shows every Nth state of the wave", 
+                                  "function collapse, where N is the replay speed.", 
                                   "'1' will show the wave function collapse in its", 
-                                  "entirety and takes a very long time to finish."]
-    replay_speed_hover_box = HoverBox(425, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
+                                  "entirety, but takes a very long time to finish."]
+    replay_speed_hover_box = HoverBox(435, len(replay_speed_hover_box_text) * hover_box_line_height + 14, replay_speed_hover_box_text, hover_box_font)
     replay_speed_text = InfoText(10, 522, "Replay Speed:", size_17_font, SCREEN_TEXT_COLOR, replay_speed_hover_box, hover_box_group)
 
     replay_speed_value_text = size_20_font.render(str(wfc_replay_slice_num), True, BLUE)
