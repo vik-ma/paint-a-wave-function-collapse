@@ -100,7 +100,7 @@ max_size_white_tile_8x8 = [
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255))
     ]
 
-max_initial_tile_8x8 = SampleTile(max_size_white_tile_8x8, 8, 8)
+max_base_tile_8x8 = SampleTile(max_size_white_tile_8x8, 8, 8)
 
 max_size_white_tile_7x7 = [
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
@@ -112,7 +112,7 @@ max_size_white_tile_7x7 = [
     ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
   ]
 
-max_initial_tile_7x7 = SampleTile(max_size_white_tile_7x7, 7, 7)
+max_base_tile_7x7 = SampleTile(max_size_white_tile_7x7, 7, 7)
 
 sample_pixel_array = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -121,7 +121,7 @@ sample_pixel_array = [
     (WHITE, BLACK, BLACK, BLACK),
     ]
 
-sample_initial_tile_1 = SampleTile(sample_pixel_array, 4, 4)
+sample_base_tile_1 = SampleTile(sample_pixel_array, 4, 4)
 
 sample_pixel_array_5x5 = [
     (WHITE, WHITE, WHITE, WHITE, WHITE),
@@ -131,7 +131,7 @@ sample_pixel_array_5x5 = [
     (GREEN, GREEN, GREEN, GREEN, WHITE)
 ]
 
-sample_initial_tile_2 = SampleTile(sample_pixel_array_5x5, 5, 5)
+sample_base_tile_2 = SampleTile(sample_pixel_array_5x5, 5, 5)
 
 sample_pixel_array_5x4 = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -141,7 +141,7 @@ sample_pixel_array_5x4 = [
     (WHITE, BLACK, BLACK, GREEN)
 ]
 
-sample_initial_tile_3 = SampleTile(sample_pixel_array_5x4, 5, 4)
+sample_base_tile_3 = SampleTile(sample_pixel_array_5x4, 5, 4)
 
 sample_pixel_array_3x4 = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -149,7 +149,7 @@ sample_pixel_array_3x4 = [
     (WHITE, LIGHTGREY, WHITE, GREEN)
 ]
 
-sample_initial_tile_4 = SampleTile(sample_pixel_array_3x4, 3, 4)
+sample_base_tile_4 = SampleTile(sample_pixel_array_3x4, 3, 4)
 
 sample_pixel_array_3x3 = [
     (WHITE, WHITE, WHITE),
@@ -157,7 +157,7 @@ sample_pixel_array_3x3 = [
     (WHITE, BLACK, GREEN)
 ]
 
-sample_initial_tile_5 = SampleTile(sample_pixel_array_3x3, 3, 3)
+sample_base_tile_5 = SampleTile(sample_pixel_array_3x3, 3, 3)
 
 sample_pixel_array_5x4_test = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -167,7 +167,7 @@ sample_pixel_array_5x4_test = [
     (WHITE, BLACK, WHITE, GREEN)
 ]
 
-sample_initial_tile_6 = SampleTile(sample_pixel_array_5x4_test, 5, 4)
+sample_base_tile_6 = SampleTile(sample_pixel_array_5x4_test, 5, 4)
 
 sample_pixel_array_4x4_test = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -176,7 +176,7 @@ sample_pixel_array_4x4_test = [
     (WHITE, BLACK, WHITE, GREEN)
     ]
 
-sample_initial_tile_7 = SampleTile(sample_pixel_array_4x4_test, 4, 4)
+sample_base_tile_7 = SampleTile(sample_pixel_array_4x4_test, 4, 4)
 
 print_tile_test = [
     ((255, 255, 255), (255, 255, 255), (186, 85, 211), (0, 255, 255)), 
@@ -185,23 +185,23 @@ print_tile_test = [
     ((0, 255, 255), (0, 255, 255), (0, 255, 255), (255, 255, 255))
     ]
 
-sample_initial_tile_8 = SampleTile(print_tile_test, 4, 4)
+sample_base_tile_8 = SampleTile(print_tile_test, 4, 4)
 
-sample_tile_list.append(sample_initial_tile_1)
-sample_tile_list.append(sample_initial_tile_2)
-sample_tile_list.append(sample_initial_tile_3)
-sample_tile_list.append(max_initial_tile_7x7)
-sample_tile_list.append(sample_initial_tile_4)
-sample_tile_list.append(sample_initial_tile_5)
-sample_tile_list.append(sample_initial_tile_6)
-sample_tile_list.append(sample_initial_tile_7)
-sample_tile_list.append(sample_initial_tile_8)
+sample_tile_list.append(sample_base_tile_1)
+sample_tile_list.append(sample_base_tile_2)
+sample_tile_list.append(sample_base_tile_3)
+sample_tile_list.append(max_base_tile_7x7)
+sample_tile_list.append(sample_base_tile_4)
+sample_tile_list.append(sample_base_tile_5)
+sample_tile_list.append(sample_base_tile_6)
+sample_tile_list.append(sample_base_tile_7)
+sample_tile_list.append(sample_base_tile_8)
 
 # for i in range(9):
-#     sample_tile_list.append(max_initial_tile_7x7)
+#     sample_tile_list.append(max_base_tile_7x7)
 
 # for i in range(20):
-#     sample_tile_list.append(max_initial_tile_7x7)
+#     sample_tile_list.append(max_base_tile_7x7)
 
 
 def get_rotated_pix_array(pix_array):
@@ -273,16 +273,16 @@ def get_valid_directions(position, output_width, output_height):
     
     return valid_directions
 
-def get_patterns(pattern_size, initial_tile):
+def get_patterns(pattern_size, base_tile):
     pattern_list = []
 
     occurence_weights = {}
     probability = {}
 
-    pix_array = initial_tile.pix_array
+    pix_array = base_tile.pix_array
 
-    for row in range(initial_tile.width - (pattern_size - 1)):
-        for col in range(initial_tile.height - (pattern_size - 1)):
+    for row in range(base_tile.width - (pattern_size - 1)):
+        for col in range(base_tile.height - (pattern_size - 1)):
             pattern = []
             for pix in pix_array[row:row+pattern_size]:
                 pattern.append(pix[col:col+pattern_size])
@@ -563,9 +563,9 @@ def update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit):
     for pattern in pattern_tile_list:
         pattern_group.add(pattern)
 
-def create_tile_buttons(initial_tile_list):
+def create_tile_buttons(base_tile_list):
     tile_buttons = []
-    for tile in initial_tile_list:
+    for tile in base_tile_list:
         tile_button = TileButton(tile.x, tile.y, tile.image)
         tile_buttons.append(tile_button)
     return tile_buttons
@@ -640,7 +640,7 @@ def get_output_size_text_color(size):
 def print_tile_colors(tile):
     print(tile.pix_array)
 
-def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit):
+def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tile_col_limit):
     x_pos = tile_list_x_pos
     y_pos = tile_list_y_pos
     
@@ -656,7 +656,7 @@ def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offs
         if tile.height > row_max_height:
             row_max_height = tile.height
         
-        if i % initial_tile_col_limit == 0:
+        if i % base_tile_col_limit == 0:
             x_pos = tile_list_x_pos
             y_pos = y_pos + row_max_height * enlargement_scale + tile_list_offset
             tile_width = 0
@@ -748,17 +748,17 @@ def main():
     tile_list_y_pos = 368
     tile_list_offset = 12
 
-    initial_tile_max_height = 5
-    initial_tile_col_limit = 5
-    max_initial_tiles = 20
+    base_tile_max_height = 5
+    base_tile_col_limit = 5
+    max_base_tiles = 20
 
-    initial_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit)
+    base_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tile_col_limit)
 
     pattern_size = 2
 
     selected_tile_index = 0
 
-    patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+    patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
     
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
@@ -778,7 +778,7 @@ def main():
     
     grid_size = output_width
 
-    tile_buttons = create_tile_buttons(initial_tile_list)   
+    tile_buttons = create_tile_buttons(base_tile_list)   
 
     selected_tile = tile_buttons[selected_tile_index]
 
@@ -1135,7 +1135,7 @@ def main():
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
                             selected_base_tile_image = selected_tile.image.copy()
-                            patterns = get_patterns(pattern_size, initial_tile_list[index])
+                            patterns = get_patterns(pattern_size, base_tile_list[index])
                             pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
                             update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
@@ -1196,7 +1196,7 @@ def main():
             #         pattern_size = 2
             #         prob_text_x_offset = -2
             #         prob_text_y_offset = -11
-            #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+            #         patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
 
@@ -1205,7 +1205,7 @@ def main():
             #         pattern_size = 3
             #         prob_text_x_offset = 2
             #         prob_text_y_offset = -11
-            #         patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+            #         patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
             #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
             # Patterns section
@@ -1328,41 +1328,41 @@ def main():
             # Grid border
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1) 
 
-            if len(initial_tile_list) == max_initial_tiles:
+            if len(base_tile_list) == max_base_tiles:
                 for y, line in enumerate(tile_list_full_text):
                     screen.blit(line, (600, 220 + y * 18))
 
             if save_tile_button.draw(screen):
-                if len(initial_tile_list) < max_initial_tiles:
-                    if len(initial_tile_list) == 1:
+                if len(base_tile_list) < max_base_tiles:
+                    if len(base_tile_list) == 1:
                         change_button_color("enabled", [delete_tile_button])
 
-                    prev_tile = initial_tile_list[-1]
-                    if len(tile_buttons) % initial_tile_col_limit == 0:
+                    prev_tile = base_tile_list[-1]
+                    if len(tile_buttons) % base_tile_col_limit == 0:
                         x_pos = tile_list_x_pos
-                        y_pos = prev_tile.y + initial_tile_max_height * enlargement_scale + tile_list_offset
-                        initial_tile_max_height = paint_grid_rows
+                        y_pos = prev_tile.y + base_tile_max_height * enlargement_scale + tile_list_offset
+                        base_tile_max_height = paint_grid_rows
                     else:
                         x_pos = prev_tile.x + prev_tile.width * enlargement_scale + tile_list_offset
                         y_pos = prev_tile.y
                     
-                    if paint_grid_rows > initial_tile_max_height:
-                        initial_tile_max_height = paint_grid_rows
+                    if paint_grid_rows > base_tile_max_height:
+                        base_tile_max_height = paint_grid_rows
 
                     new_tile_button = Tile(paint_grid_cols, paint_grid_rows, x_pos, y_pos, paint_grid_pix_array, enlargement_scale)
-                    initial_tile_list.append(new_tile_button)
-                    tile_buttons = create_tile_buttons(initial_tile_list)
+                    base_tile_list.append(new_tile_button)
+                    tile_buttons = create_tile_buttons(base_tile_list)
 
                     selected_tile = tile_buttons[-1]
                     selected_tile_index = len(tile_buttons)-1
                     selected_base_tile_image = selected_tile.image.copy()
 
-                    patterns = get_patterns(pattern_size, initial_tile_list[-1])
+                    patterns = get_patterns(pattern_size, base_tile_list[-1])
                     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                     num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
                     update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
 
-                    if len(initial_tile_list) == max_initial_tiles:
+                    if len(base_tile_list) == max_base_tiles:
                         change_button_color("disabled", [save_tile_button])
 
                     switch_state_cooldown = True
@@ -1374,32 +1374,32 @@ def main():
 
             if delete_tile_button.draw(screen):
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
-                    if len(initial_tile_list) > 1:
-                        initial_tile_list.remove(initial_tile_list[selected_tile_index])
+                    if len(base_tile_list) > 1:
+                        base_tile_list.remove(base_tile_list[selected_tile_index])
 
-                        tiles_in_row = len(initial_tile_list) % initial_tile_col_limit
+                        tiles_in_row = len(base_tile_list) % base_tile_col_limit
                         max_height = 0
-                        for tile in initial_tile_list[-tiles_in_row:]:
+                        for tile in base_tile_list[-tiles_in_row:]:
                             if tile.height > max_height:
                                 max_height = tile.height
-                        initial_tile_max_height = max_height
+                        base_tile_max_height = max_height
 
-                        initial_tile_list = create_tile_list(initial_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, initial_tile_col_limit)
-                        tile_buttons = create_tile_buttons(initial_tile_list)
+                        base_tile_list = create_tile_list(base_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tile_col_limit)
+                        tile_buttons = create_tile_buttons(base_tile_list)
 
-                        if selected_tile_index >= len(initial_tile_list):
+                        if selected_tile_index >= len(base_tile_list):
                             selected_tile_index -= 1
                         selected_tile = tile_buttons[selected_tile_index]
                         selected_base_tile_image = selected_tile.image.copy()
 
-                        patterns = get_patterns(pattern_size, initial_tile_list[selected_tile_index])
+                        patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
                         pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                         num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
                         update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
 
-                        if len(initial_tile_list) == 1:
+                        if len(base_tile_list) == 1:
                             change_button_color("disabled", [delete_tile_button])
-                        if len(initial_tile_list) == max_initial_tiles - 1:
+                        if len(base_tile_list) == max_base_tiles - 1:
                             change_button_color("enabled", [save_tile_button])
 
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
@@ -1475,7 +1475,7 @@ def main():
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
                             selected_base_tile_image = selected_tile.image.copy()
-                            patterns = get_patterns(pattern_size, initial_tile_list[index])
+                            patterns = get_patterns(pattern_size, base_tile_list[index])
                             pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
                             update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
