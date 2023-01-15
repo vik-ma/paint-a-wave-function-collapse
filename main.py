@@ -918,7 +918,8 @@ def main():
     wfc_state = {"interrupt": False}
     
     switch_state_cooldown = False
-    switch_state_cooldown_value = 15
+    switch_state_cooldown_value = 30
+    switch_state_cooldown_counter = switch_state_cooldown_value
 
     patterns_hover_box_text = ["Every different 2x2 pattern extracted from", 
                               "the Base Tile, including rotated, horizontally", 
@@ -1056,10 +1057,10 @@ def main():
                         completed_wfc_pattern_group.add(wfc_output)
 
             if switch_state_cooldown:
-                switch_state_cooldown_value -= 1
-                if switch_state_cooldown_value == 0:
+                switch_state_cooldown_counter -= 1
+                if switch_state_cooldown_counter == 0:
                     switch_state_cooldown = False
-                    switch_state_cooldown_value = 15
+                    switch_state_cooldown_counter = switch_state_cooldown_value
 
             # Grid border
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
@@ -1303,6 +1304,7 @@ def main():
                 if not is_wfc_anim_ongoing and not is_wfc_executing:
                     game_state = "paint"
                     previous_game_state = "paint"
+                    switch_state_cooldown = True
 
             completed_wfc_pattern_group.draw(screen)
             pattern_group.draw(screen)
@@ -1385,10 +1387,14 @@ def main():
                     game_state = "wfc"
                     previous_game_state = "wfc"
 
-
+            if switch_state_cooldown:
+                switch_state_cooldown_counter -= 1
+                if switch_state_cooldown_counter == 0:
+                    switch_state_cooldown = False
+                    switch_state_cooldown_counter = switch_state_cooldown_value
 
             if delete_tile_button.draw(screen):
-                if not is_wfc_anim_ongoing and not is_wfc_executing:
+                if not switch_state_cooldown:
                     if len(base_tile_list) > 1:
                         base_tile_list.remove(base_tile_list[selected_tile_index])
 
