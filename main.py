@@ -950,12 +950,13 @@ def main():
 
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
-    help_state_title_text_1 = size_27_font.render("What Is This?", True, SCREEN_TEXT_COLOR)
-    help_state_title_text_2 = size_27_font.render("How To Use", True, SCREEN_TEXT_COLOR)
-    help_state_title_text_3 = size_20_font.render("What Does 'Cancel WFC' button do?", True, SCREEN_TEXT_COLOR)
-    help_state_title_text_4 = size_20_font.render("What Affects The Speed Of The WFC?", True, SCREEN_TEXT_COLOR)
-    help_state_title_text_5 = size_20_font.render("Why Does The Wave Function Collapse Fail?", True, SCREEN_TEXT_COLOR)
-    help_state_title_text_6 = size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, SCREEN_TEXT_COLOR)
+    help_state_title_text_list = []
+    help_state_title_text_list.append([size_27_font.render("What Is This?", True, SCREEN_TEXT_COLOR), 10])
+    help_state_title_text_list.append([size_27_font.render("How To Use", True, SCREEN_TEXT_COLOR), 110])
+    help_state_title_text_list.append([size_20_font.render("What Does 'Cancel WFC' button do?", True, SCREEN_TEXT_COLOR), 210])
+    help_state_title_text_list.append([size_20_font.render("What Affects The Speed Of The WFC?", True, SCREEN_TEXT_COLOR), 310])
+    help_state_title_text_list.append([size_20_font.render("Why Does The Wave Function Collapse Fail?", True, SCREEN_TEXT_COLOR), 410])
+    help_state_title_text_list.append([size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, SCREEN_TEXT_COLOR), 510])
 
     help_state_sub_text_lines_1 = ["test 1, line 1", "test 1, line 2"]
     help_state_sub_text_1 = []
@@ -1500,12 +1501,8 @@ def main():
             hover_box_group.draw(screen)
 
         if game_state == "help":
-            screen.blit(help_state_title_text_1, (10, 10))
-            screen.blit(help_state_title_text_2, (10, 110))
-            screen.blit(help_state_title_text_3, (10, 210))
-            screen.blit(help_state_title_text_4, (10, 310))
-            screen.blit(help_state_title_text_5, (10, 410))
-            screen.blit(help_state_title_text_6, (10, 510))
+            for title_text in help_state_title_text_list:
+                screen.blit(title_text[0], (10, title_text[1]))
 
             for sub_text in help_state_sub_text_list:
                 for y, line in enumerate(sub_text[0]):
