@@ -705,7 +705,7 @@ def main():
     skip_animation_button = Button(GREY, 509, 163, 130, 40, "Skip Replay", DARKGREY, GREY)
     replay_animation_button = Button(GREY, 509, 208, 170, 40, "Replay Last WFC", DARKGREY, GREY)
 
-    paint_new_tile_button = Button(WHITE, 650, 321, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
+    paint_new_tile_button = Button(WHITE, 650, 320, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
     return_to_wfc_button = Button(WHITE, 600, 7, 190, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
     help_button = Button(WHITE, 9, 595, 90, 38, "HELP", BLACK, LIGHTGREY, big_text=True)
@@ -733,7 +733,7 @@ def main():
 
     save_tile_button = Button(WHITE, 615, 120, 150, 46, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
-    delete_tile_button = Button(WHITE, 600, 260, 190, 40, "Delete Selected Tile", BLACK, LIGHTGREY)
+    delete_tile_button = Button(WHITE, 600, 320, 190, 36, "Delete Selected Tile", BLACK, LIGHTGREY)
 
     run = True
 
