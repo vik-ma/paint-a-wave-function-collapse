@@ -792,7 +792,7 @@ def main():
     wfc_list_count = 0
 
     game_state = "help"
-    previous_game_state = game_state
+    previous_game_state = "wfc"
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
@@ -1506,11 +1506,10 @@ def main():
 
             for sub_text in help_state_sub_text_list:
                 for y, line in enumerate(sub_text[0]):
-                    screen.blit(line, (10, sub_text[1] + y * 18))
+                    screen.blit(line, (10, sub_text[1] + y * 15))
 
             if return_from_help_button.draw(screen):
-                # game_state = previous_game_state
-                game_state = "wfc"
+                game_state = previous_game_state
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
