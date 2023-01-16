@@ -953,7 +953,7 @@ def main():
     help_state_title_text_list = []
     help_state_title_text_list.append([size_27_font.render("What Is This Program?", True, IMPORTANT_SCREEN_TEXT_COLOR), 9])
     help_state_title_text_list.append([size_27_font.render("How To Use", True, IMPORTANT_SCREEN_TEXT_COLOR), 120])
-    help_state_title_text_list.append([size_20_font.render("What Affects The Speed Of The WFC?", True, IMPORTANT_SCREEN_TEXT_COLOR), 310])
+    help_state_title_text_list.append([size_20_font.render("What Affects The Execution Time Of The WFC?", True, IMPORTANT_SCREEN_TEXT_COLOR), 295])
     help_state_title_text_list.append([size_20_font.render("Why Does The Wave Function Collapse Fail?", True, IMPORTANT_SCREEN_TEXT_COLOR), 410])
     help_state_title_text_list.append([size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, IMPORTANT_SCREEN_TEXT_COLOR), 510])
 
@@ -979,9 +979,20 @@ def main():
     for line in help_state_sub_text_lines_2:
         help_state_sub_text_2.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
 
+    help_state_sub_text_lines_3 = ["The first thing that will affect execution time is the output size of the generated image.", 
+                                  "Larger output sizes will exponentially increase the execution time.",
+                                  "",
+                                  "The second thing is the amount of patterns that has been extracted from the base tile.",
+                                  "A warning will appear if the base tile contains an amount of patterns that may lead to a", 
+                                  "very slow execution."]
+    help_state_sub_text_3 = []
+    for line in help_state_sub_text_lines_3:
+        help_state_sub_text_3.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
+
     help_state_sub_text_list = []
     help_state_sub_text_list.append([help_state_sub_text_1, help_state_title_text_list[0][1]+27])
     help_state_sub_text_list.append([help_state_sub_text_2, help_state_title_text_list[1][1]+27])
+    help_state_sub_text_list.append([help_state_sub_text_3, help_state_title_text_list[2][1]+20])
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
