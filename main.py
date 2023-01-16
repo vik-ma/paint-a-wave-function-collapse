@@ -966,7 +966,15 @@ def main():
     for line in help_state_sub_text_lines_1:
         help_state_sub_text_1.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
 
-    help_state_sub_text_lines_2 = ["test 2, line 1", "test 2, line 2"]
+    help_state_sub_text_lines_2 = ["To generate a new image, click on the 'Start WFC' button. The WFC algorithm will then begin", 
+                                  "and you will be able to see its progress as it is executing. After the WFC is finished, the",
+                                  "second grid will show a more detailed replay of the procedural generation of the image.",
+                                  "",
+                                  "You can generate an image based of a different base tile by selecting one in the list in the",
+                                  "bottom right, or paint your own base tile by clicking the 'Paint New Tile' button.",
+                                  "",
+                                  "The 'Cancel WFC' button will interrupt and stop the WFC when it's executing. This may not",
+                                  "immediately happen, as the algorithm can only be interrupted during certain stages."]
     help_state_sub_text_2 = []
     for line in help_state_sub_text_lines_2:
         help_state_sub_text_2.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
