@@ -73,7 +73,6 @@ color_list = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
             CYAN, LIGHTGREEN, GREEN, LAWNGREEN,  DARKISHGREEN, DARKGREEN]
 
 BACKGROUND_COLOR = (155, 155, 155)
-
 SCREEN_TEXT_COLOR = (30, 30, 30)
 IMPORTANT_SCREEN_TEXT_COLOR = (170, 0, 30)
 
@@ -952,14 +951,14 @@ def main():
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     help_state_title_text_list = []
-    help_state_title_text_list.append([size_27_font.render("What Is This?", True, SCREEN_TEXT_COLOR), 10])
+    help_state_title_text_list.append([size_27_font.render("What Is This Program?", True, SCREEN_TEXT_COLOR), 10])
     help_state_title_text_list.append([size_27_font.render("How To Use", True, SCREEN_TEXT_COLOR), 110])
     help_state_title_text_list.append([size_20_font.render("What Does 'Cancel WFC' button do?", True, SCREEN_TEXT_COLOR), 210])
     help_state_title_text_list.append([size_20_font.render("What Affects The Speed Of The WFC?", True, SCREEN_TEXT_COLOR), 310])
     help_state_title_text_list.append([size_20_font.render("Why Does The Wave Function Collapse Fail?", True, SCREEN_TEXT_COLOR), 410])
     help_state_title_text_list.append([size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, SCREEN_TEXT_COLOR), 510])
 
-    help_state_sub_text_lines_1 = ["test 1, line 1", "test 1, line 2"]
+    help_state_sub_text_lines_1 = ["This program shows off the procedural image generation of the Wave Function Collapse", "algorithm. In this application, a basic version of the WFC algorithm will generate a larger", "image based off the patterns from a sample base tile. Since this is currently just a basic", "version of the WFC algorithm, support for additional constraints and backtracking is not yet", "implemented."]
     help_state_sub_text_1 = []
     for line in help_state_sub_text_lines_1:
         help_state_sub_text_1.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
