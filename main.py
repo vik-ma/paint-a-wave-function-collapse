@@ -996,9 +996,12 @@ def main():
     for line in help_state_sub_text_lines_4:
         help_state_sub_text_4.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
 
-    help_state_sub_text_lines_5 = ["",
+    help_state_sub_text_lines_5 = ["Since this is just a basic adjacent model Wave Function Collapse, the only constraints are",
+                                  "the patterns themselves. Considering that the patterns are only 2x2 tiles, this can result",
+                                  "in a new image which bears very little resemblance to the original sample tile.",
                                   "",
-                                  "exact color"]
+                                  "Another thing to note is that the 'default background color' of the WFC will always be the",
+                                  "top left pixel of the base tile."]
     help_state_sub_text_5 = []
     for line in help_state_sub_text_lines_5:
         help_state_sub_text_5.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
