@@ -948,7 +948,7 @@ def main():
     base_tiles_hover_box = HoverBox(275, len(base_tiles_hover_box_text) * hover_box_line_height + 14, base_tiles_hover_box_text, hover_box_font)
     base_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Base Tiles", size_27_font, SCREEN_TEXT_COLOR, base_tiles_hover_box, hover_box_group) 
 
-    wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
+    wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate a new image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     help_state_title_text_list = []
     help_state_title_text_list.append([size_27_font.render("What Is This Program?", True, IMPORTANT_SCREEN_TEXT_COLOR), 10])
@@ -960,8 +960,8 @@ def main():
     help_state_sub_text_lines_1 = ["This program shows off the procedural image generation of the Wave Function Collapse", 
                                   "algorithm. In this application, a basic version of the WFC algorithm will generate a larger", 
                                   "image based off the patterns from a sample base tile. Since this is currently just a basic", 
-                                  "version of the WFC algorithm, support for additional constraints and backtracking is not yet", 
-                                  "implemented."]
+                                  "adjacent model version of the WFC algorithm, support for the overlapping model,",
+                                  "additional constraints or backtracking have not yet been implemented."]
     help_state_sub_text_1 = []
     for line in help_state_sub_text_lines_1:
         help_state_sub_text_1.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
@@ -997,7 +997,8 @@ def main():
         help_state_sub_text_4.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
 
     help_state_sub_text_lines_5 = ["",
-                                  ""]
+                                  "",
+                                  "exact color"]
     help_state_sub_text_5 = []
     for line in help_state_sub_text_lines_5:
         help_state_sub_text_5.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
