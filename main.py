@@ -951,11 +951,11 @@ def main():
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate an image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     help_state_title_text_list = []
-    help_state_title_text_list.append([size_27_font.render("What Is This Program?", True, IMPORTANT_SCREEN_TEXT_COLOR), 9])
+    help_state_title_text_list.append([size_27_font.render("What Is This Program?", True, IMPORTANT_SCREEN_TEXT_COLOR), 10])
     help_state_title_text_list.append([size_27_font.render("How To Use", True, IMPORTANT_SCREEN_TEXT_COLOR), 120])
     help_state_title_text_list.append([size_20_font.render("What Affects The Execution Time Of The WFC?", True, IMPORTANT_SCREEN_TEXT_COLOR), 295])
-    help_state_title_text_list.append([size_20_font.render("Why Does The Wave Function Collapse Fail?", True, IMPORTANT_SCREEN_TEXT_COLOR), 415])
-    help_state_title_text_list.append([size_20_font.render("Why Does A Color From The Base Tile Never Show Up?", True, IMPORTANT_SCREEN_TEXT_COLOR), 510])
+    help_state_title_text_list.append([size_20_font.render("What Causes The Wave Function Collapse To Fail?", True, IMPORTANT_SCREEN_TEXT_COLOR), 415])
+    help_state_title_text_list.append([size_20_font.render("Why Does The Output End Up Not Looking Like The Base Tile?", True, IMPORTANT_SCREEN_TEXT_COLOR), 490])
 
     help_state_sub_text_lines_1 = ["This program shows off the procedural image generation of the Wave Function Collapse", 
                                   "algorithm. In this application, a basic version of the WFC algorithm will generate a larger", 
@@ -989,18 +989,25 @@ def main():
     for line in help_state_sub_text_lines_3:
         help_state_sub_text_3.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
 
-    help_state_sub_text_lines_4 = ["The most common reason for a wave function failing to collapse is because it has generated",
+    help_state_sub_text_lines_4 = ["The most common reason for the wave function failing to collapse is because it has generated",
                                   "a 2x2 pattern that no patterns from the list of base tile patterns can intersect with.",
                                   "This usually happens when two or more colors from the base tile share no 2x2 pattern."]
     help_state_sub_text_4 = []
     for line in help_state_sub_text_lines_4:
         help_state_sub_text_4.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
 
+    help_state_sub_text_lines_5 = ["",
+                                  ""]
+    help_state_sub_text_5 = []
+    for line in help_state_sub_text_lines_5:
+        help_state_sub_text_5.append(size_17_font.render(line, True, SCREEN_TEXT_COLOR))
+
     help_state_sub_text_list = []
     help_state_sub_text_list.append([help_state_sub_text_1, help_state_title_text_list[0][1]+27])
     help_state_sub_text_list.append([help_state_sub_text_2, help_state_title_text_list[1][1]+27])
     help_state_sub_text_list.append([help_state_sub_text_3, help_state_title_text_list[2][1]+20])
     help_state_sub_text_list.append([help_state_sub_text_4, help_state_title_text_list[3][1]+20])
+    help_state_sub_text_list.append([help_state_sub_text_5, help_state_title_text_list[4][1]+20])
 
     def change_button_color(state, button_list):
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
@@ -1376,7 +1383,7 @@ def main():
 
             if len(base_tile_list) == max_base_tiles:
                 for y, line in enumerate(tile_list_full_text):
-                    screen.blit(line, (600, 220 + y * 18))
+                    screen.blit(line, (600, 170 + y * 18))
 
             if save_tile_button.draw(screen):
                 if len(base_tile_list) < max_base_tiles:
