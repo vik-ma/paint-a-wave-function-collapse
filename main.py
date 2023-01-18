@@ -709,8 +709,8 @@ def main():
     paint_new_tile_button = Button(WHITE, 650, 320, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
     return_to_wfc_button = Button(WHITE, 600, 7, 190, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
-    help_button = Button(WHITE, 9, 595, 90, 38, "HELP", BLACK, LIGHTGREY, big_text=True)
-    return_from_help_button = Button(WHITE, 673, 589, 120, 44, "RETURN", BLACK, LIGHTGREY, big_text=True)
+    help_button = Button(WHITE, 9, 595, 110, 38, "HELP", BLACK, LIGHTGREY, big_text=True)
+    return_from_help_button = Button(WHITE, 673, 593, 120, 40, "Return", BLACK, LIGHTGREY, big_text=True)
 
     increase_wfc_output_size_button = ArrowButton(WHITE, 715, 47, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_wfc_output_size_button = ArrowButton(WHITE, 715, 66, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
