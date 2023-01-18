@@ -75,6 +75,7 @@ color_list = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
 BACKGROUND_COLOR = (155, 155, 155)
 SCREEN_TEXT_COLOR = (30, 30, 30)
 IMPORTANT_SCREEN_TEXT_COLOR = (170, 0, 30)
+HELP_TITLE_TEXT_COLOR = (105, 0, 135)
 
 UP = (0, -1)
 LEFT = (-1, 0)
@@ -951,11 +952,11 @@ def main():
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate a new image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
     help_state_title_text_list = []
-    help_state_title_text_list.append([size_27_font.render("What Is This Program?", True, IMPORTANT_SCREEN_TEXT_COLOR), 10])
-    help_state_title_text_list.append([size_27_font.render("How To Use", True, IMPORTANT_SCREEN_TEXT_COLOR), 120])
-    help_state_title_text_list.append([size_20_font.render("What Affects The Execution Time Of The WFC?", True, IMPORTANT_SCREEN_TEXT_COLOR), 295])
-    help_state_title_text_list.append([size_20_font.render("What Causes The Wave Function Collapse To Fail?", True, IMPORTANT_SCREEN_TEXT_COLOR), 415])
-    help_state_title_text_list.append([size_20_font.render("Why Does The Output End Up Not Looking Like The Base Tile?", True, IMPORTANT_SCREEN_TEXT_COLOR), 490])
+    help_state_title_text_list.append([size_27_font.render("What Is This Program?", True, HELP_TITLE_TEXT_COLOR), 10])
+    help_state_title_text_list.append([size_27_font.render("How To Use", True, HELP_TITLE_TEXT_COLOR), 120])
+    help_state_title_text_list.append([size_20_font.render("What Affects The Execution Time Of The WFC?", True, HELP_TITLE_TEXT_COLOR), 295])
+    help_state_title_text_list.append([size_20_font.render("What Causes The Wave Function Collapse To Fail?", True, HELP_TITLE_TEXT_COLOR), 415])
+    help_state_title_text_list.append([size_20_font.render("Why Does The Output End Up Not Looking Like The Base Tile?", True, HELP_TITLE_TEXT_COLOR), 490])
 
     help_state_sub_text_lines_1 = ["This program shows off the procedural image generation of the Wave Function Collapse", 
                                   "algorithm. In this application, a basic version of the WFC algorithm will generate a larger", 
