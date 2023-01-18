@@ -790,7 +790,7 @@ def main():
     wfc_order_list = []
     wfc_list_count = 0
 
-    game_state = "help"
+    game_state = "wfc"
     previous_game_state = "wfc"
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
