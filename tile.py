@@ -5,12 +5,10 @@ class Tile(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface([width, height])
-        pixel_array = pygame.PixelArray(self.image)
 
-        for i, pix_row in enumerate(pix_array):
-            for j, pix in enumerate(pix_row):
-                pixel_array[i,j] = pix
-        pixel_array.close()
+        for i, row in enumerate(pix_array):
+            for j, color in enumerate(row):
+                self.image.set_at((i, j), color)
 
         self.image = pygame.transform.scale(self.image, ((width*enlargement_scale), (height*enlargement_scale)))        
         self.x = x
