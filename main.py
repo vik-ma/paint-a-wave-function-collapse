@@ -6,6 +6,7 @@ import sys
 import threading
 import queue
 import traceback
+import asyncio
 from copy import deepcopy
 from collections import OrderedDict
 from tile import Tile
@@ -668,7 +669,7 @@ def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offs
     return new_tile_list
     
 
-def main():
+async def main():
     pygame.init()
 
     size_27_font = pygame.font.Font(pygame.font.get_default_font(), 27)
@@ -1566,10 +1567,11 @@ def main():
 
 
         pygame.display.update()
+        await asyncio.sleep(0)
 
-    pygame.quit()
+    # pygame.quit()
 
 
 if __name__ == "__main__":
-    main_thread = threading.Thread(target=main)
+    main_thread = threading.Thread(target=asyncio.run, args=(main(),))
     main_thread.start()
