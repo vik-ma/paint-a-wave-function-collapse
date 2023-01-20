@@ -551,14 +551,14 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     #     x_offset = 33
     x = 10
     y = 335
-    col_limit = 19 # Maximum tiles per row
+    tiles_per_row_limit = 19 # Maximum tiles per row
     tile_list = []
 
     for col in range(len(patterns)):
-        if col % col_limit == 0 and col > 1:
-            # Start new row if col_limit reached
+        if col % tiles_per_row_limit == 0 and col > 1:
+            # Start new row if tiles_per_row_limit reached
             y += y_offset
-            x -= col_limit * (pattern_size + x_offset)
+            x -= tiles_per_row_limit * (pattern_size + x_offset)
         tile = Tile(pattern_size, pattern_size, (col * (pattern_size + x_offset) + x), y, patterns[col].pix_array, enlargement_scale)
         tile_list.append(tile)
     return tile_list
@@ -631,11 +631,11 @@ def create_paint_color_tiles():
     """Create and return a list of different colored PaintTile objects."""
     y = 28
     x = 10
-    col_limit = 17 # Maximum paint tiles per row
+    tiles_per_row_limit = 17 # Maximum paint tiles per row
     color_tile_list = []
     for col in range(34):
-        if col % col_limit == 0 and col > 0:
-            # Start new row if col_limit reached
+        if col % tiles_per_row_limit == 0 and col > 0:
+            # Start new row if tiles_per_row_limit reached
             y += 33
             x = 10
         if col < len(COLOR_LIST):
@@ -662,7 +662,7 @@ def print_tile_colors(tile):
     """Print the pixel array of input Tile object in terminal."""
     print(tile.pix_array)
 
-def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tile_col_limit):
+def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, tiles_per_row_limit):
     """Create and return a list of Tile objects from input tile_list."""
     x_pos = tile_list_x_pos
     y_pos = tile_list_y_pos
@@ -679,14 +679,14 @@ def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offs
         if tile.height > row_max_height:
             row_max_height = tile.height
         
-        if i % base_tile_col_limit == 0:
-            # Start new row if base_tile_col_limit is reached
+        if i % tiles_per_row_limit == 0:
+            # Start new row if tiles_per_row_limit is reached
             x_pos = tile_list_x_pos
             y_pos = y_pos + row_max_height * enlargement_scale + tile_list_offset
             tile_width = 0
             row_max_height = 0
         else:
-            # Calculate x-coordinate of next tile in list if number of tiles in row is below base_tile_col_limit
+            # Calculate x-coordinate of next tile in list if next tile is to be placed on the same row
             tile_width = tile.width * enlargement_scale
             x_pos += tile_width + tile_list_offset
 
@@ -775,10 +775,10 @@ async def main():
     tile_list_offset = 12
 
     base_tile_max_height = 5
-    base_tile_col_limit = 5
+    base_tiles_per_row_limit = 5
     max_base_tiles = 20
 
-    base_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tile_col_limit)
+    base_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tiles_per_row_limit)
 
     pattern_size = 2
 
@@ -1417,7 +1417,7 @@ async def main():
                         change_button_color("enabled", [delete_tile_button])
 
                     prev_tile = base_tile_list[-1]
-                    if len(tile_buttons) % base_tile_col_limit == 0:
+                    if len(tile_buttons) % base_tiles_per_row_limit == 0:
                         x_pos = tile_list_x_pos
                         y_pos = prev_tile.y + base_tile_max_height * enlargement_scale + tile_list_offset
                         base_tile_max_height = paint_grid_rows
@@ -1460,14 +1460,14 @@ async def main():
                     if len(base_tile_list) > 1:
                         base_tile_list.remove(base_tile_list[selected_tile_index])
 
-                        tiles_in_row = len(base_tile_list) % base_tile_col_limit
+                        tiles_in_row = len(base_tile_list) % base_tiles_per_row_limit
                         max_height = 0
                         for tile in base_tile_list[-tiles_in_row:]:
                             if tile.height > max_height:
                                 max_height = tile.height
                         base_tile_max_height = max_height
 
-                        base_tile_list = create_tile_list(base_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tile_col_limit)
+                        base_tile_list = create_tile_list(base_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tiles_per_row_limit)
                         tile_buttons = create_tile_buttons(base_tile_list)
 
                         if selected_tile_index >= len(base_tile_list):
