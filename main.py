@@ -65,7 +65,7 @@ LIGHTISHBLUE = (30, 144, 255)
 BLUE = (0, 0, 255)
 DARKBLUE = (0, 0, 155)
 
-color_list = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
+COLOR_LIST = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
             DARKBROWN, BROWN, LIGHTBROWN, ORANGEBROWN, 
             KHAKI, LIGHTYELLOW, YELLOW, GOLD, ORANGE, 
             ORANGERED, RED, DARKRED, CRIMSON, PINK,
@@ -523,6 +523,7 @@ def execute_wave_function_collapse(patterns, output_width, output_height, thread
 
 
 def swap_x_y_order(order):
+    #DELETE FUNCTION?
     new_order = []
     for o in order:
         swapped = ((o[0][0][0],o[0][1][0]),(o[0][0][1],o[0][1][1]))
@@ -530,6 +531,7 @@ def swap_x_y_order(order):
     return new_order
 
 def swap_x_y_order_dict(order_dict):
+    #DELETE FUNCTION?
     new_order_dict = OrderedDict()
     for k, v in order_dict.items():
         swapped = ((v[0][0],v[1][0]),(v[0][1],v[1][1]))
@@ -537,9 +539,11 @@ def swap_x_y_order_dict(order_dict):
     return new_order_dict
 
 def draw_window(screen):
+    """Fill window with background color."""
     screen.fill(BACKGROUND_COLOR)
 
 def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
+    """Create and return a list of Tile objects for every pattern in 'patterns' list."""
     y_offset = 24
     x_offset = 20
     # if pattern_size == 3:
@@ -547,11 +551,12 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     #     x_offset = 33
     x = 10
     y = 335
-    col_limit = 19
+    col_limit = 19 # Maximum tiles per row
     tile_list = []
 
     for col in range(len(patterns)):
         if col % col_limit == 0 and col > 1:
+            # Start new row if col_limit reached
             y += y_offset
             x -= col_limit * (pattern_size + x_offset)
         tile = Tile(pattern_size, pattern_size, (col * (pattern_size + x_offset) + x), y, patterns[col].pix_array, enlargement_scale)
@@ -559,12 +564,15 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     return tile_list
 
 def update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit):
+    """Add list of Tile objects input to pattern_group Sprite group."""
     pattern_group.empty()
+    # Removes any patterns after pattern_draw_limit amount from pattern_tile_list
     pattern_tile_list = pattern_tile_list[:pattern_draw_limit]
     for pattern in pattern_tile_list:
         pattern_group.add(pattern)
 
 def create_tile_buttons(base_tile_list):
+    """Create and return a list of Tile objects for every sample Base Tile from input list."""
     tile_buttons = []
     for tile in base_tile_list:
         tile_button = TileButton(tile.x, tile.y, tile.image)
@@ -572,21 +580,25 @@ def create_tile_buttons(base_tile_list):
     return tile_buttons
 
 def draw_selected_tile_border(screen, tile):
+    """Draw a border around input Tile object."""
     pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 4)
 
 def show_prob(patterns):
+    #DELETE FUNCTION?
     count = 1
     for pattern, prob in patterns[2].items():
         print(count, pattern.pix_array, prob)
         count += 1
 
 def get_pattern_dict(pattern_list):
+    #DELETE FUNCTION?
     pattern_dict = {}
     for pattern in pattern_list:
         pattern_dict[pattern.pix_array] = (pattern.x, pattern.y)
     return pattern_dict
 
 def swap_pattern_x_y(pattern_list):
+    #DELETE FUNCTION?
     new_list = []
     for pattern in pattern_list:
         swapped = ((pattern.pix_array[0][0], pattern.pix_array[1][0]),(pattern.pix_array[0][1], pattern.pix_array[1][1]))
@@ -595,6 +607,7 @@ def swap_pattern_x_y(pattern_list):
     return new_list
 
 def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
+    """Create and return grid of white colored PaintTile objects from input coordinates and dimensions."""
     grid = []
     for col in range(cols):
         new_row = []
@@ -605,6 +618,7 @@ def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
     return grid
 
 def create_pix_array(paint_grid):
+    """Create and return a color pixel array tuple from input Paint Grid."""
     pix_array = []
     for col in paint_grid:
         new_row = []
@@ -614,17 +628,22 @@ def create_pix_array(paint_grid):
     return pix_array
 
 def create_paint_color_tiles():
+    """Create and return a list of different colored PaintTile objects."""
     y = 28
     x = 10
-    col_limit = 17
+    col_limit = 17 # Maximum paint tiles per row
     color_tile_list = []
     for col in range(34):
         if col % col_limit == 0 and col > 0:
+            # Start new row if col_limit reached
             y += 33
             x = 10
-        if col < len(color_list):
-            color_tile = PaintTile(30, 30, x, y, (color_list[col]))
+        if col < len(COLOR_LIST):
+            # Create a paint tile for every color in COLOR_LIST
+            color_tile = PaintTile(30, 30, x, y, (COLOR_LIST[col]))
         else:
+            # Create grey paint tiles if loop is longer than the amount of colors in COLOR_LIST
+            # (Mostly for debugging purposes)
             color_tile = PaintTile(30, 30, x, y, GREY)
         color_tile_list.append(color_tile)
         x += 33        
@@ -632,6 +651,7 @@ def create_paint_color_tiles():
     return color_tile_list
 
 def get_output_size_text_color(size):
+    """Return a color based on input size number."""
     if size < 15:
         return GREEN
     elif size >= 15 and size < 22:
@@ -639,14 +659,16 @@ def get_output_size_text_color(size):
     return IMPORTANT_SCREEN_TEXT_COLOR
 
 def print_tile_colors(tile):
+    """Print the pixel array of input Tile object in terminal."""
     print(tile.pix_array)
 
 def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tile_col_limit):
+    """Create and return a list of Tile objects from input tile_list."""
     x_pos = tile_list_x_pos
     y_pos = tile_list_y_pos
     
-    tile_width = 0
-    row_max_height = 0
+    tile_width = 0 # Width of last tile in row
+    row_max_height = 0 # Height of largest tile in row
 
     new_tile_list = []
 
@@ -658,11 +680,13 @@ def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offs
             row_max_height = tile.height
         
         if i % base_tile_col_limit == 0:
+            # Start new row if base_tile_col_limit is reached
             x_pos = tile_list_x_pos
             y_pos = y_pos + row_max_height * enlargement_scale + tile_list_offset
             tile_width = 0
             row_max_height = 0
         else:
+            # Calculate x-coordinate of next tile in list if number of tiles in row is below base_tile_col_limit
             tile_width = tile.width * enlargement_scale
             x_pos += tile_width + tile_list_offset
 
@@ -872,11 +896,6 @@ async def main():
 
     settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
     settings_sub_text = size_17_font.render("Hover over the settings for more information", True, IMPORTANT_SCREEN_TEXT_COLOR)
-
-    # replay_speed_hover_box_text = ["The number represents every Nth state of the", 
-    #                               "wave function collapse.", 
-    #                               "'1' will show the wave function collapse in its", 
-    #                               "entirety and takes a very long time to finish."]
 
     replay_speed_hover_box_text = ["The replay shows every Nth state of the wave", 
                                   "function collapse, where N is the replay speed.", 
