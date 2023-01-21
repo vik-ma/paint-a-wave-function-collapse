@@ -211,8 +211,10 @@ def get_rotated_pix_array(pix_array):
     rotated_pix_array_90 = tuple(zip(*rotated_pix_array_180[::-1]))
 
     if len(pix_array) == 2:
+        # 2x2 patterns
         vertically_flipped_pix_array = tuple(pix_array[0][::-1]), tuple(pix_array[-1][::-1])
     elif len(pix_array) == 3:
+        # 3x3 patterns
         vertically_flipped_pix_array = tuple(pix_array[0][::-1]), tuple(pix_array[1][::-1]), tuple(pix_array[-1][::-1])
 
     horizontally_flipped_pix_array = tuple(pix_array[::-1])
@@ -716,7 +718,7 @@ async def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
     pattern_group = pygame.sprite.Group()
-    completed_wfc_pattern_group = pygame.sprite.Group()
+    wfc_grid_group = pygame.sprite.Group()
     paint_color_group = pygame.sprite.Group()
     hover_box_group = pygame.sprite.Group()
 
@@ -1045,34 +1047,48 @@ async def main():
 
     def adjust_grid_position(wfc_output, wfc_output_2):
         if wfc_output != None:
-            completed_wfc_pattern_group.empty()
+            wfc_grid_group.empty()
             old_pix_array = wfc_output.pix_array
             wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
-            completed_wfc_pattern_group.add(wfc_output)
+            wfc_grid_group.add(wfc_output)
             if wfc_output_2 != None:
                 old_pix_array_second = wfc_output_2.pix_array
                 wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
-                completed_wfc_pattern_group.add(wfc_output_2)
+                wfc_grid_group.add(wfc_output_2)
 
     while run:
         clock.tick(FPS)
         draw_window(screen)
 
         if game_state == "wfc":
+
             if not threading.active_count() > standard_threads:
+                # If WFC is not executing
                 if not thread_queue.empty() and is_wfc_executing:
+                    # If WFC has finished executing
+
+                    # Get last item in queue
                     result = thread_queue.queue[-1]
+                    
                     if result[0]:
+                        # result[0] will be True if WFC finished successfully
+
+                        # Create Tile object of final state of WFC
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
                     else:
+                        # result[0] will be False if WFC failed to finish successfully
                         did_wfc_fail = True
+
+                        # Create Tile object of final state of WFC
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                    completed_wfc_pattern_group.add(wfc_output)
+                    
+                    wfc_grid_group.add(wfc_output)  # Update latest WFC state on screen
                     wfc_time_finish = result[3]
                     is_wfc_finished = True
                     is_wfc_executing = False
-                    wfc_order_list = result[2]
+                    wfc_order_list = result[2]      # Store the entire history of how the WFC executed
                     change_button_color("disabled", enabled_buttons_during_wfc_exec_list)
+
                     if wfc_order_list != []:
                         last_image = wfc_order_list[-1]
                         sliced_list = wfc_order_list[::wfc_replay_slice_num]
@@ -1082,7 +1098,7 @@ async def main():
                         sliced_list = []
                     if render_wfc_at_end:
                         wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
-                        completed_wfc_pattern_group.add(wfc_output_2)
+                        wfc_grid_group.add(wfc_output_2)
                         change_button_color("enabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                         draw_second_grid = True
                         is_wfc_anim_ongoing = True
@@ -1092,7 +1108,8 @@ async def main():
                         for tile_button in tile_buttons:
                             tile_button.image.set_alpha(255)
 
-            else:                
+            else:           
+                # If WFC is executing   
                 time_progressed = time.perf_counter() - wfc_time_start
                 wfc_in_progress_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
                 screen.blit(wfc_in_progress_text, wfc_state_text_pos)
@@ -1116,7 +1133,7 @@ async def main():
                             final_pixels.append(row)
 
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
-                        completed_wfc_pattern_group.add(wfc_output)
+                        wfc_grid_group.add(wfc_output)
 
             if switch_state_cooldown:
                 switch_state_cooldown_counter -= 1
@@ -1141,7 +1158,7 @@ async def main():
 
             if start_wfc_button.draw(screen):
                 if not is_wfc_executing and not switch_state_cooldown:
-                    completed_wfc_pattern_group.empty()
+                    wfc_grid_group.empty()
                     thread_queue = queue.Queue()
                     wfc_list_count = 0
                     did_wfc_fail = False
@@ -1238,7 +1255,7 @@ async def main():
                             final_pixels.append(row)
 
                         wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
-                        completed_wfc_pattern_group.add(wfc_output_2)
+                        wfc_grid_group.add(wfc_output_2)
                         wfc_list_count += 1
                     if wfc_list_count == len(sliced_list):
                         is_wfc_anim_ongoing = False
@@ -1368,7 +1385,7 @@ async def main():
                     previous_game_state = "paint"
                     switch_state_cooldown = True
 
-            completed_wfc_pattern_group.draw(screen)
+            wfc_grid_group.draw(screen)
             pattern_group.draw(screen)
             patterns_text.draw(screen)
             hover_box_group.draw(screen)
