@@ -441,7 +441,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     
 
 
-async def execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, render_wfc_during_execution, wfc_state):
+async def execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, wfc_state):
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
@@ -465,7 +465,6 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     print("Wave Function Collapse Started")
 
     wfc_completed = True
-    wfc_interrupted = False
 
     coefficients_state = []
 
@@ -481,18 +480,18 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
 
             await asyncio.sleep(0)
 
-            if render_wfc_during_execution:
-                await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
+            # if render_wfc_during_execution:
+            await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
 
-            if render_wfc_during_execution:
-                await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
+            # if render_wfc_during_execution:
+            await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
             
-            if render_wfc_during_execution:
-                await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
+            # if render_wfc_during_execution:
+            await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
     except Exception as e:
         wfc_completed = False
         # print("WFC FAIL: ", e)
@@ -878,7 +877,7 @@ async def main(loop):
     wfc_slice_num_upper_limit = 15
     wfc_slice_num_lower_limit = 1
 
-    is_wfc_anim_ongoing = False
+    is_wfc_replay_anim_ongoing = False
 
     output_size_text_color = get_output_size_text_color(output_width)
 
@@ -1075,49 +1074,58 @@ async def main(loop):
 
         if game_state == "wfc":
 
+            # When WFC has been started
             if has_wfc_executed:
+                # Get latest item added to queue (LIFO queue)
                 current_wfc_state = await asyncio_queue.get()
 
-                if current_wfc_state[0] == "ongoing":
+                if current_wfc_state[0] == "ongoing":   #If WFC is ongoing
                     time_progressed = time.perf_counter() - wfc_time_start
                     wfc_status_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
                     screen.blit(wfc_status_text, wfc_state_text_pos)
-                    final_pixels = []
-                    for i in current_wfc_state[1]:
-                        row = []
-                        for j in i:
-                            if isinstance(j, list):
-                                if len(j) > 0:
-                                    first_pixel = j[0].pix_array[0][0]
-                                else:
-                                    first_pixel = BACKGROUND_COLOR
-                            else:
-                                first_pixel = j.pix_array[0][0]
-                            row.append(first_pixel)
-                        final_pixels.append(row)
 
-                    wfc_grid_group.empty()
-                    wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
-                    wfc_grid_group.add(wfc_output)
-                else:
+                    if render_wfc_during_execution:
+                        # Grid Animation
+                        final_pixels = []
+                        for i in current_wfc_state[1]:
+                            row = []
+                            for j in i:
+                                if isinstance(j, list):
+                                    if len(j) > 0:
+                                        first_pixel = j[0].pix_array[0][0]
+                                    else:
+                                        first_pixel = BACKGROUND_COLOR
+                                else:
+                                    first_pixel = j.pix_array[0][0]
+                                row.append(first_pixel)
+                            final_pixels.append(row)
+
+                        wfc_grid_group.empty()
+                        wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
+                        wfc_grid_group.add(wfc_output)
+                else:   # If WFC has finished
                     has_wfc_executed = False
                     is_wfc_finished = True
                     wfc_time_finish = current_wfc_state[3]
                     wfc_finish_status = current_wfc_state[0]
 
+                    # Store full list of every WFC state for replay
                     wfc_order_list = current_wfc_state[2]
                     last_image = wfc_order_list[-1]
+                    # Create shorter list where only every Nth element is stored (N = wfc_replay_slice_num) 
                     sliced_list = wfc_order_list[::wfc_replay_slice_num]
                     sliced_list.append(last_image)
 
                     if render_wfc_at_end:
                         change_button_color("enabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
+                        # Start replay animation
                         draw_second_grid = True
-                        is_wfc_anim_ongoing = True
+                        is_wfc_replay_anim_ongoing = True
                     else:
                         change_button_color("enabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                         change_button_color("enabled", [start_wfc_button])
                         for tile_button in tile_buttons:
+                            # Remove opacity for base tile buttons
                             tile_button.image.set_alpha(255)
 
                     change_button_color("disabled", enabled_buttons_during_wfc_exec_list)
@@ -1135,79 +1143,6 @@ async def main(loop):
                 elif wfc_finish_status == "interrupted":
                     wfc_finished_text = size_20_font.render(f"Wave Function Collapse Interrupted After {wfc_time_finish}s", True, DARKBROWN)
                 screen.blit(wfc_finished_text, wfc_state_text_pos)
-
-            # if not threading.active_count() > standard_threads:
-            #     # If WFC is not executing
-            #     if not thread_queue.empty() and is_wfc_executing:
-            #         # If WFC has finished executing
-
-            #         # Get last item in queue
-            #         result = thread_queue.queue[-1]
-                    
-            #         if result[0]:
-            #             # result[0] will be True if WFC finished successfully
-
-            #             # Create Tile object of final state of WFC
-            #             wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-            #         else:
-            #             # result[0] will be False if WFC failed to finish successfully
-            #             did_wfc_fail = True
-
-            #             # Create Tile object of final state of WFC
-            #             wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, result[1], enlargement_scale)
-                    
-            #         wfc_grid_group.add(wfc_output)  # Update latest WFC state on screen
-            #         wfc_time_finish = result[3]
-            #         is_wfc_finished = True
-            #         is_wfc_executing = False
-            #         wfc_order_list = result[2]      # Store the entire history of how the WFC executed
-            #         change_button_color("disabled", enabled_buttons_during_wfc_exec_list)
-
-            #         if wfc_order_list != []:
-            #             last_image = wfc_order_list[-1]
-            #             sliced_list = wfc_order_list[::wfc_replay_slice_num]
-            #             sliced_list.append(last_image)
-            #         else:
-            #             wfc_order_list.append(result[1])
-            #             sliced_list = []
-            #         if render_wfc_at_end:
-            #             wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, result[1], enlargement_scale)
-            #             wfc_grid_group.add(wfc_output_2)
-            #             change_button_color("enabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
-            #             draw_second_grid = True
-            #             is_wfc_anim_ongoing = True
-            #         else:
-            #             change_button_color("enabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
-            #             change_button_color("enabled", [start_wfc_button])
-            #             for tile_button in tile_buttons:
-            #                 tile_button.image.set_alpha(255)
-
-            # else:           
-            #     # If WFC is executing   
-            #     time_progressed = time.perf_counter() - wfc_time_start
-            #     wfc_in_progress_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
-            #     screen.blit(wfc_in_progress_text, wfc_state_text_pos)
-            #     if render_wfc_during_execution and not thread_queue.empty():
-            #         current_wfc_state = thread_queue.queue[-1]
-            #         if isinstance(current_wfc_state, list):
-
-            #             final_pixels = []
-
-            #             for i in current_wfc_state:
-            #                 row = []
-            #                 for j in i:
-            #                     if isinstance(j, list):
-            #                         if len(j) > 0:
-            #                             first_pixel = j[0].pix_array[0][0]
-            #                         else:
-            #                             first_pixel = BACKGROUND_COLOR
-            #                     else:
-            #                         first_pixel = j.pix_array[0][0]
-            #                     row.append(first_pixel)
-            #                 final_pixels.append(row)
-
-            #             wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
-            #             wfc_grid_group.add(wfc_output)
 
             if switch_state_cooldown:
                 switch_state_cooldown_counter -= 1
@@ -1229,7 +1164,7 @@ async def main(loop):
                     wfc_second_grid_group.empty()
                     asyncio_queue = asyncio.LifoQueue()
                     wfc_list_count = 0
-                    is_wfc_anim_ongoing = False
+                    is_wfc_replay_anim_ongoing = False
                     has_wfc_executed = True
                     is_wfc_finished = False
                     wfc_state["interrupt"] = False
@@ -1242,7 +1177,7 @@ async def main(loop):
                         tile_button.image.set_alpha(100)
                     wfc_time_start = time.perf_counter()
 
-                    loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, render_wfc_during_execution, wfc_state))
+                    loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, wfc_state))
 
             if cancel_wfc_button.draw(screen):
                 if has_wfc_executed:
@@ -1260,7 +1195,7 @@ async def main(loop):
                 screen.blit(line, (510, 253 + y * 18))
             
             if increase_wfc_output_size_button.draw(screen):
-                if not is_wfc_anim_ongoing and output_width < output_grid_upper_limit and not has_wfc_executed:
+                if not is_wfc_replay_anim_ongoing and output_width < output_grid_upper_limit and not has_wfc_executed:
                     output_width += 1
                     output_height += 1
                     output_size_text_color = get_output_size_text_color(output_width)
@@ -1274,7 +1209,7 @@ async def main(loop):
 
 
             if decrease_wfc_output_size_button.draw(screen):
-                if not is_wfc_anim_ongoing and output_width > output_grid_lower_limit and not has_wfc_executed:
+                if not is_wfc_replay_anim_ongoing and output_width > output_grid_lower_limit and not has_wfc_executed:
                     output_width -= 1
                     output_height -= 1
                     output_size_text_color = get_output_size_text_color(output_width)
@@ -1292,7 +1227,7 @@ async def main(loop):
             draw_selected_tile_border(screen, selected_tile)
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
-                    if not is_wfc_anim_ongoing and not has_wfc_executed:
+                    if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                         if index != selected_tile_index:
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
@@ -1304,7 +1239,7 @@ async def main(loop):
                         
             # Animation
             if draw_second_grid:
-                if is_wfc_anim_ongoing:
+                if is_wfc_replay_anim_ongoing:
                     if wfc_list_count < len(sliced_list):
                         final_pixels = []
 
@@ -1326,7 +1261,7 @@ async def main(loop):
                         wfc_second_grid_group.add(wfc_output_2)
                         wfc_list_count += 1
                     if wfc_list_count == len(sliced_list):
-                        is_wfc_anim_ongoing = False
+                        is_wfc_replay_anim_ongoing = False
                         change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
                         change_button_color("enabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                         for tile_button in tile_buttons:
@@ -1337,17 +1272,17 @@ async def main(loop):
 
 
             if replay_animation_button.draw(screen):
-                if not is_wfc_anim_ongoing and not has_wfc_executed and len(wfc_order_list) > 0:
+                if not is_wfc_replay_anim_ongoing and not has_wfc_executed and len(wfc_order_list) > 0:
                     wfc_list_count = 0
-                    is_wfc_anim_ongoing = True
+                    is_wfc_replay_anim_ongoing = True
                     change_button_color("enabled", enabled_buttons_only_during_wfc_post_anim)
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
                     if not draw_second_grid:
                         draw_second_grid = True
-                        is_wfc_anim_ongoing = True
+                        is_wfc_replay_anim_ongoing = True
 
             if skip_animation_button.draw(screen):
-                if is_wfc_anim_ongoing:
+                if is_wfc_replay_anim_ongoing:
                     wfc_list_count = len(sliced_list) - 1
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
@@ -1397,7 +1332,7 @@ async def main(loop):
             anim_after_wfc_infotext.draw(screen)
 
             if increase_replay_speed_button.draw(screen):
-                if not is_wfc_anim_ongoing:
+                if not is_wfc_replay_anim_ongoing:
                     if wfc_replay_slice_num < wfc_slice_num_upper_limit:
                         wfc_replay_slice_num += 1
                         sliced_list = wfc_order_list[::wfc_replay_slice_num]
@@ -1411,7 +1346,7 @@ async def main(loop):
                             disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_replay_speed_button)
 
             if decrease_replay_speed_button.draw(screen):
-                if not is_wfc_anim_ongoing:
+                if not is_wfc_replay_anim_ongoing:
                     if wfc_replay_slice_num > wfc_slice_num_lower_limit:
                         wfc_replay_slice_num -= 1
                         sliced_list = wfc_order_list[::wfc_replay_slice_num]
@@ -1425,7 +1360,7 @@ async def main(loop):
                             disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_replay_speed_button)
 
             if toggle_anim_during_wfc_button.draw(screen):
-                if not is_wfc_anim_ongoing and not has_wfc_executed:
+                if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                     if render_wfc_during_execution:
                         render_wfc_during_execution = False
                         anim_during_wfc_value_text = size_17_font.render("OFF", True, DARKRED)
@@ -1434,7 +1369,7 @@ async def main(loop):
                         anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
 
             if toggle_anim_after_wfc_button.draw(screen):
-                if not is_wfc_anim_ongoing and not has_wfc_executed:
+                if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                     if render_wfc_at_end:
                         render_wfc_at_end = False
                         anim_after_wfc_value_text = size_17_font.render("OFF", True, DARKRED)
@@ -1443,12 +1378,12 @@ async def main(loop):
                         anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
             
             if help_button.draw(screen):
-                if not is_wfc_anim_ongoing and not has_wfc_executed:
+                if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                     game_state = "help"
                     previous_game_state = "wfc"
 
             if paint_new_tile_button.draw(screen):
-                if not is_wfc_anim_ongoing and not has_wfc_executed:
+                if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                     game_state = "paint"
                     previous_game_state = "paint"
                     switch_state_cooldown = True
@@ -1639,7 +1574,7 @@ async def main(loop):
             draw_selected_tile_border(screen, selected_tile)
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
-                    if not is_wfc_anim_ongoing and not has_wfc_executed:
+                    if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                         if index != selected_tile_index:
                             selected_tile = tile_buttons[index]
                             selected_tile_index = index
