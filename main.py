@@ -465,31 +465,34 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     print("Wave Function Collapse Started")
 
     wfc_completed = True
+    wfc_interrupted = False
 
     coefficients_state = []
+
+    wfc_status = ""
 
     # Actual start of WFC
     try:
         while not is_wave_function_fully_collapsed(coefficients):
             if wfc_state["interrupt"]:
                 print("break")
-                await asyncio_queue.put("WFC ENDED")
+                wfc_status = "interrupted"
                 break
 
             await asyncio.sleep(0)
 
             if render_wfc_during_execution:
-                await asyncio_queue.put(deepcopy(coefficients))
+                await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
 
             if render_wfc_during_execution:
-                await asyncio_queue.put(deepcopy(coefficients))
+                await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
             
             if render_wfc_during_execution:
-                await asyncio_queue.put(deepcopy(coefficients))
+                await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
     except Exception as e:
         wfc_completed = False
         # print("WFC FAIL: ", e)
@@ -498,33 +501,38 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     # thread_queue.put(round((perf_time_end - perf_time_start), 3))
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
-    if wfc_completed:
-        final_pixels = []
-        for i in coefficients:
-            row = []
-            for j in i:
-                if isinstance(j, list):
-                    first_pixel = j[0].pix_array[0][0]
-                else:
-                    first_pixel = j.pix_array[0][0]
-                row.append(first_pixel)
-            final_pixels.append(row)
-        await asyncio_queue.put([True, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)])
-    else:
-        final_pixels = []
-        for i in coefficients: 
-            row = []
-            for j in i:
-                if isinstance(j, list):
-                    if len(j) > 0:
-                        first_pixel = j[0].pix_array[0][0]
-                    else:
-                        first_pixel = BACKGROUND_COLOR
-                else:
-                    first_pixel = j.pix_array[0][0]
-                row.append(first_pixel)
-            final_pixels.append(row) 
-        await asyncio_queue.put([False, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)]) 
+    if wfc_status == "":
+        if wfc_completed:
+            wfc_status = "finished-success"
+        else:
+            wfc_status = "finished-fail"
+
+    final_pixels = []
+    for i in coefficients:
+        row = []
+        for j in i:
+            if isinstance(j, list):
+                first_pixel = j[0].pix_array[0][0]
+            else:
+                first_pixel = j.pix_array[0][0]
+            row.append(first_pixel)
+        final_pixels.append(row)
+    await asyncio_queue.put([wfc_status, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)])
+    # else:
+    #     final_pixels = []
+    #     for i in coefficients: 
+    #         row = []
+    #         for j in i:
+    #             if isinstance(j, list):
+    #                 if len(j) > 0:
+    #                     first_pixel = j[0].pix_array[0][0]
+    #                 else:
+    #                     first_pixel = BACKGROUND_COLOR
+    #             else:
+    #                 first_pixel = j.pix_array[0][0]
+    #             row.append(first_pixel)
+    #         final_pixels.append(row) 
+    #     await asyncio_queue.put([False, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)]) 
 
 def swap_x_y_order(order):
     #DELETE FUNCTION?
@@ -1070,11 +1078,13 @@ async def main(loop):
                 time_progressed = time.perf_counter() - wfc_time_start
                 wfc_in_progress_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
                 screen.blit(wfc_in_progress_text, wfc_state_text_pos)
+
                 current_wfc_state = await asyncio_queue.get()
-                if isinstance(current_wfc_state, list):
+
+                if current_wfc_state[0] == "ongoing":
                     final_pixels = []
 
-                    for i in current_wfc_state:
+                    for i in current_wfc_state[1]:
                         row = []
                         for j in i:
                             if isinstance(j, list):
@@ -1089,8 +1099,9 @@ async def main(loop):
 
                     wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                     wfc_grid_group.add(wfc_output)
-                elif isinstance(current_wfc_state, str):
+                else:
                     is_wfc_executing = False
+                    print(current_wfc_state[0])
 
 
             # if not threading.active_count() > standard_threads:
@@ -1191,7 +1202,7 @@ async def main(loop):
                 if not is_wfc_executing and not switch_state_cooldown:
                     wfc_grid_group.empty()
                     # thread_queue = queue.Queue()
-                    asyncio_queue = asyncio.Queue()
+                    asyncio_queue = asyncio.LifoQueue()
                     wfc_list_count = 0
                     did_wfc_fail = False
                     is_wfc_anim_ongoing = False
