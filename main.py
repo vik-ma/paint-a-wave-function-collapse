@@ -71,7 +71,7 @@ COLOR_LIST = [WHITE, LIGHTGREY, GREY, DARKGREY, BLACK,
             ORANGERED, RED, DARKRED, CRIMSON, PINK,
             LIGHTISHPINK, LIGHTPINK, LIGHTPURPLE, PURPLE,
             DARKPURPLE, DARKBLUE, BLUE, LIGHTISHBLUE, LIGHTBLUE,
-            CYAN, LIGHTGREEN, GREEN, LAWNGREEN,  DARKISHGREEN, DARKGREEN]
+            CYAN, LIGHTGREEN, GREEN, LAWNGREEN, DARKISHGREEN, DARKGREEN]
 
 BACKGROUND_COLOR = (155, 155, 155)
 SCREEN_TEXT_COLOR = (30, 30, 30)
@@ -898,7 +898,7 @@ async def main(loop):
     wfc_time_start = 0
     wfc_time_finish = 0
 
-    did_wfc_fail = False
+    wfc_finish_status = ""
 
     render_wfc_during_execution = True
     render_wfc_at_end = True
@@ -1075,15 +1075,13 @@ async def main(loop):
         if game_state == "wfc":
 
             if is_wfc_executing:
-                time_progressed = time.perf_counter() - wfc_time_start
-                wfc_in_progress_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
-                screen.blit(wfc_in_progress_text, wfc_state_text_pos)
-
                 current_wfc_state = await asyncio_queue.get()
 
                 if current_wfc_state[0] == "ongoing":
+                    time_progressed = time.perf_counter() - wfc_time_start
+                    wfc_status_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
+                    screen.blit(wfc_status_text, wfc_state_text_pos)
                     final_pixels = []
-
                     for i in current_wfc_state[1]:
                         row = []
                         for j in i:
@@ -1101,8 +1099,19 @@ async def main(loop):
                     wfc_grid_group.add(wfc_output)
                 else:
                     is_wfc_executing = False
+                    is_wfc_finished = True
+                    wfc_time_finish = current_wfc_state[3]
+                    wfc_finish_status = current_wfc_state[0]
                     print(current_wfc_state[0])
 
+            if is_wfc_finished:
+                if wfc_finish_status == "finished-success":
+                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
+                elif wfc_finish_status == "finished-fail":
+                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
+                elif wfc_finish_status == "interrupted":
+                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Interrupted After {wfc_time_finish}s", True, DARKBROWN)
+                screen.blit(wfc_finished_text, wfc_state_text_pos)
 
             # if not threading.active_count() > standard_threads:
             #     # If WFC is not executing
@@ -1191,20 +1200,11 @@ async def main(loop):
 
             screen.blit(wfc_guide_text, (10, 5))
 
-            if is_wfc_finished:
-                if not did_wfc_fail:
-                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
-                else:
-                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
-                screen.blit(wfc_finished_text, wfc_state_text_pos)
-
             if start_wfc_button.draw(screen):
                 if not is_wfc_executing and not switch_state_cooldown:
                     wfc_grid_group.empty()
-                    # thread_queue = queue.Queue()
                     asyncio_queue = asyncio.LifoQueue()
                     wfc_list_count = 0
-                    did_wfc_fail = False
                     is_wfc_anim_ongoing = False
                     is_wfc_executing = True
                     is_wfc_finished = False
@@ -1217,8 +1217,6 @@ async def main(loop):
                     for tile_button in tile_buttons:
                         tile_button.image.set_alpha(100)
                     wfc_time_start = time.perf_counter()
-                    # get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
-                    # get_wfc_output.start()
 
                     loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, render_wfc_during_execution, wfc_state))
 
