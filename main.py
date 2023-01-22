@@ -473,7 +473,7 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
         while not is_wave_function_fully_collapsed(coefficients):
             if wfc_state["interrupt"]:
                 print("break")
-                wfc_status = "interrupted"
+                wfc_status = "finished-interrupted"
                 break
 
             await asyncio.sleep(0)
@@ -512,22 +512,6 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
             row.append(first_pixel)
         final_pixels.append(row)
     await asyncio_queue.put([wfc_status, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)])
-
-def swap_x_y_order(order):
-    #DELETE FUNCTION?
-    new_order = []
-    for o in order:
-        swapped = ((o[0][0][0],o[0][1][0]),(o[0][0][1],o[0][1][1]))
-        new_order.append([swapped, o[1], o[2]])
-    return new_order
-
-def swap_x_y_order_dict(order_dict):
-    #DELETE FUNCTION?
-    new_order_dict = OrderedDict()
-    for k, v in order_dict.items():
-        swapped = ((v[0][0],v[1][0]),(v[0][1],v[1][1]))
-        new_order_dict[k] = swapped
-    return new_order_dict
 
 def draw_window(screen):
     """Fill window with background color."""
@@ -587,15 +571,6 @@ def get_pattern_dict(pattern_list):
     for pattern in pattern_list:
         pattern_dict[pattern.pix_array] = (pattern.x, pattern.y)
     return pattern_dict
-
-def swap_pattern_x_y(pattern_list):
-    #DELETE FUNCTION?
-    new_list = []
-    for pattern in pattern_list:
-        swapped = ((pattern.pix_array[0][0], pattern.pix_array[1][0]),(pattern.pix_array[0][1], pattern.pix_array[1][1]))
-        pattern.pix_array = swapped
-        new_list.append(pattern)
-    return new_list
 
 def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
     """Create and return grid of white colored PaintTile objects from input coordinates and dimensions."""
@@ -1032,17 +1007,6 @@ async def main(loop):
             button.hover_color = state_colors[state]["hover_color"]
             button.foreground_color = state_colors[state]["foreground_color"]
 
-    def adjust_grid_position(wfc_output, wfc_output_2):
-        if wfc_output != None:
-            wfc_grid_group.empty()
-            old_pix_array = wfc_output.pix_array
-            wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, old_pix_array, enlargement_scale)
-            wfc_grid_group.add(wfc_output)
-            if wfc_output_2 != None:
-                old_pix_array_second = wfc_output_2.pix_array
-                wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, old_pix_array_second, enlargement_scale)
-                wfc_grid_group.add(wfc_output_2)
-
     while run:
         clock.tick(FPS)
         draw_window(screen)
@@ -1115,7 +1079,7 @@ async def main(loop):
                     wfc_finished_text = size_20_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
                 elif wfc_finish_status == "finished-fail":
                     wfc_finished_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
-                elif wfc_finish_status == "interrupted":
+                elif wfc_finish_status == "finished-interrupted":
                     wfc_finished_text = size_20_font.render(f"Wave Function Collapse Interrupted After {wfc_time_finish}s", True, DARKBROWN)
                 screen.blit(wfc_finished_text, wfc_state_text_pos)
 
