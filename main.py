@@ -3,8 +3,6 @@ import random
 import math
 import time
 import sys
-import threading
-import queue
 import traceback
 import asyncio
 from copy import deepcopy
@@ -480,24 +478,21 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
 
             await asyncio.sleep(0)
 
-            # if render_wfc_during_execution:
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
 
-            # if render_wfc_during_execution:
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
             
-            # if render_wfc_during_execution:
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
     except Exception as e:
         wfc_completed = False
         # print("WFC FAIL: ", e)
         traceback.print_exc()
+
     perf_time_end = time.perf_counter()
-    # thread_queue.put(round((perf_time_end - perf_time_start), 3))
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
     if wfc_status == "":
@@ -517,21 +512,6 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
             row.append(first_pixel)
         final_pixels.append(row)
     await asyncio_queue.put([wfc_status, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)])
-    # else:
-    #     final_pixels = []
-    #     for i in coefficients: 
-    #         row = []
-    #         for j in i:
-    #             if isinstance(j, list):
-    #                 if len(j) > 0:
-    #                     first_pixel = j[0].pix_array[0][0]
-    #                 else:
-    #                     first_pixel = BACKGROUND_COLOR
-    #             else:
-    #                 first_pixel = j.pix_array[0][0]
-    #             row.append(first_pixel)
-    #         final_pixels.append(row) 
-    #     await asyncio_queue.put([False, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)]) 
 
 def swap_x_y_order(order):
     #DELETE FUNCTION?
@@ -881,9 +861,6 @@ async def main(loop):
 
     output_size_text_color = get_output_size_text_color(output_width)
 
-    get_wfc_output = None
-
-    standard_threads = threading.active_count()
     has_wfc_executed = False
 
     asyncio_queue = asyncio.LifoQueue()
@@ -892,8 +869,6 @@ async def main(loop):
 
     wfc_finished_text = None
     wfc_state_text_pos = (8, 280)
-    
-    thread_queue = queue.Queue()
 
     wfc_time_start = 0
     wfc_time_finish = 0
@@ -1174,9 +1149,9 @@ async def main(loop):
                     change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
                     change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
                     for tile_button in tile_buttons:
+                        # Make base tile buttons opaque
                         tile_button.image.set_alpha(100)
                     wfc_time_start = time.perf_counter()
-
                     loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, wfc_state))
 
             if cancel_wfc_button.draw(screen):
@@ -1241,9 +1216,9 @@ async def main(loop):
             if draw_second_grid:
                 if is_wfc_replay_anim_ongoing:
                     if wfc_list_count < len(sliced_list):
+                        # Loop through the enitre sliced list of WFC states and render one each frame
                         final_pixels = []
-
-                        for i in sliced_list[wfc_list_count]:
+                        for i in sliced_list[wfc_list_count]: 
                             row = []
                             for j in i:
                                 if isinstance(j, list):
@@ -1259,6 +1234,7 @@ async def main(loop):
                         wfc_second_grid_group.empty()
                         wfc_output_2 = Tile(grid_size, grid_size, second_grid_x_pos, second_grid_y_pos, final_pixels, enlargement_scale)
                         wfc_second_grid_group.add(wfc_output_2)
+                        # Show next WFC state next frame
                         wfc_list_count += 1
                     if wfc_list_count == len(sliced_list):
                         is_wfc_replay_anim_ongoing = False
@@ -1617,5 +1593,3 @@ async def start_app():
 
 if __name__ == "__main__":
     asyncio.run(start_app())
-    # main_thread = threading.Thread(target=asyncio.run, args=(main(),))
-    # main_thread.start()
