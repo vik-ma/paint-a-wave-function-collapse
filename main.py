@@ -441,7 +441,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
     
 
 
-async def execute_wave_function_collapse(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state):
+async def execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, render_wfc_during_execution, wfc_state):
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
@@ -473,22 +473,23 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
         while not is_wave_function_fully_collapsed(coefficients):
             if wfc_state["interrupt"]:
                 print("break")
+                await asyncio_queue.put("WFC ENDED")
                 break
 
             await asyncio.sleep(0)
-            
+
             if render_wfc_during_execution:
-                thread_queue.put(deepcopy(coefficients))
+                await asyncio_queue.put(deepcopy(coefficients))
 
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
 
             if render_wfc_during_execution:
-                thread_queue.put(deepcopy(coefficients))
+                await asyncio_queue.put(deepcopy(coefficients))
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
             
             if render_wfc_during_execution:
-                thread_queue.put(deepcopy(coefficients))
+                await asyncio_queue.put(deepcopy(coefficients))
     except Exception as e:
         wfc_completed = False
         # print("WFC FAIL: ", e)
@@ -508,7 +509,7 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row)
-        thread_queue.put([True, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)])
+        await asyncio_queue.put([True, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)])
     else:
         final_pixels = []
         for i in coefficients: 
@@ -523,7 +524,7 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
                     first_pixel = j.pix_array[0][0]
                 row.append(first_pixel)
             final_pixels.append(row) 
-        thread_queue.put([False, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)]) 
+        await asyncio_queue.put([False, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)]) 
 
 def swap_x_y_order(order):
     #DELETE FUNCTION?
@@ -877,6 +878,8 @@ async def main(loop):
     standard_threads = threading.active_count()
     is_wfc_executing = False
 
+    asyncio_queue = asyncio.LifoQueue()
+
     is_wfc_finished = False
 
     wfc_finished_text = None
@@ -1063,6 +1066,33 @@ async def main(loop):
 
         if game_state == "wfc":
 
+            if is_wfc_executing:
+                time_progressed = time.perf_counter() - wfc_time_start
+                wfc_in_progress_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
+                screen.blit(wfc_in_progress_text, wfc_state_text_pos)
+                current_wfc_state = await asyncio_queue.get()
+                if isinstance(current_wfc_state, list):
+                    final_pixels = []
+
+                    for i in current_wfc_state:
+                        row = []
+                        for j in i:
+                            if isinstance(j, list):
+                                if len(j) > 0:
+                                    first_pixel = j[0].pix_array[0][0]
+                                else:
+                                    first_pixel = BACKGROUND_COLOR
+                            else:
+                                first_pixel = j.pix_array[0][0]
+                            row.append(first_pixel)
+                        final_pixels.append(row)
+
+                    wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
+                    wfc_grid_group.add(wfc_output)
+                elif isinstance(current_wfc_state, str):
+                    is_wfc_executing = False
+
+
             # if not threading.active_count() > standard_threads:
             #     # If WFC is not executing
             #     if not thread_queue.empty() and is_wfc_executing:
@@ -1160,7 +1190,8 @@ async def main(loop):
             if start_wfc_button.draw(screen):
                 if not is_wfc_executing and not switch_state_cooldown:
                     wfc_grid_group.empty()
-                    thread_queue = queue.Queue()
+                    # thread_queue = queue.Queue()
+                    asyncio_queue = asyncio.Queue()
                     wfc_list_count = 0
                     did_wfc_fail = False
                     is_wfc_anim_ongoing = False
@@ -1177,7 +1208,8 @@ async def main(loop):
                     wfc_time_start = time.perf_counter()
                     # get_wfc_output = threading.Thread(target=execute_wave_function_collapse, args=(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
                     # get_wfc_output.start()
-                    loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, thread_queue, render_wfc_during_execution, wfc_state))
+
+                    loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, render_wfc_during_execution, wfc_state))
 
             if cancel_wfc_button.draw(screen):
                 if is_wfc_executing:
