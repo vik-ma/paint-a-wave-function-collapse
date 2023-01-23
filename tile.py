@@ -5,8 +5,9 @@ class Tile(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface([width, height])
+        self.pix_array = pix_array
 
-        for i, row in enumerate(pix_array):
+        for i, row in enumerate(self.pix_array):
             for j, color in enumerate(row):
                 self.image.set_at((i, j), color)
 

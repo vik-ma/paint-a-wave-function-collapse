@@ -186,10 +186,22 @@ print_tile_test = [
 
 sample_base_tile_8 = SampleTile(print_tile_test, 4, 4)
 
+flower_pix_array = [
+    ((0, 128, 0), (124, 252, 0), (124, 252, 0), (124, 252, 0), (255, 20, 147), (255, 228, 225)), 
+    ((124, 252, 0), (124, 252, 0), (218, 165, 32), (124, 252, 0), (124, 252, 0), (255, 20, 147)), 
+    ((124, 252, 0), (218, 165, 32), (255, 255, 125), (218, 165, 32), (124, 252, 0), (124, 252, 0)), 
+    ((124, 252, 0), (124, 252, 0), (218, 165, 32), (124, 252, 0), (124, 252, 0), (124, 252, 0)), 
+    ((75, 0, 130), (124, 252, 0), (124, 252, 0), (124, 252, 0), (124, 252, 0), (255, 69, 0)), 
+    ((100, 175, 255), (75, 0, 130), (124, 252, 0), (124, 252, 0), (255, 69, 0), (255, 215, 0))
+    ]
+
+flower_sample_tile = SampleTile(flower_pix_array, 6, 6)
+
 sample_tile_list.append(sample_base_tile_1)
 sample_tile_list.append(sample_base_tile_2)
 sample_tile_list.append(sample_base_tile_3)
-sample_tile_list.append(max_base_tile_7x7)
+# sample_tile_list.append(max_base_tile_7x7)
+sample_tile_list.append(flower_sample_tile)
 sample_tile_list.append(sample_base_tile_4)
 sample_tile_list.append(sample_base_tile_5)
 sample_tile_list.append(sample_base_tile_6)
@@ -690,7 +702,7 @@ async def main(loop):
     hover_box_font = size_18_font
     hover_box_line_height = hover_box_font.get_linesize()
 
-    test_button = Button(WHITE, 630, 110, 150, 40, "TEST", BLACK, LIGHTGREY)
+    test_button = Button(WHITE, 630, 160, 150, 40, "TEST", BLACK, LIGHTGREY)
     
     start_wfc_button = Button(WHITE, 509, 114, 150, 44, "Start WFC", BLACK, LIGHTGREY, big_text=True)
     cancel_wfc_button = Button(GREY, 668, 118, 120, 40, "Cancel WFC", DARKGREY, GREY)
@@ -1226,8 +1238,8 @@ async def main(loop):
                     wfc_list_count = len(sliced_list) - 1
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
-            # if test_button.draw(screen):
-            #     print(selected_base_tile_image == selected_tile.image)
+            if test_button.draw(screen):
+                print_tile_colors(base_tile_list[selected_tile_index])
 
             # if set_pattern_size_2_button.draw(screen):
             #     if not is_wfc_anim_ongoing and not is_wfc_executing:
@@ -1252,7 +1264,7 @@ async def main(loop):
 
             screen.blit(num_patterns_text, (251, 312))
             
-            if len(pattern_tile_list) > 35:
+            if len(pattern_tile_list) > 39:
                 for y, line in enumerate(num_patterns_warning_text):
                     screen.blit(line, (8, 409 + y * 18))
 
