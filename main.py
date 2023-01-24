@@ -88,50 +88,23 @@ directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 sample_tile_list = []
 
 
-sample_pixel_array = [
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK, BLACK),
-    (WHITE, BLACK, LIGHTGREY, BLACK),
-    (WHITE, BLACK, BLACK, BLACK),
+# original_sample_pixel_array = [
+#     (WHITE, WHITE, WHITE, WHITE),
+#     (WHITE, BLACK, BLACK, BLACK),
+#     (WHITE, BLACK, LIGHTGREY, BLACK),
+#     (WHITE, BLACK, BLACK, BLACK),
+#     ]
+
+# original_sample_tile = SampleTile(original_sample_pixel_array, 4, 4)
+
+green_original_sample_pixel_array = [
+    ((50, 205, 50), (50, 205, 50), (50, 205, 50), (50, 205, 50)), 
+    ((50, 205, 50), (0, 128, 0), (0, 128, 0), (0, 128, 0)), 
+    ((50, 205, 50), (0, 128, 0), (240, 230, 140), (0, 128, 0)), 
+    ((50, 205, 50), (0, 128, 0), (0, 128, 0), (0, 128, 0))
     ]
 
-sample_base_tile_1 = SampleTile(sample_pixel_array, 4, 4)
-
-sample_pixel_array_5x5 = [
-    (WHITE, WHITE, WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK, BLACK, WHITE),
-    (WHITE, BLACK, LIGHTGREY, BLACK, GREEN),
-    (WHITE, BLACK, BLACK, BLACK, BLACK),
-    (GREEN, GREEN, GREEN, GREEN, WHITE)
-]
-
-sample_base_tile_2 = SampleTile(sample_pixel_array_5x5, 5, 5)
-
-sample_pixel_array_5x4 = [
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK, BLACK),
-    (WHITE, BLACK, LIGHTGREY, BLACK),
-    (WHITE, BLACK, BLACK, GREEN),
-    (WHITE, BLACK, BLACK, GREEN)
-]
-
-sample_pixel_array_4x4_test = [
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK, GREEN),
-    (WHITE, BLACK, WHITE, GREEN)
-    ]
-
-sample_base_tile_7 = SampleTile(sample_pixel_array_4x4_test, 4, 4)
-
-print_tile_test = [
-    ((255, 255, 255), (255, 255, 255), (186, 85, 211), (0, 255, 255)), 
-    ((255, 255, 255), (186, 85, 211), (186, 85, 211), (0, 255, 255)), 
-    ((186, 85, 211), (186, 85, 211), (0, 255, 255), (0, 255, 255)), 
-    ((0, 255, 255), (0, 255, 255), (0, 255, 255), (255, 255, 255))
-    ]
-
-sample_base_tile_8 = SampleTile(print_tile_test, 4, 4)
+green_original_sample_tile = SampleTile(green_original_sample_pixel_array, 4, 4)
 
 flower_pix_array = [
     ((0, 128, 0), (124, 252, 0), (124, 252, 0), (124, 252, 0), (255, 20, 147), (255, 228, 225)), 
@@ -177,15 +150,13 @@ purple_void_pix_array = [
 
 purple_void_sample_tile = SampleTile(purple_void_pix_array, 7, 7)
 
-sample_tile_list.append(sample_base_tile_1)
-sample_tile_list.append(sample_base_tile_2)
-
+# sample_tile_list.append(original_sample_tile)
+sample_tile_list.append(green_original_sample_tile)
 sample_tile_list.append(flower_sample_tile)
 sample_tile_list.append(fire_sample_tile)
 sample_tile_list.append(ice_sample_tile)
 sample_tile_list.append(purple_void_sample_tile)
-sample_tile_list.append(sample_base_tile_7)
-sample_tile_list.append(sample_base_tile_8)
+
 
 # for i in range(9):
 #     sample_tile_list.append(max_base_tile_7x7)
