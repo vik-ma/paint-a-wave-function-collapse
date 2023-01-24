@@ -88,23 +88,32 @@ directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 sample_tile_list = []
 
 
-# original_sample_pixel_array = [
+# original_pixel_array = [
 #     (WHITE, WHITE, WHITE, WHITE),
 #     (WHITE, BLACK, BLACK, BLACK),
 #     (WHITE, BLACK, LIGHTGREY, BLACK),
 #     (WHITE, BLACK, BLACK, BLACK),
 #     ]
 
-# original_sample_tile = SampleTile(original_sample_pixel_array, 4, 4)
+# original_sample_tile = SampleTile(original_pixel_array, 4, 4)
 
-green_original_sample_pixel_array = [
-    ((50, 205, 50), (50, 205, 50), (50, 205, 50), (50, 205, 50)), 
-    ((50, 205, 50), (0, 128, 0), (0, 128, 0), (0, 128, 0)), 
-    ((50, 205, 50), (0, 128, 0), (240, 230, 140), (0, 128, 0)), 
-    ((50, 205, 50), (0, 128, 0), (0, 128, 0), (0, 128, 0))
-    ]
+# green_original_pixel_array = [
+#     ((50, 205, 50), (50, 205, 50), (50, 205, 50), (50, 205, 50)), 
+#     ((50, 205, 50), (0, 128, 0), (0, 128, 0), (0, 128, 0)), 
+#     ((50, 205, 50), (0, 128, 0), (240, 230, 140), (0, 128, 0)), 
+#     ((50, 205, 50), (0, 128, 0), (0, 128, 0), (0, 128, 0))
+#     ]
 
-green_original_sample_tile = SampleTile(green_original_sample_pixel_array, 4, 4)
+# green_original_sample_tile = SampleTile(green_original_pixel_array, 4, 4)
+
+beige_brown_green_original_pixel_array = [
+    ((240, 230, 140), (240, 230, 140), (240, 230, 140), (240, 230, 140)), 
+    ((240, 230, 140), (92, 64, 51), (92, 64, 51), (92, 64, 51)), 
+    ((240, 230, 140), (92, 64, 51), (124, 252, 0), (92, 64, 51)), 
+    ((240, 230, 140), (92, 64, 51), (92, 64, 51), (92, 64, 51))
+]
+
+beige_brown_green_original_sample_tile = SampleTile(beige_brown_green_original_pixel_array, 4, 4)
 
 flower_pix_array = [
     ((0, 128, 0), (124, 252, 0), (124, 252, 0), (124, 252, 0), (255, 20, 147), (255, 228, 225)), 
@@ -151,10 +160,11 @@ purple_void_pix_array = [
 purple_void_sample_tile = SampleTile(purple_void_pix_array, 7, 7)
 
 # sample_tile_list.append(original_sample_tile)
-sample_tile_list.append(green_original_sample_tile)
+# sample_tile_list.append(green_original_sample_tile)
+sample_tile_list.append(beige_brown_green_original_sample_tile)
+sample_tile_list.append(ice_sample_tile)
 sample_tile_list.append(flower_sample_tile)
 sample_tile_list.append(fire_sample_tile)
-sample_tile_list.append(ice_sample_tile)
 sample_tile_list.append(purple_void_sample_tile)
 
 
@@ -720,7 +730,7 @@ async def main(loop):
     tile_list_y_pos = 368
     tile_list_offset = 12
 
-    base_tile_max_height = 5
+    base_tile_max_height = 7
     base_tiles_per_row_limit = 5
     max_base_tiles = 20
 
