@@ -577,6 +577,16 @@ def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
         grid.append(new_row)
     return grid
 
+def create_colored_paint_grid(x_pos, y_pos, tile_size, pix_array):
+    grid = []
+    for i, row in enumerate(pix_array):
+        new_row = []
+        for j, color in enumerate(row):
+            tile = PaintTile(tile_size, tile_size, (x_pos + tile_size * i), (y_pos + tile_size * j), color)
+            new_row.append(tile)
+        grid.append(new_row)
+    return grid
+
 def create_pix_array(paint_grid):
     """Create and return a color pixel array tuple from input Paint Grid."""
     pix_array = []
@@ -1509,17 +1519,33 @@ async def main(loop):
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
                     if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
-                        if index != selected_tile_index:
-                            selected_tile = tile_buttons[index]
-                            selected_tile_index = index
-                            selected_base_tile_image = selected_tile.image.copy()
-                            patterns = get_patterns(pattern_size, base_tile_list[index])
-                            pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                            num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
-                            update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
+                        # if index != selected_tile_index:
+                        selected_tile = tile_buttons[index]
+                        selected_tile_index = index
+                        selected_base_tile_image = selected_tile.image.copy()
+                        patterns = get_patterns(pattern_size, base_tile_list[index])
+                        pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                        num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
+                        update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
+                        paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
+                        paint_grid_pix_array = create_pix_array(paint_grid)
+                        paint_grid_cols = len(paint_grid_pix_array)
+                        paint_grid_rows = len(paint_grid_pix_array[0])
+                        preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
+                        current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
+                        if paint_grid_cols == paint_grid_size_limit_upper:
+                            change_button_color("disabled", [increase_paint_grid_size_button])
+                        else:
+                            change_button_color("enabled", [increase_paint_grid_size_button])
+                        if paint_grid_cols == paint_grid_size_limit_lower:
+                            change_button_color("disabled", [decrease_paint_grid_size_button])
+                        else:
+                            change_button_color("enabled", [decrease_paint_grid_size_button])
 
-            # if test_paint_button.draw(screen):
-            #     print(preview_tile.pix_array)
+            if test_paint_button.draw(screen):
+                paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
+                paint_grid_pix_array = create_pix_array(paint_grid)
+            
             paint_color_group.draw(screen)
             hover_box_group.draw(screen)
 
