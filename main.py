@@ -1016,6 +1016,8 @@ async def main(loop):
         draw_window(screen)
 
         if game_state == "wfc":
+            if selected_tile == None:
+                selected_tile = tile_buttons[selected_tile_index]
 
             # When WFC has been started
             if has_wfc_executed:
@@ -1330,6 +1332,8 @@ async def main(loop):
                 if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                     game_state = "paint"
                     previous_game_state = "paint"
+                    selected_tile = None
+                    change_button_color("disabled", [delete_tile_button])
                     switch_state_cooldown = True
 
             wfc_grid_group.draw(screen)
@@ -1421,7 +1425,7 @@ async def main(loop):
                     switch_state_cooldown_counter = switch_state_cooldown_value
 
             if delete_tile_button.draw(screen):
-                if not switch_state_cooldown:
+                if not switch_state_cooldown and selected_tile != None:
                     if len(base_tile_list) > 1:
                         base_tile_list.remove(base_tile_list[selected_tile_index])
 
@@ -1515,11 +1519,13 @@ async def main(loop):
 
             # Initial Tile Buttons
             base_tiles_text.draw(screen) 
-            draw_selected_tile_border(screen, selected_tile)
+            if selected_tile != None:
+                draw_selected_tile_border(screen, selected_tile)
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
                     if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
-                        # if index != selected_tile_index:
+                        if selected_tile == None:
+                            change_button_color("enabled", [delete_tile_button])
                         selected_tile = tile_buttons[index]
                         selected_tile_index = index
                         selected_base_tile_image = selected_tile.image.copy()
@@ -1541,6 +1547,7 @@ async def main(loop):
                             change_button_color("disabled", [decrease_paint_grid_size_button])
                         else:
                             change_button_color("enabled", [decrease_paint_grid_size_button])
+                        
 
             if test_paint_button.draw(screen):
                 paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
