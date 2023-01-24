@@ -6,7 +6,6 @@ import sys
 import traceback
 import asyncio
 from copy import deepcopy
-from collections import OrderedDict
 from tile import Tile
 from button import Button
 from pattern import Pattern
@@ -88,30 +87,6 @@ directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
 sample_tile_list = []
 
-max_size_white_tile_8x8 = [
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255))
-    ]
-
-max_base_tile_8x8 = SampleTile(max_size_white_tile_8x8, 8, 8)
-
-max_size_white_tile_7x7 = [
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-    ((255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255)), 
-  ]
-
-max_base_tile_7x7 = SampleTile(max_size_white_tile_7x7, 7, 7)
 
 sample_pixel_array = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -139,24 +114,6 @@ sample_pixel_array_5x4 = [
     (WHITE, BLACK, BLACK, GREEN),
     (WHITE, BLACK, BLACK, GREEN)
 ]
-
-sample_base_tile_3 = SampleTile(sample_pixel_array_5x4, 5, 4)
-
-sample_pixel_array_3x4 = [
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, LIGHTGREY, LIGHTGREY, GREEN),
-    (WHITE, LIGHTGREY, WHITE, GREEN)
-]
-
-sample_base_tile_4 = SampleTile(sample_pixel_array_3x4, 3, 4)
-
-sample_pixel_array_3x3 = [
-    (WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK),
-    (WHITE, BLACK, GREEN)
-]
-
-sample_base_tile_5 = SampleTile(sample_pixel_array_3x3, 3, 3)
 
 sample_pixel_array_5x4_test = [
     (WHITE, WHITE, WHITE, WHITE),
@@ -197,13 +154,33 @@ flower_pix_array = [
 
 flower_sample_tile = SampleTile(flower_pix_array, 6, 6)
 
+fire_pix_array = [
+    ((92, 64, 51), (92, 64, 51), (92, 64, 51), (255, 0, 0), (92, 64, 51), (92, 64, 51), (92, 64, 51)), 
+    ((92, 64, 51), (92, 64, 51), (255, 0, 0), (255, 165, 0), (255, 0, 0), (92, 64, 51), (92, 64, 51)), 
+    ((92, 64, 51), (255, 0, 0), (255, 165, 0), (255, 255, 125), (255, 165, 0), (255, 0, 0), (92, 64, 51)), 
+    ((255, 0, 0), (255, 165, 0), (255, 255, 125), (255, 255, 125), (255, 255, 125), (255, 165, 0), (255, 0, 0)), 
+    ((92, 64, 51), (255, 0, 0), (255, 165, 0), (255, 255, 125), (255, 165, 0), (255, 0, 0), (92, 64, 51)), 
+    ((92, 64, 51), (92, 64, 51), (255, 0, 0), (255, 165, 0), (255, 0, 0), (92, 64, 51), (92, 64, 51)), 
+    ((92, 64, 51), (92, 64, 51), (92, 64, 51), (255, 0, 0), (92, 64, 51), (92, 64, 51), (92, 64, 51))
+    ]
+
+fire_sample_tile = SampleTile(fire_pix_array, 7, 7)
+
+ice_pix_array = [
+    ((0, 0, 155), (0, 0, 155), (30, 144, 255), (0, 255, 255)), 
+    ((0, 0, 155), (30, 144, 255), (0, 255, 255), (255, 255, 255)), 
+    ((30, 144, 255), (0, 255, 255), (255, 255, 255), (255, 255, 255)), 
+    ((0, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255))
+    ]
+
+ice_sample_tile = SampleTile(ice_pix_array, 4, 4)
+
 sample_tile_list.append(sample_base_tile_1)
 sample_tile_list.append(sample_base_tile_2)
-sample_tile_list.append(sample_base_tile_3)
-# sample_tile_list.append(max_base_tile_7x7)
+
 sample_tile_list.append(flower_sample_tile)
-sample_tile_list.append(sample_base_tile_4)
-sample_tile_list.append(sample_base_tile_5)
+sample_tile_list.append(fire_sample_tile)
+sample_tile_list.append(ice_sample_tile)
 sample_tile_list.append(sample_base_tile_6)
 sample_tile_list.append(sample_base_tile_7)
 sample_tile_list.append(sample_base_tile_8)
