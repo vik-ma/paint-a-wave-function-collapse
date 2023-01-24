@@ -488,16 +488,18 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
                 wfc_status = "finished-interrupted"
                 break
 
-            await asyncio.sleep(0)
+            # await asyncio.sleep(0)
 
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
 
+            # await asyncio.sleep(0)
+
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
-            
+            await asyncio.sleep(0)
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
     except Exception as e:
         wfc_completed = False
@@ -518,7 +520,10 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
         row = []
         for j in i:
             if isinstance(j, list):
-                first_pixel = j[0].pix_array[0][0]
+                if len(j) > 0:
+                    first_pixel = j[0].pix_array[0][0]
+                else:
+                    first_pixel = BACKGROUND_COLOR
             else:
                 first_pixel = j.pix_array[0][0]
             row.append(first_pixel)
