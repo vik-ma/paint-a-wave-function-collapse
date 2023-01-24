@@ -115,16 +115,6 @@ sample_pixel_array_5x4 = [
     (WHITE, BLACK, BLACK, GREEN)
 ]
 
-sample_pixel_array_5x4_test = [
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, WHITE, WHITE, WHITE),
-    (WHITE, BLACK, BLACK, GREEN),
-    (WHITE, BLACK, WHITE, GREEN)
-]
-
-sample_base_tile_6 = SampleTile(sample_pixel_array_5x4_test, 5, 4)
-
 sample_pixel_array_4x4_test = [
     (WHITE, WHITE, WHITE, WHITE),
     (WHITE, WHITE, WHITE, WHITE),
@@ -175,13 +165,25 @@ ice_pix_array = [
 
 ice_sample_tile = SampleTile(ice_pix_array, 4, 4)
 
+purple_void_pix_array = [
+    ((0, 0, 0), (0, 0, 0), (255, 228, 225), (186, 85, 211), (150, 50, 255), (75, 0, 130), (75, 0, 130)), 
+    ((0, 0, 0), (255, 228, 225), (186, 85, 211), (150, 50, 255), (75, 0, 130), (75, 0, 130), (75, 0, 130)), 
+    ((255, 228, 225), (186, 85, 211), (150, 50, 255), (75, 0, 130), (75, 0, 130), (75, 0, 130), (150, 50, 255)), 
+    ((186, 85, 211), (150, 50, 255), (75, 0, 130), (75, 0, 130), (75, 0, 130), (150, 50, 255), (186, 85, 211)), 
+    ((150, 50, 255), (75, 0, 130), (75, 0, 130), (75, 0, 130), (150, 50, 255), (186, 85, 211), (255, 228, 225)), 
+    ((75, 0, 130), (75, 0, 130), (75, 0, 130), (150, 50, 255), (186, 85, 211), (255, 228, 225), (0, 0, 0)), 
+    ((75, 0, 130), (75, 0, 130), (150, 50, 255), (186, 85, 211), (255, 228, 225), (0, 0, 0), (0, 0, 0))
+    ] 
+
+purple_void_sample_tile = SampleTile(purple_void_pix_array, 7, 7)
+
 sample_tile_list.append(sample_base_tile_1)
 sample_tile_list.append(sample_base_tile_2)
 
 sample_tile_list.append(flower_sample_tile)
 sample_tile_list.append(fire_sample_tile)
 sample_tile_list.append(ice_sample_tile)
-sample_tile_list.append(sample_base_tile_6)
+sample_tile_list.append(purple_void_sample_tile)
 sample_tile_list.append(sample_base_tile_7)
 sample_tile_list.append(sample_base_tile_8)
 
