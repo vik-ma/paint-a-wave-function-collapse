@@ -732,6 +732,8 @@ async def main(loop):
 
     save_tile_button = Button(WHITE, 615, 120, 150, 46, "Save Tile", BLACK, LIGHTGREY, big_text=True)
 
+    copy_tile_button = Button(WHITE, 440, 268, 190, 36, "Copy Selected Tile", BLACK, LIGHTGREY)
+
     delete_tile_button = Button(WHITE, 600, 320, 190, 36, "Delete Selected Tile", BLACK, LIGHTGREY)
 
     run = True
@@ -1018,8 +1020,6 @@ async def main(loop):
         draw_window(screen)
 
         if game_state == "wfc":
-            if selected_tile == None:
-                selected_tile = tile_buttons[selected_tile_index]
 
             # When WFC has been started
             if has_wfc_executed:
@@ -1334,8 +1334,6 @@ async def main(loop):
                 if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                     game_state = "paint"
                     previous_game_state = "paint"
-                    selected_tile = None
-                    change_button_color("disabled", [delete_tile_button])
                     switch_state_cooldown = True
 
             wfc_grid_group.draw(screen)
@@ -1513,6 +1511,21 @@ async def main(loop):
                     if paint_grid_cols == paint_grid_size_limit_lower + 1:
                         change_button_color("enabled", [decrease_paint_grid_size_button])
 
+            if copy_tile_button.draw(screen):
+                paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
+                paint_grid_pix_array = create_pix_array(paint_grid)
+                paint_grid_cols = len(paint_grid_pix_array)
+                paint_grid_rows = len(paint_grid_pix_array[0])
+                preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
+                current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
+                if paint_grid_cols == paint_grid_size_limit_upper:
+                    change_button_color("disabled", [increase_paint_grid_size_button])
+                else:
+                    change_button_color("enabled", [increase_paint_grid_size_button])
+                if paint_grid_cols == paint_grid_size_limit_lower:
+                    change_button_color("disabled", [decrease_paint_grid_size_button])
+                else:
+                    change_button_color("enabled", [decrease_paint_grid_size_button])
 
             if clear_paint_grid_button.draw(screen):
                 paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
@@ -1526,8 +1539,6 @@ async def main(loop):
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
                     if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
-                        if selected_tile == None:
-                            change_button_color("enabled", [delete_tile_button])
                         selected_tile = tile_buttons[index]
                         selected_tile_index = index
                         selected_base_tile_image = selected_tile.image.copy()
@@ -1535,20 +1546,6 @@ async def main(loop):
                         pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                         num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
                         update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
-                        paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
-                        paint_grid_pix_array = create_pix_array(paint_grid)
-                        paint_grid_cols = len(paint_grid_pix_array)
-                        paint_grid_rows = len(paint_grid_pix_array[0])
-                        preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
-                        current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
-                        if paint_grid_cols == paint_grid_size_limit_upper:
-                            change_button_color("disabled", [increase_paint_grid_size_button])
-                        else:
-                            change_button_color("enabled", [increase_paint_grid_size_button])
-                        if paint_grid_cols == paint_grid_size_limit_lower:
-                            change_button_color("disabled", [decrease_paint_grid_size_button])
-                        else:
-                            change_button_color("enabled", [decrease_paint_grid_size_button])
                         
 
             if test_paint_button.draw(screen):
