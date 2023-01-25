@@ -1215,8 +1215,8 @@ async def main(loop):
                     wfc_list_count = len(sliced_list) - 1
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
-            if test_button.draw(screen):
-                print_tile_colors(base_tile_list[selected_tile_index])
+            # if test_button.draw(screen):
+            #     print_tile_colors(base_tile_list[selected_tile_index])
 
             # if set_pattern_size_2_button.draw(screen):
             #     if not is_wfc_anim_ongoing and not is_wfc_executing:
@@ -1529,9 +1529,9 @@ async def main(loop):
                         update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
                         
 
-            if test_paint_button.draw(screen):
-                paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
-                paint_grid_pix_array = create_pix_array(paint_grid)
+            # if test_paint_button.draw(screen):
+            #     paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
+            #     paint_grid_pix_array = create_pix_array(paint_grid)
             
             paint_color_group.draw(screen)
             hover_box_group.draw(screen)

@@ -2,4 +2,5 @@ test.py
 TestImages
 asd
 __pycache__
-build
+web-cache
+build/version.txt
