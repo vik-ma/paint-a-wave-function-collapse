@@ -2,6 +2,24 @@ import pygame
 
 
 class InfoText():
+    """
+    This is a class for text in the GUI of the pygame application that has a HoverBox object attached to it.
+      
+    Attributes:
+        x (int): X-position of the text.
+        y (int): Y-position of the text.
+        main_text (str): Text to be drawn in the GUI.
+        main_text_font (pygame.font): Pygame font object to store font type and size.
+        rect (pygame.Rect): Pygame Rect object for rendering and collision detection.
+        render_main_text (pygame.Surface): Pygame Surface object to render text in GUI.
+        hover_box (HoverBox): HoverBox object to show a box with text when mouse is hovering over text.
+        hover_box_group (pygame.sprite.Group): Pygame Sprite Group that HoverBox is added to.
+        is_showing_hover_box (bool): Bool to represent whether or not HoverBox is currently rendered on screen or not.
+
+    Methods:
+        draw(self, surface)
+            Draws the text on the pygame surface and shows attached HoverBox object if mouse is hovering over text. 
+    """
     def __init__(self, x, y, main_text, main_text_font, main_text_color, hover_box, hover_box_group):
         self.x = x
         self.y = y

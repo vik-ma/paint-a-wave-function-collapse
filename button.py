@@ -17,7 +17,7 @@ class Button():
         clicked (bool): Bool to represent whether or not the button is clicked.
         rect (pygame.Rect): Pygame Rect object for rendering and collision detection.
         hover_color (tuple): Background color of the button when mouse is hovering over in RGB format.
-        hover_box (HoverBox): HoverBox object to show HoverBox when hovering over (if present).
+        hover_box (HoverBox): HoverBox object to show a box with text when mouse is hovering over button (if present).
     
     Methods:
         draw(self, surface)
