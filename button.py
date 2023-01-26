@@ -22,7 +22,6 @@ class Button():
     Methods:
         draw(self, surface)
             Draws the button on the pygame surface and returns True if button is clicked. 
-
     """
 
     def __init__(self, color, x, y, width, height, text, foreground_color, hover_color, *, small_text=False, big_text=False, hover_box=None, hover_box_group=None):
