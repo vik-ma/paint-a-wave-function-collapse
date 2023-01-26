@@ -2,13 +2,35 @@ import pygame
 
 
 class Button():
+    """
+    This is a class for the GUI buttons in the pygame application.
+      
+    Attributes:
+        color (tuple): Background color of the button in RGB format.
+        x (int): X-position of the button.
+        y (int): Y-position of the button.
+        width (int): Width of the button.
+        height (int): Height of the button.
+        font (pygame.font): Pygame font object to store font type and size.
+        text (str): Text inside the button.
+        foreground_color (tuple): Text color of the button in RGB format.
+        clicked (bool): Bool to represent whether or not the button is clicked.
+        rect (pygame.Rect): Pygame Rect object for rendering and collision detection.
+        hover_color (tuple): Background color of the button when mouse is hovering over in RGB format.
+        hover_box (HoverBox): HoverBox object to show HoverBox when hovering over (if present).
+    
+    Methods:
+        draw(self, surface)
+            Draws the button on the pygame surface and returns True if button is clicked. 
+
+    """
+
     def __init__(self, color, x, y, width, height, text, foreground_color, hover_color, *, small_text=False, big_text=False, hover_box=None, hover_box_group=None):
         self.color = color
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        # self.font = pygame.font.SysFont('Arial Bold', 27)
         self.font = pygame.font.SysFont('Arial Bold', 25)
         self.text = text
         self.foreground_color = foreground_color
