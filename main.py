@@ -176,6 +176,11 @@ sample_tile_list.append(purple_void_sample_tile)
 
 
 def get_rotated_pix_array(pix_array):
+    """
+    Take a two dimensional pixel array (list) and return a tuple consisting of
+    the same pixel array in tuple form, every 90 degree rotation of the original pixel array,
+    and the vertical and horizontal mirror of the pixel array.
+    """
     rotated_pix_array_270 = tuple(zip(*pix_array[::-1]))
     rotated_pix_array_180 = tuple(zip(*rotated_pix_array_270[::-1]))
     rotated_pix_array_90 = tuple(zip(*rotated_pix_array_180[::-1]))
@@ -190,11 +195,15 @@ def get_rotated_pix_array(pix_array):
     horizontally_flipped_pix_array = tuple(pix_array[::-1])
 
     pix_array = tuple(pix_array)
-    # return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270)
+
     return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270, vertically_flipped_pix_array, horizontally_flipped_pix_array)
 
 
 def get_offset_tiles(pattern, offset):
+    """
+    Return the tile(s) from input pattern pix_array which intersects with 
+    input offset coordinates (x, y) from the perspective of the offset.
+    """
     if offset == (0, 0):
         return pattern.pix_array
     if offset == (-1, -1):
@@ -215,6 +224,10 @@ def get_offset_tiles(pattern, offset):
         return tuple([pattern.pix_array[0][0]])
 
 def get_valid_directions(position, output_width, output_height):
+    """
+    Return a list of strings representing the valid directions that can be taken 
+    from the given input position on the grid.
+    """
     x, y = position
     
     valid_directions = []
@@ -247,6 +260,11 @@ def get_valid_directions(position, output_width, output_height):
     return valid_directions
 
 def get_patterns(pattern_size, base_tile):
+    """
+    Return a list consisting of a list of every unique pattern of input size pattern_size x pattern_size 
+    inside input base_tile object, a dictionary of each unique pattern's occurence weight and a dictionary
+    of each unique pattern's probability of being propagated.
+    """
     pattern_list = []
 
     occurence_weights = {}
@@ -290,6 +308,10 @@ def get_patterns(pattern_size, base_tile):
 
 
 def initialize_wave_function(pattern_list, output_width, output_height):
+    """
+    Create and return a two dimensional array of size output_width x output_height, 
+    where every element stores a list of every pattern in input pattern_list. 
+    """
     coefficients = []
     
     for col in range(output_width):
@@ -301,7 +323,7 @@ def initialize_wave_function(pattern_list, output_width, output_height):
     return coefficients
 
 def is_wave_function_fully_collapsed(coefficients):
-    """Check if wave function is fully collapsed meaning that for each tile available is only one pattern"""
+    """Check if wave function is fully collapsed meaning that for each tile available is only one pattern."""
     for col in coefficients:
         for entry in col:
             if len(entry) > 1:
@@ -309,13 +331,13 @@ def is_wave_function_fully_collapsed(coefficients):
     return True
 
 def get_possible_patterns_at_position(position, coefficients):
-    """Return possible patterns at position (x, y)"""
+    """Return possible patterns at position (x, y)."""
     x, y = position
     possible_patterns = coefficients[x][y]
     return possible_patterns
 
 def get_shannon_entropy(position, coefficients, probability):
-    """Calcualte the Shannon Entropy of the wavefunction at position (x, y)"""
+    """Calcualte the Shannon Entropy of the wavefunction at position (x, y)."""
     x, y = position
     entropy = 0
     
@@ -1215,8 +1237,8 @@ async def main(loop):
                     wfc_list_count = len(sliced_list) - 1
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
-            # if test_button.draw(screen):
-            #     print_tile_colors(base_tile_list[selected_tile_index])
+            if test_button.draw(screen):
+                print(patterns[0])
 
             # if set_pattern_size_2_button.draw(screen):
             #     if not is_wfc_anim_ongoing and not is_wfc_executing:

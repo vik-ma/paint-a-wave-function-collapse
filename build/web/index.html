@@ -299,18 +299,13 @@ asyncio.run( custom_site() )
         canvas.emscripten {
             border: 0px none;
             background-color: transparent;
-            width: 100%;
-            height: 100%;
+
             z-index: 5;
 
             padding: 0 px;
             margin: 0 auto;
 
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            width: 400px;
         }
 
         body {
@@ -351,9 +346,8 @@ asyncio.run( custom_site() )
             border: 1px solid black;
         }
 
-        #test {
-            position: absolute;
-            padding: 100px !important;
+        #game-wrapper {
+            width: 800px;
         }
     </style>
 
@@ -371,13 +365,11 @@ asyncio.run( custom_site() )
         </div>
     </div>
 
-    <div id="test">
-        <canvas class="emscripten" id="canvas" width="1px" height="1px" oncontextmenu="event.preventDefault()"
+    <div id="game-wrapper">
+        <canvas class="emscripten" oncontextmenu="event.preventDefault()"
             tabindex="1">
         </canvas>
     </div>
-
-    <div id="html"></div>
 
     <div id="crt" class="bottomright">
 
@@ -402,7 +394,6 @@ asyncio.run( custom_site() )
         </div>
 
         <div id="box" class="emscripten_border" hidden="true">
-
             <div id="info" class="trinfo"></div>
 
             <iframe id="iframe" class="framed" name="iframe" width="470px" height="90%" allowtransparency="true"
