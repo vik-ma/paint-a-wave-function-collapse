@@ -1,6 +1,20 @@
 import pygame
 
 class HoverBox(pygame.sprite.Sprite):
+    """
+    This is a class for the boxes that can appear when hover over an object in the GUI of the pygame application.
+      
+    Attributes:
+        width (int): Width of the box.
+        height (int): Height of the box.
+        font (pygame.font): Pygame font object to store font type and size.
+        text_line_height (int): The amount of pixels one line of text in the current font takes up.
+        text (list): Text inside the box, where one element represents one line of text.
+
+    Methods:
+        update_image(self, x, y)
+            Draws the box on its own pygame surface at the x and y coordinates. 
+    """
     def __init__(self, width, height, text, font):
         pygame.sprite.Sprite.__init__(self)
         self.width = width
