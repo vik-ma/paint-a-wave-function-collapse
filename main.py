@@ -354,7 +354,7 @@ def get_shannon_entropy(position, coefficients, probability):
     return entropy
 
 def get_min_entropy_at_pos(coefficients, probability):
-    """Return position of tile with the lowest entropy"""
+    """Return position of tile with the lowest entropy."""
     min_entropy = None
     min_entropy_pos = None
     
@@ -372,6 +372,10 @@ def get_min_entropy_at_pos(coefficients, probability):
     return min_entropy_pos
 
 def observe(coefficients, probability, coefficients_state):
+    """
+    Return the position of the grid with the lowest entropy after assigning
+    a pattern to the position and updating the grid.
+    """
     # Find the lowest entropy
     min_entropy_pos = get_min_entropy_at_pos(coefficients, probability)
 
@@ -383,7 +387,7 @@ def observe(coefficients, probability, coefficients_state):
     possible_patterns = get_possible_patterns_at_position(min_entropy_pos, coefficients)
 
     random_pattern = random.choice([pat for pat in possible_patterns])
-    
+
     # Set this pattern to be the only available at this position
     coefficients[min_entropy_pos[0]][min_entropy_pos[1]] = random_pattern
     current_coefficients = deepcopy(coefficients)
@@ -391,8 +395,8 @@ def observe(coefficients, probability, coefficients_state):
 
     return min_entropy_pos
 
-
 def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state):
+    """Propagate wave function at min_entropy_pos, updating its neighbouring tiles' patterns."""
     stack = [min_entropy_pos]
 
     while len(stack) > 0:
@@ -430,10 +434,8 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
     
-    
-
-
 async def execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, wfc_state):
+    """Start wave function collapse algorithm with input patterns and send updates to GUI through asyncio."""
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
     probability = patterns[2]
