@@ -560,14 +560,16 @@ def draw_selected_tile_border(screen, tile):
     pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 4)
 
 def show_prob(patterns):
-    #DELETE FUNCTION?
+    """Display each pattern from input's probability."""
+    # CURRENTLY UNUSED FUNCTION
     count = 1
     for pattern, prob in patterns[2].items():
         print(count, pattern.pix_array, prob)
         count += 1
 
 def get_pattern_dict(pattern_list):
-    #DELETE FUNCTION?
+    """Return a dictionary that stores every pattern in input's position in (x, y) form."""
+    # CURRENTLY UNUSED FUNCTION
     pattern_dict = {}
     for pattern in pattern_list:
         pattern_dict[pattern.pix_array] = (pattern.x, pattern.y)
@@ -585,6 +587,7 @@ def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
     return grid
 
 def create_colored_paint_grid(x_pos, y_pos, tile_size, pix_array):
+    """Create and return a paint grid colored in the same way as input pix_array."""
     grid = []
     for i, row in enumerate(pix_array):
         new_row = []
@@ -671,6 +674,7 @@ def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offs
     
 
 async def main(loop):
+    """Take an asyncio event loop object and create GUI of application."""
     pygame.init()
 
     size_27_font = pygame.font.Font(pygame.font.get_default_font(), 27)
@@ -1240,7 +1244,7 @@ async def main(loop):
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
             if test_button.draw(screen):
-                print(patterns[0])
+                print(type(loop))
 
             # if set_pattern_size_2_button.draw(screen):
             #     if not is_wfc_anim_ongoing and not is_wfc_executing:
@@ -1583,6 +1587,7 @@ async def main(loop):
     # pygame.quit()
 
 async def start_app():
+    """Helper function to allow for asyncio features in application."""
     loop = asyncio.get_event_loop()
     await main(loop)
 
