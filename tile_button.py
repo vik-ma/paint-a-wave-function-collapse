@@ -1,6 +1,23 @@
 import pygame
 
 class TileButton():
+    """
+    This is a class for Tiles that are clickable like buttons in the pygame application.
+      
+    Attributes:
+        x (int): X-position of the clickable Tile.
+        y (int): Y-position of the clickable Tile.
+        width (int): Width of the clickable Tile.
+        height (int): Height of the clickable Tile.
+        image (pygame.Surface): Pygame Surface object to render Tile in GUI.
+        rect (pygame.Rect): Pygame Rect object for rendering and collision detection.
+        clicked (bool): Bool to represent whether or not the Tile is clicked.
+    
+    Methods:
+        draw(self, surface)
+            Draws the button on the pygame surface and returns True if Tile is clicked. 
+   
+    """
     def __init__(self, x, y, image):
         self.x = x
         self.y = y
