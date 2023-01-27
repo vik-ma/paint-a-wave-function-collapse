@@ -2,7 +2,6 @@ import pygame
 import random
 import math
 import time
-import sys
 import traceback
 import asyncio
 from copy import deepcopy
@@ -85,8 +84,10 @@ DOWN_LEFT = (-1, 1)
 DOWN_RIGHT = (1, 1)
 directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
 
+# List of premade sample Base Tiles
 sample_tile_list = []
 
+# Unused color variations of original sample tile
 
 # original_pixel_array = [
 #     (WHITE, WHITE, WHITE, WHITE),
@@ -94,7 +95,6 @@ sample_tile_list = []
 #     (WHITE, BLACK, LIGHTGREY, BLACK),
 #     (WHITE, BLACK, BLACK, BLACK),
 #     ]
-
 # original_sample_tile = SampleTile(original_pixel_array, 4, 4)
 
 # green_original_pixel_array = [
@@ -103,7 +103,6 @@ sample_tile_list = []
 #     ((50, 205, 50), (0, 128, 0), (240, 230, 140), (0, 128, 0)), 
 #     ((50, 205, 50), (0, 128, 0), (0, 128, 0), (0, 128, 0))
 #     ]
-
 # green_original_sample_tile = SampleTile(green_original_pixel_array, 4, 4)
 
 beige_brown_green_original_pixel_array = [
@@ -112,7 +111,6 @@ beige_brown_green_original_pixel_array = [
     ((240, 230, 140), (92, 64, 51), (124, 252, 0), (92, 64, 51)), 
     ((240, 230, 140), (92, 64, 51), (92, 64, 51), (92, 64, 51))
 ]
-
 beige_brown_green_original_sample_tile = SampleTile(beige_brown_green_original_pixel_array, 4, 4)
 
 flower_pix_array = [
@@ -123,7 +121,6 @@ flower_pix_array = [
     ((75, 0, 130), (124, 252, 0), (124, 252, 0), (124, 252, 0), (124, 252, 0), (255, 69, 0)), 
     ((100, 175, 255), (75, 0, 130), (124, 252, 0), (124, 252, 0), (255, 69, 0), (255, 215, 0))
     ]
-
 flower_sample_tile = SampleTile(flower_pix_array, 6, 6)
 
 fire_pix_array = [
@@ -135,7 +132,6 @@ fire_pix_array = [
     ((92, 64, 51), (92, 64, 51), (255, 0, 0), (255, 165, 0), (255, 0, 0), (92, 64, 51), (92, 64, 51)), 
     ((92, 64, 51), (92, 64, 51), (92, 64, 51), (255, 0, 0), (92, 64, 51), (92, 64, 51), (92, 64, 51))
     ]
-
 fire_sample_tile = SampleTile(fire_pix_array, 7, 7)
 
 ice_pix_array = [
@@ -144,7 +140,6 @@ ice_pix_array = [
     ((30, 144, 255), (0, 255, 255), (255, 255, 255), (255, 255, 255)), 
     ((0, 255, 255), (255, 255, 255), (255, 255, 255), (255, 255, 255))
     ]
-
 ice_sample_tile = SampleTile(ice_pix_array, 4, 4)
 
 purple_void_pix_array = [
@@ -156,23 +151,13 @@ purple_void_pix_array = [
     ((75, 0, 130), (75, 0, 130), (75, 0, 130), (150, 50, 255), (186, 85, 211), (255, 228, 225), (0, 0, 0)), 
     ((75, 0, 130), (75, 0, 130), (150, 50, 255), (186, 85, 211), (255, 228, 225), (0, 0, 0), (0, 0, 0))
     ] 
-
 purple_void_sample_tile = SampleTile(purple_void_pix_array, 7, 7)
 
-# sample_tile_list.append(original_sample_tile)
-# sample_tile_list.append(green_original_sample_tile)
 sample_tile_list.append(beige_brown_green_original_sample_tile)
 sample_tile_list.append(ice_sample_tile)
 sample_tile_list.append(flower_sample_tile)
 sample_tile_list.append(fire_sample_tile)
 sample_tile_list.append(purple_void_sample_tile)
-
-
-# for i in range(9):
-#     sample_tile_list.append(max_base_tile_7x7)
-
-# for i in range(20):
-#     sample_tile_list.append(max_base_tile_7x7)
 
 
 def get_rotated_pix_array(pix_array):
@@ -193,7 +178,6 @@ def get_rotated_pix_array(pix_array):
         vertically_flipped_pix_array = tuple(pix_array[0][::-1]), tuple(pix_array[1][::-1]), tuple(pix_array[-1][::-1])
 
     horizontally_flipped_pix_array = tuple(pix_array[::-1])
-
     pix_array = tuple(pix_array)
 
     return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270, vertically_flipped_pix_array, horizontally_flipped_pix_array)
@@ -272,6 +256,7 @@ def get_patterns(pattern_size, base_tile):
 
     pix_array = base_tile.pix_array
 
+    # Get every 2x2 pattern in Base Tile along with all rotations and mirrors of pattern
     for row in range(base_tile.width - (pattern_size - 1)):
         for col in range(base_tile.height - (pattern_size - 1)):
             pattern = []
@@ -286,13 +271,15 @@ def get_patterns(pattern_size, base_tile):
                     occurence_weights[rotation] += 1
             
             pattern_list.extend(pattern_rotations)
-        
+    
+    # Remove all duplicate patterns
     unique_pattern_list = []
     for pattern in pattern_list:
         if pattern not in unique_pattern_list:
             unique_pattern_list.append(pattern)
     pattern_list = unique_pattern_list
 
+    # Calculate probability for every unique pattern
     sum_of_weights = 0
     for weight in occurence_weights:
         sum_of_weights += occurence_weights[weight]
@@ -313,13 +300,11 @@ def initialize_wave_function(pattern_list, output_width, output_height):
     where every element stores a list of every pattern in input pattern_list. 
     """
     coefficients = []
-    
     for col in range(output_width):
         row = []
         for r in range(output_height):
             row.append(pattern_list)
         coefficients.append(row)
-
     return coefficients
 
 def is_wave_function_fully_collapsed(coefficients):
@@ -390,6 +375,8 @@ def observe(coefficients, probability, coefficients_state):
 
     # Set this pattern to be the only available at this position
     coefficients[min_entropy_pos[0]][min_entropy_pos[1]] = random_pattern
+    
+    # Store current state in history of WFC progress
     current_coefficients = deepcopy(coefficients)
     coefficients_state.append(current_coefficients)
 
@@ -428,6 +415,8 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                 if not is_possible:
                     x, y = adjacent_pos
                     coefficients[x][y] = [patt for patt in coefficients[x][y] if patt.pix_array != possible_pattern_at_adjacent.pix_array]
+                   
+                    # Store current state in history of WFC progress
                     current_coefficients = deepcopy(coefficients)
                     coefficients_state.append(current_coefficients)
                         
@@ -440,6 +429,7 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     occurence_weights = patterns[1]
     probability = patterns[2]
 
+    # Create rules for adjacent patterns for every pattern
     rule_index = RuleIndex(pattern_list, directions)
 
     number_of_rules = 0
@@ -458,13 +448,15 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     perf_time_start = time.perf_counter()
     print("Wave Function Collapse Started")
 
-    wfc_completed = True
+    has_wfc_failed = False
 
+    # List to store WFC progress history
     coefficients_state = []
 
+    # Status message to report result of WFC
     wfc_status = ""
 
-    # Actual start of WFC
+    # Actual start of WFC algorihm
     try:
         while not is_wave_function_fully_collapsed(coefficients):
             if wfc_state["interrupt"]:
@@ -472,21 +464,22 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
                 wfc_status = "finished-interrupted"
                 break
 
-            # await asyncio.sleep(0)
-
+            # Add latest status to asyncio queue to give real time updates to GUI
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             min_entropy_pos = observe(coefficients, probability, coefficients_state)
 
-            # await asyncio.sleep(0)
-
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
             propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
+            
+            # Sleep to allow GUI to update while algorithm is running
             await asyncio.sleep(0)
+            
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
+
     except Exception as e:
-        wfc_completed = False
+        has_wfc_failed = True
         # print("WFC FAIL: ", e)
         traceback.print_exc()
 
@@ -494,11 +487,15 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     print(f"Wave Function Collapse Ended After {(perf_time_end - perf_time_start):.3f}s")
 
     if wfc_status == "":
-        if wfc_completed:
+        if not has_wfc_failed:
             wfc_status = "finished-success"
         else:
             wfc_status = "finished-fail"
 
+    """
+    Create Pixel Array of final image by storing the top left color of the pattern 
+    at every position in the wave function matrix. 
+    """
     final_pixels = []
     for i in coefficients:
         row = []
@@ -507,11 +504,17 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
                 if len(j) > 0:
                     first_pixel = j[0].pix_array[0][0]
                 else:
+                    """
+                    If WFC fails, the position that failed will be assigned grey or
+                    "transparent" color since it will not have any pattern stored.
+                    """
                     first_pixel = BACKGROUND_COLOR
             else:
                 first_pixel = j.pix_array[0][0]
             row.append(first_pixel)
         final_pixels.append(row)
+
+    # Add final information about the executed WFC into asyncio queue
     await asyncio_queue.put([wfc_status, final_pixels, coefficients_state, round((perf_time_end - perf_time_start), 3)])
 
 def draw_window(screen):
@@ -522,14 +525,17 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
     """Create and return a list of Tile objects for every pattern in 'patterns' list."""
     y_offset = 24
     x_offset = 20
+
+    # X and Y offset for 3x3 patterns, not currently implemented
     # if pattern_size == 3:
     #     y_offset = 38
     #     x_offset = 33
-    x = 10
-    y = 335
-    tiles_per_row_limit = 19 # Maximum tiles per row
-    tile_list = []
 
+    x = 10 # Start x-coordinate
+    y = 335 # Start y-coordinate
+    tiles_per_row_limit = 19 # Maximum tiles per row
+    
+    tile_list = []
     for col in range(len(patterns)):
         if col % tiles_per_row_limit == 0 and col > 1:
             # Start new row if tiles_per_row_limit reached
@@ -542,7 +548,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
 def update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit):
     """Add list of Tile objects input to pattern_group Sprite group."""
     pattern_group.empty()
-    # Removes any patterns after pattern_draw_limit amount from pattern_tile_list
+    # Removes any patterns beyond pattern_draw_limit amount from pattern_tile_list
     pattern_tile_list = pattern_tile_list[:pattern_draw_limit]
     for pattern in pattern_tile_list:
         pattern_group.add(pattern)
@@ -556,7 +562,7 @@ def create_tile_buttons(base_tile_list):
     return tile_buttons
 
 def draw_selected_tile_border(screen, tile):
-    """Draw a border around input Tile object."""
+    """Draw a yellow border around input Tile object."""
     pygame.draw.rect(screen, YELLOW, (tile.x-5, tile.y-5, tile.width + 10, tile.height + 10), 4)
 
 def show_prob(patterns):
@@ -612,6 +618,7 @@ def create_paint_color_tiles():
     y = 28
     x = 10
     tiles_per_row_limit = 17 # Maximum paint tiles per row
+
     color_tile_list = []
     for col in range(34):
         if col % tiles_per_row_limit == 0 and col > 0:
@@ -626,8 +633,7 @@ def create_paint_color_tiles():
             # (Mostly for debugging purposes)
             color_tile = PaintTile(30, 30, x, y, GREY)
         color_tile_list.append(color_tile)
-        x += 33        
-
+        x += 33
     return color_tile_list
 
 def get_output_size_text_color(size):
@@ -636,7 +642,7 @@ def get_output_size_text_color(size):
         return GREEN
     elif size >= 15 and size < 22:
         return YELLOW
-    return IMPORTANT_SCREEN_TEXT_COLOR
+    return IMPORTANT_SCREEN_TEXT_COLOR # Red
 
 def print_tile_colors(tile):
     """Print the pixel array of input Tile object in terminal."""
