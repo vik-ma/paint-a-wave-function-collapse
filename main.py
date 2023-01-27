@@ -160,7 +160,7 @@ sample_tile_list.append(fire_sample_tile)
 sample_tile_list.append(purple_void_sample_tile)
 
 
-def get_rotated_pix_array(pix_array):
+def get_rotated_pix_array(pix_array) -> tuple:
     """
     Take a two dimensional pixel array (list) and return a tuple consisting of
     the same pixel array in tuple form, every 90 degree rotation of the original pixel array,
@@ -183,7 +183,7 @@ def get_rotated_pix_array(pix_array):
     return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270, vertically_flipped_pix_array, horizontally_flipped_pix_array)
 
 
-def get_offset_tiles(pattern, offset):
+def get_offset_tiles(pattern, offset) -> tuple:
     """
     Return the tile(s) from input pattern pix_array which intersects with 
     input offset coordinates (x, y) from the perspective of the offset.
@@ -207,7 +207,7 @@ def get_offset_tiles(pattern, offset):
     if offset == (1, 1):
         return tuple([pattern.pix_array[0][0]])
 
-def get_valid_directions(position, output_width, output_height):
+def get_valid_directions(position, output_width, output_height) -> list:
     """
     Return a list of strings representing the valid directions that can be taken 
     from the given input position on the grid.
@@ -243,9 +243,9 @@ def get_valid_directions(position, output_width, output_height):
     
     return valid_directions
 
-def get_patterns(pattern_size, base_tile):
+def get_patterns(pattern_size, base_tile) -> tuple:
     """
-    Return a list consisting of a list of every unique pattern of input size pattern_size x pattern_size 
+    Return a tuple consisting of a list of every unique pattern of input size pattern_size x pattern_size 
     inside input base_tile object, a dictionary of each unique pattern's occurence weight and a dictionary
     of each unique pattern's probability of being propagated.
     """
@@ -293,8 +293,7 @@ def get_patterns(pattern_size, base_tile):
 
     return pattern_list, occurence_weights, probability
 
-
-def initialize_wave_function(pattern_list, output_width, output_height):
+def initialize_wave_function(pattern_list, output_width, output_height) -> list:
     """
     Create and return a two dimensional array of size output_width x output_height, 
     where every element stores a list of every pattern in input pattern_list. 
@@ -307,7 +306,7 @@ def initialize_wave_function(pattern_list, output_width, output_height):
         coefficients.append(row)
     return coefficients
 
-def is_wave_function_fully_collapsed(coefficients):
+def is_wave_function_fully_collapsed(coefficients) -> bool:
     """Check if wave function is fully collapsed meaning that for each tile available is only one pattern."""
     for col in coefficients:
         for entry in col:
@@ -315,13 +314,13 @@ def is_wave_function_fully_collapsed(coefficients):
                 return False
     return True
 
-def get_possible_patterns_at_position(position, coefficients):
+def get_possible_patterns_at_position(position, coefficients) -> list:
     """Return possible patterns at position (x, y)."""
     x, y = position
     possible_patterns = coefficients[x][y]
     return possible_patterns
 
-def get_shannon_entropy(position, coefficients, probability):
+def get_shannon_entropy(position, coefficients, probability) -> float:
     """Calcualte the Shannon Entropy of the wavefunction at position (x, y)."""
     x, y = position
     entropy = 0
@@ -336,9 +335,10 @@ def get_shannon_entropy(position, coefficients, probability):
     
     # Add noise to break ties and near-ties
     entropy -= random.uniform(0, 0.1)
+
     return entropy
 
-def get_min_entropy_at_pos(coefficients, probability):
+def get_min_entropy_at_pos(coefficients, probability) -> tuple:
     """Return position of tile with the lowest entropy."""
     min_entropy = None
     min_entropy_pos = None
@@ -356,7 +356,7 @@ def get_min_entropy_at_pos(coefficients, probability):
 
     return min_entropy_pos
 
-def observe(coefficients, probability, coefficients_state):
+def observe(coefficients, probability, coefficients_state) -> tuple:
     """
     Return the position of the grid with the lowest entropy after assigning
     a pattern to the position and updating the grid.
@@ -521,7 +521,7 @@ def draw_window(screen):
     """Fill window with background color."""
     screen.fill(BACKGROUND_COLOR)
 
-def get_pattern_tiles(patterns, pattern_size, enlargement_scale):
+def get_pattern_tiles(patterns, pattern_size, enlargement_scale) -> list:
     """Create and return a list of Tile objects for every pattern in 'patterns' list."""
     y_offset = 24
     x_offset = 20
@@ -553,7 +553,7 @@ def update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit):
     for pattern in pattern_tile_list:
         pattern_group.add(pattern)
 
-def create_tile_buttons(base_tile_list):
+def create_tile_buttons(base_tile_list) -> list:
     """Create and return a list of Tile objects for every sample Base Tile from input list."""
     tile_buttons = []
     for tile in base_tile_list:
@@ -573,7 +573,7 @@ def show_prob(patterns):
         print(count, pattern.pix_array, prob)
         count += 1
 
-def get_pattern_dict(pattern_list):
+def get_pattern_dict(pattern_list) -> dict:
     """Return a dictionary that stores every pattern in input's position in (x, y) form."""
     # CURRENTLY UNUSED FUNCTION
     pattern_dict = {}
@@ -581,7 +581,7 @@ def get_pattern_dict(pattern_list):
         pattern_dict[pattern.pix_array] = (pattern.x, pattern.y)
     return pattern_dict
 
-def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
+def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size) -> list:
     """Create and return grid of white colored PaintTile objects from input coordinates and dimensions."""
     grid = []
     for col in range(cols):
@@ -592,7 +592,7 @@ def create_empty_paint_grid(x_pos, y_pos, cols, rows, tile_size):
         grid.append(new_row)
     return grid
 
-def create_colored_paint_grid(x_pos, y_pos, tile_size, pix_array):
+def create_colored_paint_grid(x_pos, y_pos, tile_size, pix_array) -> list:
     """Create and return a paint grid colored in the same way as input pix_array."""
     grid = []
     for i, row in enumerate(pix_array):
@@ -603,7 +603,7 @@ def create_colored_paint_grid(x_pos, y_pos, tile_size, pix_array):
         grid.append(new_row)
     return grid
 
-def create_pix_array(paint_grid):
+def create_pix_array(paint_grid) -> list:
     """Create and return a color pixel array tuple from input Paint Grid."""
     pix_array = []
     for col in paint_grid:
@@ -613,7 +613,7 @@ def create_pix_array(paint_grid):
         pix_array.append(tuple(new_row))
     return pix_array
 
-def create_paint_color_tiles():
+def create_paint_color_tiles() -> list:
     """Create and return a list of different colored PaintTile objects."""
     y = 28
     x = 10
@@ -636,7 +636,7 @@ def create_paint_color_tiles():
         x += 33
     return color_tile_list
 
-def get_output_size_text_color(size):
+def get_output_size_text_color(size) -> tuple:
     """Return a color based on input size number."""
     if size < 15:
         return GREEN
@@ -648,7 +648,7 @@ def print_tile_colors(tile):
     """Print the pixel array of input Tile object in terminal."""
     print(tile.pix_array)
 
-def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, tiles_per_row_limit):
+def create_tile_list(tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, tiles_per_row_limit) -> list:
     """Create and return a list of Tile objects from input tile_list."""
     x_pos = tile_list_x_pos
     y_pos = tile_list_y_pos
@@ -1250,7 +1250,7 @@ async def main(loop):
                     change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
             if test_button.draw(screen):
-                print(type(loop))
+                print(type(patterns))
 
             # if set_pattern_size_2_button.draw(screen):
             #     if not is_wfc_anim_ongoing and not is_wfc_executing:
