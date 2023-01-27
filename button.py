@@ -47,25 +47,29 @@ class Button():
             self.is_showing_hover_box = False
             self.has_hover_box = True
 
-    def draw(self, surface):
+    def draw(self, surface) -> bool:
         action = False
         pygame.draw.rect(surface, self.color, self.rect)
         button_text = self.font.render(self.text, True, self.foreground_color)
+        # Center text in button
         button_text_rect = button_text.get_rect(center = (self.x+self.width/2, self.y+self.height/2))
-       
-        
+    
         pos = pygame.mouse.get_pos()
 
         if self.rect.collidepoint(pos):
+            # If mouse hovers over the button
             pygame.draw.rect(surface, self.hover_color, self.rect)
             if pygame.mouse.get_pressed()[0] and self.clicked == False:
+                # If Button is being left-clicked
                 self.clicked = True
                 action = True
             if self.has_hover_box:
+                # Draw HoverBox at mouse position if button has HoverBox attached
                 self.hover_box.update_image(pos[0], pos[1])
                 self.hover_box_group.add(self.hover_box)
                 self.is_showing_hover_box = True
         else:
+            # Stop drawing HoverBox when mouse is off button
             if self.has_hover_box and self.is_showing_hover_box:
                 self.hover_box_group.remove(self.hover_box)
                 self.is_showing_hover_box = False
@@ -73,7 +77,9 @@ class Button():
         if pygame.mouse.get_pressed()[0] == False:
             self.clicked = False
                 
+        # Button Text
         surface.blit(button_text, button_text_rect)
+        # Button Border
         pygame.draw.rect(surface, (0,0,0), (self.x, self.y, self.width + 1, self.height + 1), 1) # Border
 
         return action

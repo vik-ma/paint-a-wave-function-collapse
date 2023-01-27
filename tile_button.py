@@ -28,20 +28,22 @@ class TileButton():
         self.rect.topleft = (x, y)
         self.clicked = False
 
-    def draw(self, surface):
+    def draw(self, surface) -> bool:
         action = False
         pos = pygame.mouse.get_pos()
 
         if self.rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                # If TileButton is being left-clicked
                 self.clicked = True
                 action = True
 
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
 
+        # Draw TileButton
         surface.blit(self.image, (self.rect.x, self.rect.y))
-
+        # TileButton Border
         pygame.draw.rect(surface, (0, 0, 0), (self.x - 1, self.y - 1, self.width + 2, self.height + 2), 1)
 
         return action
