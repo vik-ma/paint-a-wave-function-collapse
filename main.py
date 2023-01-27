@@ -1034,6 +1034,7 @@ async def main(loop):
         clock.tick(FPS)
         draw_window(screen)
 
+        # WFC state
         if game_state == "wfc":
 
             # When WFC has been started
@@ -1041,7 +1042,8 @@ async def main(loop):
                 # Get latest item added to queue (LIFO queue)
                 current_wfc_state = await asyncio_queue.get()
 
-                if current_wfc_state[0] == "ongoing":   #If WFC is ongoing
+                if current_wfc_state[0] == "ongoing":   
+                    #If WFC is ongoing
                     time_progressed = time.perf_counter() - wfc_time_start
                     wfc_status_text = size_20_font.render(f"Wave Function Collapse In Progress... {round(time_progressed, 3)}s", True, DARKPURPLE)
                     screen.blit(wfc_status_text, wfc_state_text_pos)
@@ -1065,7 +1067,8 @@ async def main(loop):
                         wfc_grid_group.empty()
                         wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, final_pixels, enlargement_scale)
                         wfc_grid_group.add(wfc_output)
-                else:   # If WFC has finished
+                else:   
+                    # If WFC has finished
                     has_wfc_executed = False
                     is_wfc_finished = True
                     wfc_time_finish = current_wfc_state[3]
@@ -1095,9 +1098,9 @@ async def main(loop):
                     wfc_grid_group.empty()
                     wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, current_wfc_state[1], enlargement_scale)
                     wfc_grid_group.add(wfc_output)
-                    
 
             if is_wfc_finished:
+                # Update WFC progress text to result of last WFC
                 if wfc_finish_status == "finished-success":
                     wfc_finished_text = size_20_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
                 elif wfc_finish_status == "finished-fail":
@@ -1106,6 +1109,7 @@ async def main(loop):
                     wfc_finished_text = size_20_font.render(f"Wave Function Collapse Interrupted After {wfc_time_finish}s", True, DARKBROWN)
                 screen.blit(wfc_finished_text, wfc_state_text_pos)
 
+            # Cooldown to stop accidental clicking of button at same position as button at old state
             if switch_state_cooldown:
                 switch_state_cooldown_counter -= 1
                 if switch_state_cooldown_counter == 0:

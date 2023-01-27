@@ -14,8 +14,8 @@ class ArrowButton():
         clicked (bool): Bool to represent whether or not the button is clicked.
         rect (pygame.Rect): Pygame Rect object for rendering and collision detection.
         hover_color (tuple): Background color of the button when mouse is hovering over in RGB format.
-        arrow_offset (int): Offset to calculate where arrow is drawn in relation to the x or y coordinates of button.
-        arrow_coords (tuple): Coordinates to store for where on the button the arrow is drawn. 
+        arrow_offset (int): Offset to calculate where arrow is drawn on button in relation to the x or y coordinates of button.
+        arrow_coords (tuple): X, Y, and Z coordinates for the arrow triangle that is drawn on the button. 
     
     Methods:
         draw(self, surface)
