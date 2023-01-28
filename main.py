@@ -689,7 +689,7 @@ async def main(loop):
     size_18_font = pygame.font.Font(pygame.font.get_default_font(), 18)
     size_17_font = pygame.font.Font(pygame.font.get_default_font(), 17)
 
-
+    # Dimensions of Pygame window
     WIDTH = 800
     HEIGHT = 640
 
@@ -698,16 +698,19 @@ async def main(loop):
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
+    # Sprite Group for Pattern Tiles extracted from Base Tile 
     pattern_group = pygame.sprite.Group()
+    # Sprite Group for first grid
     wfc_grid_group = pygame.sprite.Group()
+    # Sprite Group for second grid
     wfc_second_grid_group = pygame.sprite.Group()
+    # Sprite Group for all Paint Tiles
     paint_color_group = pygame.sprite.Group()
+    # Sprite Group for HoverBox (Must be called last to be drawn on top)
     hover_box_group = pygame.sprite.Group()
 
     hover_box_font = size_18_font
     hover_box_line_height = hover_box_font.get_linesize()
-
-    test_button = Button(WHITE, 660, 163, 130, 40, "TEST", BLACK, LIGHTGREY)
     
     start_wfc_button = Button(WHITE, 509, 114, 150, 44, "Start WFC", BLACK, LIGHTGREY, big_text=True)
     cancel_wfc_button = Button(GREY, 668, 118, 120, 40, "Cancel WFC", DARKGREY, GREY)
@@ -724,16 +727,11 @@ async def main(loop):
     increase_wfc_output_size_button = ArrowButton(WHITE, 715, 47, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_wfc_output_size_button = ArrowButton(WHITE, 715, 66, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
-    # set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
-    # set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
-
     toggle_anim_during_wfc_button = Button(WHITE, 369, 548, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 369, 570, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
 
     increase_replay_speed_button = ArrowButton(WHITE, 165, 512, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_replay_speed_button = ArrowButton(WHITE, 165, 531, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
-
-    test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
 
     increase_paint_grid_size_button = ArrowButton(WHITE, 300, 95, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_paint_grid_size_button = ArrowButton(WHITE, 300, 114, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
@@ -742,79 +740,128 @@ async def main(loop):
     toggle_grid_lines_button = Button(WHITE, 190, 520, 170, 40, "Toggle Grid Lines", BLACK, LIGHTGREY)
 
     save_tile_button = Button(WHITE, 615, 120, 150, 46, "Save Tile", BLACK, LIGHTGREY, big_text=True)
-
+    delete_tile_button = Button(WHITE, 600, 320, 190, 36, "Delete Selected Tile", BLACK, LIGHTGREY)
     copy_tile_button = Button(WHITE, 440, 268, 190, 36, "Copy Selected Tile", BLACK, LIGHTGREY)
 
-    delete_tile_button = Button(WHITE, 600, 320, 190, 36, "Delete Selected Tile", BLACK, LIGHTGREY)
+    # Unused buttons
+    test_button = Button(WHITE, 660, 163, 130, 40, "TEST", BLACK, LIGHTGREY)
+    # test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
+    # set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+    # set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
     run = True
 
     draw_second_grid = True
 
+    # Tile Sprite for first grid
     wfc_output = None
+    # Tile Sprite for second grid
     wfc_output_2 = None
 
+    # Scale at which a Tile pixel gets scaled up by
     enlargement_scale = 8
 
+    # X and Y start position of list of Base Tiles
     tile_list_x_pos = 455
     tile_list_y_pos = 368
+    # Free space between every Tile in list of Base Tiles
     tile_list_offset = 12
 
+    # Height of largest Base Tile in last row
     base_tile_max_height = 7
+    # Amount of Base Tiles to be drawn per row
     base_tiles_per_row_limit = 5
+    # Max amount of Base Tiles allowed in list of Base Tiles
     max_base_tiles = 20
 
+    # List of Base Tiles
     base_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tiles_per_row_limit)
 
+    # Width and height of Pattern extracted from Base Tile
     pattern_size = 2
 
-    selected_tile_index = 0
+    # Index of selected Base Tile in base_tile_list
+    selected_base_tile_index = 0
 
-    patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
+    """
+    Tuple consisting of a list of every unique Pattern from Base Tile,
+    along with two dictionaries to store each patterns occurence weights
+    and probability respectively.
+    """
+    patterns = get_patterns(pattern_size, base_tile_list[selected_base_tile_index])
     
+    # List of all Tile objects in Pattern list
     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
 
+    # Amount of maximum patterns to be drawn on screen
     pattern_draw_limit = 57 
+    # Add Patterns to be drawn on screen to pattern_group Sprite Group
     update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
 
+    # Start position of first grid
     grid_x_pos = 10
     grid_y_pos = 28
+    # Start position of second grid
     second_grid_x_pos = 260
     second_grid_y_pos = 28
 
+    # Output size of WFC image in pixels
     output_width = 20
     output_height = 20
 
+    # Different color to represent slowness of WFC at different output sizes
+    output_size_text_color = get_output_size_text_color(output_width)
+
+    grid_size = output_width
+
+    # Maximum and minimum allowed output sizes
     output_grid_upper_limit = 30
     output_grid_lower_limit = 10
     
-    grid_size = output_width
-
+    # Clickable buttons for every selectable Base Tile
     tile_buttons = create_tile_buttons(base_tile_list)   
 
-    selected_tile = tile_buttons[selected_tile_index]
-
+    # Draw selected Base Tile
+    selected_base_tile = tile_buttons[selected_base_tile_index]
     selected_base_tile_x_pos = 510
     selected_base_tile_y_pos = 50
-    selected_base_tile_image = selected_tile.image.copy()
+    selected_base_tile_image = selected_base_tile.image.copy()
 
     selected_base_tile_text = size_20_font.render("Base Tile", True, SCREEN_TEXT_COLOR)
 
+    # Full history of WFC progress stored as a list of images
     wfc_order_list = []
+    # Index of current WFC state image as second grid loops through the full WFC progress
     wfc_list_count = 0
 
+    # Number to represent the interval of elements from wfc_order_list to be stored in sliced_list
+    wfc_replay_slice_num = 5
+    # Sliced history list of WFC progress where only every Nth element is stored
+    sliced_list = []
+    # Final image of WFC
+    last_image = None
+    # Maximum and minimum allowed values for wfc_replay_slice_num
+    wfc_slice_num_upper_limit = 15
+    wfc_slice_num_lower_limit = 1
+
+    # Default game state
     game_state = "wfc"
+    # Game state to return to from Help state
     previous_game_state = "wfc"
 
     current_color_text = size_18_font.render("Paint Color:", True, SCREEN_TEXT_COLOR)
 
+    # Start position of Paint Grid
     paint_grid_x_pos = 10
     paint_grid_y_pos = 158
-
+    # Size of clickable Tile in Paint Grid
     paint_grid_tile_size = 50
 
+    # Size of Paint Grid/Painted Tile
     paint_grid_cols = 4
     paint_grid_rows = 4
+
+    #Maximum and minimum allowed sized for Paint Grid/Painted Tile
     paint_grid_size_limit_upper = 7
     paint_grid_size_limit_lower = 3
 
@@ -830,46 +877,55 @@ async def main(loop):
 
     painted_tile_text = size_20_font.render("Painted Tile", True, SCREEN_TEXT_COLOR)
 
+    # Clickable Paint Grid
     paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
 
+    # Pixel Array of the Paint Grid
     paint_grid_pix_array = create_pix_array(paint_grid)
 
+    # Default selected color
     current_color = CRIMSON
 
+    # Tile to show which color is selected
     current_color_tile = PaintTile(30, 30, paint_grid_x_pos + 114, 99, current_color)
 
+    # Preview of Painted Tile
     preview_tile_x_pos = 455
     preview_tile_y_pos = 127
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
+    # Toggle to show black lines to separate Paint Tiles in Paint Gric
     draw_paint_grid_lines = True
 
+    # Color Panel to select color
     color_panel = create_paint_color_tiles()
 
-    wfc_replay_slice_num = 5
-       
-    wfc_slice_num_upper_limit = 15
-    wfc_slice_num_lower_limit = 1
-
+    # Is second grid animation ongoing
     is_wfc_replay_anim_ongoing = False
 
-    output_size_text_color = get_output_size_text_color(output_width)
-
-    has_wfc_executed = False
-
+    # Last In First Out Queue to access WFC states from GUI as WFC is being executed
     asyncio_queue = asyncio.LifoQueue()
 
+    # Has WFC been started and is ongoing
+    has_wfc_executed = False
+
+    # Has WFC been started and finished
     is_wfc_finished = False
 
+    # Text to report finish status and time progressed of WFC algorithm
     wfc_finished_text = None
     wfc_state_text_pos = (8, 280)
 
+    # String to report if WFC finished successfully, failed or was interrupted
+    wfc_finish_status = ""
+
+    # Variables to extract time taken by WFC to complete
     wfc_time_start = 0
     wfc_time_finish = 0
 
-    wfc_finish_status = ""
-
+    # Will give real time updates of WFC state in first grid if True
     render_wfc_during_execution = True
+    # Will automatically start more detailed replay of WFC progress in second grid after WFC finishes if True
     render_wfc_at_end = True
 
     output_size_hover_box_text = ["Larger output", "size increases", "execution time", "exponentially."]
@@ -903,9 +959,7 @@ async def main(loop):
     anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
     anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
 
-    sliced_list = []
-    last_image = None
-
+    # Buttons to be disabled during WFC execution and post WFC replay animation
     disabled_buttons_during_wfc_exec_and_post_anim_list = [increase_wfc_output_size_button, decrease_wfc_output_size_button,
                                                           increase_replay_speed_button, decrease_replay_speed_button,
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
@@ -913,16 +967,32 @@ async def main(loop):
                                                           replay_animation_button, paint_new_tile_button,
                                                           help_button]
     
+    # Buttons to be disabled during WFC execution but NOT post WFC replay animation
     disabled_buttons_during_wfc_exec_but_not_post_anim_list = [start_wfc_button, skip_replay_button]
 
+    # Buttons to only be enabled during post WFC replay animation
     enabled_buttons_only_during_wfc_post_anim = [skip_replay_button]
 
+    # Buttons to only be enabled during WFC execution
     enabled_buttons_during_wfc_exec_list = [cancel_wfc_button]
 
+    # Dictionary to allow interruption of WFC execution if "interrupt" gets assigned True
     wfc_state = {"interrupt": False}
     
+    """
+    Cooldown in frames after switching game state where buttons guarded by switch_state_cooldown
+    are unusable to not allow accidental button presses after clicking on a button that changes
+    game state, and the other button is drawn at the same position on the screen as the first one.
+    """
     switch_state_cooldown = False
+
+    # Number of frames where switch_state_cooldown will be True
     switch_state_cooldown_value = 30
+
+    """
+    Counter that counts down 1 every frame. 
+    When it hits 0 switch_state_cooldown will be set to False again.
+    """
     switch_state_cooldown_counter = switch_state_cooldown_value
 
     patterns_hover_box_text = ["Every different 2x2 pattern extracted from", 
@@ -955,6 +1025,7 @@ async def main(loop):
 
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate a new image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
+    # All Help section titles
     help_state_title_text_list = []
     help_state_title_text_list.append([size_24_font.render("What Is This Program?", True, HELP_TITLE_TEXT_COLOR), 8])
     help_state_title_text_list.append([size_24_font.render("How To Use", True, HELP_TITLE_TEXT_COLOR), 114])
@@ -962,6 +1033,7 @@ async def main(loop):
     help_state_title_text_list.append([size_24_font.render("What Causes The Wave Function Collapse To Fail?", True, HELP_TITLE_TEXT_COLOR), 405])
     help_state_title_text_list.append([size_24_font.render("Why Does The Output End Up Not Looking Like The Base Tile?", True, HELP_TITLE_TEXT_COLOR), 485])
 
+    # All Help section paragraphs
     help_state_sub_text_lines_1 = ["This program shows off the procedural image generation of the Wave Function Collapse", 
                                   "algorithm. In this application, a basic version of the WFC algorithm will generate a larger", 
                                   "image based off the patterns from a sample base tile. Since this is currently just a basic", 
@@ -1019,6 +1091,7 @@ async def main(loop):
     help_state_sub_text_list.append([help_state_sub_text_5, help_state_title_text_list[4][1]+24])
 
     def change_button_color(state, button_list):
+        
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
 
         for button in button_list:
@@ -1158,7 +1231,7 @@ async def main(loop):
             screen.blit(selected_base_tile_text, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-23))
             screen.blit(selected_base_tile_image, (selected_base_tile_x_pos, selected_base_tile_y_pos))
             # Seledcted Base Tile Border
-            pygame.draw.rect(screen, BLACK, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
+            pygame.draw.rect(screen, BLACK, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-1, selected_base_tile.width + 2, selected_base_tile.height + 2), 1)
 
 
             # Output Size Setting
@@ -1261,16 +1334,16 @@ async def main(loop):
                     switch_state_cooldown = True
 
             # Draw yellow border around selected tile
-            draw_selected_tile_border(screen, selected_tile)
+            draw_selected_tile_border(screen, selected_base_tile)
 
             # List of selectable Base Tiles
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
                     if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
-                        if index != selected_tile_index:
-                            selected_tile = tile_buttons[index]
-                            selected_tile_index = index
-                            selected_base_tile_image = selected_tile.image.copy()
+                        if index != selected_base_tile_index:
+                            selected_base_tile = tile_buttons[index]
+                            selected_base_tile_index = index
+                            selected_base_tile_image = selected_base_tile.image.copy()
                             patterns = get_patterns(pattern_size, base_tile_list[index])
                             pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                             num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
@@ -1345,8 +1418,8 @@ async def main(loop):
                     previous_game_state = "wfc"
 
 
-            # if test_button.draw(screen):
-            #     print(type(patterns))
+            if test_button.draw(screen):
+                print(patterns)
 
 
             # Unused buttons to change pattern size
@@ -1502,9 +1575,9 @@ async def main(loop):
                     base_tile_list.append(new_tile_button)
                     tile_buttons = create_tile_buttons(base_tile_list)
 
-                    selected_tile = tile_buttons[-1]
-                    selected_tile_index = len(tile_buttons)-1
-                    selected_base_tile_image = selected_tile.image.copy()
+                    selected_base_tile = tile_buttons[-1]
+                    selected_base_tile_index = len(tile_buttons)-1
+                    selected_base_tile_image = selected_base_tile.image.copy()
 
                     patterns = get_patterns(pattern_size, base_tile_list[-1])
                     pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
@@ -1526,7 +1599,7 @@ async def main(loop):
 
 
             if copy_tile_button.draw(screen):
-                paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
+                paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_base_tile_index].pix_array)
                 paint_grid_pix_array = create_pix_array(paint_grid)
                 paint_grid_cols = len(paint_grid_pix_array)
                 paint_grid_rows = len(paint_grid_pix_array[0])
@@ -1548,9 +1621,9 @@ async def main(loop):
             base_tiles_text.draw(screen) 
 
             if delete_tile_button.draw(screen):
-                if not switch_state_cooldown and selected_tile != None:
+                if not switch_state_cooldown and selected_base_tile != None:
                     if len(base_tile_list) > 1:
-                        base_tile_list.remove(base_tile_list[selected_tile_index])
+                        base_tile_list.remove(base_tile_list[selected_base_tile_index])
 
                         tiles_in_row = len(base_tile_list) % base_tiles_per_row_limit
                         max_height = 0
@@ -1562,12 +1635,12 @@ async def main(loop):
                         base_tile_list = create_tile_list(base_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tiles_per_row_limit)
                         tile_buttons = create_tile_buttons(base_tile_list)
 
-                        if selected_tile_index >= len(base_tile_list):
-                            selected_tile_index -= 1
-                        selected_tile = tile_buttons[selected_tile_index]
-                        selected_base_tile_image = selected_tile.image.copy()
+                        if selected_base_tile_index >= len(base_tile_list):
+                            selected_base_tile_index -= 1
+                        selected_base_tile = tile_buttons[selected_base_tile_index]
+                        selected_base_tile_image = selected_base_tile.image.copy()
 
-                        patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
+                        patterns = get_patterns(pattern_size, base_tile_list[selected_base_tile_index])
                         pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                         num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
                         update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
@@ -1578,16 +1651,16 @@ async def main(loop):
                             change_button_color("enabled", [save_tile_button])
 
             # Draw yellow border around selected tile
-            if selected_tile != None:
-                draw_selected_tile_border(screen, selected_tile)
+            if selected_base_tile != None:
+                draw_selected_tile_border(screen, selected_base_tile)
 
             # List of selectable Base Tiles
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
                     if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
-                        selected_tile = tile_buttons[index]
-                        selected_tile_index = index
-                        selected_base_tile_image = selected_tile.image.copy()
+                        selected_base_tile = tile_buttons[index]
+                        selected_base_tile_index = index
+                        selected_base_tile_image = selected_base_tile.image.copy()
                         patterns = get_patterns(pattern_size, base_tile_list[index])
                         pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                         num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
