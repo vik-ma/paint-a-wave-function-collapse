@@ -711,12 +711,12 @@ async def main(loop):
     hover_box_font = size_18_font
     hover_box_line_height = hover_box_font.get_linesize()
 
-    test_button = Button(WHITE, 630, 160, 150, 40, "TEST", BLACK, LIGHTGREY)
+    test_button = Button(WHITE, 660, 163, 130, 40, "TEST", BLACK, LIGHTGREY)
     
     start_wfc_button = Button(WHITE, 509, 114, 150, 44, "Start WFC", BLACK, LIGHTGREY, big_text=True)
     cancel_wfc_button = Button(GREY, 668, 118, 120, 40, "Cancel WFC", DARKGREY, GREY)
 
-    skip_animation_button = Button(GREY, 509, 163, 130, 40, "Skip Replay", DARKGREY, GREY)
+    skip_replay_button = Button(GREY, 509, 163, 130, 40, "Skip Replay", DARKGREY, GREY)
     replay_animation_button = Button(GREY, 509, 208, 170, 40, "Replay Last WFC", DARKGREY, GREY)
 
     paint_new_tile_button = Button(WHITE, 650, 320, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
@@ -917,9 +917,9 @@ async def main(loop):
                                                           replay_animation_button, paint_new_tile_button,
                                                           help_button]
     
-    disabled_buttons_during_wfc_exec_but_not_post_anim_list = [start_wfc_button, skip_animation_button]
+    disabled_buttons_during_wfc_exec_but_not_post_anim_list = [start_wfc_button, skip_replay_button]
 
-    enabled_buttons_only_during_wfc_post_anim = [skip_animation_button]
+    enabled_buttons_only_during_wfc_post_anim = [skip_replay_button]
 
     enabled_buttons_during_wfc_exec_list = [cancel_wfc_button]
 
@@ -1036,8 +1036,17 @@ async def main(loop):
 
         # WFC state
         if game_state == "wfc":
+            # Cooldown to stop accidental clicking of button at same position as button at old state
+            if switch_state_cooldown:
+                switch_state_cooldown_counter -= 1
+                if switch_state_cooldown_counter == 0:
+                    switch_state_cooldown = False
+                    switch_state_cooldown_counter = switch_state_cooldown_value
+           
 
-            # When WFC has been started
+            screen.blit(wfc_guide_text, (10, 5))
+
+            # First grid when WFC has been started
             if has_wfc_executed:
                 # Get latest item added to queue (LIFO queue)
                 current_wfc_state = await asyncio_queue.get()
@@ -1099,111 +1108,11 @@ async def main(loop):
                     wfc_output = Tile(grid_size, grid_size, grid_x_pos, grid_y_pos, current_wfc_state[1], enlargement_scale)
                     wfc_grid_group.add(wfc_output)
 
-            if is_wfc_finished:
-                # Update WFC progress text to result of last WFC
-                if wfc_finish_status == "finished-success":
-                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
-                elif wfc_finish_status == "finished-fail":
-                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
-                elif wfc_finish_status == "finished-interrupted":
-                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Interrupted After {wfc_time_finish}s", True, DARKBROWN)
-                screen.blit(wfc_finished_text, wfc_state_text_pos)
-
-            # Cooldown to stop accidental clicking of button at same position as button at old state
-            if switch_state_cooldown:
-                switch_state_cooldown_counter -= 1
-                if switch_state_cooldown_counter == 0:
-                    switch_state_cooldown = False
-                    switch_state_cooldown_counter = switch_state_cooldown_value
-
-            # Grid border
+            # First grid border
             pygame.draw.rect(screen, BLACK, (grid_x_pos-1, grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
         
-            pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
-            pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
 
-            screen.blit(wfc_guide_text, (10, 5))
-
-            if start_wfc_button.draw(screen):
-                if not has_wfc_executed and not switch_state_cooldown:
-                    wfc_grid_group.empty()
-                    wfc_second_grid_group.empty()
-                    asyncio_queue = asyncio.LifoQueue()
-                    wfc_list_count = 0
-                    is_wfc_replay_anim_ongoing = False
-                    has_wfc_executed = True
-                    is_wfc_finished = False
-                    wfc_state["interrupt"] = False
-                    wfc_output_2 = None
-                    grid_size = output_width
-                    change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
-                    change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
-                    change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
-                    for tile_button in tile_buttons:
-                        # Make base tile buttons opaque
-                        tile_button.image.set_alpha(100)
-                    wfc_time_start = time.perf_counter()
-                    loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, wfc_state))
-
-            if cancel_wfc_button.draw(screen):
-                if has_wfc_executed:
-                    wfc_state["interrupt"] = True
-
-            screen.blit(selected_base_tile_text, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-23))
-
-            screen.blit(selected_base_tile_image, (selected_base_tile_x_pos, selected_base_tile_y_pos))
-            pygame.draw.rect(screen, BLACK, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
-
-            output_size_text.draw(screen)
-            output_size_value_text.draw(screen)
-
-            for y, line in enumerate(tile_list_guide_text):
-                screen.blit(line, (510, 253 + y * 18))
-            
-            if increase_wfc_output_size_button.draw(screen):
-                if not is_wfc_replay_anim_ongoing and output_width < output_grid_upper_limit and not has_wfc_executed:
-                    output_width += 1
-                    output_height += 1
-                    output_size_text_color = get_output_size_text_color(output_width)
-                    output_size_value_text.render_main_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
-                    if output_width == output_grid_upper_limit:
-                        change_button_color("disabled", [increase_wfc_output_size_button])
-                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_wfc_output_size_button)
-                    if output_width == output_grid_lower_limit + 1:
-                        change_button_color("enabled", [decrease_wfc_output_size_button])
-                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_wfc_output_size_button)
-
-
-            if decrease_wfc_output_size_button.draw(screen):
-                if not is_wfc_replay_anim_ongoing and output_width > output_grid_lower_limit and not has_wfc_executed:
-                    output_width -= 1
-                    output_height -= 1
-                    output_size_text_color = get_output_size_text_color(output_width)
-                    output_size_value_text.render_main_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
-                    if output_width == output_grid_lower_limit:
-                        change_button_color("disabled", [decrease_wfc_output_size_button])
-                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_wfc_output_size_button)
-                    if output_width == output_grid_upper_limit - 1:
-                        change_button_color("enabled", [increase_wfc_output_size_button])
-                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_wfc_output_size_button)
-
-
-            # Initial Tile Buttons        
-            base_tiles_text.draw(screen)
-            draw_selected_tile_border(screen, selected_tile)
-            for index, tile_button in enumerate(tile_buttons):
-                if tile_button.draw(screen):
-                    if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
-                        if index != selected_tile_index:
-                            selected_tile = tile_buttons[index]
-                            selected_tile_index = index
-                            selected_base_tile_image = selected_tile.image.copy()
-                            patterns = get_patterns(pattern_size, base_tile_list[index])
-                            pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-                            num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
-                            update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
-                        
-            # Animation
+            # Second grid
             if draw_second_grid:
                 if is_wfc_replay_anim_ongoing:
                     if wfc_list_count < len(sliced_list):
@@ -1238,6 +1147,85 @@ async def main(loop):
                     pygame.draw.rect(screen, BLACK, (second_grid_x_pos-1, second_grid_y_pos-1, (grid_size * enlargement_scale) + 2, (grid_size * enlargement_scale) + 2), 1)
 
 
+            # WFC status text
+            if is_wfc_finished:
+                if wfc_finish_status == "finished-success":
+                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Finished After {wfc_time_finish}s", True, LAWNGREEN)
+                elif wfc_finish_status == "finished-fail":
+                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Failed After {wfc_time_finish}s", True, CRIMSON)
+                elif wfc_finish_status == "finished-interrupted":
+                    wfc_finished_text = size_20_font.render(f"Wave Function Collapse Interrupted After {wfc_time_finish}s", True, DARKBROWN)
+                screen.blit(wfc_finished_text, wfc_state_text_pos)
+
+
+            # Selected Base Tile
+            screen.blit(selected_base_tile_text, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-23))
+            screen.blit(selected_base_tile_image, (selected_base_tile_x_pos, selected_base_tile_y_pos))
+            # Seledcted Base Tile Border
+            pygame.draw.rect(screen, BLACK, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-1, selected_tile.width + 2, selected_tile.height + 2), 1)
+
+
+            # Output Size Setting
+            output_size_text.draw(screen)
+            output_size_value_text.draw(screen)
+
+            if increase_wfc_output_size_button.draw(screen):
+                if not is_wfc_replay_anim_ongoing and output_width < output_grid_upper_limit and not has_wfc_executed:
+                    output_width += 1
+                    output_height += 1
+                    output_size_text_color = get_output_size_text_color(output_width)
+                    output_size_value_text.render_main_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
+                    if output_width == output_grid_upper_limit:
+                        change_button_color("disabled", [increase_wfc_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(increase_wfc_output_size_button)
+                    if output_width == output_grid_lower_limit + 1:
+                        change_button_color("enabled", [decrease_wfc_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(decrease_wfc_output_size_button)
+
+            if decrease_wfc_output_size_button.draw(screen):
+                if not is_wfc_replay_anim_ongoing and output_width > output_grid_lower_limit and not has_wfc_executed:
+                    output_width -= 1
+                    output_height -= 1
+                    output_size_text_color = get_output_size_text_color(output_width)
+                    output_size_value_text.render_main_text = size_20_font.render(f"{output_width} x {output_height}", True, output_size_text_color)
+                    if output_width == output_grid_lower_limit:
+                        change_button_color("disabled", [decrease_wfc_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.remove(decrease_wfc_output_size_button)
+                    if output_width == output_grid_upper_limit - 1:
+                        change_button_color("enabled", [increase_wfc_output_size_button])
+                        disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_wfc_output_size_button)
+
+
+            if start_wfc_button.draw(screen):
+                if not has_wfc_executed and not switch_state_cooldown:
+                    wfc_grid_group.empty()
+                    wfc_second_grid_group.empty()
+                    asyncio_queue = asyncio.LifoQueue()
+                    wfc_list_count = 0
+                    is_wfc_replay_anim_ongoing = False
+                    has_wfc_executed = True
+                    is_wfc_finished = False
+                    wfc_state["interrupt"] = False
+                    wfc_output_2 = None
+                    grid_size = output_width
+                    change_button_color("disabled", disabled_buttons_during_wfc_exec_and_post_anim_list)
+                    change_button_color("disabled", disabled_buttons_during_wfc_exec_but_not_post_anim_list)
+                    change_button_color("enabled", enabled_buttons_during_wfc_exec_list)
+                    for tile_button in tile_buttons:
+                        # Make base tile buttons opaque
+                        tile_button.image.set_alpha(100)
+                    wfc_time_start = time.perf_counter()
+                    loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, wfc_state))
+
+            if cancel_wfc_button.draw(screen):
+                if has_wfc_executed:
+                    wfc_state["interrupt"] = True
+
+            if skip_replay_button.draw(screen):
+                if is_wfc_replay_anim_ongoing:
+                    wfc_list_count = len(sliced_list) - 1
+                    change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
+
             if replay_animation_button.draw(screen):
                 if not is_wfc_replay_anim_ongoing and not has_wfc_executed and len(wfc_order_list) > 0:
                     wfc_list_count = 0
@@ -1248,42 +1236,52 @@ async def main(loop):
                         draw_second_grid = True
                         is_wfc_replay_anim_ongoing = True
 
-            if skip_animation_button.draw(screen):
-                if is_wfc_replay_anim_ongoing:
-                    wfc_list_count = len(sliced_list) - 1
-                    change_button_color("disabled", enabled_buttons_only_during_wfc_post_anim)
 
-            if test_button.draw(screen):
-                print(type(patterns))
-
-            # if set_pattern_size_2_button.draw(screen):
-            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
-            #         pattern_size = 2
-            #         prob_text_x_offset = -2
-            #         prob_text_y_offset = -11
-            #         patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
-            #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-
-
-            # if set_pattern_size_3_button.draw(screen):
-            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
-            #         pattern_size = 3
-            #         prob_text_x_offset = 2
-            #         prob_text_y_offset = -11
-            #         patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
-            #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
-
-            # Patterns section
+            patterns_text.draw(screen)
+            screen.blit(num_patterns_text, (251, 312))
+            # List of pattern tiles
             for pattern in pattern_tile_list[:pattern_draw_limit]:
                 pygame.draw.rect(screen, BLACK, (pattern.x - 1, pattern.y - 1, pattern.width * enlargement_scale + 2, pattern.height * enlargement_scale + 2), 1)
 
-            screen.blit(num_patterns_text, (251, 312))
-            
+            # Warning for high amount of patterns
             if len(pattern_tile_list) > 39:
                 for y, line in enumerate(num_patterns_warning_text):
                     screen.blit(line, (8, 409 + y * 18))
 
-            # Settings Section
+
+            for y, line in enumerate(tile_list_guide_text):
+                screen.blit(line, (510, 253 + y * 18))
+
+            # Lines for Base Tiles "box"
+            pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
+            pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
+
+            base_tiles_text.draw(screen)
+                   
+            if paint_new_tile_button.draw(screen):
+                if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
+                    game_state = "paint"
+                    previous_game_state = "paint"
+                    switch_state_cooldown = True
+
+            # Draw yellow border around selected tile
+            draw_selected_tile_border(screen, selected_tile)
+
+            # List of selectable Base Tiles
+            for index, tile_button in enumerate(tile_buttons):
+                if tile_button.draw(screen):
+                    if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
+                        if index != selected_tile_index:
+                            selected_tile = tile_buttons[index]
+                            selected_tile_index = index
+                            selected_base_tile_image = selected_tile.image.copy()
+                            patterns = get_patterns(pattern_size, base_tile_list[index])
+                            pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                            num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
+                            update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
+                        
+            
+            # Line to separate Settings section
             pygame.draw.line(screen, BLACK, (0, 452), (440, 452))
 
             screen.blit(settings_text, (10, 460))
@@ -1291,12 +1289,6 @@ async def main(loop):
 
             replay_speed_text.draw(screen)
             screen.blit(replay_speed_value_text, (134, 521))
-
-            screen.blit(anim_during_wfc_value_text, (329, 550))
-            screen.blit(anim_after_wfc_value_text, (329, 572))
-
-            anim_during_wfc_infotext.draw(screen)
-            anim_after_wfc_infotext.draw(screen)
 
             if increase_replay_speed_button.draw(screen):
                 if not is_wfc_replay_anim_ongoing:
@@ -1326,6 +1318,9 @@ async def main(loop):
                             change_button_color("enabled", [increase_replay_speed_button])
                             disabled_buttons_during_wfc_exec_and_post_anim_list.append(increase_replay_speed_button)
 
+            anim_during_wfc_infotext.draw(screen)
+            screen.blit(anim_during_wfc_value_text, (329, 550))
+
             if toggle_anim_during_wfc_button.draw(screen):
                 if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                     if render_wfc_during_execution:
@@ -1334,6 +1329,9 @@ async def main(loop):
                     else:
                         render_wfc_during_execution = True
                         anim_during_wfc_value_text = size_17_font.render("ON", True, GREEN)
+            
+            anim_after_wfc_infotext.draw(screen)
+            screen.blit(anim_after_wfc_value_text, (329, 572))
 
             if toggle_anim_after_wfc_button.draw(screen):
                 if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
@@ -1343,25 +1341,46 @@ async def main(loop):
                     else:
                         render_wfc_at_end = True
                         anim_after_wfc_value_text = size_17_font.render("ON", True, GREEN)
-            
+
+
             if help_button.draw(screen):
                 if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
                     game_state = "help"
                     previous_game_state = "wfc"
 
-            if paint_new_tile_button.draw(screen):
-                if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
-                    game_state = "paint"
-                    previous_game_state = "paint"
-                    switch_state_cooldown = True
 
+            # if test_button.draw(screen):
+            #     print(type(patterns))
+
+
+            # Unused buttons to change pattern size
+
+            # if set_pattern_size_2_button.draw(screen):
+            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
+            #         pattern_size = 2
+            #         prob_text_x_offset = -2
+            #         prob_text_y_offset = -11
+            #         patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
+            #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+
+            # if set_pattern_size_3_button.draw(screen):
+            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
+            #         pattern_size = 3
+            #         prob_text_x_offset = 2
+            #         prob_text_y_offset = -11
+            #         patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
+            #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+
+
+            # Draw sprite groups
             wfc_grid_group.draw(screen)
             wfc_second_grid_group.draw(screen)
             pattern_group.draw(screen)
-            patterns_text.draw(screen)
             hover_box_group.draw(screen)
 
+        # Paint state
         if game_state == "paint":
+            
             screen.blit(paint_guide_color_text, (10, 5))
             screen.blit(paint_guide_grid_text, (10, 133))
 
