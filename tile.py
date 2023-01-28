@@ -22,9 +22,11 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.Surface([width, height])
         self.pix_array = pix_array
 
+        # Place every color in pix_array at corresponding X and Y position
         for i, row in enumerate(self.pix_array):
             for j, color in enumerate(row):
                 self.image.set_at((i, j), color)
 
+        # Scale up every pixel in tile by amount defined by enlargement_scale
         self.image = pygame.transform.scale(self.image, ((self.width*enlargement_scale), (self.height*enlargement_scale)))        
         self.rect = self.image.get_rect(left = self.x, top = self.y)

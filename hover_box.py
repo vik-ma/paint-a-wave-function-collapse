@@ -23,6 +23,7 @@ class HoverBox(pygame.sprite.Sprite):
         self.text_line_height = self.font.get_linesize()
         self.text = []
         for text_line in text:
+            # Append every line of text as one element in list
             self.text.append(self.font.render(text_line, True, (0, 0, 0)))
         
     def update_image(self, x, y):
@@ -36,5 +37,6 @@ class HoverBox(pygame.sprite.Sprite):
         
         #Text
         for line_y_pos, text_line in enumerate(self.text):
+            # Draw every element in self.text at a different y position
             hover_box_text_rect = text_line.get_rect(left = 14, top = (8 + (line_y_pos * self.text_line_height)))
             self.image.blit(text_line, hover_box_text_rect)

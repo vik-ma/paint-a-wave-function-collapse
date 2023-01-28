@@ -744,7 +744,7 @@ async def main(loop):
     copy_tile_button = Button(WHITE, 440, 268, 190, 36, "Copy Selected Tile", BLACK, LIGHTGREY)
 
     # Unused buttons
-    test_button = Button(WHITE, 660, 163, 130, 40, "TEST", BLACK, LIGHTGREY)
+    # test_button = Button(WHITE, 660, 163, 130, 40, "TEST", BLACK, LIGHTGREY)
     # test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
     # set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
     # set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
@@ -1091,7 +1091,7 @@ async def main(loop):
     help_state_sub_text_list.append([help_state_sub_text_5, help_state_title_text_list[4][1]+24])
 
     def change_button_color(state, button_list):
-        
+        """Change color of all buttons in input button_list after input state specifications."""
         state_colors = {"disabled": {"color": GREY, "hover_color": GREY, "foreground_color": DARKGREY}, "enabled": {"color":WHITE, "hover_color": LIGHTGREY, "foreground_color": BLACK}} 
 
         for button in button_list:
@@ -1418,8 +1418,8 @@ async def main(loop):
                     previous_game_state = "wfc"
 
 
-            if test_button.draw(screen):
-                print(patterns)
+            # if test_button.draw(screen):
+            #     print(patterns)
 
 
             # Unused buttons to change pattern size

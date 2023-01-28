@@ -24,5 +24,5 @@ class RuleIndex:
     def check_possibility(self, pattern, check_pattern, relative_position):
         if isinstance(pattern, list):
             pattern = pattern[0]
-            
+
         return check_pattern in self.data[pattern][relative_position]

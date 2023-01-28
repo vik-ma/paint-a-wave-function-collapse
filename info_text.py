@@ -36,10 +36,12 @@ class InfoText():
         surface.blit(self.render_main_text, (self.x, self.y))
 
         if self.rect.collidepoint(pos):
+            # Draw HoverBox at mouse position if mouse hovers over the text
             self.hover_box.update_image(pos[0], pos[1])
             self.hover_box_group.add(self.hover_box)
             self.is_showing_hover_box = True
         else:
+            # Stop drawing HoverBox when mouse is off text
             if self.is_showing_hover_box:
                 self.hover_box_group.remove(self.hover_box)
                 self.is_showing_hover_box = False
