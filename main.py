@@ -686,12 +686,8 @@ async def main(loop):
     size_27_font = pygame.font.Font(pygame.font.get_default_font(), 27)
     size_24_font = pygame.font.Font(pygame.font.get_default_font(), 24)
     size_20_font = pygame.font.Font(pygame.font.get_default_font(), 20)
-    size_19_font = pygame.font.Font(pygame.font.get_default_font(), 19)
     size_18_font = pygame.font.Font(pygame.font.get_default_font(), 18)
     size_17_font = pygame.font.Font(pygame.font.get_default_font(), 17)
-    size_16_font = pygame.font.Font(pygame.font.get_default_font(), 16)
-    size_14_font = pygame.font.Font(pygame.font.get_default_font(), 14)
-    size_10_font = pygame.font.Font(pygame.font.get_default_font(), 10)
 
 
     WIDTH = 800
@@ -1378,31 +1374,70 @@ async def main(loop):
             pattern_group.draw(screen)
             hover_box_group.draw(screen)
 
+
         # Paint state
         if game_state == "paint":
-            
+            # Cooldown to stop accidental clicking of button at same position as button at old state
+            if switch_state_cooldown:
+                switch_state_cooldown_counter -= 1
+                if switch_state_cooldown_counter == 0:
+                    switch_state_cooldown = False
+                    switch_state_cooldown_counter = switch_state_cooldown_value
+
+
             screen.blit(paint_guide_color_text, (10, 5))
-            screen.blit(paint_guide_grid_text, (10, 133))
 
-            screen.blit(current_color_text, (paint_grid_x_pos, 105))
-            screen.blit(current_paint_tile_size_text, (175, 105))
-
-            for y, line in enumerate(paint_guide_save_text):
-                screen.blit(line, (600, 80 + y * 18))
-
-            current_color_tile.draw(screen, border=True)
-
-            pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
-            pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
-
-            screen.blit(painted_tile_text, (preview_tile_x_pos-1, preview_tile_y_pos-23))
-
+            # Clickable color palette
             for color in color_panel:
                 if color.draw(screen, border=True):
                     current_color = color.color
                     current_color_tile.image.fill(current_color)
+            
+            screen.blit(current_color_text, (paint_grid_x_pos, 105))
+            current_color_tile.draw(screen, border=True)
 
-            # Draw grid 
+            screen.blit(current_paint_tile_size_text, (175, 105))
+
+            if increase_paint_grid_size_button.draw(screen):
+                if paint_grid_cols < paint_grid_size_limit_upper:
+                    paint_grid_cols += 1
+                    paint_grid_rows += 1
+                    new_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
+                    for col in range(paint_grid_cols - 1):
+                        for row in range(paint_grid_rows - 1):
+                            new_grid[col][row] = paint_grid[col][row]
+                    paint_grid = new_grid
+                    paint_grid_pix_array = create_pix_array(paint_grid)
+                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
+                    current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
+                    if paint_grid_cols == paint_grid_size_limit_upper:
+                        change_button_color("disabled", [increase_paint_grid_size_button])
+                    if paint_grid_cols == paint_grid_size_limit_lower + 1:
+                        change_button_color("enabled", [decrease_paint_grid_size_button])
+
+            if decrease_paint_grid_size_button.draw(screen):
+                if paint_grid_cols > paint_grid_size_limit_lower:
+                    paint_grid_cols -= 1
+                    paint_grid_rows -= 1
+                    new_grid = []
+                    for col in range(paint_grid_cols):
+                        new_row = []
+                        for row in range(paint_grid_rows):
+                            new_row.append(paint_grid[col][row])
+                        new_grid.append(new_row)
+                    paint_grid = new_grid
+                    paint_grid_pix_array = create_pix_array(paint_grid)
+                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
+                    current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
+                    if paint_grid_cols == paint_grid_size_limit_lower:
+                        change_button_color("disabled", [decrease_paint_grid_size_button])
+                    if paint_grid_cols == paint_grid_size_limit_upper - 1:
+                        change_button_color("enabled", [increase_paint_grid_size_button])
+
+
+            screen.blit(paint_guide_grid_text, (10, 133))
+
+            # Paint grid
             for x, col in enumerate(paint_grid):
                 for y, tile in enumerate(col):
                     if tile.draw(screen):
@@ -1411,12 +1446,40 @@ async def main(loop):
                         paint_grid_pix_array = create_pix_array(paint_grid)
                         preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
-            # Grid border
+            # Paint grid lines
+            if draw_paint_grid_lines:
+                for col in range(1, paint_grid_cols):
+                    pygame.draw.line(screen, BLACK, (paint_grid_x_pos + col * paint_grid_tile_size, paint_grid_y_pos), (paint_grid_x_pos + col * paint_grid_tile_size, paint_grid_y_pos + paint_grid_tile_size * paint_grid_rows))
+                for row in range(1, paint_grid_rows):
+                    pygame.draw.line(screen, BLACK, (paint_grid_x_pos, paint_grid_y_pos + row * paint_grid_tile_size), (paint_grid_x_pos + paint_grid_tile_size * paint_grid_cols, paint_grid_y_pos + row * paint_grid_tile_size))
+
+            # Paint grid border
             pygame.draw.rect(screen, BLACK, (paint_grid_x_pos-1, paint_grid_y_pos-1, (paint_grid_cols * paint_grid_tile_size + 2), (paint_grid_rows * paint_grid_tile_size) + 2), 1) 
 
-            if len(base_tile_list) == max_base_tiles:
-                for y, line in enumerate(tile_list_full_text):
-                    screen.blit(line, (600, 170 + y * 18))
+            
+            if clear_paint_grid_button.draw(screen):
+                paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
+                paint_grid_pix_array = create_pix_array(paint_grid)
+                preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
+
+            if toggle_grid_lines_button.draw(screen):
+                draw_paint_grid_lines = not draw_paint_grid_lines
+
+
+            if return_to_wfc_button.draw(screen):
+                game_state = "wfc"
+                previous_game_state = "wfc"
+
+
+            screen.blit(painted_tile_text, (preview_tile_x_pos-1, preview_tile_y_pos-23))
+            # Painted Tile
+            screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
+            # Preview Tile Border
+            pygame.draw.rect(screen, BLACK, (preview_tile.x - 1, preview_tile.y - 1, (preview_tile.width * enlargement_scale) + 2, (preview_tile.height * enlargement_scale) + 2), 1)
+
+
+            for y, line in enumerate(paint_guide_save_text):
+                screen.blit(line, (600, 80 + y * 18))
 
             if save_tile_button.draw(screen):
                 if len(base_tile_list) < max_base_tiles:
@@ -1456,11 +1519,33 @@ async def main(loop):
                     game_state = "wfc"
                     previous_game_state = "wfc"
 
-            if switch_state_cooldown:
-                switch_state_cooldown_counter -= 1
-                if switch_state_cooldown_counter == 0:
-                    switch_state_cooldown = False
-                    switch_state_cooldown_counter = switch_state_cooldown_value
+            # Message if Base Tile list is full
+            if len(base_tile_list) == max_base_tiles:
+                for y, line in enumerate(tile_list_full_text):
+                    screen.blit(line, (600, 170 + y * 18))
+
+
+            if copy_tile_button.draw(screen):
+                paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
+                paint_grid_pix_array = create_pix_array(paint_grid)
+                paint_grid_cols = len(paint_grid_pix_array)
+                paint_grid_rows = len(paint_grid_pix_array[0])
+                preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
+                current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
+                if paint_grid_cols == paint_grid_size_limit_upper:
+                    change_button_color("disabled", [increase_paint_grid_size_button])
+                else:
+                    change_button_color("enabled", [increase_paint_grid_size_button])
+                if paint_grid_cols == paint_grid_size_limit_lower:
+                    change_button_color("disabled", [decrease_paint_grid_size_button])
+                else:
+                    change_button_color("enabled", [decrease_paint_grid_size_button])
+
+            # Lines for Base Tiles "box"
+            pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
+            pygame.draw.line(screen, BLACK, (440, 311), (440, 640))
+
+            base_tiles_text.draw(screen) 
 
             if delete_tile_button.draw(screen):
                 if not switch_state_cooldown and selected_tile != None:
@@ -1492,88 +1577,11 @@ async def main(loop):
                         if len(base_tile_list) == max_base_tiles - 1:
                             change_button_color("enabled", [save_tile_button])
 
-            screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
-            #Preview Tile Border
-            pygame.draw.rect(screen, BLACK, (preview_tile.x - 1, preview_tile.y - 1, (preview_tile.width * enlargement_scale) + 2, (preview_tile.height * enlargement_scale) + 2), 1)
-
-            if help_button.draw(screen):
-                game_state = "help"
-                previous_game_state = "paint"
-
-            if return_to_wfc_button.draw(screen):
-                game_state = "wfc"
-                previous_game_state = "wfc"
-
-            if draw_paint_grid_lines:
-                for col in range(1, paint_grid_cols):
-                    pygame.draw.line(screen, BLACK, (paint_grid_x_pos + col * paint_grid_tile_size, paint_grid_y_pos), (paint_grid_x_pos + col * paint_grid_tile_size, paint_grid_y_pos + paint_grid_tile_size * paint_grid_rows))
-                for row in range(1, paint_grid_rows):
-                    pygame.draw.line(screen, BLACK, (paint_grid_x_pos, paint_grid_y_pos + row * paint_grid_tile_size), (paint_grid_x_pos + paint_grid_tile_size * paint_grid_cols, paint_grid_y_pos + row * paint_grid_tile_size))
-
-            if toggle_grid_lines_button.draw(screen):
-                draw_paint_grid_lines = not draw_paint_grid_lines
-
-            if decrease_paint_grid_size_button.draw(screen):
-                if paint_grid_cols > paint_grid_size_limit_lower:
-                    paint_grid_cols -= 1
-                    paint_grid_rows -= 1
-                    new_grid = []
-                    for col in range(paint_grid_cols):
-                        new_row = []
-                        for row in range(paint_grid_rows):
-                            new_row.append(paint_grid[col][row])
-                        new_grid.append(new_row)
-                    paint_grid = new_grid
-                    paint_grid_pix_array = create_pix_array(paint_grid)
-                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
-                    current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
-                    if paint_grid_cols == paint_grid_size_limit_lower:
-                        change_button_color("disabled", [decrease_paint_grid_size_button])
-                    if paint_grid_cols == paint_grid_size_limit_upper - 1:
-                        change_button_color("enabled", [increase_paint_grid_size_button])
-
-            if increase_paint_grid_size_button.draw(screen):
-                if paint_grid_cols < paint_grid_size_limit_upper:
-                    paint_grid_cols += 1
-                    paint_grid_rows += 1
-                    new_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
-                    for col in range(paint_grid_cols - 1):
-                        for row in range(paint_grid_rows - 1):
-                            new_grid[col][row] = paint_grid[col][row]
-                    paint_grid = new_grid
-                    paint_grid_pix_array = create_pix_array(paint_grid)
-                    preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
-                    current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
-                    if paint_grid_cols == paint_grid_size_limit_upper:
-                        change_button_color("disabled", [increase_paint_grid_size_button])
-                    if paint_grid_cols == paint_grid_size_limit_lower + 1:
-                        change_button_color("enabled", [decrease_paint_grid_size_button])
-
-            if copy_tile_button.draw(screen):
-                paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
-                paint_grid_pix_array = create_pix_array(paint_grid)
-                paint_grid_cols = len(paint_grid_pix_array)
-                paint_grid_rows = len(paint_grid_pix_array[0])
-                preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
-                current_paint_tile_size_text = size_18_font.render(f"Tile Size: {paint_grid_cols}x{paint_grid_rows}", True, SCREEN_TEXT_COLOR)
-                if paint_grid_cols == paint_grid_size_limit_upper:
-                    change_button_color("disabled", [increase_paint_grid_size_button])
-                else:
-                    change_button_color("enabled", [increase_paint_grid_size_button])
-                if paint_grid_cols == paint_grid_size_limit_lower:
-                    change_button_color("disabled", [decrease_paint_grid_size_button])
-                else:
-                    change_button_color("enabled", [decrease_paint_grid_size_button])
-
-            if clear_paint_grid_button.draw(screen):
-                paint_grid = create_empty_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_cols, paint_grid_rows, paint_grid_tile_size)
-                paint_grid_pix_array = create_pix_array(paint_grid)
-                preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
-
-            # Initial Tile Buttons
-            base_tiles_text.draw(screen) 
+            # Draw yellow border around selected tile
             if selected_tile != None:
                 draw_selected_tile_border(screen, selected_tile)
+
+            # List of selectable Base Tiles
             for index, tile_button in enumerate(tile_buttons):
                 if tile_button.draw(screen):
                     if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
@@ -1584,33 +1592,48 @@ async def main(loop):
                         pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
                         num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
                         update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
-                        
+
+
+            if help_button.draw(screen):
+                game_state = "help"
+                previous_game_state = "paint"
+
 
             # if test_paint_button.draw(screen):
             #     paint_grid = create_colored_paint_grid(paint_grid_x_pos, paint_grid_y_pos, paint_grid_tile_size, base_tile_list[selected_tile_index].pix_array)
             #     paint_grid_pix_array = create_pix_array(paint_grid)
             
+
+            # Draw sprite groups
             paint_color_group.draw(screen)
             hover_box_group.draw(screen)
 
+        # Help state
         if game_state == "help":
+            # Draw all help section titles
             for title_text in help_state_title_text_list:
                 screen.blit(title_text[0], (10, title_text[1]))
 
+            #Draw all help section paragraphs
             for sub_text in help_state_sub_text_list:
                 for y, line in enumerate(sub_text[0]):
                     screen.blit(line, (10, sub_text[1] + y * 15))
 
+
             if return_from_help_button.draw(screen):
                 game_state = previous_game_state
 
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                # Interrupt WFC if window is exited
                 wfc_state["interrupt"] = True
                 run = False
 
 
         pygame.display.update()
+
+        # Needed for WebAssembly embed
         await asyncio.sleep(0)
 
     # pygame.quit()
