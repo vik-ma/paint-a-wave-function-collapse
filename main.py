@@ -698,6 +698,8 @@ async def main(loop):
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
+    pygame.display.set_caption("Paint Your Wave Function Collapse")
+
     # Sprite Group for Pattern Tiles extracted from Base Tile 
     pattern_group = pygame.sprite.Group()
     # Sprite Group for first grid
