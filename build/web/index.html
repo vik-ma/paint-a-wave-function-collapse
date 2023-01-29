@@ -298,7 +298,7 @@ asyncio.run( custom_site() )
         /* average size of droid screen 470dp x 320dp  */
         canvas.emscripten {
             border: 1px solid black;
-            box-shadow: 0 0 15px rgb(0, 0, 0);
+            box-shadow: 0 0 5px rgb(0, 0, 0);
             background-color: transparent;
             width: 100%;
             height: 100%;
@@ -318,6 +318,36 @@ asyncio.run( custom_site() )
             margin: 0;
             padding: none;
             background-color: rgb(84, 84, 84) !important;
+        }
+
+        h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 26px;
+
+
+            color: rgb(209, 12, 55);
+
+            margin-top: 13px;
+            padding: 0 5px;
+        }
+
+        #gradient {
+            background-color: rgb(209, 12, 55);
+
+            background-image: linear-gradient(rgb(218, 23, 65), rgb(173, 3, 40));
+            background-size: 100%;
+            background-repeat: repeat;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -moz-background-clip: text;
+            -moz-text-fill-color: transparent;
+        }
+
+        p {
+            margin-top: -12px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;
         }
 
         .topright {
@@ -353,22 +383,29 @@ asyncio.run( custom_site() )
 
         #game-wrapper {
             margin-top: 20px;
+        }
 
+        #game-info-container {
+            max-width: 800px;
+            height: 200px;
+            text-align: center;
+            margin: 30px auto;
+            background-color: rgb(179, 179, 179);
+            background-image: linear-gradient(to bottom right, rgb(160, 160, 160), rgb(228, 228, 228));
+            border: 1px solid black;
+            border-radius: 20px;
+            box-shadow: 0 0 5px rgb(0, 0, 0);
         }
     </style>
 
     <script src="https://pygame-web.github.io/archives/0.6//browserfs.min.js"></script>
-    <script>
-
-    </script>
-
 </head>
 
 <body>
 
     <div id="transfer" align="center">
         <!--        <div class="spinner" id='spinner'></div> -->
-        <div class="emscripten" id="status">Downloading...</div>
+        <div class="emscripten" id="status">Loading...</div>
         <div class="emscripten">
             <progress value="0" max="100" id="progress"></progress>
         </div>
@@ -377,7 +414,12 @@ asyncio.run( custom_site() )
     <div id="game-wrapper">
         <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="1">
         </canvas>
-
+        <div id="game-info-container">
+            <h1 id="gradient">Wait for the application to load and then click 'Ready to start!'</h1>
+            <p>Requires JavaScript to be enabled.</p>
+            <br />
+            <p>asd</p>
+        </div>
     </div>
 
     <div id="crt" class="bottomright">
