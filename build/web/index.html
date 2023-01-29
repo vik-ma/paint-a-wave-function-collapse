@@ -298,6 +298,7 @@ asyncio.run( custom_site() )
         /* average size of droid screen 470dp x 320dp  */
         canvas.emscripten {
             border: 1px solid black;
+            box-shadow: 0 0 15px rgb(0, 0, 0);
             background-color: transparent;
             width: 100%;
             height: 100%;
@@ -316,7 +317,7 @@ asyncio.run( custom_site() )
             font-family: arial;
             margin: 0;
             padding: none;
-            background-color: powderblue;
+            background-color: rgb(84, 84, 84) !important;
         }
 
         .topright {
@@ -350,7 +351,10 @@ asyncio.run( custom_site() )
             border: 1px solid black;
         }
 
-        #game-wrapper {}
+        #game-wrapper {
+            margin-top: 20px;
+
+        }
     </style>
 
     <script src="https://pygame-web.github.io/archives/0.6//browserfs.min.js"></script>
