@@ -532,7 +532,7 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale) -> list:
     #     x_offset = 33
 
     x = 10 # Start x-coordinate
-    y = 335 # Start y-coordinate
+    y = 339 # Start y-coordinate
     tiles_per_row_limit = 19 # Maximum tiles per row
     
     tile_list = []
@@ -723,17 +723,17 @@ async def main(loop):
     paint_new_tile_button = Button(WHITE, 650, 320, 140, 36, "Paint New Tile", BLACK, LIGHTGREY)
     return_to_wfc_button = Button(WHITE, 600, 7, 190, 40, "Return To WFC", BLACK, LIGHTGREY, big_text=True)
     
-    help_button = Button(WHITE, 9, 595, 110, 38, "HELP", BLACK, LIGHTGREY, big_text=True)
+    help_button = Button(WHITE, 9, 596, 110, 37, "HELP", BLACK, LIGHTGREY, big_text=True)
     return_from_help_button = Button(WHITE, 673, 593, 120, 40, "Return", BLACK, LIGHTGREY, big_text=True)
 
-    increase_wfc_output_size_button = ArrowButton(WHITE, 715, 47, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
-    decrease_wfc_output_size_button = ArrowButton(WHITE, 715, 66, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
+    increase_wfc_output_size_button = ArrowButton(WHITE, 709, 48, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_wfc_output_size_button = ArrowButton(WHITE, 709, 67, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
     toggle_anim_during_wfc_button = Button(WHITE, 369, 548, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
     toggle_anim_after_wfc_button = Button(WHITE, 369, 570, 50, 20, "Change", BLACK, LIGHTGREY, small_text=True)
 
-    increase_replay_speed_button = ArrowButton(WHITE, 165, 512, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
-    decrease_replay_speed_button = ArrowButton(WHITE, 165, 531, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
+    increase_replay_speed_button = ArrowButton(WHITE, 165, 513, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
+    decrease_replay_speed_button = ArrowButton(WHITE, 165, 532, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
 
     increase_paint_grid_size_button = ArrowButton(WHITE, 300, 95, 26, 17, BLACK, LIGHTGREY, is_pointing_up=True)
     decrease_paint_grid_size_button = ArrowButton(WHITE, 300, 114, 26, 17, BLACK, LIGHTGREY, is_pointing_up=False)
@@ -893,7 +893,7 @@ async def main(loop):
 
     # Preview of Painted Tile
     preview_tile_x_pos = 455
-    preview_tile_y_pos = 127
+    preview_tile_y_pos = 126
     preview_tile = Tile(paint_grid_cols, paint_grid_rows, preview_tile_x_pos, preview_tile_y_pos, paint_grid_pix_array, enlargement_scale)
 
     # Toggle to show black lines to separate Paint Tiles in Paint Gric
@@ -932,8 +932,8 @@ async def main(loop):
 
     output_size_hover_box_text = ["Larger output", "size increases", "execution time", "exponentially."]
     output_size_hover_box = HoverBox(155, len(output_size_hover_box_text) * hover_box_line_height + 14, output_size_hover_box_text, hover_box_font)
-    output_size_text = InfoText(630, selected_base_tile_y_pos-23, "Output Size", size_20_font, SCREEN_TEXT_COLOR, output_size_hover_box, hover_box_group)
-    output_size_value_text = InfoText(640, selected_base_tile_y_pos+7, f"{output_width} x {output_height}", size_20_font, output_size_text_color, output_size_hover_box, hover_box_group)
+    output_size_text = InfoText(630, selected_base_tile_y_pos-27, "Output Size", size_20_font, SCREEN_TEXT_COLOR, output_size_hover_box, hover_box_group)
+    output_size_value_text = InfoText(636, selected_base_tile_y_pos+3, f"{output_width} x {output_height}", size_20_font, output_size_text_color, output_size_hover_box, hover_box_group)
 
     settings_text = size_27_font.render("Settings", True, SCREEN_TEXT_COLOR)
     settings_sub_text = size_17_font.render("Hover over the settings for more information", True, IMPORTANT_SCREEN_TEXT_COLOR)
@@ -1115,7 +1115,7 @@ async def main(loop):
                     switch_state_cooldown_counter = switch_state_cooldown_value
            
 
-            screen.blit(wfc_guide_text, (10, 5))
+            screen.blit(wfc_guide_text, (10, 2))
 
             # First grid when WFC has been started
             if has_wfc_executed:
@@ -1230,9 +1230,9 @@ async def main(loop):
 
 
             # Selected Base Tile
-            screen.blit(selected_base_tile_text, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-23))
+            screen.blit(selected_base_tile_text, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-27))
             screen.blit(selected_base_tile_image, (selected_base_tile_x_pos, selected_base_tile_y_pos))
-            # Seledcted Base Tile Border
+            # Selected Base Tile Border
             pygame.draw.rect(screen, BLACK, (selected_base_tile_x_pos-1, selected_base_tile_y_pos-1, selected_base_tile.width + 2, selected_base_tile.height + 2), 1)
 
 
@@ -1321,7 +1321,7 @@ async def main(loop):
 
 
             for y, line in enumerate(tile_list_guide_text):
-                screen.blit(line, (510, 253 + y * 18))
+                screen.blit(line, (510, 250 + y * 18))
 
             # Lines for Base Tiles "box"
             pygame.draw.line(screen, BLACK, (440, 311), (800, 311))
@@ -1460,7 +1460,7 @@ async def main(loop):
                     switch_state_cooldown_counter = switch_state_cooldown_value
 
 
-            screen.blit(paint_guide_color_text, (10, 5))
+            screen.blit(paint_guide_color_text, (10, 2))
 
             # Clickable color palette
             for color in color_panel:
@@ -1510,7 +1510,7 @@ async def main(loop):
                         change_button_color("enabled", [increase_paint_grid_size_button])
 
 
-            screen.blit(paint_guide_grid_text, (10, 133))
+            screen.blit(paint_guide_grid_text, (10, 132))
 
             # Paint grid
             for x, col in enumerate(paint_grid):
@@ -1546,7 +1546,7 @@ async def main(loop):
                 previous_game_state = "wfc"
 
 
-            screen.blit(painted_tile_text, (preview_tile_x_pos-1, preview_tile_y_pos-23))
+            screen.blit(painted_tile_text, (preview_tile_x_pos-1, preview_tile_y_pos-27))
             # Painted Tile
             screen.blit(preview_tile.image, (preview_tile.x, preview_tile.y))
             # Preview Tile Border
@@ -1554,7 +1554,7 @@ async def main(loop):
 
 
             for y, line in enumerate(paint_guide_save_text):
-                screen.blit(line, (600, 80 + y * 18))
+                screen.blit(line, (600, 74 + y * 18))
 
             if save_tile_button.draw(screen):
                 if len(base_tile_list) < max_base_tiles:
