@@ -297,15 +297,19 @@ asyncio.run( custom_site() )
         /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
         /* average size of droid screen 470dp x 320dp  */
         canvas.emscripten {
-            border: 0px none;
+            border: 1px solid black;
             background-color: transparent;
+            width: 100%;
+            height: 100%;
 
             z-index: 5;
 
             padding: 0 px;
             margin: 0 auto;
+            display: block;
 
-            width: 400px;
+            max-width: 800px !important;
+            max-height: 640px !important;
         }
 
         body {
@@ -346,12 +350,13 @@ asyncio.run( custom_site() )
             border: 1px solid black;
         }
 
-        #game-wrapper {
-            width: 800px;
-        }
+        #game-wrapper {}
     </style>
 
     <script src="https://pygame-web.github.io/archives/0.6//browserfs.min.js"></script>
+    <script>
+
+    </script>
 
 </head>
 
@@ -366,9 +371,9 @@ asyncio.run( custom_site() )
     </div>
 
     <div id="game-wrapper">
-        <canvas class="emscripten" oncontextmenu="event.preventDefault()"
-            tabindex="1">
+        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="1">
         </canvas>
+
     </div>
 
     <div id="crt" class="bottomright">
@@ -397,7 +402,7 @@ asyncio.run( custom_site() )
             <div id="info" class="trinfo"></div>
 
             <iframe id="iframe" class="framed" name="iframe" width="470px" height="90%" allowtransparency="true"
-                style="z-index: 10; " background: #FFFFFF;" frameborder="1" allowfullscreen="true"
+                style="z-index: 10; background: #FFFFFF;" frameborder="1" allowfullscreen="true"
                 webkitallowfullscreen="true" msallowfullscreen="true" mozallowfullscreen="true"
                 sandbox="allow-same-origin allow-top-navigation allow-scripts allow-pointer-lock"
                 allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated"
