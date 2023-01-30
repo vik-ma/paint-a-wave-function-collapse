@@ -345,9 +345,9 @@ asyncio.run( custom_site() )
         }
 
         p {
-            margin-top: -12px;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 18px;
+            padding: 0 20px;
         }
 
         .topright {
@@ -396,6 +396,16 @@ asyncio.run( custom_site() )
             box-shadow: 0 0 5px rgb(0, 0, 0);
             height: fit-content;
         }
+
+        .center-aligned-text {
+            margin-top: -17px;
+            font-weight: bold;
+        }
+
+        .left-aligned-text {
+            margin-top: -10px;
+            text-align: left;
+        }
     </style>
 
     <script src="https://pygame-web.github.io/archives/0.6//browserfs.min.js"></script>
@@ -416,9 +426,10 @@ asyncio.run( custom_site() )
         </canvas>
         <div id="game-info-container">
             <h1 id="gradient">Wait for the application to load and then click 'Ready to start!'</h1>
-            <p>Requires JavaScript to be enabled.</p>
-            <br />
-            <p>asd</p>
+            <p class="center-aligned-text">Requires JavaScript to be enabled.</p>
+            <p class="left-aligned-text">This app was written with Python's Pygame library and has been compiled to
+                WebAssembly, with the help of Pygbag, to run inside the browser. The web version of this app runs about
+                2-3 times slower than the desktop version, and is unfortunately quite laggy during WFC execution.</p>
         </div>
 
         <div id="crt" class="bottomright">
