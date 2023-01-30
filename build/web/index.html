@@ -387,7 +387,6 @@ asyncio.run( custom_site() )
 
         #game-info-container {
             max-width: 800px;
-            height: 200px;
             text-align: center;
             margin: 30px auto;
             background-color: rgb(179, 179, 179);
@@ -395,6 +394,7 @@ asyncio.run( custom_site() )
             border: 1px solid black;
             border-radius: 20px;
             box-shadow: 0 0 5px rgb(0, 0, 0);
+            height: fit-content;
         }
     </style>
 
@@ -420,110 +420,109 @@ asyncio.run( custom_site() )
             <br />
             <p>asd</p>
         </div>
-    </div>
 
-    <div id="crt" class="bottomright">
+        <div id="crt" class="bottomright">
 
-        <div id="system" hidden="true">
-            <div class="button-container">
-                <button id="aiostop" disabled>AIO ⏏︎</button>
-                <button id="aiopaused_true" disabled>AIO ■</button>
-                <button id="aiopaused_false" disabled>AIO ▶</button>
-                <button id="pygame_mixer_music_pause" disabled>Music ■</button>
+            <div id="system" hidden="true">
+                <div class="button-container">
+                    <button id="aiostop" disabled>AIO ⏏︎</button>
+                    <button id="aiopaused_true" disabled>AIO ■</button>
+                    <button id="aiopaused_false" disabled>AIO ▶</button>
+                    <button id="pygame_mixer_music_pause" disabled>Music ■</button>
+                </div>
+
+                <div class="button-container">
+                    <div id="load_min">min</div>
+                    <div id="load_avg">avg</div>
+                    <div id="load_max">max</div>
+                    <button id="load_rst" disabled>RESET</button>
+                </div>
+
+                <div id="level">(battery level unknown)</div>
+                <div id="stateBattery">(charging state unknown)</div>
+
             </div>
 
-            <div class="button-container">
-                <div id="load_min">min</div>
-                <div id="load_avg">avg</div>
-                <div id="load_max">max</div>
-                <button id="load_rst" disabled>RESET</button>
-            </div>
+            <div id="box" class="emscripten_border" hidden="true">
+                <div id="info" class="trinfo"></div>
 
-            <div id="level">(battery level unknown)</div>
-            <div id="stateBattery">(charging state unknown)</div>
+                <iframe id="iframe" class="framed" name="iframe" width="470px" height="90%" allowtransparency="true"
+                    style="z-index: 10; background: #FFFFFF;" frameborder="1" allowfullscreen="true"
+                    webkitallowfullscreen="true" msallowfullscreen="true" mozallowfullscreen="true"
+                    sandbox="allow-same-origin allow-top-navigation allow-scripts allow-pointer-lock"
+                    allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated"
+                    src="https://pygame-web.github.io/archives/0.6/empty.html" scrolling="yes">
+                </iframe>
+            </div>
 
         </div>
 
-        <div id="box" class="emscripten_border" hidden="true">
-            <div id="info" class="trinfo"></div>
 
-            <iframe id="iframe" class="framed" name="iframe" width="470px" height="90%" allowtransparency="true"
-                style="z-index: 10; background: #FFFFFF;" frameborder="1" allowfullscreen="true"
-                webkitallowfullscreen="true" msallowfullscreen="true" mozallowfullscreen="true"
-                sandbox="allow-same-origin allow-top-navigation allow-scripts allow-pointer-lock"
-                allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated"
-                src="https://pygame-web.github.io/archives/0.6/empty.html" scrolling="yes">
-            </iframe>
+        <div id="dlg" hidden>
+            <input type="file" id="dlg_multifile" multiple accept="image/*">
+            <label for="dlg_multifile">Select files</label>
         </div>
 
-    </div>
+        <div id="pyconsole">
+            <div id="terminal" tabIndex="1" align="left"></div>
+        </div>
 
+        <script type="application/javascript">
 
-    <div id="dlg" hidden>
-        <input type="file" id="dlg_multifile" multiple accept="image/*">
-        <label for="dlg_multifile">Select files</label>
-    </div>
+            async function custom_onload(debug_hidden) {
+                // this is called before anythinh python is loaded
+                // make your js customization here
+                console.log(__FILE__, "custom_onload")
 
-    <div id="pyconsole">
-        <div id="terminal" tabIndex="1" align="left"></div>
-    </div>
+                pyconsole.hidden = debug_hidden
+                system.hidden = debug_hidden
+                transfer.hidden = debug_hidden
+                info.hidden = debug_hidden
+                box.hidden = debug_hidden
+            }
 
-    <script type="application/javascript">
+            function custom_prerun() {
+                // no python main and no (MEMFS + VFS) yet.
+                console.log(__FILE__, "custom_prerun")
 
-        async function custom_onload(debug_hidden) {
-            // this is called before anythinh python is loaded
-            // make your js customization here
-            console.log(__FILE__, "custom_onload")
+            }
 
-            pyconsole.hidden = debug_hidden
-            system.hidden = debug_hidden
-            transfer.hidden = debug_hidden
-            info.hidden = debug_hidden
-            box.hidden = debug_hidden
-        }
+            function custom_postrun() {
+                // python main and no VFS filesystem yet.
+                console.log(__FILE__, "custom_postrun")
 
-        function custom_prerun() {
-            // no python main and no (MEMFS + VFS) yet.
-            console.log(__FILE__, "custom_prerun")
+            }
 
-        }
+            function debug() {
+                // allow to gain access to dev tools from js console
+                // but only on desktop. difficult to reach when in iframe
+                python.config.debug = true
+                custom_onload(false)
+                Module.PyRun_SimpleString("shell.uptime()")
+                window_resize()
+            }
 
-        function custom_postrun() {
-            // python main and no VFS filesystem yet.
-            console.log(__FILE__, "custom_postrun")
+            function info_inline(data) {
+                document.getElementById("info").innerHTML = data
+            }
 
-        }
+            function info_online(url) {
+                // display info about current APK
+                fetch(url /*, options */)
+                    .then((response) => response.text())
+                    .then((html) => {
+                        info_inline(html);
+                    })
+                    .catch((error) => {
+                        console.warn(error);
+                    });
+            }
 
-        function debug() {
-            // allow to gain access to dev tools from js console
-            // but only on desktop. difficult to reach when in iframe
-            python.config.debug = true
-            custom_onload(false)
-            Module.PyRun_SimpleString("shell.uptime()")
-            window_resize()
-        }
+            function frame_online(url) {
+                window.frames["iframe"].location = url;
+            }
 
-        function info_inline(data) {
-            document.getElementById("info").innerHTML = data
-        }
-
-        function info_online(url) {
-            // display info about current APK
-            fetch(url /*, options */)
-                .then((response) => response.text())
-                .then((html) => {
-                    info_inline(html);
-                })
-                .catch((error) => {
-                    console.warn(error);
-                });
-        }
-
-        function frame_online(url) {
-            window.frames["iframe"].location = url;
-        }
-
-    </script>
+        </script>
 
 </body>
 
