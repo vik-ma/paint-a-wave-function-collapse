@@ -346,7 +346,7 @@ asyncio.run( custom_site() )
 
         p {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 18px;
+            font-size: 17px;
             padding: 0 20px;
         }
 
@@ -388,7 +388,7 @@ asyncio.run( custom_site() )
         #game-info-container {
             max-width: 800px;
             text-align: center;
-            margin: 30px auto;
+            margin: 15px auto;
             background-color: rgb(179, 179, 179);
             background-image: linear-gradient(to bottom right, rgb(160, 160, 160), rgb(228, 228, 228));
             border: 1px solid black;
@@ -403,8 +403,12 @@ asyncio.run( custom_site() )
         }
 
         .left-aligned-text {
-            margin-top: -10px;
             text-align: left;
+            margin-top: 20px;
+        }
+
+        .bold-text {
+            font-weight: bold;
         }
     </style>
 
@@ -427,6 +431,15 @@ asyncio.run( custom_site() )
         <div id="game-info-container">
             <h1 id="gradient">Wait for the application to load and then click 'Ready to start!'</h1>
             <p class="center-aligned-text">Requires JavaScript to be enabled.</p>
+            <p class="left-aligned-text">Click on <span class="bold-text">'Start WFC'</span> to procedurally generate a
+                new image based on the current Base Tile.
+                <br />
+                You can select a different Base Tile by clicking on one of the tiles under the <span
+                    class="bold-text">'Base Tiles'</span> section in the bottom right.
+                <br />
+                If you want to create a new Base Tile, click on <span class="bold-text">'Paint New Tile'</span> to enter
+                Paint Mode.
+            </p>
             <p class="left-aligned-text">This app was written with Python's Pygame library and has been compiled to
                 WebAssembly, with the help of Pygbag, to run inside the browser. The web version of this app runs about
                 2-3 times slower than the desktop version, and is unfortunately quite laggy during WFC execution.</p>
