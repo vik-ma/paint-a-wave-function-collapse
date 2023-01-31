@@ -698,7 +698,7 @@ async def main(loop):
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-    pygame.display.set_caption("Paint Your Wave Function Collapse")
+    pygame.display.set_caption("Paint A Wave Function Collapse")
 
     # Sprite Group for Pattern Tiles extracted from Base Tile 
     pattern_group = pygame.sprite.Group()
@@ -1023,7 +1023,7 @@ async def main(loop):
 
     base_tiles_hover_box_text = ["The wave function collapse", "algorithm will procedurally", "generate a new image based", "on the patterns in the Base", "Tile."]
     base_tiles_hover_box = HoverBox(275, len(base_tiles_hover_box_text) * hover_box_line_height + 14, base_tiles_hover_box_text, hover_box_font)
-    base_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-42, "Base Tiles", size_27_font, SCREEN_TEXT_COLOR, base_tiles_hover_box, hover_box_group) 
+    base_tiles_text = InfoText(tile_list_x_pos-5, tile_list_y_pos-48, "Base Tiles", size_27_font, SCREEN_TEXT_COLOR, base_tiles_hover_box, hover_box_group) 
 
     wfc_guide_text = size_18_font.render("Click on 'Start WFC' to generate a new image based on the selected Base Tile", True, IMPORTANT_SCREEN_TEXT_COLOR)
 
