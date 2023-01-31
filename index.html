@@ -1,28 +1,25 @@
-<html lang="en-us"><script src="https://pygame-web.github.io/archives/0.6/pythons.js" type=module id="site" data-os="vtx,fs,snd,gui" async defer>#<!--
+<html lang="en-us">
+<script src="https://pygame-web.github.io/archives/0.6/pythons.js" type=module id="site" data-os="vtx,fs,snd,gui" async
+    defer>#<!--
 
 print("""
-Loading paint-a-wave-function-collapse from paint-a-wave-function-collapse.apk
+Loading wfc from wfc.apk
     Pygbag Version : 0.6.6
     Template Version : 0.6.6
     Python  : 3.11
     CDN URL : https://pygame-web.github.io/archives/0.6/
     Screen  : {{cookiecutter.width}}x{{cookiecutter.height}}
-    Title   : paint-a-wave-function-collapse
-    Folder  : paint-a-wave-function-collapse
+    Title   : wfc
+    Folder  : wfc
     Authors : pgw
     SPDX-License-Identifier: cookiecutter.spdx
-
 """)
-
-
 # screen pixels (real, hardware)
 WIDTH=1024  # {{cookiecutter.width}}
 HEIGHT=600  # {{cookiecutter.height}}
-
 # reference/idealized screen pixels
 REFX = 1980
 REFY = 1080
-
 def u(real, ref, v):
     if abs(v)<0.9999999:
         result = int( (float(real)/100.0) * (v*1000))
@@ -30,66 +27,48 @@ def u(real, ref, v):
             return real-result
         return result
     return int( (real/ref) * v )
-
 def ux(*argv):
     global WIDTH, REFX
     acc = 0
     for v in argv:
         acc += u(WIDTH, REFX, v)
     return acc
-
 def uy(*argv):
     global HEIGHT, REFY
     acc = 0
     for v in argv:
         acc += u(HEIGHT, REFY, v)
     return acc
-
-
-
-
 # do not rename
 async def custom_site():
-
     import sys
     import asyncio
     import platform
     import json
     from pathlib import Path
-
-
-
     import embed
-
-
     platform.document.body.style.background = "#7f7f7f"
-
     import pygame
-
     def compose():
         pygame.display.update()
         window.chromakey(None, *screen.get_colorkey(), 40)
-
     pygame.init()
     pygame.font.init()
-
     screen = pygame.display.set_mode([ux(.100),uy(.100)], pygame.SRCALPHA, 32)
     screen.set_colorkey( (0,0,0,0), pygame.RLEACCEL )
     screen.fill( (0,0,0,0) )
-
     compose()
-
     platform.window.transfer.hidden = true
     platform.window.canvas.style.visibility = "visible"
 
 
 
-    apk = "paint-a-wave-function-collapse.apk"
+    apk = "wfc.apk"
 
-    bundle = "paint-a-wave-function-collapse"
+    bundle = "wfc"
 
     # the C or js loader could do that but be explicit.
-    appdir = Path(f"/data/data/{bundle}") # /data/data/paint-a-wave-function-collapse
+    appdir = Path(f"/data/data/{bundle}") # /data/data/wfc
     appdir.mkdir()
 
 
@@ -211,7 +190,9 @@ asyncio.run( custom_site() )
 #
 # do not alter that comment block it is separating python code from html code
 # =============================================================================
-# --></script><head><!--
+# --></script>
+
+<head><!--
 //=============================================================================
 //
 //
@@ -220,35 +201,34 @@ asyncio.run( custom_site() )
 //
 //
 //
-
     {%- if cookiecutter.comment != "" -%}
 {{cookiecutter.comment}}
     {% endif %}
+-->
+    <script type="application/javascript">
+        // END BLOCK
 
---><script type="application/javascript">
-// END BLOCK
 
 
+        // this dict is available under PyConfig.config from __main__
 
-// this dict is available under PyConfig.config from __main__
+        config = {
+            xtermjs: "1",
+            _sdl2: "canvas",
+            user_canvas: 1,
+            user_canvas_managed: 0,
+            ume_block: 1,
+            can_close: 0,
+            archive: "wfc",
+            gui_debug: 3,
+            cdn: "https://pygame-web.github.io/archives/0.6/",
+            autorun: 0,
+            PYBUILD: "3.11"
+        }
 
-config = {
-    xtermjs : "1" ,
-    _sdl2 : "canvas",
-    user_canvas : 1,
-    user_canvas_managed : 0,
-    ume_block : 1,
-    can_close : 0,
-    archive : "paint-a-wave-function-collapse",
-    gui_debug : 3,
-    cdn : "https://pygame-web.github.io/archives/0.6/",
-    autorun : 0,
-    PYBUILD : "3.11"
-}
+    </script>
 
-</script>
-
-    <title>paint-a-wave-function-collapse</title>
+    <title>Paint A Wave Function Collapse</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -262,216 +242,149 @@ config = {
 
     <link rel="icon" type="image/png" href="favicon.png" sizes="16x16">
 
-    <style>
-        #status {
-            display: inline-block;
-            vertical-align: top;
-            margin-top: 20px;
-            margin-left: 30px;
-            font-weight: bold;
-            color: rgb(120, 120, 120);
-        }
-
-        #progress {
-            height: 20px;
-            width: 300px;
-        }
-
-        div.emscripten { text-align: center; }
-        div.emscripten_border { border: 1px solid black; }
-        div.thick_border { border: 4px solid black; }
-
-        /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
-        /* average size of droid screen 470dp x 320dp  */
-        canvas.emscripten {
-            border: 0px none;
-            background-color: transparent;
-            width: 100%;
-            height=100%;
-            z-index: 5;
-
-            padding: 0;
-            margin: 0 auto;
-
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-
-        body {
-            font-family: arial;
-            margin: 0;
-            padding: none;
-            background-color:powderblue;
-        }
-
-        .topright{
-           position:absolute;
-           top:0px;
-           right:0px;
-        }
-
-        .bottomright {
-            position:absolute;
-            top: 40%;
-            right: 0px;
-        }
-
-        .center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .trinfo{
-           position:relative;
-           right:0px;
-           border: 1px solid black;
-        }
-
-        .framed{
-           position:relative;
-           top:150px;
-           right:10px;
-           border: 1px solid black;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
 
     <script src="https://pygame-web.github.io/archives/0.6//browserfs.min.js"></script>
-
 </head>
 
 <body>
 
-    <div id="transfer" align=center>
-<!--        <div class="spinner" id='spinner'></div> -->
-        <div class="emscripten" id="status">Downloading...</div>
+    <div id="transfer" align="center">
+        <!--        <div class="spinner" id='spinner'></div> -->
+        <div class="emscripten" id="status">Loading...</div>
         <div class="emscripten">
             <progress value="0" max="100" id="progress"></progress>
         </div>
     </div>
 
+    <a href="https://github.com/vik-ma/paint-a-wave-function-collapse">
+        <img src="github-mark-white.svg" alt="Link To Github Repo" id="github-logo">
+    </a>
 
-    <canvas class="emscripten" id="canvas"
-width="1px"
-height="1px"
-    oncontextmenu="event.preventDefault()" tabindex=1>
-    </canvas>
+    <div id="game-wrapper">
+        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="1">
+        </canvas>
+        <div id="game-info-container">
+            <h1 id="gradient">Wait for the application to load and then click 'Ready to start!'</h1>
+            <p class="center-aligned-text">Requires JavaScript to be enabled.</p>
+            <p class="left-aligned-text">Click on <span class="bold-text">'Start WFC'</span> to procedurally generate a
+                new image based on the current Base Tile.
+                <br />
+                You can select a different Base Tile by clicking on one of the tiles under the <span
+                    class="bold-text">'Base Tiles'</span> section in the bottom right.
+                <br />
+                If you want to create a new Base Tile, click on <span class="bold-text">'Paint New Tile'</span> to enter
+                Paint Mode.
+            </p>
+            <p class="left-aligned-text">This app was written with Python's Pygame library and has been compiled to
+                WebAssembly to run inside the browser via Pygbag. The web version of this app runs about
+                2-3 times slower than the desktop version, and also has some quirks regarding "predetermined"
+                random number generation.</p>
+    </div>
 
-    <div id=html></div>
+        <div id="crt" class="bottomright">
 
-    <div id=crt  class=bottomright >
+            <div id="system" hidden="true">
+                <div class="button-container">
+                    <button id="aiostop" disabled>AIO ⏏︎</button>
+                    <button id="aiopaused_true" disabled>AIO ■</button>
+                    <button id="aiopaused_false" disabled>AIO ▶</button>
+                    <button id="pygame_mixer_music_pause" disabled>Music ■</button>
+                </div>
 
-        <div id="system" hidden>
-            <div class="button-container">
-                <button id="aiostop" disabled>AIO ⏏︎</button>
-                <button id="aiopaused_true" disabled>AIO ■</button>
-                <button id="aiopaused_false" disabled>AIO ▶</button>
-                <button id="pygame_mixer_music_pause" disabled>Music ■</button>
+                <div class="button-container">
+                    <div id="load_min">min</div>
+                    <div id="load_avg">avg</div>
+                    <div id="load_max">max</div>
+                    <button id="load_rst" disabled>RESET</button>
+                </div>
+
+                <div id="level">(battery level unknown)</div>
+                <div id="stateBattery">(charging state unknown)</div>
+
             </div>
 
-            <div class="button-container">
-                <div id=load_min>min</div>
-                <div id=load_avg>avg</div>
-                <div id=load_max>max</div>
-              <button id="load_rst" disabled>RESET</button>
-            </div>
+            <div id="box" class="emscripten_border" hidden="true">
+                <div id="info" class="trinfo"></div>
 
-            <div id="level">(battery level unknown)</div>
-            <div id="stateBattery">(charging state unknown)</div>
+                <iframe id="iframe" class="framed" name="iframe" width="470px" height="90%" allowtransparency="true"
+                    style="z-index: 10; background: #FFFFFF;" frameborder="1" allowfullscreen="true"
+                    webkitallowfullscreen="true" msallowfullscreen="true" mozallowfullscreen="true"
+                    sandbox="allow-same-origin allow-top-navigation allow-scripts allow-pointer-lock"
+                    allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated"
+                    src="https://pygame-web.github.io/archives/0.6/empty.html" scrolling="yes">
+                </iframe>
+            </div>
 
         </div>
 
-        <div id=box class="emscripten_border" hidden=true>
 
-            <div id="info" class="trinfo"></div>
-
-            <iframe id="iframe" class="framed" name="iframe"
-width="470px" height="90%"
-allowtransparency="true"
-style="z-index: 10; style="background: #FFFFFF;"
-frameborder="1"
-                allowfullscreen="true"
-                webkitallowfullscreen="true"
-                msallowfullscreen="true"
-                mozallowfullscreen="true"
-                sandbox="allow-same-origin allow-top-navigation allow-scripts allow-pointer-lock"
-                allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated"
-                src="https://pygame-web.github.io/archives/0.6/empty.html"
-                scrolling="yes">
-            </iframe>
+        <div id="dlg" hidden>
+            <input type="file" id="dlg_multifile" multiple accept="image/*">
+            <label for="dlg_multifile">Select files</label>
         </div>
 
-    </div>
+        <div id="pyconsole">
+            <div id="terminal" tabIndex="1" align="left"></div>
+        </div>
 
+        <script type="application/javascript">
 
-    <div id="dlg" hidden>
-        <input type="file" id="dlg_multifile" multiple accept="image/*">
-        <label for="dlg_multifile">Select files</label>
-    </div>
+            async function custom_onload(debug_hidden) {
+                // this is called before anythinh python is loaded
+                // make your js customization here
+                console.log(__FILE__, "custom_onload")
 
-    <div id="pyconsole">
-        <div id="terminal" tabIndex=1 align="left"></div>
-    </div>
+                pyconsole.hidden = debug_hidden
+                system.hidden = debug_hidden
+                transfer.hidden = debug_hidden
+                info.hidden = debug_hidden
+                box.hidden = debug_hidden
+            }
 
-    <script type="application/javascript">
+            function custom_prerun() {
+                // no python main and no (MEMFS + VFS) yet.
+                console.log(__FILE__, "custom_prerun")
 
-    async function custom_onload(debug_hidden) {
-        // this is called before anythinh python is loaded
-        // make your js customization here
-        console.log(__FILE__, "custom_onload")
+            }
 
-        pyconsole.hidden = debug_hidden
-        system.hidden = debug_hidden
-        transfer.hidden = debug_hidden
-        info.hidden = debug_hidden
-        box.hidden =  debug_hidden
-    }
+            function custom_postrun() {
+                // python main and no VFS filesystem yet.
+                console.log(__FILE__, "custom_postrun")
 
-    function custom_prerun(){
-        // no python main and no (MEMFS + VFS) yet.
-        console.log(__FILE__, "custom_prerun")
+            }
 
-    }
+            function debug() {
+                // allow to gain access to dev tools from js console
+                // but only on desktop. difficult to reach when in iframe
+                python.config.debug = true
+                custom_onload(false)
+                Module.PyRun_SimpleString("shell.uptime()")
+                window_resize()
+            }
 
-    function custom_postrun(){
-        // python main and no VFS filesystem yet.
-        console.log(__FILE__, "custom_postrun")
+            function info_inline(data) {
+                document.getElementById("info").innerHTML = data
+            }
 
-    }
+            function info_online(url) {
+                // display info about current APK
+                fetch(url /*, options */)
+                    .then((response) => response.text())
+                    .then((html) => {
+                        info_inline(html);
+                    })
+                    .catch((error) => {
+                        console.warn(error);
+                    });
+            }
 
-    function debug() {
-        // allow to gain access to dev tools from js console
-        // but only on desktop. difficult to reach when in iframe
-        python.config.debug = true
-        custom_onload(false)
-        Module.PyRun_SimpleString("shell.uptime()")
-        window_resize()
-    }
+            function frame_online(url) {
+                window.frames["iframe"].location = url;
+            }
 
-    function info_inline(data){
-        document.getElementById("info").innerHTML = data
-    }
-
-    function info_online(url) {
-        // display info about current APK
-        fetch( url /*, options */)
-            .then((response) => response.text())
-            .then((html) => {
-                info_inline(html);
-        })
-        .catch((error) => {
-            console.warn(error);
-        });
-    }
-
-    function frame_online(url) {
-        window.frames["iframe"].location = url;
-    }
-
-    </script>
+        </script>
 
 </body>
+
 </html>
