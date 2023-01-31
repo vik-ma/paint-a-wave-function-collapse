@@ -408,6 +408,14 @@ asyncio.run( custom_site() )
         .bold-text {
             font-weight: bold;
         }
+
+        #github-logo {
+            position: fixed;
+            bottom: 10;
+            right: 10;
+            width: 55px;
+            height: 55px;
+        }
     </style>
 
     <script src="https://pygame-web.github.io/archives/0.6//browserfs.min.js"></script>
@@ -422,6 +430,10 @@ asyncio.run( custom_site() )
             <progress value="0" max="100" id="progress"></progress>
         </div>
     </div>
+
+    <a href="_blank">
+        <img src="github-mark-white.svg" alt="Link To Github Repo" id="github-logo">
+    </a>
 
     <div id="game-wrapper">
         <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="1">
@@ -442,7 +454,9 @@ asyncio.run( custom_site() )
                 WebAssembly to run inside the browser via Pygbag. The web version of this app runs about
                 2-3 times slower than the desktop version, and also has some quirks regarding "predetermined"
                 random number generation.</p>
-        </div>
+    </div>
+
+
 
         <div id="crt" class="bottomright">
 
