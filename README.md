@@ -11,7 +11,7 @@ There are already five premade sample base tiles that you can generate a new ima
 
 Click on the **'Paint New Tile'** button to enter Paint Mode, where you can paint your own Base Tiles. Keep in mind that not all Base Tiles will be able to successfully collapse. The WFC algorithm will fail when it has generated a 2x2 pattern that does not intersect with any pattern in the list of patterns extracted from the Base Tile. The WFC algorithm can also take a very long time generating an image if the Base Tile contains too many 2x2 patterns. A warning will appear if a Base Tile may contain too many patterns.
 
-
+The application also provides some more information, including a Help section, but also little boxes that provide additional information, which appears when you hover the mouse over certain elements in the application's GUI.
 ## Things To Note
 
 ## Credits
