@@ -13,5 +13,7 @@ Click on the **'Paint New Tile'** button to enter Paint Mode, where you can pain
 
 The application also provides some more information, including a Help section, but also little boxes that provide additional information, which appears when you hover the mouse over certain elements in the application's GUI.
 ## Things To Note
+- Currently, the implemented Wave Function Collapse algorithm uses only the 'Adjacent Model' contraints, which means that the only rule for which pattern can be propagated is whether or not it can intersect with an already propagated 2x2 pattern. This can result in generated images that does not really resemble their Base Tile. Check out the [Wave Function Collapse Algorithm GitHub Page](https://github.com/mxgmn/WaveFunctionCollapse/) for examples of more complex constraints and what they would look like.
   
+-
 ## Credits
