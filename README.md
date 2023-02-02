@@ -19,5 +19,5 @@ The application also provides some more information, including a Help section, b
 
 - The web version of this app runs about 2-3 slower than it runs on desktop, and the GUI will get particularly slow during WFC execution. If the 'Cancel WFC' button does not work during this time, try spam clicking it.
 
-- 
+- The execution time of the WFC increases exponentially with an increase in the output size of the generated image. A higher number of patterns extracted from the Base Tile also causes slower execution times. A warning will appear when the amount of patterns from the Base Tile may be too slow.
 ## Credits
