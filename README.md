@@ -16,4 +16,8 @@ The application also provides some more information, including a Help section, b
 - Currently, the implemented Wave Function Collapse algorithm uses only the 'Adjacent Model' contraints, which means that the only rule for which pattern can be propagated is whether or not it can intersect with an already propagated 2x2 pattern. This can result in generated images that does not really resemble their Base Tile. Check out the [Wave Function Collapse Algorithm GitHub Page](https://github.com/mxgmn/WaveFunctionCollapse/#readme) for examples of more complex constraints and what they would look like.
   
 - Since backtracking is also not implemented in this app, the WFC algorithm will fail and stop when it encounters a pattern that can not intersect with any pattern extracted from the Base Tile. Backtracking would prevent the WFC from stopping when such an encounter occurs, but it still won't guarantee that the wave function will fully collapse.
+
+- The web version of this app runs about 2-3 slower than it runs on desktop, and the GUI will get particularly slow during WFC execution. If the 'Cancel WFC' button does not work during this time, try spam clicking it.
+
+- 
 ## Credits
