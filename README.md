@@ -4,7 +4,10 @@ This application is a basic implementation of the procedural image generation of
 
 Even though the application is written in Python, it has been compiled to WebAssembly and **is entirely accessible from within the browser, no Python installation reqiured!** (JavaScript needs to be enabled)
 
-[Access the project here, hosted on GitHub Pages!](https://vik-ma.github.io/paint-a-wave-function-collapse/)
+
+![WFC Preview](wfc-preview.gif)
+
+### **[Access the project here, hosted on GitHub Pages!](https://vik-ma.github.io/paint-a-wave-function-collapse/)**
 
 ## Instructions
 There are already five premade sample base tiles that you can generate a new image from. Select a Base Tile in the bottom right corner by clicking on them, and then click the **'Start WFC'** button to start the Wave Function Collapse algorithm and watch the procedural generation unfold over the next seconds.
