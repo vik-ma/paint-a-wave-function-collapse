@@ -527,9 +527,9 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale) -> list:
     x_offset = 20
 
     # X and Y offset for 3x3 patterns, not currently implemented
-    # if pattern_size == 3:
-    #     y_offset = 38
-    #     x_offset = 33
+    if pattern_size == 3:
+        y_offset = 38
+        x_offset = 33
 
     x = 10 # Start x-coordinate
     y = 339 # Start y-coordinate
@@ -746,10 +746,10 @@ async def main(loop):
     copy_tile_button = Button(WHITE, 440, 268, 190, 36, "Copy Selected Tile", BLACK, LIGHTGREY)
 
     # Unused buttons
-    # test_button = Button(WHITE, 660, 163, 130, 40, "TEST", BLACK, LIGHTGREY)
-    # test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
-    # set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
-    # set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
+    test_button = Button(WHITE, 660, 163, 130, 40, "TEST", BLACK, LIGHTGREY)
+    test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
+    set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+    set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
     run = True
 
@@ -1420,27 +1420,27 @@ async def main(loop):
                     previous_game_state = "wfc"
 
 
-            # if test_button.draw(screen):
-            #     print(patterns)
+            if test_button.draw(screen):
+                print(patterns)
 
 
             # Unused buttons to change pattern size
 
-            # if set_pattern_size_2_button.draw(screen):
-            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
-            #         pattern_size = 2
-            #         prob_text_x_offset = -2
-            #         prob_text_y_offset = -11
-            #         patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
-            #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+            if set_pattern_size_2_button.draw(screen):
+                if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
+                    pattern_size = 2
+                    patterns = get_patterns(pattern_size, base_tile_list[index])
+                    pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                    num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
+                    update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
 
-            # if set_pattern_size_3_button.draw(screen):
-            #     if not is_wfc_anim_ongoing and not is_wfc_executing:
-            #         pattern_size = 3
-            #         prob_text_x_offset = 2
-            #         prob_text_y_offset = -11
-            #         patterns = get_patterns(pattern_size, base_tile_list[selected_tile_index])
-            #         pattern_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+            if set_pattern_size_3_button.draw(screen):
+                if not is_wfc_replay_anim_ongoing and not has_wfc_executed:
+                    pattern_size = 3
+                    patterns = get_patterns(pattern_size, base_tile_list[index])
+                    pattern_tile_list = get_pattern_tiles(patterns[0], pattern_size, enlargement_scale)
+                    num_patterns_text = size_17_font.render(f"({len(pattern_tile_list)})", True, SCREEN_TEXT_COLOR)
+                    update_patterns(pattern_group, pattern_tile_list, pattern_draw_limit)
 
 
             # Draw sprite groups
