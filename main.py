@@ -526,14 +526,16 @@ def get_pattern_tiles(patterns, pattern_size, enlargement_scale) -> list:
     y_offset = 24
     x_offset = 20
 
-    # X and Y offset for 3x3 patterns, not currently implemented
+    tiles_per_row_limit = 19 # Maximum tiles per row
+
+    # X and Y offset for 3x3 patterns
     if pattern_size == 3:
-        y_offset = 38
-        x_offset = 33
+        y_offset = 34
+        x_offset = 30
+        tiles_per_row_limit = 12
 
     x = 10 # Start x-coordinate
     y = 339 # Start y-coordinate
-    tiles_per_row_limit = 19 # Maximum tiles per row
     
     tile_list = []
     for col in range(len(patterns)):
