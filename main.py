@@ -746,10 +746,10 @@ async def main(loop):
     copy_tile_button = Button(WHITE, 440, 268, 190, 36, "Copy Selected Tile", BLACK, LIGHTGREY)
 
     # Unused buttons
-    test_button = Button(WHITE, 660, 163, 130, 40, "TEST", BLACK, LIGHTGREY)
+    test_button = Button(WHITE, 460, 540, 110, 40, "TEST", BLACK, LIGHTGREY)
     test_paint_button = Button(WHITE, 620, 30, 150, 40, "TEST", BLACK, LIGHTGREY)
-    set_pattern_size_2_button = Button(WHITE, 570, 400, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
-    set_pattern_size_3_button = Button(WHITE, 570, 450, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
+    set_pattern_size_2_button = Button(WHITE, 590, 540, 200, 40, "Set Pattern Size 2", BLACK, LIGHTGREY)
+    set_pattern_size_3_button = Button(WHITE, 590, 590, 200, 40, "Set Pattern Size 3", BLACK, LIGHTGREY)
 
     run = True
 
@@ -965,7 +965,7 @@ async def main(loop):
     disabled_buttons_during_wfc_exec_and_post_anim_list = [increase_wfc_output_size_button, decrease_wfc_output_size_button,
                                                           increase_replay_speed_button, decrease_replay_speed_button,
                                                           toggle_anim_after_wfc_button, toggle_anim_during_wfc_button,
-                                                        #   set_pattern_size_2_button, set_pattern_size_3_button, 
+                                                          set_pattern_size_2_button, set_pattern_size_3_button, 
                                                           replay_animation_button, paint_new_tile_button,
                                                           help_button]
     
