@@ -259,7 +259,33 @@ def get_valid_directions(position, output_width, output_height, pattern_size) ->
             else: 
                 valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT])
     elif pattern_size == 3:
-        pass
+        if x == 0:
+            valid_directions.extend([RIGHT])
+            if y == 0:
+                valid_directions.extend([DOWN, DOWN_RIGHT, RIGHT_DOWN_DIAG, DOWN_RIGHT_DIAG])
+            elif y == output_height-1:
+                valid_directions.extend([UP, UP_RIGHT, UP_RIGHT_DIAG, RIGHT_UP_DIAG])
+            else:
+                valid_directions.extend([DOWN, DOWN_RIGHT, UP, UP_RIGHT, RIGHT_DOWN_DIAG, DOWN_RIGHT_DIAG, UP_RIGHT_DIAG, UP_LEFT_DIAG])
+        elif x == output_width-1:
+            valid_directions.extend([LEFT])
+            if y == 0:
+                valid_directions.extend([DOWN, DOWN_LEFT, LEFT_DOWN_DIAG, DOWN_LEFT_DIAG])
+            elif y == output_height-1:
+                valid_directions.extend([UP, UP_LEFT, UP_LEFT_DIAG, LEFT_UP_DIAG])
+            else:
+                valid_directions.extend([DOWN, DOWN_LEFT, UP, UP_LEFT, LEFT_DOWN_DIAG, DOWN_LEFT_DIAG, UP_LEFT_DIAG, LEFT_UP_DIAG])
+        else:
+            valid_directions.extend([LEFT, RIGHT])
+            if y == 0:
+                valid_directions.extend([DOWN, DOWN_LEFT, DOWN_RIGHT, LEFT_DOWN_DIAG, DOWN_LEFT_DIAG, RIGHT_DOWN_DIAG, DOWN_RIGHT_DIAG])
+            elif y == output_height-1:
+                valid_directions.extend([UP, UP_LEFT, UP_RIGHT, LEFT_UP_DIAG, UP_LEFT_DIAG, RIGHT_UP_DIAG, UP_RIGHT_DIAG])
+            else: 
+                valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT, 
+                                        LEFT_DOWN_DIAG, DOWN_LEFT_DIAG, RIGHT_DOWN_DIAG, DOWN_RIGHT_DIAG,
+                                        LEFT_UP_DIAG, UP_LEFT_DIAG, RIGHT_UP_DIAG, UP_RIGHT_DIAG
+                                        ])
 
     return valid_directions
 
