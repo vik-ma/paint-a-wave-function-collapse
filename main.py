@@ -224,40 +224,43 @@ def get_offset_tiles(pattern, offset) -> tuple:
     if offset == (1, 1):
         return tuple([pattern.pix_array[0][0]])
 
-def get_valid_directions(position, output_width, output_height) -> list:
+def get_valid_directions(position, output_width, output_height, pattern_size) -> list:
     """
     Return a list of strings representing the valid directions that can be taken 
     from the given input position on the grid.
     """
     x, y = position
-    
+
     valid_directions = []
 
-    if x == 0:
-        valid_directions.extend([RIGHT])
-        if y == 0:
-            valid_directions.extend([DOWN, DOWN_RIGHT])
-        elif y == output_height-1:
-            valid_directions.extend([UP, UP_RIGHT])
+    if pattern_size == 2:
+        if x == 0:
+            valid_directions.extend([RIGHT])
+            if y == 0:
+                valid_directions.extend([DOWN, DOWN_RIGHT])
+            elif y == output_height-1:
+                valid_directions.extend([UP, UP_RIGHT])
+            else:
+                valid_directions.extend([DOWN, DOWN_RIGHT, UP, UP_RIGHT])
+        elif x == output_width-1:
+            valid_directions.extend([LEFT])
+            if y == 0:
+                valid_directions.extend([DOWN, DOWN_LEFT])
+            elif y == output_height-1:
+                valid_directions.extend([UP, UP_LEFT])
+            else:
+                valid_directions.extend([DOWN, DOWN_LEFT, UP, UP_LEFT])
         else:
-            valid_directions.extend([DOWN, DOWN_RIGHT, UP, UP_RIGHT])
-    elif x == output_width-1:
-        valid_directions.extend([LEFT])
-        if y == 0:
-            valid_directions.extend([DOWN, DOWN_LEFT])
-        elif y == output_height-1:
-            valid_directions.extend([UP, UP_LEFT])
-        else:
-            valid_directions.extend([DOWN, DOWN_LEFT, UP, UP_LEFT])
-    else:
-        valid_directions.extend([LEFT, RIGHT])
-        if y == 0:
-            valid_directions.extend([DOWN, DOWN_LEFT, DOWN_RIGHT])
-        elif y == output_height-1:
-            valid_directions.extend([UP, UP_LEFT, UP_RIGHT])
-        else: 
-            valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT])
-    
+            valid_directions.extend([LEFT, RIGHT])
+            if y == 0:
+                valid_directions.extend([DOWN, DOWN_LEFT, DOWN_RIGHT])
+            elif y == output_height-1:
+                valid_directions.extend([UP, UP_LEFT, UP_RIGHT])
+            else: 
+                valid_directions.extend([UP, UP_LEFT, UP_RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT])
+    elif pattern_size == 3:
+        pass
+
     return valid_directions
 
 def get_patterns(pattern_size, base_tile) -> tuple:
@@ -399,7 +402,7 @@ def observe(coefficients, probability, coefficients_state) -> tuple:
 
     return min_entropy_pos
 
-def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state):
+def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, pattern_size, coefficients_state):
     """Propagate wave function at min_entropy_pos, updating its neighbouring tiles' patterns."""
     stack = [min_entropy_pos]
 
@@ -409,7 +412,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
         possible_patterns = get_possible_patterns_at_position(pos, coefficients)
         
         # Iterate through each location immediately adjacent to the current location
-        for direction in get_valid_directions(pos, output_width, output_height):
+        for direction in get_valid_directions(pos, output_width, output_height, pattern_size):
             adjacent_pos = (pos[0] + direction[0], pos[1] + direction[1])
             possible_patterns_at_adjacent = get_possible_patterns_at_position(adjacent_pos, coefficients)
             
@@ -440,7 +443,7 @@ def propagate(min_entropy_pos, coefficients, rule_index, output_width, output_he
                     if adjacent_pos not in stack:
                         stack.append(adjacent_pos)
     
-async def execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, wfc_state):
+async def execute_wave_function_collapse(patterns, output_width, output_height, pattern_size, asyncio_queue, wfc_state):
     """Start wave function collapse algorithm with input patterns and send updates to GUI through asyncio."""
     pattern_list = patterns[0]
     occurence_weights = patterns[1]
@@ -449,9 +452,14 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     # Create rules for adjacent patterns for every pattern
     rule_index = RuleIndex(pattern_list, directions)
 
+    if pattern_size == 2:
+        direction_list = directions
+    elif pattern_size == 3:
+        direction_list = directions_3x3
+
     number_of_rules = 0
     for pattern in pattern_list:
-        for direction in directions:
+        for direction in direction_list:
             for pattern_next in pattern_list:
                 overlap = get_offset_tiles(pattern_next, direction)
                 og_dir = tuple([direction[0]*-1, direction[1]*-1])
@@ -488,7 +496,7 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
 
             await asyncio_queue.put(["ongoing", deepcopy(coefficients)])
 
-            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, coefficients_state)
+            propagate(min_entropy_pos, coefficients, rule_index, output_width, output_height, pattern_size, coefficients_state)
             
             # Sleep to allow GUI to update while algorithm is running
             await asyncio.sleep(0)
@@ -1305,7 +1313,7 @@ async def main(loop):
                         # Make base tile buttons opaque
                         tile_button.image.set_alpha(100)
                     wfc_time_start = time.perf_counter()
-                    loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, asyncio_queue, wfc_state))
+                    loop.create_task(execute_wave_function_collapse(patterns, output_width, output_height, pattern_size, asyncio_queue, wfc_state))
 
             if cancel_wfc_button.draw(screen):
                 if has_wfc_executed:
