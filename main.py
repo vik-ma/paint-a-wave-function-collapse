@@ -98,7 +98,7 @@ DOWN_RIGHT_DIAG = (1, 2)
 directions_3x3 = [
     UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT,
     UP_LEFT_DIAG, UP_RIGHT_DIAG, LEFT_UP_DIAG, LEFT_DOWN_DIAG,
-    RIGHT_UP_DIAG, RIGHT_DOWN_DIAG, RIGHT_DOWN_DIAG, DOWN_RIGHT_DIAG
+    RIGHT_UP_DIAG, RIGHT_DOWN_DIAG, DOWN_LEFT_DIAG, DOWN_RIGHT_DIAG
     ]
 
 # List of premade sample Base Tiles
@@ -267,7 +267,7 @@ def get_offset_tiles(pattern, offset, pattern_size) -> tuple:
         if offset == (1, -2):
             return (pattern.pix_array[2][0], pattern.pix_array[2][1])
         if offset == (-2, -1):
-           return (pattern.pix_array[1][2]), (pattern.pix_array[2][2])
+            return (pattern.pix_array[1][2]), (pattern.pix_array[2][2])
         if offset == (-2, 1):
             return (pattern.pix_array[0][2], pattern.pix_array[1][2])
         if offset == (2, -1):
@@ -530,13 +530,13 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     occurence_weights = patterns[1]
     probability = patterns[2]
 
-    # Create rules for adjacent patterns for every pattern
-    rule_index = RuleIndex(pattern_list, directions)
-
     if pattern_size == 2:
         direction_list = directions
     elif pattern_size == 3:
         direction_list = directions_3x3
+
+    # Create rules for adjacent patterns for every pattern
+    rule_index = RuleIndex(pattern_list, direction_list)
 
     number_of_rules = 0
     for pattern in pattern_list:
