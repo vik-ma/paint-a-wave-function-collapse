@@ -82,7 +82,24 @@ UP_LEFT = (-1, -1)
 UP_RIGHT = (1, -1)
 DOWN_LEFT = (-1, 1)
 DOWN_RIGHT = (1, 1)
+
 directions = [UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT]
+
+# 3x3 Patterns
+UP_LEFT_DIAG = (-1, -2)
+UP_RIGHT_DIAG = (1, -2)
+LEFT_UP_DIAG = (-2, -1)
+LEFT_DOWN_DIAG = (-2, 1)
+RIGHT_UP_DIAG = (2, -1)
+RIGHT_DOWN_DIAG = (2, 1)
+DOWN_LEFT_DIAG = (-1, 2)
+DOWN_RIGHT_DIAG = (1, 2)
+
+directions_3x3 = [
+    UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT,
+    UP_LEFT_DIAG, UP_RIGHT_DIAG, LEFT_UP_DIAG, LEFT_DOWN_DIAG,
+    RIGHT_UP_DIAG, RIGHT_DOWN_DIAG, RIGHT_DOWN_DIAG, DOWN_RIGHT_DIAG
+    ]
 
 # List of premade sample Base Tiles
 sample_tile_list = []
@@ -1423,7 +1440,7 @@ async def main(loop):
 
 
             if test_button.draw(screen):
-                print(patterns)
+                print(len(directions_3x3))
 
 
             # Unused buttons to change pattern size
