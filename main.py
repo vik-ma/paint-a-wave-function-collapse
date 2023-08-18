@@ -170,6 +170,15 @@ purple_void_pix_array = [
     ] 
 purple_void_sample_tile = SampleTile(purple_void_pix_array, 7, 7)
 
+test_pix_array = [
+    ((255, 255, 255), (255, 255, 125), (124, 252, 0)), 
+    ((255, 0, 0), (30, 144, 255), (255, 165, 0)), 
+    ((139, 69, 19), (0, 0, 0), (105, 105, 105))
+    ]
+
+test_pix_array_tile = SampleTile(test_pix_array, 3, 3)
+
+sample_tile_list.append(test_pix_array_tile)
 sample_tile_list.append(beige_brown_green_original_sample_tile)
 sample_tile_list.append(ice_sample_tile)
 sample_tile_list.append(flower_sample_tile)
@@ -200,29 +209,75 @@ def get_rotated_pix_array(pix_array) -> tuple:
     return (pix_array, rotated_pix_array_90, rotated_pix_array_180, rotated_pix_array_270, vertically_flipped_pix_array, horizontally_flipped_pix_array)
 
 
-def get_offset_tiles(pattern, offset) -> tuple:
+def get_offset_tiles(pattern, offset, pattern_size) -> tuple:
     """
     Return the tile(s) from input pattern pix_array which intersects with 
     input offset coordinates (x, y) from the perspective of the offset.
     """
-    if offset == (0, 0):
-        return pattern.pix_array
-    if offset == (-1, -1):
-        return tuple([pattern.pix_array[1][1]])
-    if offset == (0, -1):
-        return tuple(pattern.pix_array[1][:])
-    if offset == (1, -1):
-        return tuple([pattern.pix_array[1][0]])
-    if offset == (-1, 0):
-        return tuple([pattern.pix_array[0][1], pattern.pix_array[1][1]])
-    if offset == (1, 0):
-        return tuple([pattern.pix_array[0][0], pattern.pix_array[1][0]])
-    if offset == (-1, 1):
-        return tuple([pattern.pix_array[0][1]])
-    if offset == (0, 1):
-        return tuple(pattern.pix_array[0][:])
-    if offset == (1, 1):
-        return tuple([pattern.pix_array[0][0]])
+    if pattern_size == 2:
+        if offset == (0, 0):
+            return pattern.pix_array
+        if offset == (-1, -1):
+            return tuple([pattern.pix_array[1][1]])
+        if offset == (0, -1):
+            return tuple(pattern.pix_array[1][:])
+        if offset == (1, -1):
+            return tuple([pattern.pix_array[1][0]])
+        if offset == (-1, 0):
+            return tuple([pattern.pix_array[0][1], pattern.pix_array[1][1]])
+        if offset == (1, 0):
+            return tuple([pattern.pix_array[0][0], pattern.pix_array[1][0]])
+        if offset == (-1, 1):
+            return tuple([pattern.pix_array[0][1]])
+        if offset == (0, 1):
+            return tuple(pattern.pix_array[0][:])
+        if offset == (1, 1):
+            return tuple([pattern.pix_array[0][0]])
+    elif pattern_size == 3:
+        if offset == (0, 0):
+            return pattern.pix_array
+        if offset == (-1, -1):
+            return ((pattern.pix_array[1][1], pattern.pix_array[1][2]),
+                    (pattern.pix_array[2][1], pattern.pix_array[2][2]))
+        if offset == (0, -1):
+             return ((pattern.pix_array[1][0], pattern.pix_array[1][1], pattern.pix_array[1][2]),
+                    (pattern.pix_array[2][0], pattern.pix_array[2][1], pattern.pix_array[2][2]))
+        if offset == (1, -1):
+            return ((pattern.pix_array[1][0], pattern.pix_array[1][1]),
+                    (pattern.pix_array[2][0], pattern.pix_array[2][1]))
+        if offset == (-1, 0):
+            return ((pattern.pix_array[0][1], pattern.pix_array[0][2]),
+                    (pattern.pix_array[1][1], pattern.pix_array[1][2]),
+                    (pattern.pix_array[2][1], pattern.pix_array[2][2]))
+        if offset == (1, 0):
+            return ((pattern.pix_array[0][0], pattern.pix_array[0][1]),
+                    (pattern.pix_array[1][0], pattern.pix_array[1][1]),
+                    (pattern.pix_array[2][0], pattern.pix_array[2][1]))
+        if offset == (-1, 1):
+            return ((pattern.pix_array[0][1], pattern.pix_array[0][2]),
+                    (pattern.pix_array[1][1], pattern.pix_array[1][2]))
+        if offset == (0, 1):
+            return ((pattern.pix_array[0][0], pattern.pix_array[0][1], pattern.pix_array[0][2]),
+                    (pattern.pix_array[1][0], pattern.pix_array[1][1], pattern.pix_array[1][2]))
+        if offset == (1, 1):
+            return ((pattern.pix_array[0][0], pattern.pix_array[0][1]),
+                    (pattern.pix_array[1][0], pattern.pix_array[1][1]))
+        if offset == (-1, -2):
+            return (pattern.pix_array[2][1], pattern.pix_array[2][2])
+        if offset == (1, -2):
+            return (pattern.pix_array[2][0], pattern.pix_array[2][1])
+        if offset == (-2, -1):
+           return (pattern.pix_array[1][2]), (pattern.pix_array[2][2])
+        if offset == (-2, 1):
+            return (pattern.pix_array[0][2], pattern.pix_array[1][2])
+        if offset == (2, -1):
+            return (pattern.pix_array[1][0], pattern.pix_array[2][0])
+        if offset == (2, 1):
+            return (pattern.pix_array[0][0], pattern.pix_array[1][0])
+        if offset == (-1, 2):
+            return (pattern.pix_array[0][1], pattern.pix_array[0][2])
+        if offset == (1, 2):
+            return (pattern.pix_array[0][0], pattern.pix_array[0][1])
 
 def get_valid_directions(position, output_width, output_height, pattern_size) -> list:
     """
@@ -487,9 +542,9 @@ async def execute_wave_function_collapse(patterns, output_width, output_height, 
     for pattern in pattern_list:
         for direction in direction_list:
             for pattern_next in pattern_list:
-                overlap = get_offset_tiles(pattern_next, direction)
+                overlap = get_offset_tiles(pattern_next, direction, pattern_size)
                 og_dir = tuple([direction[0]*-1, direction[1]*-1])
-                part_of_og_pattern = get_offset_tiles(pattern, og_dir)
+                part_of_og_pattern = get_offset_tiles(pattern, og_dir, pattern_size)
                 if overlap == part_of_og_pattern:
                     rule_index.add_rule(pattern, direction, pattern_next)
                     number_of_rules += 1
@@ -833,7 +888,7 @@ async def main(loop):
     base_tile_list = create_tile_list(sample_tile_list, tile_list_x_pos, tile_list_y_pos, tile_list_offset, enlargement_scale, base_tiles_per_row_limit)
 
     # Width and height of Pattern extracted from Base Tile
-    pattern_size = 2
+    pattern_size = 3
 
     # Index of selected Base Tile in base_tile_list
     selected_base_tile_index = 0
@@ -1474,7 +1529,18 @@ async def main(loop):
 
 
             if test_button.draw(screen):
-                print(len(directions_3x3))
+                # print(get_offset_tiles(patterns[0][1], (-2, -1), 3))
+                print(get_offset_tiles(patterns[0][0], (-1, 2), 3))
+                # print(patterns[0][1].pix_array)
+                # print("0,0", get_offset_tiles(patterns[0][0], (0,0), 3))
+                # print("-1,-1", get_offset_tiles(patterns[0][0], (-1,-1), 2))
+                # print("0,-1", get_offset_tiles(patterns[0][0], (0,-1), 2))
+                # print("1,-1", get_offset_tiles(patterns[0][0], (1,-1), 2))
+                # print("-1,0", get_offset_tiles(patterns[0][0], (-1,0), 2))
+                # print("1,0", get_offset_tiles(patterns[0][0], (1,0), 2))
+                # print("-1,1", get_offset_tiles(patterns[0][0], (-1,1), 2))
+                # print("0,1", get_offset_tiles(patterns[0][0], (0,1), 2))
+                # print("1,1", get_offset_tiles(patterns[0][0], (1,1), 2))
 
 
             # Unused buttons to change pattern size
