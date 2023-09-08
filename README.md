@@ -1,6 +1,6 @@
 # Paint A Wave Function Collapse
 
-This application is a basic implementation of the procedural image generation of the [Wave Function Collapse Algorithm](https://github.com/mxgmn/WaveFunctionCollapse/), made in Python's Pygame library. It allows the user to paint a sample, a so-called 'Base Tile', and then procedurally generate a new, larger image based on the patterns extracted from the sample Base Tile. 
+This application is a basic implementation of the procedural image generation of the [Wave Function Collapse Algorithm](https://github.com/mxgmn/WaveFunctionCollapse/), made in Python's Pygame library. It allows the user to paint a sample, a so-called 'Base Tile', and then procedurally generate a new, larger image based on the patterns extracted from the sample Base Tile. The application is also multi-threaded, which means that the UI will remain responsive and the state of the generated image will gradually update as the WFC algorithm is executing.
 
 Even though the application is written in Python, it has been compiled to WebAssembly and **is entirely accessible from within the browser, no Python installation reqiured!** (JavaScript needs to be enabled)
 
